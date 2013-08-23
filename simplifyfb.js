@@ -46,6 +46,42 @@ var quoteList = [
 	{
 		quote: "There’s a myth that time is money. In fact, time is more precious than money. It’s a nonrenewable resource. Once you’ve spent it, and if you’ve spent it badly, it’s gone forever.",
 		source: "Neil A. Fiore"
+	},
+	{
+		quote: "Nothing can stop the man with the right mental attitude from achieving his goal; nothing on earth can help the man with the wrong mental attitude.",
+		source: "Thomas Jefferson"
+	},
+	{
+		quote: "There is only one success--to be able to spend your life in your own way.",
+		source: "Christopher Morley"
+	},
+	{
+		quote: "Success is the good fortune that comes from aspiration, desperation, perspiration and inspiration.",
+		source: "Evan Esar"
+	},
+	{
+		quote: "We are still masters of our fate. We are still captains of our souls.",
+		source: "Winston Churchill"
+	},
+	{
+		quote: "Our truest life is when we are in dreams awake.",
+		source: "Henry David Thoreau"
+	},
+	{
+		quote: "The best way to make your dreams come true is to wake up.",
+		source: "Paul Valery"
+	},
+	{
+		quote: "Life without endeavor is like entering a jewel mine and coming out with empty hands.",
+		source: "Japanese Proverb"
+	},
+	{
+		quote: "Happiness does not consist in pastimes and amusements but in virtuous activities.",
+		source: "Aristotle"
+	},
+	{
+		quote: "You create opportunities by performing, not complaining.",
+		source: "Muriel Siebert"
 	}
 ];
 
@@ -72,3 +108,19 @@ var fblink = $("<a href='http://www.facebook.com/"
 setInterval(function(){
 	$("#pagelet_home_stream").replaceWith(quoteDiv);
 }, 1000);
+
+/*
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "https://api.flickr.com/services/rest/?format=json&sort=random&method=flickr.photos.search&tags=scenery&tag_mode=all&api_key=1cd9d635f4c548b69a32e7a3e2f3fdb6", true);
+xhr.onreadystatechange = function() {
+	console.log(xhr.readyState);
+	if(xhr.readyState == 4){
+		console.log("Done");
+	}
+};
+
+function jsonFlickrApi(resp)
+{
+	console.log(resp);
+}
+*/

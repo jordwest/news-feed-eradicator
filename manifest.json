@@ -1,7 +1,8 @@
 {
 	"name": "News Feed Eradicator for Facebook",
-	"version": "0.2",
+	"version": "0.3",
 	"description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
+	"manifest_version": 2,
 	"permissions": [
 		"http://www.facebook.com/*",
 		"https://www.facebook.com/*"
