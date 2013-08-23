@@ -79,6 +79,38 @@ var quoteList = [
 		quote: "Happiness does not consist in pastimes and amusements but in virtuous activities.",
 		source: "Aristotle"
 	},
+    {
+        quote: "By constant self-discipline and self-control, you can develop greatness of character.",
+        source: "Grenville Kleiser"
+    },
+    {
+        quote: "The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will.",
+        source: "Vince Lombardi Jr."
+    },
+    {
+        quote: "At the end of the day, let there be no excuses, no explanations, no regrets.",
+        source: "Steve Maraboli"
+    },
+    {
+        quote: "Inaction will cause a man to sink into the slough of despond and vanish without a trace.",
+        source: "Farley Mowat"
+    },
+    {
+        quote: "True freedom is impossible without a mind made free by discipline.",
+        source: "Mortimer J. Adler"
+    },
+    {
+        quote: "The most powerful control we can ever attain, is to be in control of ourselves.",
+        source: "Chris Page"
+    },
+    {
+        quote: "Idleness is only the refuge of weak minds, and the holiday of fools.",
+        source: "Philip Dormer Stanhope"
+    },
+    {
+        quote: "This is your life and it's ending one minute at a time.",
+        source: "Tyler Durden, Fight Club"
+    },
 	{
 		quote: "You create opportunities by performing, not complaining.",
 		source: "Muriel Siebert"
@@ -106,21 +138,11 @@ var fblink = $("<a href='http://www.facebook.com/"
 	.appendTo(quoteDiv);
 
 setInterval(function(){
-	$("#pagelet_home_stream").replaceWith(quoteDiv);
+    // Replace the news feed
+	$("div#pagelet_home_stream").replaceWith(quoteDiv);
+
+    // Delete the ticker
+    $("div#pagelet_ticker").remove();
 }, 1000);
 
-/*
-var xhr = new XMLHttpRequest();
-xhr.open("GET", "https://api.flickr.com/services/rest/?format=json&sort=random&method=flickr.photos.search&tags=scenery&tag_mode=all&api_key=1cd9d635f4c548b69a32e7a3e2f3fdb6", true);
-xhr.onreadystatechange = function() {
-	console.log(xhr.readyState);
-	if(xhr.readyState == 4){
-		console.log("Done");
-	}
-};
 
-function jsonFlickrApi(resp)
-{
-	console.log(resp);
-}
-*/

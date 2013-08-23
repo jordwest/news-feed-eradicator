@@ -2,3 +2,8 @@
 {
 	display: none !important;
 }
+
+div.ticker_stream
+{
+    display: none !important;
+}
