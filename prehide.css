@@ -1,3 +1,5 @@
+/* This hides the news feed before the JS kicks in */
+
 #pagelet_home_stream
 {
 	display: none !important;

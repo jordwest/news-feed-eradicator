@@ -14,7 +14,7 @@
 	"content_scripts": [
 		{
 			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*"],
-			"js": ["jquery.js", "simplifyfb.js"],
+			"js": ["jquery.js", "eradicate.js"],
 			"css": ["prehide.css"],
 			"run_at": "document_idle"
 		}
