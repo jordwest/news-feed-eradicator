@@ -1,13 +1,15 @@
 #!/bin/bash
-mkdir build
-cp manifest.json build/
-cp eradicate.js build/
-cp prehide.css build/
-cp jquery.js build/
-cp jquery.livequery.js build/
+mkdir tmp
+cp manifest.json tmp/
+cp eradicate.js tmp/
+cp prehide.css tmp/
+cp jquery.js tmp/
 
-cp icon16.jpg build/
-cp icon48.jpg build/
-cp icon128.jpg build/
-zip -r build.zip build
-rm -R build
+cp assets/icon16.jpg tmp/
+cp assets/icon48.jpg tmp/
+cp assets/icon128.jpg tmp/
+
+GITTAG=$(git describe --always --tag)
+
+zip -r build/NewsFeedEradicator_$GITTAG.zip tmp
+rm -R tmp
