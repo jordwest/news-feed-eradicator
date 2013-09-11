@@ -1,0 +1,39 @@
+div.homebanner
+{
+    background-color: #2d4585;
+    /* background-color: #3a5997; */
+
+    padding-bottom: 0;
+
+    border-bottom: 1px solid #00f;
+}
+
+.site-navbar
+{
+    background-color: #2d4585;
+    color: #fff;
+}
+.site-navbar a.navbar-brand
+{
+    color: #fff;
+}
+
+.huge-smiley
+{
+    font-size: 100px;
+    text-align: center;
+}
+
+div.homebanner img
+{
+    margin: 0 auto;
+}
+
+div.home-download
+{
+    margin-top: 30px;
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 3px solid #00f;
+}
+
