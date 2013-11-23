@@ -1,6 +1,6 @@
 /* This hides the news feed before the JS kicks in */
 
-#pagelet_home_stream
+#pagelet_home_stream, div[id^='topnews_main_stream']
 {
 	display: none !important;
 }
