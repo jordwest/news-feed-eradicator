@@ -5,9 +5,9 @@ cp eradicate.js tmp/
 cp prehide.css tmp/
 cp jquery.js tmp/
 
-cp assets/icon16.jpg tmp/
-cp assets/icon48.jpg tmp/
-cp assets/icon128.jpg tmp/
+cp icon16.jpg tmp/
+cp icon48.jpg tmp/
+cp icon128.jpg tmp/
 
 GITTAG=$(git describe --always --tag)
 

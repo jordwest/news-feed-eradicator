@@ -140,6 +140,7 @@ var fblink = $("<a href='http://www.facebook.com/"
 setInterval(function(){
     // Replace the news feed
 	$("div#pagelet_home_stream").replaceWith(quoteDiv);
+	$("div[id^='topnews_main_stream']").replaceWith(quoteDiv);
 
     // Delete the ticker
     $("div#pagelet_ticker").remove();
