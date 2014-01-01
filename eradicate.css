@@ -1,0 +1,59 @@
+.nfe-quote
+{
+    font-size: 24px;
+}
+
+.nfe-quote-text
+{
+    color: #000;
+    border-left: 4px solid #99f;
+    margin-left: 15px;
+    padding-left: 15px;
+}
+
+.nfe-quote-source
+{
+    color: #999;
+}
+
+.nfe-info-link
+{
+    font-size: 10px;
+}
+
+.nfe-info-panel
+{
+}
+
+.nfe-info-panel h1
+{
+    font-size: 22px;
+    text-align: center;
+}
+
+.nfe-info-panel h2
+{
+    font-size: 18px;
+}
+
+.nfe-info-col
+{
+    font-size: 14px;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    background-color: #efefef;
+    border-radius: 2px;
+}
+
+/* This hides the news feed before the JS kicks in */
+#pagelet_home_stream, div[id^='topnews_main_stream']
+{
+	display: none !important;
+}
+
+div.ticker_stream
+{
+    display: none !important;
+}

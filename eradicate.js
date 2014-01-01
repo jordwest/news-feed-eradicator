@@ -117,26 +117,36 @@ var quoteList = [
 	}
 ];
 
+
 var selectedQuote = quoteList[Math.floor(Math.random() * quoteList.length)];
 
-var quoteDiv = $("<div/>").css({
-	"fontSize": "24px"
-});
-var quote = $("<p>“"+selectedQuote.quote+"”</p>").css({
-	'color': '#000',
-	'borderLeft': '4px solid #99f',
-	'marginLeft': '15px',
-	'paddingLeft': '15px'
-}).appendTo(quoteDiv);
-var quoteSource = $("<p>~ "+selectedQuote.source+"</p>").css({
-	'color': '#999'
-}).appendTo(quoteDiv);
+var quoteDiv, quoteText, quoteSource, fbLink, infoPanel;
 
-var fblink = $("<a href='http://www.facebook.com/"
-		+"NewsFeedEradicator'>News Feed Eradicator</a>")
-	.css({'fontSize': '10px'})
+quoteDiv = $("<div class='nfe-quote'/>");
+
+// Info panel, hidden by default
+infoPanel = $("<div class='nfe-info-panel'></div>")
+    .hide()
+    .appendTo(quoteDiv);
+
+quoteText = $("<p>“"+selectedQuote.quote+"”</p>")
+    .addClass('nfe-quote-text')
+    .appendTo(quoteDiv);
+
+quoteSource = $("<p>~ "+selectedQuote.source+"</p>")
+    .addClass('nfe-quote-source')
+    .appendTo(quoteDiv);
+
+fbLink = $("<a href='javascript:;'>News Feed Eradicator</a>")
+    .addClass('nfe-info-link')
+    .on('click', function(){
+        infoPanel.load(chrome.extension.getURL("info-panel.html"));
+        infoPanel.show();
+    })
 	.appendTo(quoteDiv);
 
+// This delay ensures that the elements have been created by Facebook's
+// scripts before we attempt to replace them
 setInterval(function(){
     // Replace the news feed
 	$("div#pagelet_home_stream").replaceWith(quoteDiv);

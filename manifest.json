@@ -1,6 +1,6 @@
 {
 	"name": "News Feed Eradicator for Facebook",
-	"version": "0.5",
+	"version": "0.6",
 	"description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
 	"manifest_version": 2,
 	"permissions": [
@@ -15,8 +15,11 @@
 		{
 			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*"],
 			"js": ["jquery.js", "eradicate.js"],
-			"css": ["prehide.css"],
+			"css": ["eradicate.css"],
 			"run_at": "document_idle"
 		}
-	]
+	],
+    "web_accessible_resources": [
+        "info-panel.html"
+        ]
 }
