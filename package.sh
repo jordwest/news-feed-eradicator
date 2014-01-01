@@ -2,7 +2,8 @@
 mkdir tmp
 cp manifest.json tmp/
 cp eradicate.js tmp/
-cp prehide.css tmp/
+cp eradicate.css tmp/
+cp info-panel.html tmp/
 cp jquery.js tmp/
 
 cp icon16.jpg tmp/
