@@ -154,6 +154,9 @@ setInterval(function(){
 
     // Delete the ticker
     $("div#pagelet_ticker").remove();
+    
+    // Delete the trending box
+    $("div#pagelet_trending_tags_and_topics").remove();
 }, 1000);
 
 
