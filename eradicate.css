@@ -48,7 +48,7 @@
 }
 
 /* This hides the news feed before the JS kicks in */
-#pagelet_home_stream, div[id^='topnews_main_stream']
+#pagelet_home_stream, div[id^='topnews_main_stream'], #pagelet_trending_tags_and_topics
 {
 	display: none !important;
 }
