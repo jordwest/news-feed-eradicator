@@ -125,8 +125,8 @@ var quoteList = [
 		source: "Henry Ford"
 	},
 	{
-		quote: "You create opportunities by performing, not complaining.",
-		source: "Muriel Siebert"
+		quote: "Even if I knew that tomorrow the world would go to pieces, I would still plant my apple tree.",
+		source: "Martin Luther"
 	}
 ];
 
@@ -178,7 +178,7 @@ setInterval(function(){
 
     // Delete the ticker
     $("div#pagelet_ticker").remove();
-    
+
     // Delete the trending box
     $("div#pagelet_trending_tags_and_topics").remove();
 }, 1000);
