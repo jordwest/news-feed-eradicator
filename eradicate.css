@@ -44,6 +44,22 @@
     vertical-align: middle;
 }
 
+.nfe-close-button
+{
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    font-size: 18px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+
+    position: absolute;
+    right: 20px;
+    top: 10px;
+}
+
 .nfe-donation-link
 {
 }
@@ -59,6 +75,7 @@
 
 .nfe-info-panel
 {
+    position: relative;
 }
 
 .nfe-info-panel h1

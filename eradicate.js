@@ -114,6 +114,19 @@ var quoteList = [
 	{
 		quote: "You create opportunities by performing, not complaining.",
 		source: "Muriel Siebert"
+	},
+	{
+		quote: "Great achievement is usually born of great sacrifice, and is never the result of selfishness.",
+		source: "Napoleon Hill"
+	},
+
+	{
+		quote: "Whether you think you can, or you think you can't, you're right.",
+		source: "Henry Ford"
+	},
+	{
+		quote: "You create opportunities by performing, not complaining.",
+		source: "Muriel Siebert"
 	}
 ];
 
@@ -137,10 +150,17 @@ quoteSource = $("<p>~ "+selectedQuote.source+"</p>")
     .addClass('nfe-quote-source')
     .appendTo(quoteDiv);
 
+var hideInfoPanel = function(){
+    $('div.nfe-info-panel').hide();
+}
+
 fbLink = $("<a href='javascript:;'>News Feed Eradicator :)</a>")
     .addClass('nfe-info-link')
     .on('click', function(){
-        infoPanel.load(chrome.extension.getURL("info-panel.html"));
+        infoPanel.load(chrome.extension.getURL("info-panel.html"),
+            function(){
+                $('.nfe-close-button').on('click', hideInfoPanel);
+            });
         infoPanel.show();
     })
 	.appendTo(quoteDiv);
