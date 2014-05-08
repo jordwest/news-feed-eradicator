@@ -20,6 +20,8 @@
 		}
 	],
     "web_accessible_resources": [
-        "info-panel.html"
+        "info-panel.html",
+        "taiko_tiny.png",
+        "taiko_bigger.png"
         ]
 }

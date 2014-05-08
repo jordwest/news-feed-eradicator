@@ -11,6 +11,12 @@
     padding-left: 15px;
 }
 
+.nfe-info-panel p
+{
+    text-align: justify;
+    text-justify: inter-word;
+}
+
 .nfe-quote-source
 {
     color: #999;
@@ -18,7 +24,37 @@
 
 .nfe-info-link
 {
-    font-size: 10px;
+    margin-left: 15px;
+    color: #77f;
+    font-size: 12px;
+    display: block;
+}
+
+.nfe-info-link:hover
+{
+    margin-left: 15px;
+    color: #77f;
+    font-size: 12px;
+    display: block;
+    background-color: #ddd;
+}
+
+.nfe-info-link img
+{
+    vertical-align: middle;
+}
+
+.nfe-donation-link
+{
+}
+
+.nfe-donation-link a
+{
+    background-color: #fff;
+    border: 2px dashed #ccc;
+    border-radius: 2px;
+    padding: 20px 40px;
+    display: block;
 }
 
 .nfe-info-panel
