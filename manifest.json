@@ -13,7 +13,7 @@
 	  "128": "icon128.jpg" },
 	"content_scripts": [
 		{
-			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*"],
+			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*", "http://www.quora.com/*", "https://www.quora.com/*"],
 			"js": ["jquery.js", "eradicate.js"],
 			"css": ["eradicate.css"],
 			"run_at": "document_idle"
