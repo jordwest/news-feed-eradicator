@@ -175,10 +175,12 @@ setInterval(function(){
     // Replace the news feed
 	$("div#pagelet_home_stream").replaceWith(quoteDiv);
 	$("div[id^='topnews_main_stream']").replaceWith(quoteDiv);
-
+	$("div.feed_col").replaceWith(quoteDiv);
+	
     // Delete the ticker
     $("div#pagelet_ticker").remove();
-
+    $("div.feed_wrap").remove();
+    $("div.above_page_banner").remove();
     // Delete the trending box
     $("div#pagelet_trending_tags_and_topics").remove();
 }, 1000);
