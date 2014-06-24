@@ -3,3 +3,7 @@
 *.zip
 .idea/*
 local/*
+
+dump.rdb
+
+browsers/firefox/news-feed-eradicator.xpi
