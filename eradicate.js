@@ -165,10 +165,6 @@ fbLink = $("<a href='javascript:;'>News Feed Eradicator :)</a>")
     })
 	.appendTo(quoteDiv);
 
-taikoPic = $("<img />")
-    .attr('src', chrome.extension.getURL("taiko_tiny.png"))
-    .prependTo(fbLink);
-
 // This delay ensures that the elements have been created by Facebook's
 // scripts before we attempt to replace them
 setInterval(function(){
