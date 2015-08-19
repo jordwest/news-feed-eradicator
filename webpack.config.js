@@ -27,6 +27,6 @@ module.exports = {
 	},
 	// Use the plugin to specify the resulting filename (and add needed behavior to the compiler)
 	plugins: [
-			new ExtractTextPlugin("eradicate.css")
+		new ExtractTextPlugin("eradicate.css")
 	]
 };
