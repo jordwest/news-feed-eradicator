@@ -6,4 +6,8 @@ local/*
 
 dump.rdb
 
+node_modules
+
 browsers/firefox/news-feed-eradicator.xpi
+
+dist

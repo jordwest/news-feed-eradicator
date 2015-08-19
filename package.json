@@ -1,0 +1,13 @@
+{
+  "name": "news-feed-eradicator",
+  "title": "News Feed Eradicator for Facebook",
+  "id": "jid1-oWTXWc3MRzRuiQ",
+  "description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
+  "author": "Jordan West",
+  "license": "MIT",
+  "version": "0.6.3",
+  "devDependencies": {
+    "html-loader": "^0.3.0",
+    "jquery": "^2.1.4"
+  }
+}
