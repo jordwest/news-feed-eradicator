@@ -34,16 +34,6 @@ var hideInfoPanel = function(){
 		$('div.nfe-info-panel').hide();
 }
 
-var extensionURL = function(relativeURL){
-		if(window.chrome !== undefined){
-				// Chrome extension
-				return chrome.extension.getURL(relativeURL);
-		}else{
-				// Firefox extension
-				return self.options.urls[relativeURL];
-		}
-}
-
 fbLink = $("<a href='javascript:;'>News Feed Eradicator :)</a>")
 	.addClass('nfe-info-link')
 	.on('click', function(){
