@@ -1,3 +1,9 @@
+// Load any browser specific code. This is selected by webpack
+var browser = require( 'browser-specific' );
+
+// Include the stylesheets
+require( './eradicate.css' );
+
 var quoteList = require('./quotes.js')
 
 // Compiles the info-panel content inline
@@ -47,7 +53,7 @@ fbLink = $("<a href='javascript:;'>News Feed Eradicator :)</a>")
 
 		infoPanel.html(infoPanelContent);
 		infoPanel.show();
-		
+
 		})
 	.appendTo(quoteDiv);
 

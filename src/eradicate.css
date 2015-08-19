@@ -1,63 +1,63 @@
 .nfe-quote
 {
-    font-size: 24px;
+	font-size: 24px;
 }
 
 .nfe-quote-text
 {
-    color: #000;
-    border-left: 4px solid #99f;
-    margin-left: 15px;
-    padding-left: 15px;
+	color: #000;
+	border-left: 4px solid #99f;
+	margin-left: 15px;
+	padding-left: 15px;
 }
 
 .nfe-info-panel p
 {
-    text-align: justify;
-    text-justify: inter-word;
+	text-align: justify;
+	text-justify: inter-word;
 }
 
 .nfe-quote-source
 {
-    color: #999;
+	color: #999;
 }
 
 .nfe-info-link
 {
-    margin-left: 15px;
-    color: #77f;
-    font-size: 12px;
-    display: block;
+	margin-left: 15px;
+	color: #77f;
+	font-size: 12px;
+	display: block;
 }
 
 .nfe-info-link:hover
 {
-    margin-left: 15px;
-    color: #77f;
-    font-size: 12px;
-    display: block;
-    background-color: #ddd;
+	margin-left: 15px;
+	color: #77f;
+	font-size: 12px;
+	display: block;
+	background-color: #ddd;
 }
 
 .nfe-info-link img
 {
-    vertical-align: middle;
+	vertical-align: middle;
 }
 
 .nfe-close-button
 {
-    display: block;
-    width: 20px;
-    height: 20px;
-    padding: 5px;
-    font-size: 18px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 2px;
+	display: block;
+	width: 20px;
+	height: 20px;
+	padding: 5px;
+	font-size: 18px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 2px;
 
-    position: absolute;
-    right: 20px;
-    top: 10px;
+	position: absolute;
+	right: 20px;
+	top: 10px;
 }
 
 .nfe-donation-link
@@ -66,38 +66,38 @@
 
 .nfe-donation-link a
 {
-    background-color: #fff;
-    border: 2px dashed #ccc;
-    border-radius: 2px;
-    padding: 20px 40px;
-    display: block;
+	background-color: #fff;
+	border: 2px dashed #ccc;
+	border-radius: 2px;
+	padding: 20px 40px;
+	display: block;
 }
 
 .nfe-info-panel
 {
-    position: relative;
+	position: relative;
 }
 
 .nfe-info-panel h1
 {
-    font-size: 22px;
-    text-align: center;
+	font-size: 22px;
+	text-align: center;
 }
 
 .nfe-info-panel h2
 {
-    font-size: 18px;
+	font-size: 18px;
 }
 
 .nfe-info-col
 {
-    font-size: 14px;
-    text-align: center;
-    padding: 10px;
-    margin: 10px;
-    border: 1px solid #ccc;
-    background-color: #efefef;
-    border-radius: 2px;
+	font-size: 14px;
+	text-align: center;
+	padding: 10px;
+	margin: 10px;
+	border: 1px solid #ccc;
+	background-color: #efefef;
+	border-radius: 2px;
 }
 
 /* This hides the news feed before the JS kicks in */
@@ -108,5 +108,5 @@
 
 div.ticker_stream
 {
-    display: none !important;
+	display: none !important;
 }
