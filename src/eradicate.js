@@ -31,18 +31,16 @@ quoteSource = $("<p>~ "+selectedQuote.source+"</p>")
 		.appendTo(quoteDiv);
 
 var hideInfoPanel = function(){
-		$('div.nfe-info-panel').hide();
+		infoPanel.hide();
 }
 
 fbLink = $("<a href='javascript:;'>News Feed Eradicator :)</a>")
 	.addClass('nfe-info-link')
 	.on('click', function(){
-		var handleClose = function() {
-			$('.nfe-close-button').on('click', hideInfoPanel);
-		};
-
 		infoPanel.html(infoPanelContent);
 		infoPanel.show();
+		
+		$('.nfe-close-button').on('click', hideInfoPanel);
 
 		})
 	.appendTo(quoteDiv);
