@@ -11,3 +11,4 @@ node_modules
 browsers/firefox/news-feed-eradicator.xpi
 
 dist
+build
