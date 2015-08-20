@@ -11,6 +11,10 @@ firefox:
 	(cd dist/firefox && jpm xpi)
 	mv dist/firefox/*.xpi build/firefox/
 
+run-firefox:
+	BROWSER=firefox webpack
+	(cd dist/firefox && jpm run)
+
 chrome:
 	BROWSER=chrome webpack
 	mkdir -p build/chrome
