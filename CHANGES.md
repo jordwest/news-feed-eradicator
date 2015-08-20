@@ -1,6 +1,12 @@
 News Feed Eradicator Changelog
 ==============================
 
+v0.6.3
+----
+ - Upgraded to latest jQuery
+ - Info panel no longer requires a separate request, appears much faster
+ - Firefox build (finally!)
+
 v0.6
 ----
  - Tidy up codebase - Move CSS styles into stylesheet file
