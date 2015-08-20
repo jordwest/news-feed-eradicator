@@ -6,9 +6,6 @@ require( './eradicate.css' );
 
 var forEach = require('lodash/collection/foreach');
 
-// Compiles the info-panel content inline
-var infoPanelContent = require('html!./info-panel.html');
-
 var React = require('react');
 
 var NewsFeedEradicator = require('./components/index.jsx');
