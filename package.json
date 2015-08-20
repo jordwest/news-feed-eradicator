@@ -7,12 +7,18 @@
   "license": "MIT",
   "version": "0.6.3",
   "devDependencies": {
+    "babel-core": "^5.8.22",
+    "babel-loader": "^5.3.2",
     "css-loader": "^0.16.0",
+    "events": "^1.0.2",
+    "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
     "html-loader": "^0.3.0",
+    "immutable": "^3.7.4",
     "jquery": "^2.1.4",
+    "lodash": "^3.10.1",
+    "react": "^0.13.3",
     "style-loader": "^0.12.3",
-    "extract-text-webpack-plugin": "^0.8.2",
     "webpack": "^1.11.0"
   }
 }

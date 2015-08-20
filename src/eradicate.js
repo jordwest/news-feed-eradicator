@@ -4,57 +4,38 @@ var browser = require( 'browser-specific' );
 // Include the stylesheets
 require( './eradicate.css' );
 
-var quoteList = require('./quotes.js')
+var forEach = require('lodash/collection/foreach');
 
 // Compiles the info-panel content inline
 var infoPanelContent = require('html!./info-panel.html');
 
-var $ = require('jquery');
+var React = require('react');
 
-var selectedQuote = quoteList[Math.floor(Math.random() * quoteList.length)];
-
-var quoteDiv, quoteText, quoteSource, fbLink, infoPanel, taikoPic;
-
-quoteDiv = $("<div class='nfe-quote'/>");
-
-// Info panel, hidden by default
-infoPanel = $("<div class='nfe-info-panel'></div>")
-		.hide()
-		.appendTo(quoteDiv);
-
-quoteText = $("<p>“"+selectedQuote.quote+"”</p>")
-		.addClass('nfe-quote-text')
-		.appendTo(quoteDiv);
-
-quoteSource = $("<p>~ "+selectedQuote.source+"</p>")
-		.addClass('nfe-quote-source')
-		.appendTo(quoteDiv);
-
-var hideInfoPanel = function(){
-		infoPanel.hide();
-}
-
-fbLink = $("<a href='javascript:;'>News Feed Eradicator :)</a>")
-	.addClass('nfe-info-link')
-	.on('click', function(){
-		infoPanel.html(infoPanelContent);
-		infoPanel.show();
-		
-		$('.nfe-close-button').on('click', hideInfoPanel);
-
-		})
-	.appendTo(quoteDiv);
+var NewsFeedEradicator = require('./components/index.jsx');
 
 // This delay ensures that the elements have been created by Facebook's
 // scripts before we attempt to replace them
-setInterval(function(){
-	// Replace the news feed
-	$("div#pagelet_home_stream").replaceWith(quoteDiv);
-	$("div[id^='topnews_main_stream']").replaceWith(quoteDiv);
+setTimeout(function(){
+	// Add News Feed Eradicator display
+	var streamContainer = document.getElementById('stream_pagelet');
+	var nfeContainer = document.createElement("div");
+	nfeContainer.id = "nfe-container";
+	streamContainer.appendChild(nfeContainer);
 
-	// Delete the ticker
-	$("div#pagelet_ticker").remove();
+	// Delete the stream to prevent its infinite scroll infinitely loading
+	// new stories (even though they are hidden)
+	var streamMatcher = /^topnews_main_stream/;
+	forEach(streamContainer.children, (child) => {
+		if(streamMatcher.test(child.id)) {
+			streamContainer.removeChild(child);
 
-	// Delete the trending box
-	$("div#pagelet_trending_tags_and_topics").remove();
+			// Exit the foreach
+			return false;
+		}
+	});
+
+	React.render(
+		React.createElement(NewsFeedEradicator, null),
+		nfeContainer
+	);
 }, 1000);

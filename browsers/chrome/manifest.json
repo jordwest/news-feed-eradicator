@@ -4,6 +4,7 @@
 	"description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
 	"manifest_version": 2,
 	"permissions": [
+		"storage",
 		"http://www.facebook.com/*",
 		"https://www.facebook.com/*"
 	],
@@ -19,8 +20,5 @@
 			"css": ["eradicate.css"],
 			"run_at": "document_idle"
 		}
-	],
-	"web_accessible_resources": [
-		"info-panel.html"
 	]
 }
