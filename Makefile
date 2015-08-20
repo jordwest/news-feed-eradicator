@@ -7,18 +7,18 @@ all: firefox chrome
 
 firefox:
 	BROWSER=firefox webpack
-	mkdir -p build/firefox
-	(cd dist/firefox && jpm xpi)
-	mv dist/firefox/*.xpi build/firefox/
+	mkdir -p dist/firefox
+	(cd build/firefox && jpm xpi)
+	mv build/firefox/*.xpi dist/firefox/
 
 run-firefox:
 	BROWSER=firefox webpack
-	(cd dist/firefox && jpm run)
+	(cd build/firefox && jpm run)
 
 chrome:
 	BROWSER=chrome webpack
-	mkdir -p build/chrome
-	(cd dist/chrome && zip -r ../../build/chrome/NewsFeedEradicator_$(GITTAG).zip .)
+	mkdir -p dist/chrome
+	(cd build/chrome && zip -r ../../dist/chrome/NewsFeedEradicator_$(GITTAG).zip .)
 
 install:
 	npm install -g webpack

@@ -27,7 +27,7 @@ module.exports = {
 		}
 	},
 	output: {
-		path: __dirname + '/dist/' + browser,
+		path: __dirname + '/build/' + browser,
 		filename: eradicateJS
 	},
 	module: {
