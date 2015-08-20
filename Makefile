@@ -1,4 +1,4 @@
-.PHONY: all firefox chrome
+.PHONY: all firefox chrome run-firefox clean
 
 # The current git tag is used as the version number
 GITTAG=$(shell git describe --always --tag)
@@ -23,3 +23,7 @@ chrome:
 install:
 	npm install -g webpack
 	npm install
+
+clean:
+	rm -rf dist
+	rm -rf build
