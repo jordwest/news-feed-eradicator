@@ -4,6 +4,10 @@ module.exports = [
 		"source": "Lao Tzu"
 	},
 	{
+		"quote": "Do Today what others won't and achieve tomorrow what others can't.",
+		"source": "Jerry Rice"
+	},
+	{
 		"quote": "In character, in manner, in style, in all things, the supreme excellence is simplicity.",
 		"source": "Henry Wadsworth Longfellow"
 	},
