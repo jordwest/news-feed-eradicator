@@ -6,7 +6,9 @@
 	"permissions": [
 		"storage",
 		"http://www.facebook.com/*",
-		"https://www.facebook.com/*"
+		"https://www.facebook.com/*",
+		"http://web.facebook.com/*",
+		"https://web.facebook.com/*"
 	],
 	"icons": {
 		"16": "icon16.jpg",
@@ -15,7 +17,7 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*"],
+			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*","http://web.facebook.com/*","https://web.facebook.com/*"],
 			"js": ["eradicate.js"],
 			"css": ["eradicate.css"],
 			"run_at": "document_idle"
