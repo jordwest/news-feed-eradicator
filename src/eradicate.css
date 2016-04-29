@@ -100,6 +100,20 @@
 	border-radius: 2px;
 }
 
+.nfe-label
+{
+	background-color: #ddd;
+	color: #000;
+	padding: 2px;
+	border-radius: 2px;
+}
+
+.nfe-label.nfe-new-features {
+	margin-left: 1em;
+	background-color: #ffcf74;
+	font-weight: bold;
+}
+
 /* This hides the news feed before the JS kicks in */
 #pagelet_home_stream, div[id^='topnews_main_stream'], #pagelet_trending_tags_and_topics
 {

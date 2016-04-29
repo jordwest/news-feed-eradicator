@@ -7,8 +7,14 @@ require( './eradicate.css' );
 var forEach = require('lodash/collection/foreach');
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var NewsFeedEradicator = require('./components/index.jsx');
+
+import { Provider } from 'react-redux';
+import { createStore } from './store';
+
+var storePromise = createStore();
 
 // This delay ensures that the elements have been created by Facebook's
 // scripts before we attempt to replace them
@@ -42,8 +48,10 @@ var eradicateRetry = setInterval(function(){
 	nfeContainer.id = "nfe-container";
 	streamContainer.appendChild(nfeContainer);
 
-	React.render(
-		React.createElement(NewsFeedEradicator, null),
-		nfeContainer
-	);
+	storePromise.then( ( store ) => {
+		ReactDOM.render(
+			React.createElement( Provider, { store: store, children: React.createElement( NewsFeedEradicator, null ) } ),
+			nfeContainer
+		);
+	} )
 }, 1000);

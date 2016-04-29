@@ -19,8 +19,17 @@
     "immutable": "^3.8.1",
     "jquery": "^2.2.3",
     "lodash": "^3.10.1",
-    "react": "^0.13.3",
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.0.1",
     "style-loader": "^0.12.4",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
     "webpack": "^1.13.0"
+  },
+  "dependencies": {
+    "ts-loader": "^0.8.2"
   }
 }

@@ -5,7 +5,10 @@ var QuoteList = require( '../quotes.js' )
 var QuoteDisplay = require( './quote-display.jsx' ),
 	InfoPanel = require( './info-panel.jsx' );
 
-var Store = require( '../store.js' );
+import { IState } from '../store/reducer';
+import { showInfoPanel } from '../store/actions';
+import { areNewFeaturesAvailable } from '../store/selectors';
+import { connect } from 'react-redux';
 
 var NewsFeedEradicator = React.createClass( {
 	getInitialState: function() {
@@ -13,51 +16,12 @@ var NewsFeedEradicator = React.createClass( {
 
 		return {
 			quote: selectedQuote,
-			infoPanelVisible: false,
-			data: Store.data
 		};
 	},
 
-	componentDidMount: function() {
-		Store.on( 'change', this.dataChanged );
-	},
-
-	componentWillUnmount: function() {
-		Store.removeListener( 'change', this.dataChanged );
-	},
-
-	dataChanged: function( newData ) {
-		this.setState( {
-			data: newData
-		} );
-	},
-
-	onClickLogo: function( e ) {
-		e.preventDefault();
-		this.setState({
-			infoPanelVisible: true
-		});
-	},
-
-	onCloseInfoPanel: function( e ) {
-		e.preventDefault();
-		this.setState( {
-			infoPanelVisible: false
-		} );
-	},
-
 	render: function() {
-		var infoPanel = null;
-		if ( this.state.infoPanelVisible === true ) {
-			infoPanel = (
-				<InfoPanel
-					settings={ this.state.data.get( 'settings' ) }
-					onClose={ this.onCloseInfoPanel } />
-			);
-		}
-
 		var quoteDisplay = null;
-		if ( this.state.data.get( 'settings' ).get( 'showQuotes' ) === true ) {
+		if ( this.props.quotesVisible === true ) {
 			quoteDisplay = (
 				<QuoteDisplay
 					text={ this.state.quote.quote }
@@ -65,16 +29,31 @@ var NewsFeedEradicator = React.createClass( {
 			);
 		}
 
+		let newFeatureLabel = null;
+		if ( this.props.newFeaturesAvailable ) {
+			newFeatureLabel = <span className="nfe-label nfe-new-features">New Features!</span>;
+		}
+
 		return (
 			<div>
-				{ infoPanel }
+				{ this.props.infoPanelVisible && <InfoPanel /> }
 				{ quoteDisplay }
 				<a href="#"
 					className="nfe-info-link"
-					onClick={ this.onClickLogo }>News Feed Eradicator :)</a>
+					onClick={ this.props.showInfoPanel }>News Feed Eradicator { newFeatureLabel }</a>
 			</div>
 		);
 	}
 } );
 
-module.exports = NewsFeedEradicator;
+const mapStateToProps = ( state ) => ( {
+	infoPanelVisible: state.showInfoPanel,
+	quotesVisible: state.showQuotes,
+	newFeaturesAvailable: areNewFeaturesAvailable( state ),
+} );
+
+const mapDispatchToProps = ( dispatch ) => ( {
+	showInfoPanel: () => dispatch( showInfoPanel() )
+} );
+
+module.exports = connect( mapStateToProps, mapDispatchToProps )( NewsFeedEradicator );

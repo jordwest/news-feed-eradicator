@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es6",
+		"noImplicitAny": false,
+		"sourceMap": false
+	},
+	"exclude": [
+		"node_modules"
+	],
+	"exclude": [
+		"node_modules",
+		"dist",
+		"build",
+		"typings/main",
+		"typings/main.d.ts"
+	]
+}

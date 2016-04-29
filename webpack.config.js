@@ -14,11 +14,13 @@ if(process.env.BROWSER) {
 
 var eradicateJS = 'eradicate.js';
 var eradicateCSS = 'eradicate.css';
+var reactExternal = false;
 
 // Firefox expects included scripts to be under the 'data' directory
 if(browser === 'firefox') {
 	eradicateJS = 'data/' + eradicateJS;
 	eradicateCSS = 'data/' + eradicateCSS;
+	reactExternal = 'React';
 }
 
 module.exports = {
@@ -27,12 +29,19 @@ module.exports = {
 	resolve: {
 		alias: {
 			'browser-specific': __dirname + '/browsers/' + browser + '.js'
-		}
+		},
+		extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.ts', '.tsx']
 	},
 	output: {
 		path: __dirname + '/build/' + browser,
 		filename: eradicateJS
 	},
+	externals: [
+		{
+			'sdk/simple-storage': 'require( "sdk/simple-storage" )',
+			'react': reactExternal
+		}
+	],
 	module: {
 		loaders: [
 			{
@@ -46,6 +55,11 @@ module.exports = {
 				query: {
 					presets: [ 'react', 'es2015' ],
 				}
+			},
+			{
+				test: /\.tsx?$/,
+				exclude: /(node_modules|bower_components)/,
+				loader: 'babel-loader!ts-loader',
 			}
 		]
 	},
