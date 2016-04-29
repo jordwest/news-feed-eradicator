@@ -1,6 +1,9 @@
+
+var webpack = require( 'webpack' );
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var browser = 'chrome';
+var env = process.env.NODE_ENV || 'dev';
 if(process.env.BROWSER) {
 	browser = process.env.BROWSER;
 	console.log('Building', browser, 'extension');
@@ -39,12 +42,18 @@ module.exports = {
 			{
 				test: /\.jsx?$/,
 				exclude: /(node_modules|bower_components)/,
-				loader: 'babel'
+				loader: 'babel',
+				query: {
+					presets: [ 'react', 'es2015' ],
+				}
 			}
 		]
 	},
 	// Use the plugin to specify the resulting filename (and add needed behavior to the compiler)
 	plugins: [
-		new ExtractTextPlugin(eradicateCSS)
+		new ExtractTextPlugin(eradicateCSS),
+		new webpack.DefinePlugin({
+			'process.env': { NODE_ENV: JSON.stringify( env ) }
+		})
 	]
 };
