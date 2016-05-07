@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/jordwest/news-feed-eradicator.png?label=ready&title=Ready)](https://waffle.io/jordwest/news-feed-eradicator)
 News Feed Eradicator
 ====================
 
