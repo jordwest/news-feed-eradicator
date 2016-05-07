@@ -5,6 +5,7 @@ import { Store as ReduxStore, createStore as createReduxStore, applyMiddleware }
 import thunk from 'redux-thunk';
 
 import rootReducer, { IState } from './reducer';
+import { selectNewQuote } from './actions';
 
 export interface Store extends ReduxStore {
 	getState() : IState;
@@ -24,11 +25,11 @@ export function createStore() : Promise<Store> {
 		browser.loadSettings( ( initialState ) => {
 			const store = createReduxStore( rootReducer, initialState, applyMiddleware( thunk ) );
 
-			const autoSaveSettings = () => {
-				saveSettings( store.getState() );
-			}
+			store.dispatch( selectNewQuote() );
 
-			store.subscribe( autoSaveSettings );
+			store.subscribe( () => {
+				saveSettings( store.getState() );
+			} );
 
 			console.log( store.getState() );
 			resolve( store );
