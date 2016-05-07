@@ -4,7 +4,7 @@ var browser = require( 'browser-specific' );
 // Include the stylesheets
 require( './eradicate.css' );
 
-var forEach = require('lodash/collection/foreach');
+var forEach = require('lodash/collection/forEach');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
