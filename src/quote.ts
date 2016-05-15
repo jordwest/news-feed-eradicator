@@ -1,4 +1,4 @@
-interface Quote {
+export interface Quote {
 	id: any;
 	text: string;
 	source: string;

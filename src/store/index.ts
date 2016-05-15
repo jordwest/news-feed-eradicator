@@ -14,7 +14,10 @@ export interface Store extends ReduxStore {
 function saveSettings( state: IState ) {
 	const data = {
 		showQuotes: state.showQuotes,
+		builtinQuotesEnabled: state.builtinQuotesEnabled,
 		featureIncrement: state.featureIncrement,
+		hiddenBuiltinQuotes: state.hiddenBuiltinQuotes,
+		customQuotes: state.customQuotes,
 	};
 
 	browser.saveSettings( data );
@@ -31,7 +34,6 @@ export function createStore() : Promise<Store> {
 				saveSettings( store.getState() );
 			} );
 
-			console.log( store.getState() );
 			resolve( store );
 		} );
 	} );

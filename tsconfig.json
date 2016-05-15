@@ -3,7 +3,8 @@
 		"module": "commonjs",
 		"target": "es6",
 		"noImplicitAny": false,
-		"sourceMap": false
+		"sourceMap": false,
+		"jsx": "React"
 	},
 	"exclude": [
 		"node_modules"

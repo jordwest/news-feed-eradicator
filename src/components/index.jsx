@@ -1,11 +1,11 @@
 var React = require( 'react' );
 
-var QuoteDisplay = require( './quote-display.jsx' ),
+var QuoteDisplay = require( './quote-display.tsx' ).default,
 	InfoPanel = require( './info-panel.jsx' );
 
 import { IState } from '../store/reducer';
 import { showInfoPanel } from '../store/actions';
-import { areNewFeaturesAvailable, currentQuote } from '../store/selectors';
+import { areNewFeaturesAvailable } from '../store/selectors';
 import { connect } from 'react-redux';
 
 var NewsFeedEradicator = React.createClass( {
@@ -13,9 +13,7 @@ var NewsFeedEradicator = React.createClass( {
 		var quoteDisplay = null;
 		if ( this.props.quotesVisible === true ) {
 			quoteDisplay = (
-				<QuoteDisplay
-					text={ this.props.currentQuote.text }
-					source={ this.props.currentQuote.source } />
+				<QuoteDisplay />
 			);
 		}
 
@@ -40,7 +38,6 @@ const mapStateToProps = ( state ) => ( {
 	infoPanelVisible: state.showInfoPanel,
 	quotesVisible: state.showQuotes,
 	newFeaturesAvailable: areNewFeaturesAvailable( state ),
-	currentQuote: currentQuote( state ),
 } );
 
 const mapDispatchToProps = ( dispatch ) => ( {

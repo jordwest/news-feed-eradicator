@@ -16,8 +16,7 @@ run-firefox:
 	(cd build/firefox && jpm run)
 
 chrome-dev:
-	BROWSER=chrome webpack
-	mkdir -p dist/chrome
+	BROWSER=chrome webpack --progress --colors --watch
 
 chrome:
 	BROWSER=chrome NODE_ENV=production webpack

@@ -1,5 +1,6 @@
 .nfe-quote
 {
+	position: relative;
 	font-size: 24px;
 }
 
@@ -9,6 +10,7 @@
 	border-left: 4px solid #99f;
 	margin-left: 15px;
 	padding-left: 15px;
+	width: 90%;
 }
 
 .nfe-info-panel p
@@ -20,6 +22,67 @@
 .nfe-quote-source
 {
 	color: #999;
+}
+
+.nfe-quote-action-menu {
+	display: block;
+	position: absolute;
+	right: 0px;
+	top: 0px;
+}
+
+.nfe-quote-action-menu-button {
+	position: absolute;
+	display: block;
+	width: 24px;
+	height: 24px;
+	right: 0px;
+	top: 0px;
+
+	border: 1px solid transparent;
+	background-color: rgba( 255, 255, 255, 0.2 );
+	font-size: 10px;
+	text-decoration: none;
+	color: #ccc;
+	line-height: 24px;
+	text-align: center;
+}
+
+.nfe-quote-action-menu-button:hover {
+	text-decoration: none;
+	color: #ccc;
+	background-color: #fff;
+	border: 1px solid #ddd;
+}
+
+.nfe-quote-action-menu-content {
+	position: absolute;
+	right: 0;
+	top: 24px;
+	width: 160px;
+	padding: 4px 0px;
+
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	box-shadow: 5px 5px 15px #aaa;
+	font-size: 14px;
+}
+
+.nfe-quote-action-menu-item {
+	display: block;
+	padding: 5px 5px 5px 15px;
+	color: #000;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+
+.nfe-quote-action-menu-item:hover {
+	background-color: #77c;
+	border-top: 1px solid #003;
+	border-bottom: 1px solid #003;
+	color: #fff;
+	text-decoration: none;
 }
 
 .nfe-info-link
@@ -87,6 +150,34 @@
 .nfe-info-panel h2
 {
 	font-size: 18px;
+}
+
+.nfe-quote textarea.nfe-editor-quote,
+.nfe-quote input.nfe-editor-source {
+	width: 90%;
+	font-size: 24px;
+}
+
+#nfe-container .nfe-button,
+#nfe-container button.nfe-button {
+	margin: 5px 10px;
+	font-size: 22px;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	padding: 5px;
+	cursor: pointer;
+}
+.nfe-button-primary, button.nfe-button-primary {
+	background-color: #aaf;
+}
+
+.nfe-settings {
+	text-align: left;
+}
+
+.nfe-settings-hidden-quote-count {
+	color: #999;
+	font-size: 12px;
 }
 
 .nfe-info-col

@@ -1,9 +1,10 @@
 var React = require('react');
 
 var PlusOneButton = require( './gplus-one-button.jsx' ),
-	FacebookLikeButton = require( './facebook-like-button.jsx' );
+	FacebookLikeButton = require( './facebook-like-button.jsx' ),
+	Settings = require( './settings' ).default;
 
-import { toggleShowQuotes, hideInfoPanel } from '../store/actions';
+import { toggleShowQuotes, hideInfoPanel, resetHiddenQuotes } from '../store/actions';
 import { connect } from 'react-redux';
 
 var InfoPanel = React.createClass({
@@ -20,12 +21,7 @@ var InfoPanel = React.createClass({
 				<hr/>
 				<h2>Settings</h2>
 
-				<label>
-				<input type="checkbox"
-					checked={ this.props.quotesVisible }
-					onChange={ this.props.toggleShowQuotes } />
-				Show Quotes
-				</label>
+				<Settings />
 
 				<hr/>
 
@@ -68,12 +64,9 @@ var InfoPanel = React.createClass({
 	}
 });
 
-const mapStateToProps = ( state ) => ( {
-	quotesVisible: state.showQuotes,
-} );
+const mapStateToProps = ( state ) => ( {} );
 
 const mapDispatchToProps = ( dispatch ) => ( {
-	toggleShowQuotes: () => dispatch( toggleShowQuotes() ),
 	hideInfoPanel: () => dispatch( hideInfoPanel() ),
 } );
 
