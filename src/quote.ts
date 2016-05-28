@@ -176,7 +176,7 @@ export const BuiltinQuotes : Array<Quote> = [
 		id: 34,
 		text: "Great acts are made up of small deeds.",
 		source: "Lao Tzu"
-	}
+	},
 	{
 		id: 35,
 		text: "The flame that burns Twice as bright burns half as long.",
@@ -226,5 +226,5 @@ export const BuiltinQuotes : Array<Quote> = [
 		id: 44,
 		text: "The superior man is modest in his speech, but exceeds in his actions.",
 		source: "Confucius"
-	},
+	}
 ];
