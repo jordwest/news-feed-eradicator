@@ -171,5 +171,60 @@ export const BuiltinQuotes : Array<Quote> = [
 		id: 33,
 		text: "Even if I knew that tomorrow the world would go to pieces, I would still plant my apple tree.",
 		source: "Martin Luther"
+	},
+	{
+		id: 34,
+		text: "Great acts are made up of small deeds.",
+		source: "Lao Tzu"
+	},
+	{
+		id: 35,
+		text: "The flame that burns Twice as bright burns half as long.",
+		source: "Lao Tzu"
+	},
+	{
+		id: 36,
+		text: "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away.",
+		source: "Antoine de Saint-Exupery"
+	},
+	{
+		id: 37,
+		text: "If you can't do great things, do small things in a great way.",
+		source: "Napoleon Hill"
+	},
+	{
+		id: 38,
+		text: "When I let go of what I am, I become what I might be.",
+		source: "Lao Tzu"
+	},
+	{
+		id: 39,
+		text: "Do not go where the path may lead, go instead where there is no path and leave a trail.",
+		source: "Ralph Waldo Emerson"
+	},
+	{
+		id: 40,
+		text: "Well done is better than well said.",
+		source: "Benjamin Franklin"
+	},
+	{
+		id: 41,
+		text: "Whatever you think the world is withholding from you, you are withholding from the world.",
+		source: "Ekhart Tolle"
+	},
+	{
+		id: 42,
+		text: "Muddy water is best cleared by leaving it alone.",
+		source: "Alan Watts"
+	},
+	{
+		id: 43,
+		text: "Do, or do not. There is no try.",
+		source: "Yoda"
+	},
+	{
+		id: 44,
+		text: "The superior man is modest in his speech, but exceeds in his actions.",
+		source: "Confucius"
 	}
 ];
