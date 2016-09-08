@@ -1,5 +1,5 @@
 {
-	"name": "News Feed Eradicator for Facebook",
+	"name": "News Feed Eradicator for Facebook/VK",
 	"version": "1.0.1",
 	"description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
 	"manifest_version": 2,
@@ -8,7 +8,9 @@
 		"http://www.facebook.com/*",
 		"https://www.facebook.com/*",
 		"http://web.facebook.com/*",
-		"https://web.facebook.com/*"
+		"https://web.facebook.com/*",
+		"http://vk.com/*",
+		"https://vk.com/*"
 	],
 	"icons": {
 		"16": "icon16.jpg",
@@ -17,7 +19,7 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*","http://web.facebook.com/*","https://web.facebook.com/*"],
+			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*","http://web.facebook.com/*","https://web.facebook.com/*", "http://vk.com/*", "https://vk.com/*"],
 			"js": ["eradicate.js"],
 			"css": ["eradicate.css"],
 			"run_at": "document_idle"
