@@ -7,7 +7,6 @@ const paths = [ '', '/' ];
 
 const maybeBlock = ( event ) => {
 	if ( paths.indexOf( window.location.pathname ) ) {
-		console.log( 'blocking scroll' );
 		event.stopImmediatePropagation();
 		return false;
 	}
