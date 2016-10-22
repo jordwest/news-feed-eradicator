@@ -2,6 +2,7 @@
 .*.swp
 *.zip
 .idea/*
+.vscode
 local/*
 
 dump.rdb
