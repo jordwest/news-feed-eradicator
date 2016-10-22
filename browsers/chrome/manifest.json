@@ -18,6 +18,11 @@
 	"content_scripts": [
 		{
 			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*","http://web.facebook.com/*","https://web.facebook.com/*"],
+			"js": ["intercept.js"],
+			"run_at": "document_start"
+		},
+		{
+			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*","http://web.facebook.com/*","https://web.facebook.com/*"],
 			"js": ["eradicate.js"],
 			"css": ["eradicate.css"],
 			"run_at": "document_idle"

@@ -12,7 +12,7 @@ if(process.env.BROWSER) {
 		'use the BROWSER env var, eg', 'BROWSER=firefox');
 }
 
-var eradicateJS = 'eradicate.js';
+var eradicateJS = '[name].js';
 var eradicateCSS = 'eradicate.css';
 var reactExternal = false;
 
@@ -25,7 +25,10 @@ if(browser === 'firefox') {
 
 module.exports = {
 	context: __dirname + '/src',
-	entry: './eradicate.js',
+	entry: {
+		eradicate: './eradicate',
+		intercept: './intercept',
+	},
 	resolve: {
 		alias: {
 			'browser-specific': __dirname + '/browsers/' + browser + '.js'
