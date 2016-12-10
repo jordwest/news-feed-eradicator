@@ -8,10 +8,16 @@ import removeNewsFeed from './lib/remove-news-feed';
 import injectUI, { isAlreadyInjected } from './lib/inject-ui';
 import isEnabled from './lib/is-enabled';
 
+const disabledClassName = 'allow-news-feed';
+
 // This delay ensures that the elements have been created by Facebook's
 // scripts before we attempt to replace them
 var eradicateRetry = setInterval(function(){
 		if ( ! isEnabled() ) {
+			let body = document.querySelector( "body" );
+			if ( body && body.className.indexOf( disabledClassName ) == -1 ) {
+				body.className += ' ' + disabledClassName;
+			}
 			return;
 		}
 

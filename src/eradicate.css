@@ -206,14 +206,14 @@
 }
 
 /* This hides the news feed before the JS kicks in */
-div[id^='explorefeed_main_stream'],
-div[id^='topnews_main_stream'],
-div.ticker_stream,
-div.ego_column,
-#pagelet_home_stream,
-#pagelet_trending_tags_and_topics,
-#pagelet_games_rhc,
-#pagelet_canvas_nav_content
+body:not(.allow-news-feed) div[id^='explorefeed_main_stream'],
+body:not(.allow-news-feed) div[id^='topnews_main_stream'],
+body:not(.allow-news-feed) div.ticker_stream,
+body:not(.allow-news-feed) div.ego_column,
+body:not(.allow-news-feed) #pagelet_home_stream,
+body:not(.allow-news-feed) #pagelet_trending_tags_and_topics,
+body:not(.allow-news-feed) #pagelet_games_rhc,
+body:not(.allow-news-feed) #pagelet_canvas_nav_content
 {
 	opacity: 0 !important;
 	pointer-events: none !important;
