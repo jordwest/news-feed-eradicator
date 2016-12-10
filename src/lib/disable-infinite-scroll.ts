@@ -3,10 +3,10 @@
  * infinite scroll algorithm triggering.
  */
 
-const paths = [ '', '/' ];
+import isEnabled from './is-enabled';
 
 const maybeBlock = ( event ) => {
-	if ( paths.indexOf( window.location.pathname ) ) {
+	if ( isEnabled() ) {
 		event.stopImmediatePropagation();
 		return false;
 	}
