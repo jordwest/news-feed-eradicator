@@ -226,5 +226,60 @@ export const BuiltinQuotes : Array<Quote> = [
 		id: 44,
 		text: "The superior man is modest in his speech, but exceeds in his actions.",
 		source: "Confucius"
+	},
+	{
+		id: 45,
+		text: "Spend your free time the way you like, not the way you think you're supposed to.",
+		source: "Jon Krakauer, Into the Wild"
+	},
+	{
+		id: 46,
+		text: "I now walk into the wild.",
+		source: "Jon Krakauer, Into the Wild"
+	},
+	{
+		id: 47,
+		text: "If you act like you can do something, then it will work",
+		source: "Steve Jobs"
+	},
+	{
+		id: 48,
+		text: "Stay hungry. Stay foolish.",
+		source: "Steve Jobs"
+	},
+	{
+		id: 49,
+		text: "Life can be much broader once you discover one simple fact: Everything around you that you call life was made up by people that were no smarter than you. And you can change it, you can influence it.",
+		source: "Steve Jobs"
+	},
+	{
+		id: 50,
+		text: "There's zero correlation between being the best talker and having the best ideas.",
+		source: "Susan Cain"
+	},
+	{
+		id: 51,
+		text: "The more powerful and original a mind, the more it will incline towards the religion of solitude.",
+		source: "Aldous Huxley"
+	},
+	{
+		id: 52,
+		text: "It's not always necessary to be strong, but to feel strong.",
+		source: "Jon Krakauer, Into the Wild"
+	},
+	{
+		id: 53,
+		text: "In order to understand the world, one has to turn away from it on occasion.",
+		source: "Albert Camus"
+	},
+	{
+		id: 54,
+		text: "Cherish your solitude. Take trains by yourself to places you have never been. Sleep out alone under the stars. Learn how to drive a stick shift. Go so far away that you stop being afraid of not coming back.",
+		source: "Eve Ensler"
+	},
+	{
+		id: 55,
+		text: "Say no when you don’t want to do something. Say yes if your instincts are strong, even if everyone around you disagrees. Decide whether you want to be liked or admired. Decide if fitting in is more important than finding out what you’re doing here.",
+		source: "Eve Ensler"
 	}
 ];
