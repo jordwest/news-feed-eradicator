@@ -3,6 +3,7 @@ const elementsToRemove =
 	'.ticker_stream,' +
 	'.ego_column,' +
 	'#pagelet_games_rhc,' +
+      	'#stories_pagelet_rhc,' +
 	'#pagelet_trending_tags_and_topics,' +
 	'#pagelet_canvas_nav_content';
 
