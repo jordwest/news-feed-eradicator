@@ -28,7 +28,7 @@ var NewsFeedEradicator = React.createClass( {
 				{ quoteDisplay }
 				<a href="#"
 					className="nfe-info-link"
-					onClick={ this.props.showInfoPanel }>News Feed Eradicator { newFeatureLabel }</a>
+					onClick={ this.props.showInfoPanel }>News Feed Eradicator { newFeatureLabel } <em>votes YES 🏳️‍🌈</em></a>
 			</div>
 		);
 	}
