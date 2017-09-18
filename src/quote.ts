@@ -226,5 +226,135 @@ export const BuiltinQuotes : Array<Quote> = [
 		id: 44,
 		text: "The superior man is modest in his speech, but exceeds in his actions.",
 		source: "Confucius"
-	}
+	},
+	{
+		id: 45,
+		text: "Optimism is the faith that leads to achievement. Nothing can be done without hope and confidence.",
+		source: "Helen Keller",
+	},
+	{
+		id: 46,
+		text: "We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained.",
+		source: "Marie Curie"
+	},
+	{
+		id: 47,
+		text: "If you look at what you have in life, you’ll always have more. If you look at what you don’t have in life, you’ll never have enough.",
+		source: "Oprah Winfrey"
+	},
+	{
+		id: 48,
+		text: "You may encounter many defeats, but you must not be defeated. In fact, it may be necessary to encounter the defeats, so you can know who you are, what you can rise from, how you can still come out of it.",
+		source: "Maya Angelou"
+	},
+	{
+		id: 49,
+		text: "We need to start work with the idea that we’re going to learn every day. I learn, even at my position, every single day.",
+		source: "Chanda Kochhar"
+	},
+	{
+		id: 50,
+		text: "There are two kinds of people, those who do the work and those who take the credit. Try to be in the first group; there is less competition there.",
+		source: "Indira Gandhi"
+	},
+	{
+		id: 51,
+		text: "You can’t be that kid standing at the top of the waterslide, overthinking it. You have to go down the chute.",
+		source: "Tina Fey"
+	},
+	{
+		id: 52,
+		text: "Above all, be the heroine of your life, not the victim.",
+		source: "Nora Ephron"
+	},
+	{
+		id: 53,
+		text: "Learn from the mistakes of others. You can’t live long enough to make them all yourself.",
+		source: "Eleanor Roosevelt"
+	},
+	{
+		id: 54,
+		text: "What you do makes a difference, and you have to decide what kind of difference you want to make.",
+		source: "Jane Goodall"
+	},
+	{
+		id: 55,
+		text: "One of the secrets to staying young is to always do things you don’t know how to do, to keep learning.",
+		source: "Ruth Reichl"
+	},
+	{
+		id: 56,
+		text: "If you don’t risk anything, you risk even more.",
+		source: "Erica Jong"
+	},
+	{
+		id: 57,
+		text: "When the whole world is silent, even one voice becomes powerful.",
+		source: "Malala Yousafzai"
+	},
+	{
+		id: 58,
+		text: "The most common way people give up their power is by thinking they don’t have any.",
+		source: "Alice Walker"
+	},
+	{
+		id: 59,
+		text: "My philosophy is that not only are you responsible for your life, but doing the best at this moment puts you in the best place for the next moment.",
+		source: "Oprah Winfrey"
+	},
+	{
+		id: 60,
+		text: "Don’t be intimidated by what you don’t know. That can be your greatest strength and ensure that you do things differently from everyone else.",
+		source: "Sara Blakely"
+	},
+	{
+		id: 61,
+		text: "If I had to live my life again, I’d make the same mistakes, only sooner.",
+		source: "Tallulah Bankhead"
+	},
+	{
+		id: 62,
+		text: "Never limit yourself because of others’ limited imagination; never limit others because of your own limited imagination.",
+		source: "Mae C. Jemison"
+	},
+	{
+		id: 63,
+		text: "If you obey all the rules, you miss all the fun.",
+		source: "Katharine Hepburn"
+	},
+	{
+		id: 64,
+		text: "Life shrinks or expands in proportion to one’s courage.",
+		source: "Anaïs Nin"
+	},
+	{
+		id: 65,
+		text: "Avoiding danger is no safer in the long run than outright exposure. The fearful are caught as often as the bold.",
+		source: "Helen Keller"
+	},
+	{
+		id: 66,
+		text: "How wonderful it is that nobody need wait a single moment before beginning to improve the world.",
+		source: "Anne Frank"
+	},
+	{
+		id: 67,
+		text: "So often people are working hard at the wrong thing. Working on the right thing is probably more important than working hard.",
+		source: "Caterina Fake"
+	},
+	{
+		id: 68,
+		text: "There are still many causes worth sacrificing for, so much history yet to be made.",
+		source: "Michelle Obama"
+	},
+	{
+		id: 69,
+		text: "Nothing is impossible; the word itself says ‘I’m possible’!",
+		source: "Audrey Hepburn"
+	},
+	{
+		id: 70,
+		text: "You only live once, but if you do it right, once is enough.",
+		source: "Mae West"
+	},
 ];
