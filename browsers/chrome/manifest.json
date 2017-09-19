@@ -5,10 +5,8 @@
 	"manifest_version": 2,
 	"permissions": [
 		"storage",
-		"http://www.facebook.com/*",
-		"https://www.facebook.com/*",
-		"http://web.facebook.com/*",
-		"https://web.facebook.com/*"
+		"http://*.facebook.com/*",
+		"https://*.facebook.com/*",
 	],
 	"icons": {
 		"16": "icon16.jpg",
@@ -17,12 +15,12 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*","http://web.facebook.com/*","https://web.facebook.com/*"],
+			"matches": ["http://*.facebook.com/*", "https://*.facebook.com/*"],
 			"js": ["intercept.js"],
 			"run_at": "document_start"
 		},
 		{
-			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*","http://web.facebook.com/*","https://web.facebook.com/*"],
+			"matches": ["http://*.facebook.com/*", "https://*.facebook.com/*"],
 			"js": ["eradicate.js"],
 			"css": ["eradicate.css"],
 			"run_at": "document_idle"
