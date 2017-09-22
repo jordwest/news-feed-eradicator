@@ -210,7 +210,7 @@ export const BuiltinQuotes : Array<Quote> = [
 	{
 		id: 41,
 		text: "Whatever you think the world is withholding from you, you are withholding from the world.",
-		source: "Ekhart Tolle"
+		source: "Eckhart Tolle"
 	},
 	{
 		id: 42,
@@ -357,4 +357,9 @@ export const BuiltinQuotes : Array<Quote> = [
 		text: "You only live once, but if you do it right, once is enough.",
 		source: "Mae West"
 	},
+	{
+		id: 71,
+		text: "Be the change you want to see in the world.",
+		source: "Gandhi"
+	}
 ];
