@@ -357,4 +357,14 @@ export const BuiltinQuotes : Array<Quote> = [
 		text: "You only live once, but if you do it right, once is enough.",
 		source: "Mae West"
 	},
+	{
+		id: 71,
+		text: "Don’t take rest after your first victory because if you fail in second, more lips are waiting to say that your first victory was just luck.",
+		source: "A.P.J Abdul Kalam"
+	},
+	{
+		id: 72,
+		text: "All that we see or seem is but a dream within a dream"
+		source: "Edgar Allan Poe"
+	}
 ];
