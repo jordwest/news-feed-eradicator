@@ -4,6 +4,7 @@ const elementsToRemove =
 	'.ego_column,' +
 	'#pagelet_games_rhc,' +
       	'#stories_pagelet_rhc,' +
+      	'#fb_stories_card_root,' +
 	'#pagelet_trending_tags_and_topics,' +
 	'#pagelet_canvas_nav_content';
 
