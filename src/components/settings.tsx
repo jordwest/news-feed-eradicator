@@ -4,13 +4,24 @@ import { compose } from 'redux';
 
 import { toggleShowQuotes, resetHiddenQuotes, toggleBuiltinQuotes } from '../store/actions';
 
-class Settings extends React.Component<any,any> {
-	render() {
-		const resetHiddenQuotes = ( e ) => {
-			e.preventDefault();
-			this.props.resetHiddenQuotes();
-		}
+const preventDefaultThen = f => ( e ) => {
+	e.preventDefault();
+	f();
+}
 
+interface Props {
+	quotesVisible: boolean;
+	builtinQuotesEnabled: boolean;
+	hiddenQuoteCount: number;
+	customQuoteCount: number;
+
+	toggleShowQuotes: () => void;
+	toggleBuiltinQuotes: () => void;
+	resetHiddenQuotes: () => void;
+}
+
+class Settings extends React.Component<Props,any> {
+	render() {
 		return (
 			<form className="nfe-settings">
 				<fieldset>
@@ -33,7 +44,7 @@ class Settings extends React.Component<any,any> {
 					{ this.props.hiddenQuoteCount > 0 &&
 						<span className="nfe-settings-hidden-quote-count">
 							&nbsp;({ this.props.hiddenQuoteCount } hidden
-								- <a href="#" onClick={ resetHiddenQuotes }>Reset</a>)
+								- <a href="#" onClick={ preventDefaultThen(this.props.resetHiddenQuotes) }>Reset</a>)
 						</span>
 					}
 					<p>

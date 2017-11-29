@@ -26,10 +26,14 @@
     "redux-thunk": "^2.0.1",
     "style-loader": "^0.12.4",
     "ts-loader": "^0.8.2",
-    "typescript": "^1.8.10",
+    "typescript": "^2.6.2",
     "webpack": "^1.13.0"
   },
   "dependencies": {
+    "@types/node": "^8.0.53",
+    "@types/react": "^16.0.25",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-redux": "^5.0.14",
     "ts-loader": "^0.8.2"
   }
 }

@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import rootReducer, { IState } from './reducer';
 import { selectNewQuote } from './actions';
 
-export interface Store extends ReduxStore {
+export interface Store extends ReduxStore<IState> {
 	getState() : IState;
 }
 

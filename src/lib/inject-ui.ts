@@ -1,10 +1,10 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import handleError from './handle-error';
 import { Provider } from 'react-redux';
 import { createStore } from '../store';
-var NewsFeedEradicator = require('../components/index.jsx');
+import * as NewsFeedEradicator from '../components/index.jsx';
 
 const storePromise = createStore();
 
