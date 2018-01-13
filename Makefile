@@ -4,17 +4,7 @@
 GITTAG=$(shell git describe --always --tag)
 BIN=$(shell yarn bin)
 
-all: firefox chrome
-
-firefox:
-	BROWSER=firefox NODE_ENV=production $(BIN)/webpack
-	mkdir -p dist/firefox
-	(cd build/firefox && jpm xpi)
-	mv build/firefox/*.xpi dist/firefox/
-
-run-firefox:
-	BROWSER=firefox $(BIN)/webpack
-	(cd build/firefox && jpm run)
+all: chrome
 
 chrome-dev:
 	BROWSER=chrome $(BIN)/webpack --progress --colors --watch

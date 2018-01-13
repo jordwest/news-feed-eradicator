@@ -1,5 +1,5 @@
 // Load any browser specific code. This is selected by webpack
-var browser = require( 'browser-specific' );
+import * as browser from './webextension'
 
 // Include the stylesheets
 require( './eradicate.css' );

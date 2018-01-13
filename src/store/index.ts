@@ -1,5 +1,5 @@
 
-var browser : any = require( 'browser-specific' );
+import * as browser from '../webextension'
 
 import { Store as ReduxStore, createStore as createReduxStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';

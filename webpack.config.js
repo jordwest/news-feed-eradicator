@@ -33,7 +33,7 @@ module.exports = {
 		alias: {
 			'browser-specific': __dirname + '/browsers/' + browser + '.js'
 		},
-		extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.ts', '.tsx']
+		extensions: ['.webpack.js', '.web.js', '.js', '.jsx', '.ts', '.tsx']
 	},
 	output: {
 		path: __dirname + '/build/' + browser,
@@ -46,23 +46,28 @@ module.exports = {
 		}
 	],
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+				use: ExtractTextPlugin.extract({
+					fallback: "style-loader",
+					use: "css-loader"
+				})
 			},
+			// {
+			// 	test: /\.jsx?$/,
+			// 	exclude: /(node_modules|bower_components)/,
+			// 	use: [{
+			// 		loader: 'babel',
+			// 		options: {
+			// 			presets: [ 'react', 'es2015' ],
+			// 		}
+			// 	}]
+			// },
 			{
-				test: /\.jsx?$/,
+				test: /\.[jt]sx?$/,
 				exclude: /(node_modules|bower_components)/,
-				loader: 'babel',
-				query: {
-					presets: [ 'react', 'es2015' ],
-				}
-			},
-			{
-				test: /\.tsx?$/,
-				exclude: /(node_modules|bower_components)/,
-				loader: 'babel-loader!ts-loader',
+				use: 'ts-loader',
 			}
 		]
 	},
