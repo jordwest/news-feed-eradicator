@@ -4,8 +4,6 @@ import * as redux from 'redux';
 import { getBuiltinQuotes } from './selectors';
 
 enum ActionTypes {
-	HIDE_INFO_PANEL = <any>'HIDE_INFO_PANEL',
-	SHOW_INFO_PANEL = <any>'SHOW_INFO_PANEL',
 	TOGGLE_SHOW_QUOTES = <any>'TOGGLE_SHOW_QUOTES',
 	TOGGLE_BUILTIN_QUOTES = <any>'TOGGLE_BUILTIN_QUOTES',
 	SELECT_NEW_QUOTE = <any>'SELECT_NEW_QUOTE',
@@ -15,13 +13,35 @@ enum ActionTypes {
 	RESET_HIDDEN_QUOTES = <any>'RESET_HIDDEN_QUOTES',
 }
 
+interface INFO_PANEL_SHOW {
+	type: "INFO_PANEL_SHOW",
+	show: "SHOW" | "HIDE" | "TOGGLE"
+}
+
+interface QUOTE_MENU_SHOW {
+	type: "QUOTE_MENU_SHOW",
+	show: "SHOW" | "HIDE" | "TOGGLE"
+}
+
+interface QUOTE_EDIT {
+	type: "QUOTE_EDIT",
+	action:
+		| { type: "START" }
+		| { type: "CANCEL" }
+		| { type: "SET_TEXT", text: string }
+		| { type: "SET_SOURCE", source: string }
+}
+
 import { IState } from './reducer';
 
 interface ActionTypeObject {
 	type: ActionTypes
 }
 
-export type ActionObject = ActionTypeObject;
+export type ActionObject =
+						 | QUOTE_MENU_SHOW
+						 | INFO_PANEL_SHOW
+						 | QUOTE_EDIT
 
 export default ActionTypes;
 
@@ -33,15 +53,17 @@ function generateID() : string {
 	return key.substr(0, 16);
 }
 
-export function hideInfoPanel() {
+export function hideInfoPanel() : INFO_PANEL_SHOW {
 	return {
-		type: ActionTypes.HIDE_INFO_PANEL
+		type: "INFO_PANEL_SHOW",
+		show: "HIDE"
 	};
 }
 
-export function showInfoPanel() {
+export function showInfoPanel() : INFO_PANEL_SHOW {
 	return {
-		type: ActionTypes.SHOW_INFO_PANEL
+		type: "INFO_PANEL_SHOW",
+		show: "SHOW"
 	};
 }
 
@@ -116,5 +138,51 @@ export function selectNewQuote() {
 			isCustom: ( quoteIndex >= builtinQuotes.length ),
 			id: allQuotes[ quoteIndex ].id,
 		} );
+	}
+}
+
+export function setQuoteText(text) : QUOTE_EDIT {
+	return {
+		type: "QUOTE_EDIT",
+		action: { type: "SET_TEXT", text: text }
+	}
+}
+
+export function setQuoteSource(source) : QUOTE_EDIT {
+	return {
+		type: "QUOTE_EDIT",
+		action: { type: "SET_SOURCE", source }
+	}
+}
+
+export function startEditing() : QUOTE_EDIT {
+	return {
+		type: "QUOTE_EDIT",
+		action: { type: "START" }
+	}
+}
+
+export function cancelEditing() : QUOTE_EDIT {
+	return {
+		type: "QUOTE_EDIT",
+		action: { type: "CANCEL" }
+	}
+}
+
+export const menuHide = () : QUOTE_MENU_SHOW => ({
+	type: "QUOTE_MENU_SHOW",
+	show: "HIDE"
+})
+
+export const menuToggle = () : QUOTE_MENU_SHOW => ({
+	type: "QUOTE_MENU_SHOW",
+	show: "TOGGLE"
+})
+
+export function saveNewQuote() {
+	return (dispatch, getState) => {
+		const state : IState = getState()
+
+		dispatch( addQuote( state.editingText, state.editingSource));
 	}
 }

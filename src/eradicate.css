@@ -123,8 +123,9 @@
 	top: 10px;
 }
 
-.nfe-donation-link
+.nfe-social-media-icons .nfe-social-media-icon
 {
+	margin: 10px;
 }
 
 .nfe-donation-link a

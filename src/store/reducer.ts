@@ -5,7 +5,7 @@ import { Quote } from '../quote';
 import Actions, { ActionObject } from './actions';
 import config from '../config';
 
-function showQuotes( state = true, action: ActionObject ) {
+function showQuotes( state = true, action ) {
 	switch ( action.type ) {
 		case Actions.TOGGLE_SHOW_QUOTES:
 			return !state;
@@ -23,18 +23,22 @@ function builtinQuotesEnabled( state = true, action ) {
 
 function showInfoPanel( state = false, action: ActionObject ) {
 	switch ( action.type ) {
-		case Actions.SHOW_INFO_PANEL:
-			return true;
-		case Actions.HIDE_INFO_PANEL:
-			return false;
+		case "INFO_PANEL_SHOW":
+			switch(action.show){
+				case "SHOW": return true
+				case "HIDE": return false
+				case "TOGGLE": return !state
+			}
 	}
 	return state;
 }
 
 function featureIncrement( state = 0, action: ActionObject ) {
 	switch ( action.type ) {
-		case Actions.SHOW_INFO_PANEL:
-			state = config.newFeatureIncrement;
+		case "INFO_PANEL_SHOW":
+			switch(action.show){
+				case "SHOW": return config.newFeatureIncrement
+			}
 	}
 	return state;
 }
@@ -85,6 +89,53 @@ function customQuotes( state: Quote[] = [], action ) : Quote[] {
 	return state;
 }
 
+const editingText = (state: string = "", action : ActionObject ) => {
+	switch (action.type) {
+		case "QUOTE_EDIT":
+			switch (action.action.type) {
+				case "START": return "";
+				case "CANCEL": return "";
+				case "SET_TEXT": return action.action.text;
+			}
+	}
+	return state;
+}
+
+const editingSource = (state: string = "", action) => {
+	switch (action.type) {
+		case "QUOTE_EDIT":
+			switch (action.action.type) {
+				case "START": return "";
+				case "CANCEL": return "";
+				case "SET_SOURCE": return action.action.source;
+			}
+	}
+	return state;
+}
+
+const isQuoteMenuVisible = (state: boolean = false, action: ActionObject) => {
+	switch (action.type) {
+		case "QUOTE_MENU_SHOW":
+			switch(action.show) {
+				case "SHOW": return true
+				case "HIDE": return false
+				case "TOGGLE": return !state
+			}
+	}
+	return state;
+}
+
+const isEditingQuote = (state: boolean = false, action) => {
+	switch (action.type) {
+		case "QUOTE_EDIT":
+			switch (action.action.type) {
+				case "START": return true;
+				case "CANCEL": return false;
+			}
+	}
+	return state;
+}
+
 export interface IState {
 	showQuotes: boolean;
 	builtinQuotesEnabled: boolean;
@@ -94,6 +145,10 @@ export interface IState {
 	currentQuoteID: number | string;
 	hiddenBuiltinQuotes: number[],
 	customQuotes: Quote[];
+	editingSource: string;
+	editingText: string;
+	isQuoteMenuVisible: boolean;
+	isEditingQuote: boolean;
 }
 
 export default combineReducers( {
@@ -105,4 +160,8 @@ export default combineReducers( {
 	currentQuoteID,
 	hiddenBuiltinQuotes,
 	customQuotes,
+	editingSource,
+	editingText,
+	isQuoteMenuVisible,
+	isEditingQuote,
 } );

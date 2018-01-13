@@ -4,7 +4,7 @@ import * as ReactDOM from 'react-dom';
 import handleError from './handle-error';
 import { Provider } from 'react-redux';
 import { createStore } from '../store';
-import * as NewsFeedEradicator from '../components/index.jsx';
+import NewsFeedEradicator from '../components/index';
 
 const storePromise = createStore();
 

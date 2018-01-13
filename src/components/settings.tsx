@@ -20,47 +20,45 @@ interface Props {
 	resetHiddenQuotes: () => void;
 }
 
-class Settings extends React.Component<Props,any> {
-	render() {
-		return (
-			<form className="nfe-settings">
-				<fieldset>
-					<legend>
-						<label>
-							<input type="checkbox"
-								checked={ this.props.quotesVisible }
-								onChange={ this.props.toggleShowQuotes } />
-							Show Quotes
-						</label>
-					</legend>
-
+const Settings = (props:Props) => {
+	return (
+		<form className="nfe-settings">
+			<fieldset>
+				<legend>
 					<label>
 						<input type="checkbox"
-						 	disabled={ ! this.props.quotesVisible }
-							checked={ this.props.builtinQuotesEnabled }
-							onChange={ this.props.toggleBuiltinQuotes } />
-						Enable Built-in Quotes 
+							checked={ props.quotesVisible }
+							onChange={ props.toggleShowQuotes } />
+						Show Quotes
 					</label>
-					{ this.props.hiddenQuoteCount > 0 &&
-						<span className="nfe-settings-hidden-quote-count">
-							&nbsp;({ this.props.hiddenQuoteCount } hidden
-								- <a href="#" onClick={ preventDefaultThen(this.props.resetHiddenQuotes) }>Reset</a>)
-						</span>
-					}
-					<p>
-					{ this.props.customQuoteCount > 0 ?
-						<label>{ this.props.customQuoteCount } custom quotes</label>
-						: <label>
-							You can now add your own custom quotes! Just click
-							the arrow menu beside the quote text.
-						</label>
-					}
-					</p>
-				</fieldset>
-			</form>
-		);
-	}
-}
+				</legend>
+
+				<label>
+					<input type="checkbox"
+						disabled={ ! props.quotesVisible }
+						checked={ props.builtinQuotesEnabled }
+						onChange={ props.toggleBuiltinQuotes } />
+					Enable Built-in Quotes 
+				</label>
+				{ props.hiddenQuoteCount > 0 &&
+					<span className="nfe-settings-hidden-quote-count">
+						&nbsp;({ props.hiddenQuoteCount } hidden
+							- <a href="#" onClick={ preventDefaultThen(props.resetHiddenQuotes) }>Reset</a>)
+					</span>
+				}
+				<p>
+				{ props.customQuoteCount > 0 ?
+					<label>{ props.customQuoteCount } custom quotes</label>
+					: <label>
+						You can now add your own custom quotes! Just click
+						the arrow menu beside the quote text.
+					</label>
+				}
+				</p>
+			</fieldset>
+		</form>
+	);
+};
 
 const mapStateToProps = ( state ) => ( {
 	quotesVisible: state.showQuotes,
