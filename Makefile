@@ -1,22 +1,30 @@
-.PHONY: all firefox chrome run-firefox clean
+.PHONY: all clean install dev copy-assets
 
 # The current git tag is used as the version number
 GITTAG=$(shell git describe --always --tag)
 BIN=$(shell yarn bin)
 
-all: chrome
+build: install copy-assets
+	mkdir -p build
+	NODE_ENV=production ./node_modules/.bin/rollup -c
+	mkdir -p dist
+	(cd build && zip -r ../dist/NewsFeedEradicator_$(GITTAG).zip .)
 
-chrome-dev:
-	BROWSER=chrome $(BIN)/webpack --progress --colors --watch
+copy-assets:
+	mkdir -p build
+	cp src/manifest.json build/manifest.json
+	cp assets/icon16.jpg build/icon16.jpg
+	cp assets/icon48.jpg build/icon48.jpg
+	cp assets/icon128.jpg build/icon128.jpg
 
-chrome:
-	BROWSER=chrome NODE_ENV=production $(BIN)/webpack
-	mkdir -p dist/chrome
-	(cd build/chrome && zip -r ../../dist/chrome/NewsFeedEradicator_$(GITTAG).zip .)
+dev: install copy-assets
+	mkdir -p build
+	./node_modules/.bin/rollup -c --watch
 
 install:
-	yarn install
+	npm install
 
 clean:
 	rm -rf dist
 	rm -rf build
+	rm -rf node_modules

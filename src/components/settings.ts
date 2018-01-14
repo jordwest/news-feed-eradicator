@@ -50,10 +50,10 @@ const Settings = (store: Store) => {
 
     const customQuotes = () => {
         if(state.customQuotes.length > 0) {
-            return h('label', state.customQuotes + ' custom quotes');
+            return h('label', (state.customQuotes.length) + ' custom quotes');
         }
         return h('label',
-            'You can now add your own custom quotes!'+
+            'You can now add your own custom quotes! '+
             'Just click the arrow menu beside the quote text.'
         );
     }
@@ -63,7 +63,7 @@ const Settings = (store: Store) => {
             h('legend', [fieldShowQuotes]),
             fieldShowBuiltin,
             hiddenQuoteCount > 0 ? hiddenQuotes : null,
-            h('p', customQuotes),
+            h('p', [customQuotes()]),
         ])
     ])
 }

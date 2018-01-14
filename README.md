@@ -18,8 +18,11 @@ now that Firefox supports WebExtensions, the goal is to make a WebExtension that
 
 To get started, clone the repository and then run:
 
-    make install
-    make chrome-dev
+    make dev
+
+Or, to build for production:
+
+    make
 
 Project folder structure:
 

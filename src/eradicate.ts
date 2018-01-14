@@ -2,7 +2,7 @@
 import * as browser from './webextension'
 
 // Include the stylesheets
-require( './eradicate.css' );
+import './eradicate.css';
 
 import removeNewsFeed from './lib/remove-news-feed';
 import injectUI, { isAlreadyInjected } from './lib/inject-ui';

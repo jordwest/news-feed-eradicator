@@ -25,11 +25,10 @@ interface QUOTE_MENU_SHOW {
 
 interface QUOTE_EDIT {
 	type: "QUOTE_EDIT",
-	action:
-		| { type: "START" }
-		| { type: "CANCEL" }
-		| { type: "SET_TEXT", text: string }
-		| { type: "SET_SOURCE", source: string }
+	action: { type: "START" }
+		  | { type: "CANCEL" }
+		  | { type: "SET_TEXT", text: string }
+		  | { type: "SET_SOURCE", source: string }
 }
 
 import { IState } from './reducer';
@@ -38,8 +37,7 @@ interface ActionTypeObject {
 	type: ActionTypes
 }
 
-export type ActionObject =
-						 | QUOTE_MENU_SHOW
+export type ActionObject = QUOTE_MENU_SHOW
 						 | INFO_PANEL_SHOW
 						 | QUOTE_EDIT
 
