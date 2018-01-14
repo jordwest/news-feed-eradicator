@@ -51,7 +51,7 @@ const InfoPanel = (props) => {
 			<h2>Remove</h2>
 			<ul>
 				<li>
-					<a href="http://news-feed-eradicator.west.io/remove.html">Removal instructions</a>
+					<a href="https://west.io/news-feed-eradicator/remove.html">Removal instructions</a>
 				</li>
 			</ul>
 		</div>
