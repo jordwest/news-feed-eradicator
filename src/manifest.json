@@ -19,6 +19,7 @@
 		{
 			"matches": ["http://www.facebook.com/*", "https://www.facebook.com/*","http://web.facebook.com/*","https://web.facebook.com/*"],
 			"js": ["intercept.js"],
+			"css": ["eradicate.css"],
 			"run_at": "document_start"
 		},
 		{
