@@ -14,13 +14,11 @@ if(process.env.BROWSER) {
 
 var eradicateJS = '[name].js';
 var eradicateCSS = 'eradicate.css';
-var reactExternal = false;
 
 // Firefox expects included scripts to be under the 'data' directory
 if(browser === 'firefox') {
 	eradicateJS = 'data/' + eradicateJS;
 	eradicateCSS = 'data/' + eradicateCSS;
-	reactExternal = 'React';
 }
 
 module.exports = {
@@ -42,7 +40,6 @@ module.exports = {
 	externals: [
 		{
 			'sdk/simple-storage': 'require( "sdk/simple-storage" )',
-			'react': reactExternal
 		}
 	],
 	module: {
@@ -54,16 +51,6 @@ module.exports = {
 					use: "css-loader"
 				})
 			},
-			// {
-			// 	test: /\.jsx?$/,
-			// 	exclude: /(node_modules|bower_components)/,
-			// 	use: [{
-			// 		loader: 'babel',
-			// 		options: {
-			// 			presets: [ 'react', 'es2015' ],
-			// 		}
-			// 	}]
-			// },
 			{
 				test: /\.[jt]sx?$/,
 				exclude: /(node_modules|bower_components)/,

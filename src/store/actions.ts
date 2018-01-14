@@ -178,11 +178,3 @@ export const menuToggle = () : QUOTE_MENU_SHOW => ({
 	type: "QUOTE_MENU_SHOW",
 	show: "TOGGLE"
 })
-
-export function saveNewQuote() {
-	return (dispatch, getState) => {
-		const state : IState = getState()
-
-		dispatch( addQuote( state.editingText, state.editingSource));
-	}
-}

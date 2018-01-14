@@ -5,7 +5,7 @@ import { Store as ReduxStore, createStore as createReduxStore, applyMiddleware }
 import thunk from 'redux-thunk';
 
 import rootReducer, { IState } from './reducer';
-import { selectNewQuote } from './actions';
+import { ActionObject, selectNewQuote } from './actions';
 
 export interface Store extends ReduxStore<IState> {
 	getState() : IState;

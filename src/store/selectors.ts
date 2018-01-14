@@ -14,9 +14,9 @@ export function getBuiltinQuotes( state: IState ) {
 }
 
 export function currentQuote( state: IState ) : Quote {
-	const emptyQuote = { id: null, text: "No quotes found!", source: null };
+	const emptyQuote = { id: null, text: "No quotes found!", source: "" };
 
-	if ( ! state.currentQuoteID ) return emptyQuote;
+	if ( state.currentQuoteID == null ) return emptyQuote;
 
 	if( state.isCurrentQuoteCustom ) {
 		return state.customQuotes.find( quote => quote.id === state.currentQuoteID ) || emptyQuote;
