@@ -7,7 +7,6 @@
   "license": "MIT",
   "version": "1.0.6",
   "devDependencies": {
-    "events": "^1.1.0",
     "redux": "^3.5.2",
     "redux-thunk": "^2.0.1",
     "rollup": "^0.54.0",
