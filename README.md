@@ -4,31 +4,27 @@ News Feed Eradicator
 A browser extension that deletes your Facebook news feed
 and replaces it with a nice quote.
 
-[Install from Chrome Web Store](https://chrome.google.com/webstore/detail/news-feed-eradicator-for/fjcldmjmjhkklehbacihaiopjklihlgg?hl=en)
+[Install Chrome Extension](https://chrome.google.com/webstore/detail/news-feed-eradicator-for/fjcldmjmjhkklehbacihaiopjklihlgg?hl=en)
+
+[Install Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/news-feed-eradicator/)
 
 ![Screenshot](https://raw.githubusercontent.com/jordwest/news-feed-eradicator/master/assets/screenshot.jpg)
 
 Development
 -----------
 
-**Note: this project is currently undergoing a refactor to use Snabbdom instead of React, and to remove the browser specific code. Instead,
-now that Firefox supports WebExtensions, the goal is to make a WebExtension that can be submitted as is to both the Chrome and Firefox web stores.**
+This plugin is built as a WebExtension - a standard for browser plugins currently supported in both Chrome and Firefox.
 
-**Currently, the best way to install it on Firefox is to use [Chrome Store Foxified](https://addons.mozilla.org/en-US/firefox/addon/chrome-store-foxified/), until the official add-on is submitted to the Firefox add-on store.**
-
-To get started, clone the repository and then run:
+To build for either browser, clone the repository and then run:
 
     make dev
 
-Or, to build for production:
+If everything is successful, check the `build` folder for the extension contents. You can load the `build` directory into either Chrome or Firefox as an _unpacked_ or _temporary_ extension. See the instructions for [Chrome](https://developer.chrome.com/extensions/getstarted#unpacked) or [Firefox](https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Temporary_Installation_in_Firefox).
+
+Running `make dev` will watch for changes and recompile, however each time you make changes you'll need to tell the browser to reload the temporary extension. 
+
+To build a distributable `.zip` for production, just run:
 
     make
 
-Project folder structure:
-
-    src                             # Source
-    assets                          # Images
-
-    # Build output:
-    build                           # The raw extension contents
-    dist                            # Distributable extension package
+The extension package can be found in the `dist` folder.
