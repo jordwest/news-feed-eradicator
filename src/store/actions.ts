@@ -26,6 +26,7 @@ interface QUOTE_MENU_SHOW {
 interface QUOTE_EDIT {
 	type: "QUOTE_EDIT",
 	action: { type: "START" }
+		  | { type: "START_BULK" }
 		  | { type: "CANCEL" }
 		  | { type: "SET_TEXT", text: string }
 		  | { type: "SET_SOURCE", source: string }
@@ -176,3 +177,10 @@ export const menuToggle = () : QUOTE_MENU_SHOW => ({
 	type: "QUOTE_MENU_SHOW",
 	show: "TOGGLE"
 })
+
+export function startBulkEdit() : QUOTE_EDIT {
+	return {
+		type: "QUOTE_EDIT",
+		action: { type: "START_BULK" }
+	}
+}

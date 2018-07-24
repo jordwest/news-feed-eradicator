@@ -59,7 +59,7 @@
 	position: absolute;
 	right: 0;
 	top: 24px;
-	width: 160px;
+	width: 165px;
 	padding: 4px 0px;
 
 	background-color: #fff;
@@ -157,6 +157,12 @@
 .nfe-quote input.nfe-editor-source {
 	width: 90%;
 	font-size: 24px;
+}
+
+.nfe-quote-bulk textarea.nfe-editor-quote {
+	min-height: 120px;
+	width: 90%;
+	font-size: 12px;
 }
 
 #nfe-container .nfe-button,

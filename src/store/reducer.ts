@@ -136,6 +136,17 @@ const isEditingQuote = (state: boolean = false, action) => {
 	return state;
 }
 
+const isBulkEdit = (state: boolean = false, action) => {
+	switch (action.type) {
+		case "QUOTE_EDIT":
+			switch (action.action.type) {
+				case "START_BULK": return true;
+				case "CANCEL": return false;
+			}
+	}
+	return state;
+}
+
 export interface IState {
 	showQuotes: boolean;
 	builtinQuotesEnabled: boolean;
@@ -149,6 +160,7 @@ export interface IState {
 	editingText: string;
 	isQuoteMenuVisible: boolean;
 	isEditingQuote: boolean;
+	isBulkEdit: boolean;
 }
 
 export default combineReducers( {
@@ -164,4 +176,5 @@ export default combineReducers( {
 	editingText,
 	isQuoteMenuVisible,
 	isEditingQuote,
+	isBulkEdit,
 } );
