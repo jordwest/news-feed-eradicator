@@ -59,7 +59,7 @@
 	position: absolute;
 	right: 0;
 	top: 24px;
-	width: 165px;
+	width: 160px;
 	padding: 4px 0px;
 
 	background-color: #fff;
@@ -159,10 +159,14 @@
 	font-size: 24px;
 }
 
-.nfe-quote-bulk textarea.nfe-editor-quote {
-	min-height: 120px;
+.nfe-quote textarea.nfe-editor-quote {
+	min-height: 62px;
+}
+
+.nfe-quote textarea.nfe-editor-quote-bulk {
 	width: 90%;
 	font-size: 12px;
+	min-height: 120px;
 }
 
 #nfe-container .nfe-button,
@@ -210,6 +214,24 @@
 	margin-left: 1em;
 	background-color: #ffcf74;
 	font-weight: bold;
+}
+
+.nfe-label.nfe-label-add-bulk {
+	margin: 5px 10px;
+	height: 26px;
+	font-size: 22px;
+	border: 1px solid #aaa;
+	border-radius: 2px;
+	padding: 5px 9px 5px 5px;
+	cursor: pointer;
+	vertical-align: inherit;
+	font-weight: 400;
+}
+
+.nfe-checkbox {
+	cursor: pointer;
+	position: relative;
+	bottom: 3px;
 }
 
 /* This hides the news feed before the JS kicks in */

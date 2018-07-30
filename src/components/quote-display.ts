@@ -11,13 +11,11 @@ import {
 	menuToggle,
 	setQuoteText,
 	setQuoteSource,
-    startBulkEdit,
 	ActionObject
 } from '../store/actions';
 import { Store } from '../store';
 
 import QuoteEditor from './quote-editor';
-import QuoteBulkEditor from './quote-bulk-editor';
 
 const MenuItem = (store: Store, action, children) => {
     const onClick = e => {
@@ -40,7 +38,6 @@ const QuoteMenu = (store: Store) => {
             MenuItem(store, removeCurrentQuote(), 'Remove this quote'),
             MenuItem(store, selectNewQuote(), 'See another quote'),
             MenuItem(store, startEditing(), 'Enter custom quote...'),
-            MenuItem(store, startBulkEdit(), 'Enter quotes in bulk...'),
         ])
     ])
 }
@@ -54,12 +51,6 @@ const QuoteDisplay = (store: Store) => {
     if(state.isEditingQuote) {
         return h('div.nfe-quote', [
             QuoteEditor(store)
-        ])
-    }
-
-    if (state.isBulkEdit) {
-        return h('div.nfe-quote-bulk', [
-            QuoteBulkEditor(store)
         ])
     }
 

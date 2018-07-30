@@ -10,6 +10,7 @@ enum ActionTypes {
 	HIDE_QUOTE = <any>'HIDE_QUOTE',
 	DELETE_QUOTE = <any>'DELETE_QUOTE',
 	ADD_QUOTE = <any>'ADD_QUOTE',
+	ADD_QUOTES_BULK = <any>'ADD_QUOTES_BULK',
 	RESET_HIDDEN_QUOTES = <any>'RESET_HIDDEN_QUOTES',
 }
 
@@ -26,10 +27,10 @@ interface QUOTE_MENU_SHOW {
 interface QUOTE_EDIT {
 	type: "QUOTE_EDIT",
 	action: { type: "START" }
-		  | { type: "START_BULK" }
 		  | { type: "CANCEL" }
 		  | { type: "SET_TEXT", text: string }
 		  | { type: "SET_SOURCE", source: string }
+		  | { type: "TOGGLE_BULK" }
 }
 
 import { IState } from './reducer';
@@ -178,9 +179,34 @@ export const menuToggle = () : QUOTE_MENU_SHOW => ({
 	show: "TOGGLE"
 })
 
-export function startBulkEdit() : QUOTE_EDIT {
+export function toggleBulkEdit () : QUOTE_EDIT {
 	return {
 		type: "QUOTE_EDIT",
-		action: { type: "START_BULK" }
+		action: { type: "TOGGLE_BULK" }
+	}
+}
+
+export function addQuotesBulk( text: string ) {
+	return ( dispatch ) => {
+		const quotes = text.split("\n");
+        quotes.forEach((line) => {
+            const quote = line.split("~");
+            const trimmedQuote = [];
+
+            if (quote.length !== 2) {
+                //TODO: dispatch(displayError());
+                console.log("error");
+                console.log(quote);
+            } else {
+	            quote.forEach((field) => trimmedQuote.push(field.trim()));
+
+	            dispatch( {
+					type: ActionTypes.ADD_QUOTE,
+					id: generateID(),
+					text: trimmedQuote[0],
+					source: trimmedQuote[1]
+				} );
+	        }
+        });
 	}
 }
