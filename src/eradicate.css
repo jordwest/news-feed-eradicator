@@ -234,6 +234,12 @@
 	bottom: 3px;
 }
 
+.nfe-error {
+	margin: 5px 10px;
+	font-size: 16px;
+	color: #ff0000;
+}
+
 /* This hides the news feed before the JS kicks in */
 div[id^='explorefeed_main_stream'],
 div[id^='topnews_main_stream'],

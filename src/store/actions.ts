@@ -33,6 +33,11 @@ interface QUOTE_EDIT {
 		  | { type: "TOGGLE_BULK" }
 }
 
+interface ERROR {
+	type: "PARSE_ERROR",
+	message: string
+}
+
 import { IState } from './reducer';
 
 interface ActionTypeObject {
@@ -42,6 +47,7 @@ interface ActionTypeObject {
 export type ActionObject = QUOTE_MENU_SHOW
 						 | INFO_PANEL_SHOW
 						 | QUOTE_EDIT
+						 | ERROR
 
 export default ActionTypes;
 
@@ -85,11 +91,14 @@ export function toggleBuiltinQuotes() {
 
 export function addQuote( text: string, source: string ) {
 	const id = generateID();
-	return {
-		type: ActionTypes.ADD_QUOTE,
-		id,
-		text,
-		source,
+	return ( dispatch ) => {
+		dispatch ( {
+			type: ActionTypes.ADD_QUOTE,
+			id,
+			text,
+			source,
+		} );
+		dispatch ( cancelEditing() );
 	}
 }
 
@@ -188,25 +197,33 @@ export function toggleBulkEdit () : QUOTE_EDIT {
 
 export function addQuotesBulk( text: string ) {
 	return ( dispatch ) => {
-		const quotes = text.split("\n");
-        quotes.forEach((line) => {
-            const quote = line.split("~");
-            const trimmedQuote = [];
+		const lines = text.split("\n");
+		const quotes = [];
+		for (var lineCount = 0; lineCount < lines.length; lineCount++) {
+			const line = lines[lineCount];
+			const quote = line.split("~");
+			const trimmedQuote = [];
 
-            if (quote.length !== 2) {
-                //TODO: dispatch(displayError());
-                console.log("error");
-                console.log(quote);
-            } else {
-	            quote.forEach((field) => trimmedQuote.push(field.trim()));
-
-	            dispatch( {
-					type: ActionTypes.ADD_QUOTE,
-					id: generateID(),
-					text: trimmedQuote[0],
-					source: trimmedQuote[1]
+			if (quote.length === 0 || quote[0].trim() === "") {
+				// ignore newlines and empty spaces
+			} else if (quote.length !== 2) {
+				return dispatch( {
+					type: "PARSE_ERROR",
+					message: `Invalid format on line ${(lineCount + 1).toString()}: \"${quote}\"`
 				} );
-	        }
-        });
+			} else {
+				quote.forEach((field) => trimmedQuote.push(field.trim()));
+				quotes.push(trimmedQuote);
+			}
+		}
+		quotes.forEach((trimmedQuote) => {
+			dispatch( {
+				type: ActionTypes.ADD_QUOTE,
+				id: generateID(),
+				text: trimmedQuote[0],
+				source: trimmedQuote[1]
+			} );
+		});
+		dispatch( cancelEditing() );
 	}
 }

@@ -18,6 +18,7 @@ const QuoteEditor = (store: Store) => {
     const source = state.editingSource;
 
     const isEditingBulk = state.isEditingBulk;
+    const errorMessage = state.error;
 
     const onChangeText = e => {
         store.dispatch(setQuoteText(e.target.value));
@@ -32,7 +33,6 @@ const QuoteEditor = (store: Store) => {
         } else {
             store.dispatch(addQuotesBulk(text));
         }
-        store.dispatch(cancelEditing());
     }
     const onCancel = () => {
         store.dispatch(cancelEditing());
@@ -88,8 +88,12 @@ const QuoteEditor = (store: Store) => {
             'Add multiple quotes'
         ]),
     ]);
+    const error = h('div.nfe-error', errorMessage);
 
     if (isEditingBulk) {
+        if (errorMessage) {
+            return h('div', [quoteEditorBulk, buttons, error]);
+        }
         return h('div', [quoteEditorBulk, buttons]);
     }
 
