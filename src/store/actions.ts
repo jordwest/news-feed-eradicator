@@ -10,6 +10,7 @@ enum ActionTypes {
 	HIDE_QUOTE = <any>'HIDE_QUOTE',
 	DELETE_QUOTE = <any>'DELETE_QUOTE',
 	ADD_QUOTE = <any>'ADD_QUOTE',
+	ADD_QUOTES_BULK = <any>'ADD_QUOTES_BULK',
 	RESET_HIDDEN_QUOTES = <any>'RESET_HIDDEN_QUOTES',
 }
 
@@ -29,6 +30,12 @@ interface QUOTE_EDIT {
 		  | { type: "CANCEL" }
 		  | { type: "SET_TEXT", text: string }
 		  | { type: "SET_SOURCE", source: string }
+		  | { type: "TOGGLE_BULK" }
+}
+
+interface ERROR {
+	type: "PARSE_ERROR",
+	message: string
 }
 
 import { IState } from './reducer';
@@ -40,6 +47,7 @@ interface ActionTypeObject {
 export type ActionObject = QUOTE_MENU_SHOW
 						 | INFO_PANEL_SHOW
 						 | QUOTE_EDIT
+						 | ERROR
 
 export default ActionTypes;
 
@@ -83,11 +91,14 @@ export function toggleBuiltinQuotes() {
 
 export function addQuote( text: string, source: string ) {
 	const id = generateID();
-	return {
-		type: ActionTypes.ADD_QUOTE,
-		id,
-		text,
-		source,
+	return ( dispatch ) => {
+		dispatch ( {
+			type: ActionTypes.ADD_QUOTE,
+			id,
+			text,
+			source,
+		} );
+		dispatch ( cancelEditing() );
 	}
 }
 
@@ -176,3 +187,43 @@ export const menuToggle = () : QUOTE_MENU_SHOW => ({
 	type: "QUOTE_MENU_SHOW",
 	show: "TOGGLE"
 })
+
+export function toggleBulkEdit () : QUOTE_EDIT {
+	return {
+		type: "QUOTE_EDIT",
+		action: { type: "TOGGLE_BULK" }
+	}
+}
+
+export function addQuotesBulk( text: string ) {
+	return ( dispatch ) => {
+		const lines = text.split("\n");
+		const quotes = [];
+		for (var lineCount = 0; lineCount < lines.length; lineCount++) {
+			const line = lines[lineCount];
+			const quote = line.split("~");
+			const trimmedQuote = [];
+
+			if (quote.length === 0 || quote[0].trim() === "") {
+				// ignore newlines and empty spaces
+			} else if (quote.length !== 2) {
+				return dispatch( {
+					type: "PARSE_ERROR",
+					message: `Invalid format on line ${(lineCount + 1).toString()}: \"${quote}\"`
+				} );
+			} else {
+				quote.forEach((field) => trimmedQuote.push(field.trim()));
+				quotes.push(trimmedQuote);
+			}
+		}
+		quotes.forEach((trimmedQuote) => {
+			dispatch( {
+				type: ActionTypes.ADD_QUOTE,
+				id: generateID(),
+				text: trimmedQuote[0],
+				source: trimmedQuote[1]
+			} );
+		});
+		dispatch( cancelEditing() );
+	}
+}

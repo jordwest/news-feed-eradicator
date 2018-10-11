@@ -96,6 +96,7 @@ const editingText = (state: string = "", action : ActionObject ) => {
 				case "START": return "";
 				case "CANCEL": return "";
 				case "SET_TEXT": return action.action.text;
+				case "TOGGLE_BULK": return "";
 			}
 	}
 	return state;
@@ -136,6 +137,29 @@ const isEditingQuote = (state: boolean = false, action) => {
 	return state;
 }
 
+const isEditingBulk = (state: boolean = false, action) => {
+	switch (action.type) {
+		case "QUOTE_EDIT":
+			switch (action.action.type) {
+				case "TOGGLE_BULK": return !state;
+			}
+	}
+	return state;
+}
+
+const error = (state: string = "", action) => {
+	switch (action.type) {
+		case "QUOTE_EDIT":
+			switch (action.action.type) {
+				case "CANCEL": return "";
+			}
+			return state;
+		case "PARSE_ERROR":
+			return action.message;
+	}
+	return state;
+}
+
 export interface IState {
 	showQuotes: boolean;
 	builtinQuotesEnabled: boolean;
@@ -149,6 +173,8 @@ export interface IState {
 	editingText: string;
 	isQuoteMenuVisible: boolean;
 	isEditingQuote: boolean;
+	isEditingBulk: boolean;
+	error: string;
 }
 
 export default combineReducers( {
@@ -164,4 +190,6 @@ export default combineReducers( {
 	editingText,
 	isQuoteMenuVisible,
 	isEditingQuote,
+	isEditingBulk,
+	error,
 } );
