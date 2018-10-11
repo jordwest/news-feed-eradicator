@@ -1,4 +1,3 @@
-
 // Elements in here are removed from the DOM.
 // These selectors should also be added to `eradicate.css`
 // to ensure they're hidden before the script loads.
@@ -16,15 +15,15 @@ const elementsToEmpty =
 	'[id^=mostrecent_main_stream],' +
 	'[id^=pagelet_home_stream]';
 
-const removeNode = ( node ) => node.parentNode.removeChild( node );
+const removeNode = node => node.parentNode.removeChild(node);
 
-const removeChildren = ( node ) => {
-	while ( node.firstChild ) {
-		node.removeChild( node.firstChild );
+const removeChildren = node => {
+	while (node.firstChild) {
+		node.removeChild(node.firstChild);
 	}
-}
+};
 
 export default function() {
-	document.querySelectorAll( elementsToRemove ).forEach( removeNode );
-	document.querySelectorAll( elementsToEmpty ).forEach( removeChildren );
+	document.querySelectorAll(elementsToRemove).forEach(removeNode);
+	document.querySelectorAll(elementsToEmpty).forEach(removeChildren);
 }

@@ -6,8 +6,5 @@
 		"sourceMap": false,
 		"allowJs": true
 	},
-	"exclude": [
-		"dist",
-		"build"
-	]
+	"exclude": ["dist", "build"]
 }

@@ -1,11 +1,9 @@
-.nfe-quote
-{
+.nfe-quote {
 	position: relative;
 	font-size: 24px;
 }
 
-.nfe-quote-text
-{
+.nfe-quote-text {
 	color: #000;
 	border-left: 4px solid #99f;
 	margin-left: 15px;
@@ -13,14 +11,12 @@
 	width: 87.5%;
 }
 
-.nfe-info-panel p
-{
+.nfe-info-panel p {
 	text-align: justify;
 	text-justify: inter-word;
 }
 
-.nfe-quote-source
-{
+.nfe-quote-source {
 	color: #999;
 }
 
@@ -40,7 +36,7 @@
 	top: 0px;
 
 	border: 1px solid transparent;
-	background-color: rgba( 255, 255, 255, 0.6 );
+	background-color: rgba(255, 255, 255, 0.6);
 	font-size: 10px;
 	text-decoration: none;
 	color: #bbb;
@@ -85,16 +81,14 @@
 	text-decoration: none;
 }
 
-.nfe-info-link
-{
+.nfe-info-link {
 	margin-left: 15px;
 	color: #77f;
 	font-size: 12px;
 	display: block;
 }
 
-.nfe-info-link:hover
-{
+.nfe-info-link:hover {
 	margin-left: 15px;
 	color: #77f;
 	font-size: 12px;
@@ -102,13 +96,11 @@
 	background-color: #ddd;
 }
 
-.nfe-info-link img
-{
+.nfe-info-link img {
 	vertical-align: middle;
 }
 
-.nfe-close-button
-{
+.nfe-close-button {
 	display: block;
 	width: 20px;
 	height: 20px;
@@ -123,13 +115,11 @@
 	top: 10px;
 }
 
-.nfe-social-media-icons .nfe-social-media-icon
-{
+.nfe-social-media-icons .nfe-social-media-icon {
 	margin: 10px;
 }
 
-.nfe-donation-link a
-{
+.nfe-donation-link a {
 	background-color: #fff;
 	border: 2px dashed #ccc;
 	border-radius: 2px;
@@ -137,19 +127,16 @@
 	display: block;
 }
 
-.nfe-info-panel
-{
+.nfe-info-panel {
 	position: relative;
 }
 
-.nfe-info-panel h1
-{
+.nfe-info-panel h1 {
 	font-size: 22px;
 	text-align: center;
 }
 
-.nfe-info-panel h2
-{
+.nfe-info-panel h2 {
 	font-size: 18px;
 }
 
@@ -178,7 +165,8 @@
 	padding: 5px;
 	cursor: pointer;
 }
-.nfe-button-primary, button.nfe-button-primary {
+.nfe-button-primary,
+button.nfe-button-primary {
 	background-color: #aaf;
 }
 
@@ -191,8 +179,7 @@
 	font-size: 12px;
 }
 
-.nfe-info-col
-{
+.nfe-info-col {
 	font-size: 14px;
 	text-align: center;
 	padding: 10px;
@@ -202,8 +189,7 @@
 	border-radius: 2px;
 }
 
-.nfe-label
-{
+.nfe-label {
 	background-color: #ddd;
 	color: #000;
 	padding: 2px;
@@ -250,8 +236,7 @@ div.ego_column,
 #stories_pagelet_rhc,
 #fb_stories_card_root,
 #pagelet_games_rhc,
-#pagelet_canvas_nav_content
-{
+#pagelet_canvas_nav_content {
 	opacity: 0 !important;
 	pointer-events: none !important;
 }
