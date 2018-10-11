@@ -58,7 +58,7 @@ const Contribute = () => {
         h('p', [
             h('span', 'News Feed Eradicator is open source. '),
             h('a', {props: {href: 'https://github.com/jordwest/news-feed-eradicator/'}},
-                'Fork on Github'
+                'Fork on GitHub'
             )
         ])
     ]
@@ -73,7 +73,7 @@ const Remove = () => {
                     {props: {
                         href: 'https://west.io/news-feed-eradicator/remove.html'
                     }},
-                    'Fork on Github'
+                    'Removal Instructions'
                 )
             ])
         ])
