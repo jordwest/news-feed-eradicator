@@ -16,7 +16,7 @@
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-typescript": "^0.8.1",
     "snabbdom": "^0.7.2",
-    "typescript": "^2.9.2"
+    "typescript": "^3.1.2"
   },
   "dependencies": {
     "@types/node": "^8.10.36"
