@@ -400,4 +400,9 @@ export const BuiltinQuotes: Array<Quote> = [
 		text: 'You only live once, but if you do it right, once is enough.',
 		source: 'Mae West',
 	},
+	{
+		id: 71,
+		text: 'Yesterday is history, tomorrow is a mystery, today is a gift, which is why we call it the present.',
+		source: 'Bill Keane',
+	},
 ];
