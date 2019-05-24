@@ -4,7 +4,6 @@
 const elementsToRemove =
 	'.ticker_stream,' +
 	'.ego_column,' +
-	'#pagelet_games_rhc,' +
         '#pagelet_gaming_destination_rhc,' +
 	'#stories_pagelet_rhc,' +
 	'#fb_stories_card_root,' +
