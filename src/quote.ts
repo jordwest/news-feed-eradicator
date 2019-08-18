@@ -400,4 +400,10 @@ export const BuiltinQuotes: Array<Quote> = [
 		text: 'You only live once, but if you do it right, once is enough.',
 		source: 'Mae West',
 	},
+	{
+		id: 71,
+		text: 'a man who dares to waste one hour of time has not discovered the value of life.',
+		source: 'Charles Darwin',
+	},
+	
 ];
