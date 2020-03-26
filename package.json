@@ -8,17 +8,17 @@
 	"version": "1.2.1",
 	"devDependencies": {
 		"prettier": "1.14.3",
-		"redux": "^3.5.2",
+		"redux": "^4.0.5",
 		"redux-thunk": "^2.3.0",
-		"rollup": "^0.66.6",
-		"rollup-plugin-commonjs": "^9.2.0",
-		"rollup-plugin-css-only": "^0.4.0",
+		"rollup": "^2.2.0",
+		"@rollup/plugin-commonjs": "^11.0.2",
+		"rollup-plugin-css-only": "^2.0.0",
 		"rollup-plugin-node-resolve": "^3.4.0",
-		"rollup-plugin-replace": "^2.1.0",
-		"rollup-plugin-typescript": "^1.0.0",
+		"@rollup/plugin-replace": "^2.3.1",
+		"@rollup/plugin-typescript": "^4.0.0",
 		"snabbdom": "^0.7.2",
 		"tslib": "^1.9.3",
-		"typescript": "^3.0.3"
+		"typescript": "^3.8.3"
 	},
 	"dependencies": {
 		"@types/node": "^8.10.36"

@@ -1,5 +1,5 @@
 import handleError from './handle-error';
-import { createStore } from '../store';
+import { createStore } from '../store/index';
 import NewsFeedEradicator from '../components/index';
 
 import { init } from 'snabbdom';

@@ -1,18 +1,24 @@
 import * as browser from '../webextension';
 
-import {
-	Store as ReduxStore,
-	createStore as createReduxStore,
-	applyMiddleware,
-} from 'redux';
+import { createStore as createReduxStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+import { ThunkAction } from 'redux-thunk';
 
 import rootReducer, { IState } from './reducer';
-import { ActionObject, selectNewQuote } from './actions';
+import { selectNewQuote, ActionTypeObject, ActionObject } from './actions';
 
-export interface Store extends ReduxStore<IState> {
+export type AppThunk<ReturnType = void> = ThunkAction<
+	ReturnType,
+	IState,
+	unknown,
+	ActionTypeObject | ActionObject
+>;
+
+export type Store = {
 	getState(): IState;
-}
+	subscribe(cb: () => void): void;
+	dispatch(action: ActionObject | ActionTypeObject | AppThunk): void;
+};
 
 function saveSettings(state: IState) {
 	const data = {
@@ -28,8 +34,8 @@ function saveSettings(state: IState) {
 
 export function createStore(): Promise<Store> {
 	return new Promise(resolve => {
-		browser.loadSettings(initialState => {
-			const store = createReduxStore(
+		browser.loadSettings((initialState: IState) => {
+			const store: Store = createReduxStore(
 				rootReducer,
 				initialState,
 				applyMiddleware(thunk)

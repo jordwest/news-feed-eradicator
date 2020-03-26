@@ -1,6 +1,6 @@
 import { h } from 'snabbdom/h';
 
-import { Store } from '../store';
+import { Store } from '../store/index';
 import {
 	setQuoteText,
 	setQuoteSource,

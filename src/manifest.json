@@ -15,6 +15,11 @@
 		"48": "icon48.jpg",
 		"128": "icon128.jpg"
 	},
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "@news-feed-eradicator"
+		}
+	},
 	"content_scripts": [
 		{
 			"matches": [

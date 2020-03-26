@@ -1,5 +1,3 @@
-import * as redux from 'redux';
-
 import { getBuiltinQuotes } from './selectors';
 
 enum ActionTypes {
@@ -39,8 +37,9 @@ interface ERROR {
 }
 
 import { IState } from './reducer';
+import { AppThunk } from '.';
 
-interface ActionTypeObject {
+export interface ActionTypeObject {
 	type: ActionTypes;
 }
 
@@ -82,7 +81,7 @@ export function toggleShowQuotes() {
 	};
 }
 
-export function toggleBuiltinQuotes() {
+export function toggleBuiltinQuotes(): AppThunk {
 	return dispatch => {
 		dispatch({
 			type: ActionTypes.TOGGLE_BUILTIN_QUOTES,
@@ -92,7 +91,7 @@ export function toggleBuiltinQuotes() {
 	};
 }
 
-export function addQuote(text: string, source: string) {
+export function addQuote(text: string, source: string): AppThunk {
 	const id = generateID();
 	return dispatch => {
 		dispatch({
@@ -111,7 +110,7 @@ export function resetHiddenQuotes() {
 	};
 }
 
-export function removeCurrentQuote() {
+export function removeCurrentQuote(): AppThunk {
 	return (dispatch, getState) => {
 		const state: IState = getState();
 		if (state.isCurrentQuoteCustom) {
@@ -130,7 +129,7 @@ export function removeCurrentQuote() {
 	};
 }
 
-export function selectNewQuote() {
+export function selectNewQuote(): AppThunk {
 	return (dispatch, getState) => {
 		const state: IState = getState();
 		const builtinQuotes = getBuiltinQuotes(state);
@@ -153,14 +152,14 @@ export function selectNewQuote() {
 	};
 }
 
-export function setQuoteText(text): QUOTE_EDIT {
+export function setQuoteText(text: string): QUOTE_EDIT {
 	return {
 		type: 'QUOTE_EDIT',
 		action: { type: 'SET_TEXT', text: text },
 	};
 }
 
-export function setQuoteSource(source): QUOTE_EDIT {
+export function setQuoteSource(source: string): QUOTE_EDIT {
 	return {
 		type: 'QUOTE_EDIT',
 		action: { type: 'SET_SOURCE', source },
@@ -198,7 +197,7 @@ export function toggleBulkEdit(): QUOTE_EDIT {
 	};
 }
 
-export function addQuotesBulk(text: string) {
+export function addQuotesBulk(text: string): AppThunk {
 	return dispatch => {
 		const lines = text.split('\n');
 		const quotes = [];
