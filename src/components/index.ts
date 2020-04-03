@@ -2,7 +2,6 @@ import QuoteDisplay from './quote-display';
 import InfoPanel from './info-panel';
 
 import { Store } from '../store';
-import { IState } from '../store/reducer';
 import { showInfoPanel } from '../store/actions';
 import { areNewFeaturesAvailable } from '../store/selectors';
 

@@ -15,7 +15,7 @@ export function isAlreadyInjected() {
 	return document.querySelector('#nfe-container') != null;
 }
 
-export default function injectUI(streamContainer: Element) {
+export default function injectUI(streamContainer: Node) {
 	var nfeContainer = document.createElement('div');
 	nfeContainer.id = 'nfe-container';
 	streamContainer.appendChild(nfeContainer);
