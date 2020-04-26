@@ -58,11 +58,10 @@ const QuoteEditor = (store: Store) => {
 				placeholder:
 					'Bulk add quotes: a "~" should separate a quote\'s text and source, ' +
 					'and quotes should be separated by newlines. Quotation marks are ' +
-					'unnecessary. Below are sample quotes:\n\n' +
-					"Remember to separate quotes with a newline (enter key)! It's okay for " +
-					'longer quotes to wrap around the box ~ the devs\n' +
-					"Spacing around the tilde doesn't matter.~the devs\n" +
-					'Report any bugs on github!  ~the devs',
+					'unnecessary. For example:\n\n' +
+					'All that we are is the result of what we have thought. ~ Buddha\n' +
+					'One of the secrets to staying young is to always do things you don’t know how to do, to keep learning. ~ Ruth Reichl\n' +
+					'The most common way people give up their power is by thinking they don’t have any. ~ Alice Walker',
 				value: text,
 				autoFocus: true,
 			},
@@ -101,7 +100,7 @@ const QuoteEditor = (store: Store) => {
 					change: onCheckboxToggle,
 				},
 			}),
-			'Add multiple quotes',
+			'Bulk add',
 		]),
 	]);
 	const error = h('div.nfe-error', errorMessage);
