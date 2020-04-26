@@ -16,12 +16,15 @@ export function eradicate() {
 
 		// Don't do anything if the FB UI hasn't loaded yet
 		const feed = document.querySelector('[role=feed]');
+		const stories = document.querySelector('[aria-label=Stories]');
+		
 		if (feed == null) {
 			return;
 		}
 
 		const container = feed.parentNode;
 		removeNode(feed);
+		removeNode(stories);
 
 		// Add News Feed Eradicator quote/info panel
 		if (!isAlreadyInjected()) {
