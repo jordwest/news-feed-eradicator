@@ -12,6 +12,10 @@
 	text-align: left;
 }
 
+.__fb-dark-mode .nfe-quote-text {
+  color: white;
+}
+
 .nfe-info-panel p {
 	text-align: justify;
 	text-justify: inter-word;
