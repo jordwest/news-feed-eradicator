@@ -5,7 +5,7 @@
 	"description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
 	"author": "Jordan West",
 	"license": "MIT",
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"devDependencies": {
 		"prettier": "1.14.3",
 		"redux": "^4.0.5",
