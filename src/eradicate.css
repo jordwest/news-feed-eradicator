@@ -236,6 +236,7 @@ button.nfe-button-primary {
 div[id^='explorefeed_main_stream'],
 div[id^='topnews_main_stream'],
 div[role=feed],
+div[aria-label=Stories],
 div.ticker_stream,
 div.ego_column,
 #pagelet_home_stream,
@@ -246,4 +247,5 @@ div.ego_column,
 #pagelet_canvas_nav_content {
 	opacity: 0 !important;
 	pointer-events: none !important;
+	height: 0;
 }
