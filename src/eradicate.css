@@ -219,6 +219,7 @@ button.nfe-button-primary {
 	font-weight: 400;
 }
 
+
 .nfe-checkbox {
 	cursor: pointer;
 	position: relative;
@@ -234,6 +235,7 @@ button.nfe-button-primary {
 /* This hides the news feed before the JS kicks in */
 div[id^='explorefeed_main_stream'],
 div[id^='topnews_main_stream'],
+div[role=feed],
 div.ticker_stream,
 div.ego_column,
 #pagelet_home_stream,

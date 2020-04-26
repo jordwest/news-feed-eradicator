@@ -7,8 +7,6 @@ import isEnabled from '../lib/is-enabled';
 //}
 
 export function eradicate() {
-	// This delay ensures that the elements have been created by Facebook's
-	// scripts before we attempt to replace them
 	function eradicateRetry() {
 		if (!isEnabled()) {
 			return;
@@ -32,5 +30,7 @@ export function eradicate() {
 		}
 	}
 
+	// This delay ensures that the elements have been created by Facebook's
+	// scripts before we attempt to replace them
 	setInterval(eradicateRetry, 1000);
 }
