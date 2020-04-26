@@ -29,17 +29,19 @@ declare var browser: WebExtensionAPI | undefined;
 declare var chrome: ChromeWebExtensionAPI | undefined;
 
 export function loadSettings(callback) {
-	if (browser) {
+	if (typeof browser !== 'undefined') {
 		browser.storage.sync
 			.get(null)
 			.then(data => {
 				callback(data);
 			})
 			.catch(e => console.error(e));
-	} else if (chrome) {
+	} else if (typeof chrome !== 'undefined') {
 		chrome.storage.sync.get(null, data => {
 			callback(data);
 		});
+	} else {
+		throw new Error('Could not find WebExtension API');
 	}
 }
 
