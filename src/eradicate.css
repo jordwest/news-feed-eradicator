@@ -247,7 +247,7 @@ div.ego_column,
 	pointer-events: none !important;
 }
 
-div[role=feed],
+html:not([data-nfe-enabled="false"]) div[role=feed],
 div[aria-label=Stories] {
 	opacity: 0 !important;
 	pointer-events: none !important;

@@ -4,5 +4,7 @@
  */
 
 import disableInfiniteScroll from './lib/disable-infinite-scroll';
+import { setupRouteChange } from './lib/route-change';
 
 disableInfiniteScroll();
+setupRouteChange();
