@@ -12,7 +12,6 @@ let lastPath = undefined;
 let element = document.querySelector('html');
 export function setupRouteChange() {
 	const onChange = (): any => {
-		console.log('route changed to', document.location);
 		if (isEnabled()) {
 			element.dataset.nfeEnabled = 'true';
 		} else {
@@ -24,15 +23,19 @@ export function setupRouteChange() {
 		}
 	};
 
-	window.addEventListener('popstate', onChange);
-
+	let timer = undefined;
 	const checkIfLocationChanged = () => {
 		let path = document.location.pathname;
 		if (path != lastPath) {
 			lastPath = path;
 			onChange();
 		}
-		setTimeout(checkIfLocationChanged, CHECK_INTERVAL);
+		if (timer != null) {
+			clearTimeout(timer);
+		}
+		timer = setTimeout(checkIfLocationChanged, CHECK_INTERVAL);
 	};
+	window.addEventListener('popstate', checkIfLocationChanged);
+
 	checkIfLocationChanged();
 }
