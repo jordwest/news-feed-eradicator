@@ -14,6 +14,7 @@ const elementsToRemove = [
 	'#stories_pagelet_below_composer',
 	'#pagelet_trending_tags_and_topics',
 	'#pagelet_canvas_nav_content',
+  '#video_chats'
 ];
 
 const elementsToEmpty = ['[id^=topnews_main_stream]'];
