@@ -14,7 +14,8 @@ const elementsToRemove = [
 	'#stories_pagelet_below_composer',
 	'#pagelet_trending_tags_and_topics',
 	'#pagelet_canvas_nav_content',
-  '#video_chats'
+  '#video_chats',
+  '[data-pagelet=VideoChatHomeUnit]'
 ];
 
 const elementsToEmpty = ['[id^=topnews_main_stream]'];
