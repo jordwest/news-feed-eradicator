@@ -400,4 +400,9 @@ export const BuiltinQuotes: Array<Quote> = [
 		text: 'You only live once, but if you do it right, once is enough.',
 		source: 'Mae West',
 	},
+	{
+		id: 71,
+		text: 'Dreams don’t work unless you do.',
+		source: 'John C. Maxwell',
+	},
 ];
