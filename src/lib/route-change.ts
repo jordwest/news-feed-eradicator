@@ -1,6 +1,6 @@
 import isEnabled from './is-enabled';
 
-// Unforunately the browser provides no native way to observe route changes initiated
+// Unfortunately the browser provides no native way to observe route changes initiated
 // by the page. The `popstate` event only observes browser initiated back/forward events.
 // So, we resort to this hack: checking the document URL every n milliseconds, to see if
 // it's changed.

@@ -13,7 +13,7 @@
 }
 
 .__fb-dark-mode .nfe-quote-text {
-  color: white;
+	color: white;
 }
 
 .nfe-info-panel p {
@@ -219,7 +219,6 @@ button.nfe-button-primary {
 	font-weight: 400;
 }
 
-
 .nfe-checkbox {
 	cursor: pointer;
 	position: relative;
@@ -232,7 +231,7 @@ button.nfe-button-primary {
 	color: #ff0000;
 }
 
-/* This hides the news feed before the JS kicks in */
+/* This hides the Facebook news feed before the JS kicks in */
 div[id^='explorefeed_main_stream'],
 div[id^='topnews_main_stream'],
 div.ticker_stream,
@@ -247,9 +246,18 @@ div.ego_column,
 	pointer-events: none !important;
 }
 
-html:not([data-nfe-enabled="false"]) div[role=feed],
-div[aria-label=Stories] {
+html:not([data-nfe-enabled='false']) div[role='feed'],
+div[aria-label='Stories'] {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
+}
+
+/* This hides the Linkedin news feed before NFE kicks in */
+.core-rail:not(.nfe-loaded) > .ember-view {
+	display: none;
+}
+.nfe-linkedin-hide > .ember-view,
+.nfe-linkedin-hide > .art-deco {
+	display: none;
 }
