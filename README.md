@@ -1,7 +1,6 @@
-# News Feed Eradicator for LinkedIn
+# News Feed Eradicator for Facebook and LinkedIn
 
-A browser extension that deletes your LinkedIn news feed
-and replaces it with a nice quote.
+A browser extension that replaces your news feed with a motivational quote.
 
 ## Development
 
