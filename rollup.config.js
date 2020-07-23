@@ -4,21 +4,22 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 
+const plugins = [
+	resolve(),
+	commonjs(),
+	typescript(),
+	replace({
+		'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+	}),
+];
+
 const eradicate = {
 	input: 'src/eradicate.ts',
 	output: {
 		file: 'build/eradicate.js',
 		format: 'iife',
 	},
-	plugins: [
-		resolve(),
-		commonjs(),
-		typescript(),
-		css({ output: 'build/eradicate.css' }),
-		replace({
-			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-		}),
-	],
+	plugins: [...plugins, css({ output: 'build/eradicate.css' })],
 };
 
 const intercept = {
@@ -30,4 +31,22 @@ const intercept = {
 	plugins: [typescript()],
 };
 
-export default [eradicate, intercept];
+const options = {
+	input: 'src/options.ts',
+	output: {
+		file: 'build/options.js',
+		format: 'iife',
+	},
+	plugins: [...plugins, css({ output: 'build/options.css' })],
+};
+
+const background = {
+	input: 'src/background/background.ts',
+	output: {
+		file: 'build/background.js',
+		format: 'iife',
+	},
+	plugins,
+};
+
+export default [eradicate, intercept, options, background];

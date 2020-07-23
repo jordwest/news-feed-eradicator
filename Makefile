@@ -18,6 +18,8 @@ package-source:
 copy-assets:
 	mkdir -p build
 	cp src/manifest.json build/manifest.json
+	cp src/options.html build/options.html
+	cp src/background/background.html build/background.html
 	cp assets/icon16.jpg build/icon16.jpg
 	cp assets/icon48.jpg build/icon48.jpg
 	cp assets/icon128.jpg build/icon128.jpg

@@ -2,10 +2,11 @@ import QuoteDisplay from './quote-display';
 import InfoPanel from './info-panel';
 
 import { Store } from '../store';
-import { showInfoPanel } from '../store/actions';
 import { areNewFeaturesAvailable } from '../store/selectors';
 
 import { h } from 'snabbdom/h';
+import { getBrowser } from '../webextension';
+import { MessageType } from '../messaging/types';
 
 const NewsFeedEradicator = (store: Store) => {
 	const state = store.getState();
@@ -21,7 +22,16 @@ const NewsFeedEradicator = (store: Store) => {
 
 	const footerText = 'News Feed Eradicator';
 
-	const onShowInfoPanel = () => store.dispatch(showInfoPanel());
+	const onShowInfoPanel = () => {
+		console.log(
+			getBrowser().runtime.sendMessage({ t: MessageType.OPTIONS_PAGE_OPEN })
+		);
+		window['getBrowser'] = getBrowser;
+	};
+	//getBrowser()
+	//	.runtime.openOptionsPage()
+	//	.catch(e => console.error(e));
+
 	const link = h('a.nfe-info-link', { on: { click: onShowInfoPanel } }, [
 		h('span', footerText),
 		newFeatureLabel,

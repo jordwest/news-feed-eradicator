@@ -1,24 +1,9 @@
 import { h } from 'snabbdom/h';
-import { hideInfoPanel } from '../store/actions';
 import Settings from './settings';
 import { Store } from '../store';
 
-const Heading = (store: Store) => {
-	const closeInfoPanel = () => {
-		store.dispatch(hideInfoPanel());
-	};
-
-	return [
-		h('h1', 'News Feed Eradicator'),
-		h(
-			'a.nfe-close-button',
-			{
-				props: { title: 'Close information panel' },
-				on: { click: closeInfoPanel },
-			},
-			'X'
-		),
-	];
+const Heading = () => {
+	return [h('h1', 'News Feed Eradicator')];
 };
 
 const Icon = (svgPath: string) => (color: string) =>
@@ -102,7 +87,7 @@ const InfoPanel = (store: Store) => {
 		h(
 			'div.nfe-info-col',
 			[].concat(
-				Heading(store),
+				Heading(),
 				h('hr'),
 				h('h2', 'Settings'),
 				Settings(store),

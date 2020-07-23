@@ -1,0 +1,80 @@
+body {
+	font-family: sans-serif;
+	font-size: 1.4em;
+}
+
+#nfe-container {
+	display: flex;
+	justify-content: center;
+}
+
+.nfe-info-panel {
+	width: 864px;
+}
+
+.nfe-info-panel p {
+	text-align: justify;
+	text-justify: inter-word;
+}
+
+.nfe-close-button {
+	display: block;
+	width: 20px;
+	height: 20px;
+	padding: 5px;
+	font-size: 18px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 2px;
+
+	position: absolute;
+	right: 20px;
+	top: 10px;
+}
+
+.nfe-social-media-icons .nfe-social-media-icon {
+	margin: 10px;
+}
+
+.nfe-donation-link a {
+	background-color: #fff;
+	border: 2px dashed #ccc;
+	border-radius: 2px;
+	padding: 20px 40px;
+	display: block;
+}
+
+.nfe-info-panel h1 {
+	font-size: 22px;
+	text-align: center;
+}
+
+.nfe-info-panel h2 {
+	font-size: 18px;
+}
+
+.nfe-settings {
+	text-align: left;
+}
+
+.nfe-settings-hidden-quote-count {
+	color: #999;
+	font-size: 12px;
+}
+
+.nfe-info-col {
+	font-size: 14px;
+	text-align: center;
+	padding: 10px;
+	margin: 10px;
+	border: 1px solid #ccc;
+	background-color: #efefef;
+	border-radius: 2px;
+}
+
+.nfe-checkbox {
+	cursor: pointer;
+	position: relative;
+	bottom: 3px;
+}
+

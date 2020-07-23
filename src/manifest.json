@@ -10,6 +10,15 @@
 		"http://web.facebook.com/*",
 		"https://web.facebook.com/*"
 	],
+	"background": {
+		"page": "background.html"
+	},
+	"options_ui": {
+		"page": "options.html",
+		"open_in_tab": true,
+		"browser_style": true,
+		"chrome_style": true
+	},
 	"icons": {
 		"16": "icon16.jpg",
 		"48": "icon48.jpg",
