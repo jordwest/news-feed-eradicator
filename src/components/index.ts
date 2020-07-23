@@ -19,9 +19,11 @@ const NewsFeedEradicator = (store: Store) => {
 
 	const infoPanel = state.showInfoPanel ? InfoPanel(store) : null;
 
+	const footerText = 'News Feed Eradicator';
+
 	const onShowInfoPanel = () => store.dispatch(showInfoPanel());
 	const link = h('a.nfe-info-link', { on: { click: onShowInfoPanel } }, [
-		h('span', 'News Feed Eradicator'),
+		h('span', footerText),
 		newFeatureLabel,
 	]);
 

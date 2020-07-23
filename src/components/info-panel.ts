@@ -1,10 +1,5 @@
 import { h } from 'snabbdom/h';
-
-import {
-	toggleShowQuotes,
-	hideInfoPanel,
-	resetHiddenQuotes,
-} from '../store/actions';
+import { hideInfoPanel } from '../store/actions';
 import Settings from './settings';
 import { Store } from '../store';
 

@@ -79,12 +79,6 @@ export const BuiltinQuotes: Array<Quote> = [
 		source: 'Neil A. Fiore',
 	},
 	{
-		id: 14,
-		text:
-			'Nothing can stop the man with the right mental attitude from achieving his goal; nothing on earth can help the man with the wrong mental attitude.',
-		source: 'Thomas Jefferson',
-	},
-	{
 		id: 15,
 		text:
 			'There is only one success--to be able to spend your life in your own way.',
@@ -399,5 +393,99 @@ export const BuiltinQuotes: Array<Quote> = [
 		id: 70,
 		text: 'You only live once, but if you do it right, once is enough.',
 		source: 'Mae West',
+	},
+	{
+		id: 71,
+		text:
+			'We must use time creatively, in the knowledge that the time is always ripe to do right.',
+		source: 'Martin Luther King Jr.',
+	},
+	{
+		id: 72,
+		text: 'Every birthday is a gift. Every day is a gift.',
+		source: 'Aretha Franklin',
+	},
+	{
+		id: 73,
+		text: 'The quality, not the longevity, of one’s life is what is important.',
+		source: 'Martin Luther King Jr.',
+	},
+	{
+		id: 74,
+		text:
+			'Good manners will often take people where neither money nor education will take them.',
+		source: 'Fanny Jackson Coppin',
+	},
+	{
+		id: 75,
+		text:
+			'No matter how big a nation is, it is no stronger that its weakest people, and as long as you keep a person down, some part of you has to be down there to hold him down, so it means you cannot soar as you might otherwise.',
+		source: 'Marian Anderson',
+	},
+	{
+		id: 76,
+		text:
+			'The minute a person whose word means a great deal to others dare to take the open-hearted and courageous way, many others follow.',
+		source: 'Marian Anderson',
+	},
+	{
+		id: 77,
+		text:
+			'You cannot define a person on just one thing. You can’t just forget all these wonderful and good things that a person has done because one thing didn’t come off the way you thought it should come off.',
+		source: 'Aretha Franklin',
+	},
+	{
+		id: 78,
+		text:
+			'If you do not have courage, you may not have the opportunity to use any of your other virtues.',
+		source: 'Samuel L. Jackson',
+	},
+	{
+		id: 79,
+		text:
+			"Our humanity is worth a little discomfort, it's actually worth a lot of discomfort.",
+		source: 'Ijeoma Oluo',
+	},
+	{
+		id: 80,
+		text:
+			'Not everything that is faced can be changed, but nothing can be changed until it is faced.',
+		source: 'James Baldwin',
+	},
+	{
+		id: 81,
+		text:
+			'If you’re always trying to be normal you will never know how amazing you can be.',
+		source: 'Maya Angelou',
+	},
+	{
+		id: 82,
+		text:
+			'If you find it in your heart to care for somebody else, you will have succeeded.',
+		source: 'Maya Angelou',
+	},
+	{
+		id: 83,
+		text:
+			'I’ve learned that whenever I decide something with an open heart, I usually make the right decision.',
+		source: 'Maya Angelou',
+	},
+	{
+		id: 84,
+		text:
+			'Every man must decide whether he will walk in the light of creative altruism or in the darkness of destructive selfishness.',
+		source: 'Martin Luther King Jr.',
+	},
+	{
+		id: 85,
+		text:
+			'An individual has not started living until he can rise above the narrow confines of his individualistic concerns to the broader concerns of all humanity.',
+		source: 'Martin Luther King Jr.',
+	},
+	{
+		id: 86,
+		text:
+			'Those who are not looking for happiness are the most likely to find it, because those who are searching forget that the surest way to be happy is to seek happiness for others.',
+		source: 'Martin Luther King Jr.',
 	},
 ];
