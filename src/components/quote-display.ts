@@ -3,21 +3,17 @@ import { currentQuote } from '../store/selectors';
 import {
 	removeCurrentQuote,
 	selectNewQuote,
-	addQuote,
 	startEditing,
-	cancelEditing,
 	menuHide,
 	menuToggle,
-	setQuoteText,
-	setQuoteSource,
-	ActionObject,
 } from '../store/actions';
 import { Store } from '../store';
 
 import QuoteEditor from './quote-editor';
+import { ActionObject } from '../store/action-types';
 
-const MenuItem = (store: Store, action, children) => {
-	const onClick = e => {
+const MenuItem = (store: Store, action: ActionObject, children: string) => {
+	const onClick = (e: Event) => {
 		e.preventDefault();
 		store.dispatch(menuHide());
 		store.dispatch(action);

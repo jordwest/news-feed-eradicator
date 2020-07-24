@@ -1,23 +1,17 @@
 import * as browser from '../webextension';
 
 import { createStore as createReduxStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { ThunkAction } from 'redux-thunk';
 
 import rootReducer, { IState } from './reducer';
-import { selectNewQuote, ActionTypeObject, ActionObject } from './actions';
-
-export type AppThunk<ReturnType = void> = ThunkAction<
-	ReturnType,
-	IState,
-	unknown,
-	ActionTypeObject | ActionObject
->;
+import { selectNewQuote } from './actions';
+import { effectsMiddleware } from '../lib/redux-effects';
+import { ActionObject } from './action-types';
+import { rootEffect } from './effects';
 
 export type Store = {
 	getState(): IState;
 	subscribe(cb: () => void): void;
-	dispatch(action: ActionObject | ActionTypeObject | AppThunk): void;
+	dispatch(action: ActionObject): void;
 };
 
 function saveSettings(state: IState) {
@@ -38,7 +32,7 @@ export function createStore(): Promise<Store> {
 			const store: Store = createReduxStore(
 				rootReducer,
 				initialState,
-				applyMiddleware(thunk)
+				applyMiddleware(effectsMiddleware(rootEffect))
 			);
 
 			store.dispatch(selectNewQuote());

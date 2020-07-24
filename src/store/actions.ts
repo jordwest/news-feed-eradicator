@@ -1,233 +1,76 @@
-import { getBuiltinQuotes } from './selectors';
+import {
+	ActionType,
+	QuoteEdit,
+	QuoteMenuShow,
+	QuoteSelectNew,
+	QuoteAdd,
+	QuoteRemoveCurrent,
+	QuoteAddBulk,
+} from './action-types';
+import { generateID } from '../lib/generate-id';
 
-enum ActionTypes {
-	TOGGLE_SHOW_QUOTES = <any>'TOGGLE_SHOW_QUOTES',
-	TOGGLE_BUILTIN_QUOTES = <any>'TOGGLE_BUILTIN_QUOTES',
-	SELECT_NEW_QUOTE = <any>'SELECT_NEW_QUOTE',
-	HIDE_QUOTE = <any>'HIDE_QUOTE',
-	DELETE_QUOTE = <any>'DELETE_QUOTE',
-	ADD_QUOTE = <any>'ADD_QUOTE',
-	ADD_QUOTES_BULK = <any>'ADD_QUOTES_BULK',
-	RESET_HIDDEN_QUOTES = <any>'RESET_HIDDEN_QUOTES',
-}
-
-interface INFO_PANEL_SHOW {
-	type: 'INFO_PANEL_SHOW';
-	show: 'SHOW' | 'HIDE' | 'TOGGLE';
-}
-
-interface QUOTE_MENU_SHOW {
-	type: 'QUOTE_MENU_SHOW';
-	show: 'SHOW' | 'HIDE' | 'TOGGLE';
-}
-
-interface QUOTE_EDIT {
-	type: 'QUOTE_EDIT';
-	action:
-		| { type: 'START' }
-		| { type: 'CANCEL' }
-		| { type: 'SET_TEXT'; text: string }
-		| { type: 'SET_SOURCE'; source: string }
-		| { type: 'TOGGLE_BULK' };
-}
-
-interface ERROR {
-	type: 'PARSE_ERROR';
-	message: string;
-}
-
-import { IState } from './reducer';
-import { AppThunk } from '.';
-
-export interface ActionTypeObject {
-	type: ActionTypes;
-}
-
-export type ActionObject =
-	| QUOTE_MENU_SHOW
-	| INFO_PANEL_SHOW
-	| QUOTE_EDIT
-	| ERROR;
-
-export default ActionTypes;
-
-function generateID(): string {
-	let key = '';
-	while (key.length < 16) {
-		key += Math.random()
-			.toString(16)
-			.substr(2);
-	}
-	return key.substr(0, 16);
-}
-
-export function hideInfoPanel(): INFO_PANEL_SHOW {
+export function addQuote(text: string, source: string): QuoteAdd {
 	return {
-		type: 'INFO_PANEL_SHOW',
-		show: 'HIDE',
+		type: ActionType.QUOTE_ADD,
+		id: generateID(),
+		text,
+		source,
 	};
 }
 
-export function showInfoPanel(): INFO_PANEL_SHOW {
+export function removeCurrentQuote(): QuoteRemoveCurrent {
+	return { type: ActionType.QUOTE_REMOVE_CURRENT };
+}
+
+export function selectNewQuote(): QuoteSelectNew {
+	return { type: ActionType.SELECT_NEW_QUOTE };
+}
+
+export function setQuoteText(text: string): QuoteEdit {
 	return {
-		type: 'INFO_PANEL_SHOW',
-		show: 'SHOW',
-	};
-}
-
-export function toggleShowQuotes() {
-	return {
-		type: ActionTypes.TOGGLE_SHOW_QUOTES,
-	};
-}
-
-export function toggleBuiltinQuotes(): AppThunk {
-	return dispatch => {
-		dispatch({
-			type: ActionTypes.TOGGLE_BUILTIN_QUOTES,
-		});
-
-		dispatch(selectNewQuote());
-	};
-}
-
-export function addQuote(text: string, source: string): AppThunk {
-	const id = generateID();
-	return dispatch => {
-		dispatch({
-			type: ActionTypes.ADD_QUOTE,
-			id,
-			text,
-			source,
-		});
-		dispatch(cancelEditing());
-	};
-}
-
-export function resetHiddenQuotes() {
-	return {
-		type: ActionTypes.RESET_HIDDEN_QUOTES,
-	};
-}
-
-export function removeCurrentQuote(): AppThunk {
-	return (dispatch, getState) => {
-		const state: IState = getState();
-		if (state.isCurrentQuoteCustom) {
-			dispatch({
-				type: ActionTypes.DELETE_QUOTE,
-				id: state.currentQuoteID,
-			});
-		} else {
-			dispatch({
-				type: ActionTypes.HIDE_QUOTE,
-				id: state.currentQuoteID,
-			});
-		}
-
-		dispatch(selectNewQuote());
-	};
-}
-
-export function selectNewQuote(): AppThunk {
-	return (dispatch, getState) => {
-		const state: IState = getState();
-		const builtinQuotes = getBuiltinQuotes(state);
-		const customQuotes = state.customQuotes;
-		const allQuotes = builtinQuotes.concat(customQuotes);
-		if (allQuotes.length < 1) {
-			return dispatch({
-				type: ActionTypes.SELECT_NEW_QUOTE,
-				isCustom: false,
-				id: null,
-			});
-		}
-
-		const quoteIndex = Math.floor(Math.random() * allQuotes.length);
-		dispatch({
-			type: ActionTypes.SELECT_NEW_QUOTE,
-			isCustom: quoteIndex >= builtinQuotes.length,
-			id: allQuotes[quoteIndex].id,
-		});
-	};
-}
-
-export function setQuoteText(text: string): QUOTE_EDIT {
-	return {
-		type: 'QUOTE_EDIT',
+		type: ActionType.QUOTE_EDIT,
 		action: { type: 'SET_TEXT', text: text },
 	};
 }
 
-export function setQuoteSource(source: string): QUOTE_EDIT {
+export function setQuoteSource(source: string): QuoteEdit {
 	return {
-		type: 'QUOTE_EDIT',
+		type: ActionType.QUOTE_EDIT,
 		action: { type: 'SET_SOURCE', source },
 	};
 }
 
-export function startEditing(): QUOTE_EDIT {
+export function startEditing(): QuoteEdit {
 	return {
-		type: 'QUOTE_EDIT',
+		type: ActionType.QUOTE_EDIT,
 		action: { type: 'START' },
 	};
 }
 
-export function cancelEditing(): QUOTE_EDIT {
+export function cancelEditing(): QuoteEdit {
 	return {
-		type: 'QUOTE_EDIT',
+		type: ActionType.QUOTE_EDIT,
 		action: { type: 'CANCEL' },
 	};
 }
 
-export const menuHide = (): QUOTE_MENU_SHOW => ({
-	type: 'QUOTE_MENU_SHOW',
+export const menuHide = (): QuoteMenuShow => ({
+	type: ActionType.QUOTE_MENU_SHOW,
 	show: 'HIDE',
 });
 
-export const menuToggle = (): QUOTE_MENU_SHOW => ({
-	type: 'QUOTE_MENU_SHOW',
+export const menuToggle = (): QuoteMenuShow => ({
+	type: ActionType.QUOTE_MENU_SHOW,
 	show: 'TOGGLE',
 });
 
-export function toggleBulkEdit(): QUOTE_EDIT {
+export function toggleBulkEdit(): QuoteEdit {
 	return {
-		type: 'QUOTE_EDIT',
+		type: ActionType.QUOTE_EDIT,
 		action: { type: 'TOGGLE_BULK' },
 	};
 }
 
-export function addQuotesBulk(text: string): AppThunk {
-	return dispatch => {
-		const lines = text.split('\n');
-		const quotes = [];
-		for (var lineCount = 0; lineCount < lines.length; lineCount++) {
-			const line = lines[lineCount];
-			const quote = line.split('~');
-			const trimmedQuote = [];
-
-			if (quote.length === 0 || quote[0].trim() === '') {
-				// ignore newlines and empty spaces
-			} else if (quote.length !== 2) {
-				return dispatch({
-					type: 'PARSE_ERROR',
-					message: `Invalid format on line ${(
-						lineCount + 1
-					).toString()}: \"${quote}\"`,
-				});
-			} else {
-				quote.forEach(field => trimmedQuote.push(field.trim()));
-				quotes.push(trimmedQuote);
-			}
-		}
-		quotes.forEach(trimmedQuote => {
-			dispatch({
-				type: ActionTypes.ADD_QUOTE,
-				id: generateID(),
-				text: trimmedQuote[0],
-				source: trimmedQuote[1],
-			});
-		});
-		dispatch(cancelEditing());
-	};
+export function addQuotesBulk(text: string): QuoteAddBulk {
+	return { type: ActionType.QUOTE_ADD_BULK, text };
 }

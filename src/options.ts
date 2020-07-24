@@ -8,6 +8,7 @@ import attrsModule from 'snabbdom/modules/attributes';
 import eventsModule from 'snabbdom/modules/eventlisteners';
 import { toVNode } from 'snabbdom/tovnode';
 import InfoPanel from './components/info-panel';
+import { ActionType } from './store/action-types';
 
 const storePromise = createStore();
 
@@ -22,6 +23,8 @@ export function start(container: Node) {
 
 	storePromise
 		.then(store => {
+			store.dispatch({ type: ActionType.UI_OPTIONS_SHOW });
+
 			const render = () => {
 				const newVnode = h('div#nfe-container', [InfoPanel(store)]);
 

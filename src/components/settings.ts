@@ -1,17 +1,12 @@
 import { h } from 'snabbdom/h';
-
-import {
-	toggleShowQuotes,
-	resetHiddenQuotes,
-	toggleBuiltinQuotes,
-} from '../store/actions';
+import { ActionType, ActionObject } from '../store/action-types';
 import { Store } from '../store';
 
 const CheckboxField = (
 	store: Store,
 	checked: boolean,
 	text: string,
-	toggleAction,
+	toggleAction: ActionObject,
 	disabled = false
 ) => {
 	return h('label', [
@@ -36,21 +31,21 @@ const Settings = (store: Store) => {
 		store,
 		state.showQuotes,
 		'Show Quotes',
-		toggleShowQuotes()
+		{ type: ActionType.TOGGLE_SHOW_QUOTES }
 	);
 
 	const fieldShowBuiltin = CheckboxField(
 		store,
 		state.builtinQuotesEnabled,
 		'Enable Built-in Quotes',
-		toggleBuiltinQuotes(),
+		{ type: ActionType.TOGGLE_BUILTIN_QUOTES },
 		!state.showQuotes
 	);
 
 	const hiddenQuoteCount = state.hiddenBuiltinQuotes.length;
-	const hiddenQuoteReset = e => {
+	const hiddenQuoteReset = (e: Event) => {
 		e.preventDefault();
-		store.dispatch(resetHiddenQuotes());
+		store.dispatch({ type: ActionType.RESET_HIDDEN_QUOTES });
 	};
 	const hiddenQuotes = h('span.nfe-settings-hidden-quote-count', [
 		h('span', ' ' + hiddenQuoteCount + ' hidden - '),

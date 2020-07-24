@@ -18,19 +18,11 @@ const NewsFeedEradicator = (store: Store) => {
 		? h('span.nfe-label.nfe-new-features', 'New Features!')
 		: null;
 
-	const infoPanel = state.showInfoPanel ? InfoPanel(store) : null;
-
 	const footerText = 'News Feed Eradicator';
 
 	const onShowInfoPanel = () => {
-		console.log(
-			getBrowser().runtime.sendMessage({ t: MessageType.OPTIONS_PAGE_OPEN })
-		);
-		window['getBrowser'] = getBrowser;
+		getBrowser().runtime.sendMessage({ t: MessageType.OPTIONS_PAGE_OPEN });
 	};
-	//getBrowser()
-	//	.runtime.openOptionsPage()
-	//	.catch(e => console.error(e));
 
 	const link = h('a.nfe-info-link', { on: { click: onShowInfoPanel } }, [
 		h('span', footerText),
@@ -38,7 +30,7 @@ const NewsFeedEradicator = (store: Store) => {
 	]);
 
 	// Entire app component
-	return h('div', [infoPanel, quoteDisplay, link]);
+	return h('div', [quoteDisplay, link]);
 };
 
 export default NewsFeedEradicator;

@@ -9,6 +9,7 @@ import {
 	toggleBulkEdit,
 	addQuotesBulk,
 } from '../store/actions';
+import { ActionType } from '../store/action-types';
 
 const QuoteEditor = (store: Store) => {
 	const state = store.getState();
@@ -19,16 +20,16 @@ const QuoteEditor = (store: Store) => {
 	const isEditingBulk = state.isEditingBulk;
 	const errorMessage = state.error;
 
-	const onChangeText = e => {
-		store.dispatch(setQuoteText(e.target.value));
+	const onChangeText = (e: Event) => {
+		store.dispatch(setQuoteText((e.target as HTMLInputElement).value));
 	};
-	const onChangeSource = e => {
-		store.dispatch(setQuoteSource(e.target.value));
+	const onChangeSource = (e: Event) => {
+		store.dispatch(setQuoteSource((e.target as HTMLInputElement).value));
 	};
 
 	const onSave = () => {
 		if (!isEditingBulk) {
-			store.dispatch(addQuote(text, source));
+			store.dispatch({ type: ActionType.QUOTE_SAVE_CLICKED });
 		} else {
 			store.dispatch(addQuotesBulk(text));
 		}
@@ -36,7 +37,7 @@ const QuoteEditor = (store: Store) => {
 	const onCancel = () => {
 		store.dispatch(cancelEditing());
 	};
-	const onCheckboxToggle = e => {
+	const onCheckboxToggle = () => {
 		store.dispatch(toggleBulkEdit());
 	};
 

@@ -10,7 +10,9 @@ export function areNewFeaturesAvailable(state: IState) {
 export function getBuiltinQuotes(state: IState) {
 	if (!state.builtinQuotesEnabled) return [];
 	return BuiltinQuotes.filter(
-		quote => state.hiddenBuiltinQuotes.indexOf(quote.id) === -1
+		quote =>
+			typeof quote.id !== 'number' ||
+			state.hiddenBuiltinQuotes.indexOf(quote.id) === -1
 	);
 }
 
