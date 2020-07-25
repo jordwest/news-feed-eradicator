@@ -1,6 +1,6 @@
 {
 	"name": "News Feed Eradicator for LinkedIn",
-	"version": "1.2.3",
+	"version": "1.0.0",
 	"description": "Find yourself spending too much time on LinkedIn? Eradicate distractions by replacing your entire news feed with an inspiring quote.",
 	"manifest_version": 2,
 	"permissions": [
