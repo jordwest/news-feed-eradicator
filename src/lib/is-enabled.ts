@@ -1,5 +1,5 @@
-const PATHS = ['', '/'];
+const PATHS = ['/feed', '/feed/'];
 
-export default function isEnabled(paths: Array<String> = []) {
-	return [...PATHS, ...paths].indexOf(window.location.pathname) > -1;
+export default function isEnabled() {
+	return [...PATHS].indexOf(window.location.pathname) > -1;
 }

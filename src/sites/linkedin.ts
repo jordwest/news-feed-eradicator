@@ -5,7 +5,7 @@ export function eradicate() {
 	let retryInterval;
 
 	function eradicateRetry() {
-		if (!isEnabled(['/feed', '/feed/'])) {
+		if (!isEnabled()) {
 			return;
 		}
 
@@ -30,7 +30,8 @@ export function eradicate() {
 		if (!isAlreadyInjected()) {
 			clearInterval(retryInterval);
 
-			coreRail.classList.add('nfe-loaded');
+			const html = document.querySelector('html');
+			html.dataset.nfeEnabled = 'true';
 
 			// clear scroll event listener so that newsfeed is not
 			// reloaded on scroll

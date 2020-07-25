@@ -1,8 +1,8 @@
 {
-	"name": "news-feed-eradicator",
-	"title": "News Feed Eradicator for Facebook",
+	"name": "linkedin-news-feed-eradicator",
+	"title": "News Feed Eradicator for LinkedIn",
 	"id": "jid1-oWTXWc3MRzRuiQ",
-	"description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
+	"description": "Find yourself spending too much time on LinkedIn? Eradicate distractions by replacing your entire news feed with an inspiring quote",
 	"author": "Jordan West",
 	"license": "MIT",
 	"version": "1.2.3",

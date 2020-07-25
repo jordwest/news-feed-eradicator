@@ -1,14 +1,10 @@
 {
-	"name": "News Feed Eradicator for Facebook and LinkedIn",
+	"name": "News Feed Eradicator for LinkedIn",
 	"version": "1.2.3",
-	"description": "Find yourself spending too much time on social media? Eradicate distractions by replacing your entire news feed with an inspiring quote.",
+	"description": "Find yourself spending too much time on LinkedIn? Eradicate distractions by replacing your entire news feed with an inspiring quote.",
 	"manifest_version": 2,
 	"permissions": [
 		"storage",
-		"http://www.facebook.com/*",
-		"https://www.facebook.com/*",
-		"http://web.facebook.com/*",
-		"https://web.facebook.com/*",
 		"https://www.linkedin.com/*",
 		"http://www.linkedin.com/*"
 	],
@@ -24,27 +20,13 @@
 	},
 	"content_scripts": [
 		{
-			"matches": [
-				"http://www.facebook.com/*",
-				"https://www.facebook.com/*",
-				"http://web.facebook.com/*",
-				"https://web.facebook.com/*",
-				"https://www.linkedin.com/*",
-				"http://www.linkedin.com/*"
-			],
+			"matches": ["https://www.linkedin.com/*", "http://www.linkedin.com/*"],
 			"js": ["intercept.js"],
 			"css": ["eradicate.css"],
 			"run_at": "document_start"
 		},
 		{
-			"matches": [
-				"http://www.facebook.com/*",
-				"https://www.facebook.com/*",
-				"http://web.facebook.com/*",
-				"https://web.facebook.com/*",
-				"https://www.linkedin.com/*",
-				"http://www.linkedin.com/*"
-			],
+			"matches": ["https://www.linkedin.com/*", "http://www.linkedin.com/*"],
 			"js": ["eradicate.js"],
 			"css": ["eradicate.css"],
 			"run_at": "document_idle"

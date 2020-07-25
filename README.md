@@ -1,4 +1,7 @@
-# News Feed Eradicator for Facebook and LinkedIn
+# News Feed Eradicator for LinkedIn
+
+> Forked from [https://github.com/jordwest/news-feed-eradicator](jordwest/news-feed-eradicator)
+> These project will eventually be part of the single browser extension. Follow https://github.com/jordwest/news-feed-eradicator/issues/63 for updates
 
 A browser extension that replaces your news feed with a motivational quote.
 

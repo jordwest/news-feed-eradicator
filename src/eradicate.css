@@ -231,23 +231,8 @@ button.nfe-button-primary {
 	color: #ff0000;
 }
 
-/* This hides the Facebook news feed before the JS kicks in */
-div[id^='explorefeed_main_stream'],
-div[id^='topnews_main_stream'],
-div.ticker_stream,
-div.ego_column,
-#pagelet_home_stream,
-#pagelet_trending_tags_and_topics,
-#stories_pagelet_rhc,
-#fb_stories_card_root,
-#pagelet_gaming_destination_rhc,
-#pagelet_canvas_nav_content {
-	opacity: 0 !important;
-	pointer-events: none !important;
-}
-
-html:not([data-nfe-enabled='false']) div[role='feed'],
-div[aria-label='Stories'] {
+/* This hides the Linkedin news feed before NFE kicks in */
+html[data-nfe-enabled='false'] .core-rail > .ember-view {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
