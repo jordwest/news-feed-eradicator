@@ -75,7 +75,7 @@ const Contribute = () => {
 			h(
 				'a',
 				{
-					props: { href: 'https://github.com/jordwest/news-feed-eradicator/' },
+					props: { href: 'https://github.com/tomquirk/news-feed-eradicator/' },
 				},
 				'Fork on GitHub'
 			),

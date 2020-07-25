@@ -10,25 +10,24 @@ const CHECK_INTERVAL = 1000;
 
 let lastPath = undefined;
 let element = document.querySelector('html');
+
+const onChange = (): any => {
+	if (isEnabled()) {
+		element.dataset.nfeEnabled = 'true';
+	} else {
+		// Delay showing the feed when switching pages, sometimes it can appear
+		// before the page has switched
+		setTimeout(() => {
+			element.dataset.nfeEnabled = 'false';
+		}, 1000);
+	}
+};
+
 export function setupRouteChange() {
-	element.dataset.nfeEnabled = 'false';
-
-	const onChange = (): any => {
-		if (isEnabled()) {
-			element.dataset.nfeEnabled = 'true';
-		} else {
-			// Delay showing the feed when switching pages, sometimes it can appear
-			// before the page has switched
-			setTimeout(() => {
-				element.dataset.nfeEnabled = 'false';
-			}, 1000);
-		}
-	};
-
 	let timer = undefined;
+
 	const checkIfLocationChanged = () => {
 		let path = document.location.pathname;
-		console.log(path, lastPath);
 		if (path != lastPath) {
 			lastPath = path;
 			onChange();
@@ -38,7 +37,7 @@ export function setupRouteChange() {
 		}
 		timer = setTimeout(checkIfLocationChanged, CHECK_INTERVAL);
 	};
-	window.addEventListener('popstate', checkIfLocationChanged);
 
+	window.addEventListener('popstate', checkIfLocationChanged);
 	checkIfLocationChanged();
 }

@@ -12,10 +12,6 @@
 	text-align: left;
 }
 
-.__fb-dark-mode .nfe-quote-text {
-	color: white;
-}
-
 .nfe-info-panel p {
 	text-align: justify;
 	text-justify: inter-word;
@@ -232,17 +228,12 @@ button.nfe-button-primary {
 }
 
 /* This hides the Linkedin news feed before NFE kicks in */
-html[data-nfe-enabled='false'] .core-rail > .ember-view {
-	opacity: 0 !important;
-	pointer-events: none !important;
-	height: 0 !important;
-}
-
-/* This hides the Linkedin news feed before NFE kicks in */
-.core-rail:not(.nfe-loaded) > .ember-view {
+html:not([data-nfe-enabled='true']) .core-rail > .ember-view,
+html:not([data-nfe-enabled='true']) #nfe-container {
 	display: none;
 }
-.nfe-linkedin-hide > .ember-view,
-.nfe-linkedin-hide > .art-deco {
+
+html[data-nfe-enabled='true'] .nfe-linkedin-hide > .ember-view,
+html[data-nfe-enabled='true'] .nfe-linkedin-hide > .art-deco {
 	display: none;
 }

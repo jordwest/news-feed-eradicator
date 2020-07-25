@@ -2,10 +2,8 @@ import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
 import isEnabled from '../lib/is-enabled';
 
 export function eradicate() {
-	let retryInterval;
-
 	function eradicateRetry() {
-		if (!isEnabled()) {
+		if (isAlreadyInjected()) {
 			return;
 		}
 
@@ -26,22 +24,14 @@ export function eradicate() {
 
 		feed.classList.add('nfe-linkedin-hide');
 
-		// Add News Feed Eradicator quote/info panel
-		if (!isAlreadyInjected()) {
-			clearInterval(retryInterval);
+		// clear scroll event listener so that newsfeed is not
+		// reloaded on scroll
+		window.addEventListener('scroll', () => undefined);
 
-			const html = document.querySelector('html');
-			html.dataset.nfeEnabled = 'true';
-
-			// clear scroll event listener so that newsfeed is not
-			// reloaded on scroll
-			window.addEventListener('scroll', () => undefined);
-
-			injectUI(feed);
-		}
+		injectUI(feed);
 	}
 
 	// This delay ensures that the elements have been created by LinkedIn's
 	// scripts before we attempt to replace them
-	retryInterval = setInterval(eradicateRetry, 1000);
+	setInterval(eradicateRetry, 1000);
 }
