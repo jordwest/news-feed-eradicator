@@ -4,11 +4,6 @@ import config from '../config';
 import { BuiltinQuotes, Quote } from '../quote';
 import { CurrentQuote } from './action-types';
 
-export function areNewFeaturesAvailable(state: IState) {
-	if (state.settings == null) return undefined;
-	return config.newFeatureIncrement > state.settings.featureIncrement;
-}
-
 export function getBuiltinQuotes(state: IState) {
 	if (state.settings == null) return [];
 	if (!state.settings.builtinQuotesEnabled) return [];

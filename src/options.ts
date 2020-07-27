@@ -8,6 +8,7 @@ import eventsModule from 'snabbdom/modules/eventlisteners';
 import { toVNode } from 'snabbdom/tovnode';
 import InfoPanel from './components/info-panel';
 import { ActionType } from './store/action-types';
+import { SettingsActionType } from './settings/action-types';
 
 const store = createStore();
 
@@ -24,7 +25,12 @@ export function start(container: Node | null) {
 
 	let vnode = toVNode(nfeContainer);
 
-	store.dispatch({ type: ActionType.UI_OPTIONS_SHOW });
+	store.dispatch({
+		type: ActionType.SETTINGS_ACTION,
+		action: {
+			type: SettingsActionType.FEATURE_INCREMENT,
+		},
+	});
 
 	const render = () => {
 		const newVnode = h('div#nfe-container', [InfoPanel(store)]);

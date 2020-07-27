@@ -73,10 +73,36 @@ export type SettingsState = {
 	customQuotes: CustomQuote[];
 };
 
-export default combineReducers({
+export type SettingsRoot =
+	| { ready: false }
+	| {
+			ready: true;
+			settings: SettingsState;
+	  };
+
+const settingsReducer = combineReducers({
 	showQuotes,
 	builtinQuotesEnabled,
 	featureIncrement,
 	hiddenBuiltinQuotes,
 	customQuotes,
 });
+
+export default (
+	state: SettingsRoot | undefined,
+	action: ActionObject
+): SettingsRoot => {
+	// We can't do anything until the initial settings have been loaded,
+
+	if (action.type === ActionType.SETTINGS_LOADED) {
+		return { ready: true, settings: action.settings };
+	} else if (state == null || state.ready === false) {
+		return { ready: false };
+	} else if (state.ready === true) {
+		return {
+			ready: true,
+			settings: settingsReducer(state.settings, action),
+		};
+	}
+	return state;
+};
