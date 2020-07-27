@@ -1,11 +1,7 @@
 import { Effect } from '../lib/redux-effects';
 import { IState } from './reducer';
-import {
-	getBuiltinQuotes,
-	currentQuote,
-	getAvailableQuotes,
-} from './selectors';
-import { ActionType, ActionObject, CurrentQuote } from './action-types';
+import { currentQuote, getAvailableQuotes } from './selectors';
+import { ActionType, ActionObject } from './action-types';
 import { cancelEditing, addQuote } from './actions';
 import { generateID } from '../lib/generate-id';
 import { getBrowser } from '../webextension';
@@ -143,6 +139,10 @@ const connect: AppEffect = store => {
 			port.postMessage({
 				t: MessageType.SETTINGS_ACTION,
 				action: action.action,
+			});
+		} else if (action.type === ActionType.UI_OPTIONS_SHOW) {
+			port.postMessage({
+				t: MessageType.OPTIONS_PAGE_OPEN,
 			});
 		}
 	};

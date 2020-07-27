@@ -3,7 +3,7 @@ import Settings from './settings';
 import { Store } from '../store';
 
 const Heading = () => {
-	return [h('h1', 'News Feed Eradicator')];
+	return h('h1', 'News Feed Eradicator');
 };
 
 const Icon = (svgPath: string) => (color: string) =>
@@ -30,7 +30,7 @@ const TwitterIcon = Icon(
 );
 
 const Share = () => {
-	return [
+	return h('div', [
 		h('h2', 'Share'),
 		h('div.nfe-social-media-icons', [
 			h(
@@ -44,11 +44,11 @@ const Share = () => {
 				[TwitterIcon('#4f92ff')]
 			),
 		]),
-	];
+	]);
 };
 
 const Contribute = () => {
-	return [
+	return h('div', [
 		h('h2', 'Contribute'),
 		h('p', [
 			h('span', 'News Feed Eradicator is open source. '),
@@ -60,11 +60,11 @@ const Contribute = () => {
 				'Fork on GitHub'
 			),
 		]),
-	];
+	]);
 };
 
 const Remove = () => {
-	return [
+	return h('div', [
 		h('h2', 'Remove'),
 		h('ul', [
 			h('li', [
@@ -79,7 +79,7 @@ const Remove = () => {
 				),
 			]),
 		]),
-	];
+	]);
 };
 
 const InfoPanel = (store: Store) => {

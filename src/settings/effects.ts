@@ -20,8 +20,9 @@ const getSettings = (state: SettingsState): Settings.T => ({
  * Listen for content scripts
  */
 const listen: SettingsEffect = store => {
+	const browser = getBrowser();
 	let pages: Port[] = [];
-	getBrowser().runtime.onConnect.addListener(port => {
+	browser.runtime.onConnect.addListener(port => {
 		pages.push(port);
 
 		// Send the new client the latest settings
@@ -36,6 +37,9 @@ const listen: SettingsEffect = store => {
 			if (msg.t === MessageType.SETTINGS_ACTION) {
 				console.log('got an action from a client');
 				store.dispatch(msg.action);
+			}
+			if (msg.t === MessageType.OPTIONS_PAGE_OPEN) {
+				browser.runtime.openOptionsPage();
 			}
 		});
 	});

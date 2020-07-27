@@ -4,8 +4,7 @@ import { Store } from '../store';
 import { areNewFeaturesAvailable } from '../store/selectors';
 
 import { h } from 'snabbdom/h';
-import { getBrowser } from '../webextension';
-import { MessageType } from '../messaging/types';
+import {ActionType} from '../store/action-types';
 
 const NewsFeedEradicator = (store: Store) => {
 	const state = store.getState();
@@ -20,7 +19,7 @@ const NewsFeedEradicator = (store: Store) => {
 	const footerText = 'News Feed Eradicator';
 
 	const onShowInfoPanel = () => {
-		getBrowser().runtime.sendMessage({ t: MessageType.OPTIONS_PAGE_OPEN });
+		store.dispatch({type: ActionType.UI_OPTIONS_SHOW});
 	};
 
 	const link = h('a.nfe-info-link', { on: { click: onShowInfoPanel } }, [
