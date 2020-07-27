@@ -34,7 +34,7 @@ export function eradicate() {
 		//removeNode(stories);
 
 		// Add News Feed Eradicator quote/info panel
-		if (!isAlreadyInjected()) {
+		if (container && !isAlreadyInjected()) {
 			injectUI(container);
 		}
 	}

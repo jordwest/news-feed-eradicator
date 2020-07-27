@@ -1,49 +1,37 @@
+import { Settings } from '../settings';
+import { SettingsActionObject } from '../settings/action-types';
+import { SettingsState } from '../settings/reducer';
+
 export enum ActionType {
-	TOGGLE_SHOW_QUOTES = 'TOGGLE_SHOW_QUOTES',
-	TOGGLE_BUILTIN_QUOTES = 'TOGGLE_BUILTIN_QUOTES',
 	SELECT_NEW_QUOTE = 'SELECT_NEW_QUOTE',
-	QUOTE_HIDE = 'QUOTE_HIDE',
-	QUOTE_DELETE = 'QUOTE_DELETE',
-	QUOTE_ADD = 'QUOTE_ADD',
 	QUOTE_ADD_BULK = 'QUOTE_ADD_BULK',
 	QUOTE_EDIT = 'QUOTE_EDIT',
-	QUOTE_SET = 'QUOTE_SET',
+	QUOTE_CURRENT_SET = 'QUOTE_CURRENT_SET',
 	QUOTE_SAVE_CLICKED = 'QUOTE_SAVE_CLICKED',
 	QUOTE_REMOVE_CURRENT = 'QUOTE_REMOVE_CURRENT',
-	RESET_HIDDEN_QUOTES = 'RESET_HIDDEN_QUOTES',
 	QUOTE_MENU_SHOW = 'QUOTE_MENU_SHOW',
+	RESET_HIDDEN_QUOTES = 'RESET_HIDDEN_QUOTES',
+	SETTINGS_ACTION = 'SETTINGS_ACTION',
+	SETTINGS_CHANGED = 'SETTINGS_CHANGED',
 	PARSE_ERROR = 'PARSE_ERROR',
 	UI_OPTIONS_SHOW = 'UI_OPTIONS_SHOW',
 }
 
 export type ActionObject =
-	| ToggleShowQuotes
-	| ToggleBuiltinQuotes
 	| QuoteSelectNew
 	| QuoteRemoveCurrent
 	| QuoteMenuShow
 	| QuoteEdit
-	| QuoteHide
-	| QuoteDelete
-	| QuoteSet
-	| QuoteAdd
+	| QuoteCurrentSet
 	| QuoteSaveClicked
-	| QuoteDelete
-	| QuoteHide
 	| QuoteAddBulk
-	| QuoteResetHidden
 	| QuoteBulkParseError
-	| QuoteBulkParseError
+	| SettingsAction
+	| SettingsChanged
 	| UiOptionsShow;
 
 export type UiOptionsShow = {
 	type: ActionType.UI_OPTIONS_SHOW;
-};
-export type ToggleShowQuotes = {
-	type: ActionType.TOGGLE_SHOW_QUOTES;
-};
-export type ToggleBuiltinQuotes = {
-	type: ActionType.TOGGLE_BUILTIN_QUOTES;
 };
 export type QuoteSelectNew = {
 	type: ActionType.SELECT_NEW_QUOTE;
@@ -65,28 +53,22 @@ export type QuoteSaveClicked = {
 	type: ActionType.QUOTE_SAVE_CLICKED;
 };
 
-export type QuoteAdd = {
-	type: ActionType.QUOTE_ADD;
-	id: string | number;
-	text: string;
-	source: string;
-};
-
-export type QuoteHide = { type: ActionType.QUOTE_HIDE; id: string | number };
-export type QuoteDelete = {
-	type: ActionType.QUOTE_DELETE;
-	id: string | number;
-};
-
 export type QuoteAddBulk = {
 	type: ActionType.QUOTE_ADD_BULK;
 	text: string;
 };
 
-export type QuoteSet = {
-	type: ActionType.QUOTE_SET;
-	isCustom: boolean;
-	id: string | number | undefined;
+export type CurrentQuote =
+	| {
+			type: 'custom';
+			id: string;
+	  }
+	| { type: 'builtin'; id: number }
+	| { type: 'none-found' };
+
+export type QuoteCurrentSet = {
+	type: ActionType.QUOTE_CURRENT_SET;
+	quote: CurrentQuote;
 };
 
 export type QuoteEdit = {
@@ -102,6 +84,15 @@ export type QuoteEdit = {
 export type QuoteBulkParseError = {
 	type: ActionType.PARSE_ERROR;
 	message: string;
+};
+
+export type SettingsAction = {
+	type: ActionType.SETTINGS_ACTION;
+	action: SettingsActionObject;
+};
+export type SettingsChanged = {
+	type: ActionType.SETTINGS_CHANGED;
+	settings: SettingsState;
 };
 
 export interface ActionTypeObject {

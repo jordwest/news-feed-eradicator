@@ -10,6 +10,10 @@ build: install copy-assets
 	mkdir -p dist
 	(cd build && zip -r ../dist/NewsFeedEradicator_$(GITTAG).zip .)
 
+# Typecheck only
+check:
+	npm run check
+
 # Firefox Add-on store requires source to be submitted as a zip, so this command builds that zip
 package-source:
 	mkdir -p dist

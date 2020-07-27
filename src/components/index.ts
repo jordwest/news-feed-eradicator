@@ -1,5 +1,4 @@
 import QuoteDisplay from './quote-display';
-import InfoPanel from './info-panel';
 
 import { Store } from '../store';
 import { areNewFeaturesAvailable } from '../store/selectors';
@@ -12,7 +11,7 @@ const NewsFeedEradicator = (store: Store) => {
 	const state = store.getState();
 
 	// TODO: Add quotes component
-	const quoteDisplay = state.showQuotes ? QuoteDisplay(store) : null;
+	const quoteDisplay = state.settings?.showQuotes ? QuoteDisplay(store) : null;
 
 	const newFeatureLabel = areNewFeaturesAvailable(state)
 		? h('span.nfe-label.nfe-new-features', 'New Features!')

@@ -8,22 +8,22 @@ import isEnabled from './is-enabled';
 // had no effect.
 const CHECK_INTERVAL = 1000;
 
-let lastPath = undefined;
+let lastPath: string | undefined = undefined;
 let element = document.querySelector('html');
 export function setupRouteChange() {
 	const onChange = (): any => {
 		if (isEnabled()) {
-			element.dataset.nfeEnabled = 'true';
+			element!.dataset.nfeEnabled = 'true';
 		} else {
 			// Delay showing the feed when switching pages, sometimes it can appear
 			// before the page has switched
 			setTimeout(() => {
-				element.dataset.nfeEnabled = 'false';
+				element!.dataset.nfeEnabled = 'false';
 			}, 1000);
 		}
 	};
 
-	let timer = undefined;
+	let timer: NodeJS.Timer | undefined = undefined;
 	const checkIfLocationChanged = () => {
 		let path = document.location.pathname;
 		if (path != lastPath) {

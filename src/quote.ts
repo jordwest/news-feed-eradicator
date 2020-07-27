@@ -1,12 +1,16 @@
-export interface Quote {
-	id: number | string;
+export type CustomQuote = {
+	id: string;
 	text: string;
 	source: string;
-}
+};
+export type BuiltinQuote = {
+	id: number;
+	text: string;
+	source: string;
+};
+export type Quote = CustomQuote | BuiltinQuote;
 
-export default Quote;
-
-export const BuiltinQuotes: Array<Quote> = [
+export const BuiltinQuotes: Array<BuiltinQuote> = [
 	{
 		id: 1,
 		text:

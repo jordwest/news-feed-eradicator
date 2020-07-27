@@ -1,5 +1,3 @@
-import * as browser from '../webextension';
-
 import { createStore as createReduxStore, applyMiddleware } from 'redux';
 
 import rootReducer, { IState } from './reducer';
@@ -14,34 +12,12 @@ export type Store = {
 	dispatch(action: ActionObject): void;
 };
 
-function saveSettings(state: IState) {
-	const data = {
-		showQuotes: state.showQuotes,
-		builtinQuotesEnabled: state.builtinQuotesEnabled,
-		featureIncrement: state.featureIncrement,
-		hiddenBuiltinQuotes: state.hiddenBuiltinQuotes,
-		customQuotes: state.customQuotes,
-	};
+export function createStore(): Store {
+	const store: Store = createReduxStore(
+		rootReducer,
+		{},
+		applyMiddleware(effectsMiddleware(rootEffect))
+	);
 
-	browser.saveSettings(data);
-}
-
-export function createStore(): Promise<Store> {
-	return new Promise(resolve => {
-		browser.loadSettings((initialState: IState) => {
-			const store: Store = createReduxStore(
-				rootReducer,
-				initialState,
-				applyMiddleware(effectsMiddleware(rootEffect))
-			);
-
-			store.dispatch(selectNewQuote());
-
-			store.subscribe(() => {
-				saveSettings(store.getState());
-			});
-
-			resolve(store);
-		});
-	});
+	return store;
 }

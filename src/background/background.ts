@@ -1,10 +1,4 @@
-import { getBrowser } from '../webextension';
-import { Message, MessageType } from '../messaging/types';
+import { createSettingsStore } from '../settings/store';
 
-const browser = getBrowser();
-browser.runtime.onMessage.addListener((msg: Message) => {
-	switch (msg.t) {
-		case MessageType.OPTIONS_PAGE_OPEN:
-			return browser.runtime.openOptionsPage();
-	}
-});
+const store = createSettingsStore();
+

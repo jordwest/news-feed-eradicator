@@ -1,4 +1,3 @@
-import handleError from './lib/handle-error';
 import { createStore } from './store/index';
 import './options.css';
 import { init } from 'snabbdom';
@@ -10,9 +9,13 @@ import { toVNode } from 'snabbdom/tovnode';
 import InfoPanel from './components/info-panel';
 import { ActionType } from './store/action-types';
 
-const storePromise = createStore();
+const store = createStore();
 
-export function start(container: Node) {
+export function start(container: Node | null) {
+	if (container == null) {
+		throw new Error('Root element not found');
+	}
+
 	var nfeContainer = document.createElement('div');
 	nfeContainer.id = 'nfe-container';
 	container.appendChild(nfeContainer);
@@ -21,21 +24,17 @@ export function start(container: Node) {
 
 	let vnode = toVNode(nfeContainer);
 
-	storePromise
-		.then(store => {
-			store.dispatch({ type: ActionType.UI_OPTIONS_SHOW });
+	store.dispatch({ type: ActionType.UI_OPTIONS_SHOW });
 
-			const render = () => {
-				const newVnode = h('div#nfe-container', [InfoPanel(store)]);
+	const render = () => {
+		const newVnode = h('div#nfe-container', [InfoPanel(store)]);
 
-				patch(vnode, newVnode);
-				vnode = newVnode;
-			};
+		patch(vnode, newVnode);
+		vnode = newVnode;
+	};
+	store.subscribe(render);
 
-			render();
-			store.subscribe(render);
-		})
-		.catch(handleError);
+	render();
 }
 
 start(document.getElementById('app'));

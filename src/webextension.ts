@@ -6,9 +6,8 @@ type WebExtensionAPI = {
 	runtime: {
 		openOptionsPage: () => Promise<void>;
 		sendMessage: (message: any) => Promise<void>;
-		onMessage: {
-			addListener: (callback: (data: any) => void | Promise<void>) => void;
-		};
+		connect: () => Port;
+		onConnect: WebExtensionEvent<Port>;
 	};
 	storage: {
 		sync: {
@@ -16,6 +15,16 @@ type WebExtensionAPI = {
 			set(keys: object): void;
 		};
 	};
+};
+
+type WebExtensionEvent<Arg> = {
+	addListener: (cb: (a: Arg) => void) => void;
+};
+
+export type Port = {
+	postMessage(msg: any): void;
+	onDisconnect: WebExtensionEvent<Port>;
+	onMessage: WebExtensionEvent<any>;
 };
 
 /**
@@ -32,9 +41,8 @@ type ChromeWebExtensionAPI = {
 			options: undefined,
 			responseCallback: (res: any) => void
 		) => void;
-		onMessage: {
-			addListener: (callback: (data: any) => void) => void;
-		};
+		connect: () => Port;
+		onConnect: WebExtensionEvent<Port>;
 	};
 	storage: {
 		sync: {
@@ -54,21 +62,19 @@ export function getBrowser(): WebExtensionAPI {
 		return {
 			runtime: {
 				openOptionsPage: () =>
-					new Promise(resolve => chrome.runtime.openOptionsPage(resolve)),
+					new Promise(resolve => chrome!.runtime.openOptionsPage(resolve)),
 				sendMessage: m =>
 					new Promise(resolve =>
-						chrome.runtime.sendMessage(undefined, m, undefined, resolve)
+						chrome!.runtime.sendMessage(undefined, m, undefined, resolve)
 					),
-
-				onMessage: {
-					addListener: cb => chrome.runtime.onMessage.addListener(cb),
-				},
+				connect: chrome.runtime.connect,
+				onConnect: chrome.runtime.onConnect,
 			},
 			storage: {
 				sync: {
 					get: (key: string | string[]) =>
 						new Promise(resolve => {
-							chrome.storage.sync.get(key, resolve);
+							chrome!.storage.sync.get(key, resolve);
 						}),
 					set: chrome.storage.sync.set,
 				},
@@ -77,25 +83,4 @@ export function getBrowser(): WebExtensionAPI {
 	} else {
 		throw new Error('Could not find WebExtension API');
 	}
-}
-
-export function loadSettings(callback: (data: any) => void) {
-	if (typeof browser !== 'undefined') {
-		browser.storage.sync
-			.get(null)
-			.then(data => {
-				callback(data);
-			})
-			.catch(e => console.error(e));
-	} else if (typeof chrome !== 'undefined') {
-		chrome.storage.sync.get(null, data => {
-			callback(data);
-		});
-	} else {
-		throw new Error('Could not find WebExtension API');
-	}
-}
-
-export function saveSettings(data: any) {
-	chrome.storage.sync.set(data);
 }

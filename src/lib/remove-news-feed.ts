@@ -1,4 +1,5 @@
-export const removeNode = (node: Element) => node.parentNode.removeChild(node);
+export const removeNode = (node: Element) =>
+	node.parentNode && node.parentNode.removeChild(node);
 
 const removeChildren = (node: Element) => {
 	while (node.firstChild) {

@@ -1,6 +1,7 @@
 import { h } from 'snabbdom/h';
 import { ActionType, ActionObject } from '../store/action-types';
 import { Store } from '../store';
+import { SettingsActionType } from '../settings/action-types';
 
 const CheckboxField = (
 	store: Store,
@@ -26,26 +27,44 @@ const CheckboxField = (
 
 const Settings = (store: Store) => {
 	let state = store.getState();
+	if (state.settings == null) {
+			return null;
+	}
 
 	const fieldShowQuotes = CheckboxField(
 		store,
-		state.showQuotes,
+		state.settings.showQuotes,
 		'Show Quotes',
-		{ type: ActionType.TOGGLE_SHOW_QUOTES }
+		{
+			type: ActionType.SETTINGS_ACTION,
+			action: {
+				type: SettingsActionType.QUOTES_SHOW_TOGGLE,
+			},
+		}
 	);
 
 	const fieldShowBuiltin = CheckboxField(
 		store,
-		state.builtinQuotesEnabled,
+		state.settings.builtinQuotesEnabled,
 		'Enable Built-in Quotes',
-		{ type: ActionType.TOGGLE_BUILTIN_QUOTES },
-		!state.showQuotes
+		{
+			type: ActionType.SETTINGS_ACTION,
+			action: {
+				type: SettingsActionType.QUOTES_BUILTIN_TOGGLE,
+			},
+		},
+		!state.settings.showQuotes
 	);
 
-	const hiddenQuoteCount = state.hiddenBuiltinQuotes.length;
+	const hiddenQuoteCount = state.settings?.hiddenBuiltinQuotes.length;
 	const hiddenQuoteReset = (e: Event) => {
 		e.preventDefault();
-		store.dispatch({ type: ActionType.RESET_HIDDEN_QUOTES });
+		store.dispatch({
+			type: ActionType.SETTINGS_ACTION,
+			action: {
+				type: SettingsActionType.QUOTE_HIDDEN_RESET,
+			},
+		});
 	};
 	const hiddenQuotes = h('span.nfe-settings-hidden-quote-count', [
 		h('span', ' ' + hiddenQuoteCount + ' hidden - '),
@@ -53,8 +72,8 @@ const Settings = (store: Store) => {
 	]);
 
 	const customQuotes = () => {
-		if (state.customQuotes.length > 0) {
-			return h('label', state.customQuotes.length + ' custom quotes');
+		if (state.settings!.customQuotes.length > 0) {
+			return h('label', state.settings!.customQuotes.length + ' custom quotes');
 		}
 		return h(
 			'label',

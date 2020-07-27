@@ -84,21 +84,18 @@ const Remove = () => {
 
 const InfoPanel = (store: Store) => {
 	return h('div.nfe-info-panel', [
-		h(
-			'div.nfe-info-col',
-			[].concat(
-				Heading(),
-				h('hr'),
-				h('h2', 'Settings'),
-				Settings(store),
-				h('hr'),
-				Share(),
-				h('hr'),
-				Contribute(),
-				h('hr'),
-				Remove()
-			)
-		),
+		h('div.nfe-info-col', [
+			Heading(),
+			h('hr'),
+			h('h2', 'Settings'),
+			Settings(store),
+			h('hr'),
+			Share(),
+			h('hr'),
+			Contribute(),
+			h('hr'),
+			Remove(),
+		]),
 	]);
 };
 

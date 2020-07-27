@@ -1,16 +1,28 @@
 import { Effect } from '../lib/redux-effects';
 import { IState } from './reducer';
-import { getBuiltinQuotes } from './selectors';
-import { ActionType, ActionObject } from './action-types';
+import {
+	getBuiltinQuotes,
+	currentQuote,
+	getAvailableQuotes,
+} from './selectors';
+import { ActionType, ActionObject, CurrentQuote } from './action-types';
 import { cancelEditing, addQuote } from './actions';
 import { generateID } from '../lib/generate-id';
+import { getBrowser } from '../webextension';
+import { Message, MessageType } from '../messaging/types';
+import { SettingsActionType } from '../settings/action-types';
 
 type AppEffect = Effect<IState, ActionObject>;
 
-// When certain UI events happen, we need to select a new quote
+// When the settings have changed, we might need to select a new quote
 const refreshQuotes: AppEffect = store => action => {
-	if (action.type === ActionType.TOGGLE_SHOW_QUOTES) {
-		store.dispatch({ type: ActionType.SELECT_NEW_QUOTE });
+	if (action.type === ActionType.SETTINGS_CHANGED) {
+		// Check if current quote still exists
+		const state = store.getState();
+		const current = currentQuote(state);
+		if (current == null) {
+			store.dispatch({ type: ActionType.SELECT_NEW_QUOTE });
+		}
 	}
 };
 
@@ -18,36 +30,38 @@ const refreshQuotes: AppEffect = store => action => {
 const selectNewQuote: AppEffect = store => action => {
 	if (action.type === ActionType.SELECT_NEW_QUOTE) {
 		const state = store.getState();
-		const builtinQuotes = getBuiltinQuotes(state);
-		const customQuotes = state.customQuotes;
-		const allQuotes = builtinQuotes.concat(customQuotes);
+		if (state.settings == null) {
+			throw new Error('Settings not available yet');
+		}
+
+		const allQuotes = getAvailableQuotes(state);
 		if (allQuotes.length < 1) {
 			return store.dispatch({
-				type: ActionType.QUOTE_SET,
-				isCustom: false,
-				id: null,
+				type: ActionType.QUOTE_CURRENT_SET,
+				quote: { type: 'none-found' },
 			});
 		}
 
 		const quoteIndex = Math.floor(Math.random() * allQuotes.length);
 		store.dispatch({
-			type: ActionType.QUOTE_SET,
-			isCustom: quoteIndex >= builtinQuotes.length,
-			id: allQuotes[quoteIndex].id,
+			type: ActionType.QUOTE_CURRENT_SET,
+			quote: allQuotes[quoteIndex],
 		});
 	}
 };
 
 // When quote is added, we can cancel editing
 const quoteSaveClicked: AppEffect = store => action => {
-	console.log('im an effect', action);
 	const state = store.getState();
 
 	if (action.type === ActionType.QUOTE_SAVE_CLICKED) {
-		console.log('adding quote', state.editingText, state.editingSource);
-		store.dispatch(addQuote(state.editingText, state.editingSource));
-		console.log('quote added', action);
+		const id = generateID();
+		store.dispatch(addQuote(id, state.editingText, state.editingSource));
 		store.dispatch(cancelEditing());
+		store.dispatch({
+			type: ActionType.QUOTE_CURRENT_SET,
+			quote: { type: 'custom', id },
+		});
 	}
 };
 
@@ -55,15 +69,23 @@ const quoteRemoveCurrent: AppEffect = store => action => {
 	if (action.type !== ActionType.QUOTE_REMOVE_CURRENT) return;
 
 	const state: IState = store.getState();
-	if (state.isCurrentQuoteCustom) {
+	if (state.currentQuote == null || state.currentQuote.type === 'none-found') {
+		return;
+	} else if (state.currentQuote.type === 'custom') {
 		store.dispatch({
-			type: ActionType.QUOTE_DELETE,
-			id: state.currentQuoteID,
+			type: ActionType.SETTINGS_ACTION,
+			action: {
+				type: SettingsActionType.QUOTE_DELETE,
+				id: state.currentQuote.id,
+			},
 		});
 	} else {
 		store.dispatch({
-			type: ActionType.QUOTE_HIDE,
-			id: state.currentQuoteID,
+			type: ActionType.SETTINGS_ACTION,
+			action: {
+				type: SettingsActionType.QUOTE_HIDE,
+				id: state.currentQuote.id,
+			},
 		});
 	}
 
@@ -74,11 +96,11 @@ const quoteAddBulk: AppEffect = store => action => {
 	if (action.type !== ActionType.QUOTE_ADD_BULK) return;
 
 	const lines = action.text.split('\n');
-	const quotes = [];
+	const quotes: string[][] = [];
 	for (var lineCount = 0; lineCount < lines.length; lineCount++) {
 		const line = lines[lineCount];
 		const quote = line.split('~');
-		const trimmedQuote = [];
+		const trimmedQuote: string[] = [];
 
 		if (quote.length === 0 || quote[0].trim() === '') {
 			// ignore newlines and empty spaces
@@ -94,15 +116,36 @@ const quoteAddBulk: AppEffect = store => action => {
 			quotes.push(trimmedQuote);
 		}
 	}
-	quotes.forEach(trimmedQuote => {
-		store.dispatch({
-			type: ActionType.QUOTE_ADD,
-			id: generateID(),
-			text: trimmedQuote[0],
-			source: trimmedQuote[1],
-		});
-	});
+	quotes.forEach(trimmedQuote =>
+		store.dispatch(addQuote(generateID(), trimmedQuote[0], trimmedQuote[1]))
+	);
 	store.dispatch(cancelEditing());
+};
+
+// Connect to the background script at startup
+const connect: AppEffect = store => {
+	const browser = getBrowser();
+	const port = browser.runtime.connect();
+	console.log('Connecting');
+	port.onMessage.addListener((msg: Message) => {
+		console.log('Message received', msg);
+		if (msg.t === MessageType.SETTINGS_CHANGED) {
+			store.dispatch({
+				type: ActionType.SETTINGS_CHANGED,
+				settings: msg.settings,
+			});
+		}
+	});
+
+	return action => {
+		// Forward any actions to the background script
+		if (action.type === ActionType.SETTINGS_ACTION) {
+			port.postMessage({
+				t: MessageType.SETTINGS_ACTION,
+				action: action.action,
+			});
+		}
+	};
 };
 
 export const rootEffect: AppEffect = Effect.all(
@@ -110,5 +153,6 @@ export const rootEffect: AppEffect = Effect.all(
 	selectNewQuote,
 	quoteRemoveCurrent,
 	quoteSaveClicked,
-	quoteAddBulk
+	quoteAddBulk,
+	connect
 );

@@ -6,6 +6,9 @@
 	"author": "Jordan West",
 	"license": "MIT",
 	"version": "1.2.3",
+	"scripts": {
+		"check": "tsc --noEmit"
+	},
 	"devDependencies": {
 		"prettier": "1.14.3",
 		"redux": "^4.0.5",

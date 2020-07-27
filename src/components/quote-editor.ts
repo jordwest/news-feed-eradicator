@@ -4,7 +4,6 @@ import { Store } from '../store/index';
 import {
 	setQuoteText,
 	setQuoteSource,
-	addQuote,
 	cancelEditing,
 	toggleBulkEdit,
 	addQuotesBulk,

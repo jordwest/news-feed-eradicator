@@ -2,9 +2,12 @@
 	"compilerOptions": {
 		"module": "es6",
 		"target": "es6",
+		"lib": ["dom", "es2015"],
 		"noImplicitAny": false,
 		"sourceMap": false,
 		"allowJs": true,
+		"strictNullChecks": true,
+		"skipLibCheck": true,
 		"moduleResolution": "node"
 	},
 	"exclude": ["dist", "build", "node_modules"]

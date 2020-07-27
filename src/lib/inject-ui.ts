@@ -9,13 +9,14 @@ import attrsModule from 'snabbdom/modules/attributes';
 import eventsModule from 'snabbdom/modules/eventlisteners';
 import { toVNode } from 'snabbdom/tovnode';
 
-const storePromise = createStore();
+const store = createStore();
 
 export function isAlreadyInjected() {
 	return document.querySelector('#nfe-container') != null;
 }
 
 export default function injectUI(streamContainer: Node) {
+	console.log('injecing ui');
 	var nfeContainer = document.createElement('div');
 	nfeContainer.id = 'nfe-container';
 	streamContainer.appendChild(nfeContainer);
@@ -24,17 +25,13 @@ export default function injectUI(streamContainer: Node) {
 
 	let vnode = toVNode(nfeContainer);
 
-	storePromise
-		.then(store => {
-			const render = () => {
-				const newVnode = h('div#nfe-container', [NewsFeedEradicator(store)]);
+	const render = () => {
+		const newVnode = h('div#nfe-container', [NewsFeedEradicator(store)]);
 
-				patch(vnode, newVnode);
-				vnode = newVnode;
-			};
+		patch(vnode, newVnode);
+		vnode = newVnode;
+	};
 
-			render();
-			store.subscribe(render);
-		})
-		.catch(handleError);
+	render();
+	store.subscribe(render);
 }

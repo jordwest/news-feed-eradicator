@@ -3,18 +3,25 @@ import {
 	QuoteEdit,
 	QuoteMenuShow,
 	QuoteSelectNew,
-	QuoteAdd,
 	QuoteRemoveCurrent,
 	QuoteAddBulk,
+	SettingsAction,
 } from './action-types';
-import { generateID } from '../lib/generate-id';
+import { SettingsActionType } from '../settings/action-types';
 
-export function addQuote(text: string, source: string): QuoteAdd {
+export function addQuote(
+	id: string,
+	text: string,
+	source: string
+): SettingsAction {
 	return {
-		type: ActionType.QUOTE_ADD,
-		id: generateID(),
-		text,
-		source,
+		type: ActionType.SETTINGS_ACTION,
+		action: {
+			type: SettingsActionType.QUOTE_ADD,
+			id,
+			text,
+			source,
+		},
 	};
 }
 
