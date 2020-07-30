@@ -125,12 +125,13 @@ export const QuoteEditor = (store: Store) => {
 		Tab('One-by-one', false),
 		Tab('Bulk add', true),
 	]);
+	const header = h('h3.text-center', 'Add a quote');
 
 	if (isEditingBulk) {
-		return h('div.v-stack-2', [tabs, error, quoteEditorBulk, buttons]);
+		return h('div.v-stack-2', [header, tabs, error, quoteEditorBulk, buttons]);
 	}
 
-	return h('div.v-stack-2', [tabs, quoteEditor, sourceEditor, buttons]);
+	return h('div.v-stack-2', [header, tabs, quoteEditor, sourceEditor, buttons]);
 };
 
 export default QuoteEditor;

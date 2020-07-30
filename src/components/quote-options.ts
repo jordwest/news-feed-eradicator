@@ -29,7 +29,7 @@ const CheckboxField = (
 				change: () => store.dispatch(toggleAction),
 			},
 		}),
-		h('span', text),
+		h('span', ' ' + text),
 	]);
 };
 
@@ -106,8 +106,9 @@ const QuoteOptions = (store: Store) => {
 		]);
 	}
 
-	return h('form.nfe-settings', [
+	return h('div.nfe-settings', [
 		h('div.v-stack-2', [
+			h('h2', 'Quotes'),
 			h('div.v-stack', [
 				h('div', fieldShowQuotes),
 				state.settings.showQuotes ? h('div', fieldShowBuiltin) : null,
