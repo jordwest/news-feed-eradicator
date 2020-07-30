@@ -9,7 +9,7 @@ export function getBuiltinQuotes(state: IState) {
 	if (!state.settings.builtinQuotesEnabled) return [];
 
 	return BuiltinQuotes.filter(
-		quote =>
+		(quote) =>
 			typeof quote.id !== 'number' ||
 			state.settings!.hiddenBuiltinQuotes.indexOf(quote.id) === -1
 	);
@@ -19,11 +19,11 @@ export function getAvailableQuotes(state: IState): CurrentQuote[] {
 	if (state.settings == null) {
 		return [];
 	}
-	const builtinQuotes: CurrentQuote[] = getBuiltinQuotes(state).map(q => ({
+	const builtinQuotes: CurrentQuote[] = getBuiltinQuotes(state).map((q) => ({
 		type: 'builtin',
 		id: q.id,
 	}));
-	const customQuotes: CurrentQuote[] = state.settings.customQuotes.map(q => ({
+	const customQuotes: CurrentQuote[] = state.settings.customQuotes.map((q) => ({
 		type: 'custom',
 		id: q.id,
 	}));
@@ -37,7 +37,7 @@ export function currentQuote(state: IState): Quote | undefined {
 
 	if (state.currentQuote.type === 'custom') {
 		const currentId = state.currentQuote.id;
-		return state.settings.customQuotes.find(quote => quote.id === currentId);
+		return state.settings.customQuotes.find((quote) => quote.id === currentId);
 	} else {
 		const currentId = state.currentQuote.id;
 		if (
@@ -47,6 +47,6 @@ export function currentQuote(state: IState): Quote | undefined {
 			// Current quote has been hidden
 			return undefined;
 		}
-		return BuiltinQuotes.find(quote => quote.id === currentId);
+		return BuiltinQuotes.find((quote) => quote.id === currentId);
 	}
 }

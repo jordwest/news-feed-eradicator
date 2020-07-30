@@ -62,9 +62,9 @@ export function getBrowser(): WebExtensionAPI {
 		return {
 			runtime: {
 				openOptionsPage: () =>
-					new Promise(resolve => chrome!.runtime.openOptionsPage(resolve)),
-				sendMessage: m =>
-					new Promise(resolve =>
+					new Promise((resolve) => chrome!.runtime.openOptionsPage(resolve)),
+				sendMessage: (m) =>
+					new Promise((resolve) =>
 						chrome!.runtime.sendMessage(undefined, m, undefined, resolve)
 					),
 				connect: chrome.runtime.connect,
@@ -73,7 +73,7 @@ export function getBrowser(): WebExtensionAPI {
 			storage: {
 				sync: {
 					get: (key: string | string[]) =>
-						new Promise(resolve => {
+						new Promise((resolve) => {
 							chrome!.storage.sync.get(key, resolve);
 						}),
 					set: chrome.storage.sync.set,

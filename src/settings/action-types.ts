@@ -4,6 +4,7 @@ export enum SettingsActionType {
 	QUOTES_SHOW_TOGGLE = 'QUOTES_SHOW_TOGGLE',
 	QUOTES_BUILTIN_TOGGLE = 'QUOTES_BUILTIN_TOGGLE',
 	QUOTE_HIDE = 'QUOTE_HIDE',
+	QUOTE_SHOW = 'QUOTE_SHOW',
 	QUOTE_HIDDEN_RESET = 'QUOTE_HIDDEN_RESET',
 	QUOTE_DELETE = 'QUOTE_DELETE',
 	QUOTE_ADD = 'QUOTE_ADD',
@@ -17,6 +18,7 @@ export type SettingsActionObject =
 	| QuotesShowToggle
 	| QuotesBuiltinToggle
 	| QuoteHide
+	| QuoteShow
 	| QuoteDelete
 	| QuoteAdd
 	| QuoteHiddenReset
@@ -35,6 +37,10 @@ export type QuotesBuiltinToggle = {
 
 export type QuoteHide = {
 	type: SettingsActionType.QUOTE_HIDE;
+	id: number;
+};
+export type QuoteShow = {
+	type: SettingsActionType.QUOTE_SHOW;
 	id: number;
 };
 export type QuoteDelete = {

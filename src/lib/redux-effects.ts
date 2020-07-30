@@ -19,10 +19,10 @@ export namespace Effect {
 		...effects: Effect<State, Action>[]
 	): Effect<State, Action> {
 		return (store: MiddlewareAPI<State, Action>) => {
-			const actionEffects = effects.map(eff => eff(store));
+			const actionEffects = effects.map((eff) => eff(store));
 
 			return (action: Action) => {
-				actionEffects.forEach(eff => {
+				actionEffects.forEach((eff) => {
 					eff(action);
 				});
 			};

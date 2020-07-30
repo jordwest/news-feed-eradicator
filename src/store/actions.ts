@@ -6,6 +6,7 @@ import {
 	QuoteRemoveCurrent,
 	QuoteAddBulk,
 	SettingsAction,
+	UiOptionsShow,
 } from './action-types';
 import { SettingsActionType } from '../settings/action-types';
 
@@ -81,3 +82,7 @@ export function toggleBulkEdit(): QuoteEdit {
 export function addQuotesBulk(text: string): QuoteAddBulk {
 	return { type: ActionType.QUOTE_ADD_BULK, text };
 }
+
+export const showOptions = (): UiOptionsShow => ({
+	type: ActionType.UI_OPTIONS_SHOW,
+});

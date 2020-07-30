@@ -1,4 +1,4 @@
-const handleError = e => {
+const handleError = (e) => {
 	console.error('-------------------------------------');
 	console.error(
 		'Something went wrong loading News Feed Eradicator. Please take a screenshot of these details:'

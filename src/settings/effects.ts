@@ -3,7 +3,7 @@ import { SettingsRoot, SettingsState } from './reducer';
 import { SettingsActionObject, SettingsActionType } from './action-types';
 import { getBrowser, Port } from '../webextension';
 import { Message, MessageType } from '../messaging/types';
-import { Settings } from '.';
+import { Settings } from '../settings';
 import config from '../config';
 
 type SettingsEffect = Effect<SettingsRoot, SettingsActionObject>;
@@ -23,10 +23,10 @@ const getSettings = (state: SettingsRoot): Settings.T | undefined => {
 /**
  * Listen for content scripts
  */
-const listen: SettingsEffect = store => {
+const listen: SettingsEffect = (store) => {
 	const browser = getBrowser();
 	let pages: Port[] = [];
-	browser.runtime.onConnect.addListener(port => {
+	browser.runtime.onConnect.addListener((port) => {
 		pages.push(port);
 
 		// Send the new client the latest settings
@@ -37,7 +37,7 @@ const listen: SettingsEffect = store => {
 
 		// Remove the port when it closes
 		port.onDisconnect.addListener(
-			() => (pages = pages.filter(p => p !== port))
+			() => (pages = pages.filter((p) => p !== port))
 		);
 		port.onMessage.addListener((msg: Message) => {
 			console.log('im receiving', msg);
@@ -59,7 +59,7 @@ const listen: SettingsEffect = store => {
 		const settings: Settings.T | undefined = getSettings(store.getState());
 		if (settings != null) {
 			Settings.save(settings);
-			pages.forEach(port =>
+			pages.forEach((port) =>
 				port.postMessage({ t: MessageType.SETTINGS_CHANGED, settings })
 			);
 		}
@@ -70,9 +70,9 @@ export function areNewFeaturesAvailable(state: SettingsState) {
 	return config.newFeatureIncrement > state.featureIncrement;
 }
 
-const loadSettings: SettingsEffect = store => action => {
+const loadSettings: SettingsEffect = (store) => (action) => {
 	if (action.type === SettingsActionType.SETTINGS_LOAD) {
-		Settings.load().then(settings => {
+		Settings.load().then((settings) => {
 			store.dispatch({ type: SettingsActionType.SETTINGS_LOADED, settings });
 
 			// Show the options page if there are new features

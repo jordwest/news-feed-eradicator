@@ -11,4 +11,3 @@ if (FbClassic.checkSite()) {
 } else {
 	Fb2020.eradicate();
 }
-

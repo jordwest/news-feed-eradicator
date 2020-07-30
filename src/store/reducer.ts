@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { ActionObject, ActionType, CurrentQuote } from './action-types';
 import { SettingsState } from '../settings/reducer';
+import { OptionsState, optionsReducer } from './options/reducer';
 
 function currentQuote(
 	state: CurrentQuote | null = null,
@@ -117,6 +118,7 @@ export interface IState {
 	isEditingBulk: boolean;
 	error: string;
 	settings: SettingsState | null;
+	uiOptions: OptionsState;
 }
 
 export default combineReducers({
@@ -128,4 +130,5 @@ export default combineReducers({
 	isEditingBulk,
 	error,
 	settings,
+	uiOptions: optionsReducer,
 });

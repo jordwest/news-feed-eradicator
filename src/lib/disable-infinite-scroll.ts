@@ -6,7 +6,7 @@
 import isEnabled from './is-enabled';
 
 // Check if the event target is a chat conversation
-let isConversation = target => {
+let isConversation = (target) => {
 	if (!target || !target.matches) {
 		return false;
 	}
@@ -36,7 +36,7 @@ const maybeBlock = (event: MouseWheelEvent) => {
 	return true;
 };
 
-export default function() {
+export default function () {
 	window.addEventListener('scroll', maybeBlock, true);
 	window.addEventListener('mousewheel', maybeBlock, true);
 }

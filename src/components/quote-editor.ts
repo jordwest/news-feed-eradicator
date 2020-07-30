@@ -10,7 +10,7 @@ import {
 } from '../store/actions';
 import { ActionType } from '../store/action-types';
 
-const QuoteEditor = (store: Store) => {
+export const QuoteEditor = (store: Store) => {
 	const state = store.getState();
 
 	const text = state.editingText;
@@ -36,46 +36,58 @@ const QuoteEditor = (store: Store) => {
 	const onCancel = () => {
 		store.dispatch(cancelEditing());
 	};
-	const onCheckboxToggle = () => {
+	const onToggleBulkEdit = () => {
 		store.dispatch(toggleBulkEdit());
 	};
 
-	const quoteEditor = h('p.nfe-quote-text', [
-		h('textarea.nfe-editor-quote', {
-			props: {
-				placeholder: 'Quote',
-				value: text,
-				autoFocus: true,
-			},
-			on: {
-				change: onChangeText,
-			},
-		}),
+	const quoteEditor = h('div.v-stack', [
+		h('label.inline-block.strong', 'Quote text'),
+		h(
+			'div',
+			h('textarea.pad-1.width-100pc', {
+				props: {
+					placeholder:
+						'Life without endeavor is like entering a jewel mine and coming out with empty hands.',
+					value: text,
+					rows: 5,
+					autoFocus: true,
+				},
+				on: {
+					change: onChangeText,
+				},
+			})
+		),
 	]);
-	const quoteEditorBulk = h('p.nfe-quote-text', [
-		h('textarea.nfe-editor-quote-bulk', {
-			props: {
-				placeholder:
-					'Bulk add quotes: a "~" should separate a quote\'s text and source, ' +
-					'and quotes should be separated by newlines. Quotation marks are ' +
-					'unnecessary. For example:\n\n' +
-					'All that we are is the result of what we have thought. ~ Buddha\n' +
-					'One of the secrets to staying young is to always do things you don’t know how to do, to keep learning. ~ Ruth Reichl\n' +
-					'The most common way people give up their power is by thinking they don’t have any. ~ Alice Walker',
-				value: text,
-				autoFocus: true,
-			},
-			on: {
-				change: onChangeText,
-			},
-		}),
+	const quoteEditorBulk = h('div.v-stack', [
+		h('label.inline-block.strong', 'Bulk add quotes'),
+		h(
+			'div',
+			'Each line represents a quote, with the quote text and source separated by a tilde (~)'
+		),
+		h(
+			'div',
+			h('textarea.pad-1.width-100pc', {
+				props: {
+					placeholder:
+						'All that we are is the result of what we have thought. ~ Buddha\n' +
+						'One of the secrets to staying young is to always do things you don’t know how to do, to keep learning. ~ Ruth Reichl\n' +
+						'The most common way people give up their power is by thinking they don’t have any. ~ Alice Walker',
+					value: text,
+					rows: 8,
+					autoFocus: true,
+				},
+				on: {
+					change: onChangeText,
+				},
+			})
+		),
 	]);
-	const sourceEditor = h('p.nfe-quote-source', [
-		h('span', '~ '),
-		h('input.nfe-editor-source', {
+	const sourceEditor = h('div.v-stack', [
+		h('label.inline-block.strong', 'Quote source'),
+		h('input.pad-1.width-100pc', {
 			props: {
 				type: 'text',
-				placeholder: 'Source',
+				placeholder: 'Japanese Proverb',
 				value: source,
 			},
 			on: {
@@ -87,32 +99,38 @@ const QuoteEditor = (store: Store) => {
 		h('button.nfe-button', { on: { click: onCancel } }, 'Cancel'),
 		h(
 			'button.nfe-button.nfe-button-primary',
-			{ on: { click: onSave } },
+			{ props: { type: 'button' }, on: { click: onSave } },
 			'Save'
 		),
-		h('label.nfe-label.nfe-label-add-bulk', [
-			h('input.nfe-checkbox', {
-				props: {
-					type: 'checkbox',
-					checked: isEditingBulk,
-				},
-				on: {
-					change: onCheckboxToggle,
-				},
-			}),
-			'Bulk add',
-		]),
 	]);
-	const error = h('div.nfe-error', errorMessage);
+	const error = errorMessage
+		? h('div.pad-2.col-bg-err.shadow', errorMessage)
+		: null;
+
+	const Tab = (label: string, value: boolean) => {
+		return isEditingBulk === value
+			? h(
+					'a.strong.col-fg',
+					{ props: { href: 'javascript:;' }, on: { click: onToggleBulkEdit } },
+					label
+			  )
+			: h(
+					'a.underline-hover.col-fg',
+					{ props: { href: 'javascript:;' }, on: { click: onToggleBulkEdit } },
+					label
+			  );
+	};
+
+	const tabs = h('div.flex.justify-center.h-stack-2', [
+		Tab('One-by-one', false),
+		Tab('Bulk add', true),
+	]);
 
 	if (isEditingBulk) {
-		if (errorMessage) {
-			return h('div', [quoteEditorBulk, buttons, error]);
-		}
-		return h('div', [quoteEditorBulk, buttons]);
+		return h('div.v-stack-2', [tabs, error, quoteEditorBulk, buttons]);
 	}
 
-	return h('div', [quoteEditor, sourceEditor, buttons]);
+	return h('div.v-stack-2', [tabs, quoteEditor, sourceEditor, buttons]);
 };
 
 export default QuoteEditor;

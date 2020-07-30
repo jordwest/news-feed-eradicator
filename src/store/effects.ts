@@ -11,7 +11,7 @@ import { SettingsActionType } from '../settings/action-types';
 type AppEffect = Effect<IState, ActionObject>;
 
 // When the settings have changed, we might need to select a new quote
-const refreshQuotes: AppEffect = store => action => {
+const refreshQuotes: AppEffect = (store) => (action) => {
 	if (action.type === ActionType.SETTINGS_CHANGED) {
 		// Check if current quote still exists
 		const state = store.getState();
@@ -23,7 +23,7 @@ const refreshQuotes: AppEffect = store => action => {
 };
 
 // Find a new quote from the database
-const selectNewQuote: AppEffect = store => action => {
+const selectNewQuote: AppEffect = (store) => (action) => {
 	if (action.type === ActionType.SELECT_NEW_QUOTE) {
 		const state = store.getState();
 		if (state.settings == null) {
@@ -47,7 +47,7 @@ const selectNewQuote: AppEffect = store => action => {
 };
 
 // When quote is added, we can cancel editing
-const quoteSaveClicked: AppEffect = store => action => {
+const quoteSaveClicked: AppEffect = (store) => (action) => {
 	const state = store.getState();
 
 	if (action.type === ActionType.QUOTE_SAVE_CLICKED) {
@@ -61,7 +61,7 @@ const quoteSaveClicked: AppEffect = store => action => {
 	}
 };
 
-const quoteRemoveCurrent: AppEffect = store => action => {
+const quoteRemoveCurrent: AppEffect = (store) => (action) => {
 	if (action.type !== ActionType.QUOTE_REMOVE_CURRENT) return;
 
 	const state: IState = store.getState();
@@ -88,7 +88,7 @@ const quoteRemoveCurrent: AppEffect = store => action => {
 	store.dispatch({ type: ActionType.SELECT_NEW_QUOTE });
 };
 
-const quoteAddBulk: AppEffect = store => action => {
+const quoteAddBulk: AppEffect = (store) => (action) => {
 	if (action.type !== ActionType.QUOTE_ADD_BULK) return;
 
 	const lines = action.text.split('\n');
@@ -105,21 +105,21 @@ const quoteAddBulk: AppEffect = store => action => {
 				type: ActionType.PARSE_ERROR,
 				message: `Invalid format on line ${(
 					lineCount + 1
-				).toString()}: \"${quote}\"`,
+				).toString()}: \"${quote}\". Check that you have a "~" separating the quote text and the source.`,
 			});
 		} else {
-			quote.forEach(field => trimmedQuote.push(field.trim()));
+			quote.forEach((field) => trimmedQuote.push(field.trim()));
 			quotes.push(trimmedQuote);
 		}
 	}
-	quotes.forEach(trimmedQuote =>
+	quotes.forEach((trimmedQuote) =>
 		store.dispatch(addQuote(generateID(), trimmedQuote[0], trimmedQuote[1]))
 	);
 	store.dispatch(cancelEditing());
 };
 
 // Connect to the background script at startup
-const connect: AppEffect = store => {
+const connect: AppEffect = (store) => {
 	const browser = getBrowser();
 	const port = browser.runtime.connect();
 	console.log('Connecting');
@@ -133,7 +133,7 @@ const connect: AppEffect = store => {
 		}
 	});
 
-	return action => {
+	return (action) => {
 		// Forward any actions to the background script
 		if (action.type === ActionType.SETTINGS_ACTION) {
 			port.postMessage({

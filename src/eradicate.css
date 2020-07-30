@@ -13,7 +13,7 @@
 }
 
 .__fb-dark-mode .nfe-quote-text {
-  color: white;
+	color: white;
 }
 
 .nfe-quote-source {
@@ -155,7 +155,6 @@ button.nfe-button-primary {
 	font-weight: 400;
 }
 
-
 .nfe-error {
 	margin: 5px 10px;
 	font-size: 16px;
@@ -177,8 +176,8 @@ div.ego_column,
 	pointer-events: none !important;
 }
 
-html:not([data-nfe-enabled="false"]) div[role=feed],
-div[aria-label=Stories] {
+html:not([data-nfe-enabled='false']) div[role='feed'],
+div[aria-label='Stories'] {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;

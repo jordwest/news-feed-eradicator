@@ -1,4 +1,3 @@
-import { Settings } from '../settings';
 import { SettingsActionObject } from '../settings/action-types';
 import { SettingsState } from '../settings/reducer';
 
@@ -14,7 +13,9 @@ export enum ActionType {
 	SETTINGS_ACTION = 'SETTINGS_ACTION',
 	SETTINGS_CHANGED = 'SETTINGS_CHANGED',
 	PARSE_ERROR = 'PARSE_ERROR',
-	UI_OPTIONS_SHOW = 'UI_OPTIONS_SHOW',
+	UI_OPTIONS_SHOW = 'ui/options/show',
+	UI_OPTIONS_TAB_SHOW = 'ui/options/tab/show',
+	UI_OPTIONS_QUOTE_TAB_SHOW = 'ui/options/quote/tab/show',
 }
 
 export type ActionObject =
@@ -28,7 +29,9 @@ export type ActionObject =
 	| QuoteBulkParseError
 	| SettingsAction
 	| SettingsChanged
-	| UiOptionsShow;
+	| UiOptionsShow
+	| UiOptionsTabShow
+	| UiOptionsQuoteTabShow;
 
 export type UiOptionsShow = {
 	type: ActionType.UI_OPTIONS_SHOW;
@@ -93,6 +96,15 @@ export type SettingsAction = {
 export type SettingsChanged = {
 	type: ActionType.SETTINGS_CHANGED;
 	settings: SettingsState;
+};
+
+export type UiOptionsTabShow = {
+	type: ActionType.UI_OPTIONS_TAB_SHOW;
+	tab: 'quotes' | 'about';
+};
+export type UiOptionsQuoteTabShow = {
+	type: ActionType.UI_OPTIONS_QUOTE_TAB_SHOW;
+	tab: 'custom' | 'builtin';
 };
 
 export interface ActionTypeObject {

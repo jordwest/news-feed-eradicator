@@ -3,13 +3,11 @@ import { currentQuote } from '../store/selectors';
 import {
 	removeCurrentQuote,
 	selectNewQuote,
-	startEditing,
 	menuHide,
 	menuToggle,
+	showOptions,
 } from '../store/actions';
 import { Store } from '../store';
-
-import QuoteEditor from './quote-editor';
 import { ActionObject } from '../store/action-types';
 
 const MenuItem = (store: Store, action: ActionObject, children: string) => {
@@ -33,7 +31,7 @@ const QuoteMenu = (store: Store) => {
 		h('ul', [
 			MenuItem(store, removeCurrentQuote(), 'Remove this quote'),
 			MenuItem(store, selectNewQuote(), 'See another quote'),
-			MenuItem(store, startEditing(), 'Enter custom quote...'),
+			MenuItem(store, showOptions(), 'Settings...'),
 		]),
 	]);
 };
@@ -43,10 +41,6 @@ const QuoteDisplay = (store: Store) => {
 	const quote = currentQuote(state);
 
 	if (quote == null) return null;
-
-	if (state.isEditingQuote) {
-		return h('div.nfe-quote', [QuoteEditor(store)]);
-	}
 
 	const toggleMenu = () => store.dispatch(menuToggle());
 	return h('div.nfe-quote', [

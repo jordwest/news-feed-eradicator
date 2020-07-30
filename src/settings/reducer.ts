@@ -35,6 +35,10 @@ function hiddenBuiltinQuotes(
 	action: ActionObject
 ): number[] {
 	switch (action.type) {
+		case ActionType.QUOTE_SHOW:
+			if (action.id == null) return state;
+			if (typeof action.id !== 'number') throw new Error('id must be numeric');
+			return state.filter((q) => q !== action.id);
 		case ActionType.QUOTE_HIDE:
 			if (action.id == null) return state;
 			if (typeof action.id !== 'number') throw new Error('id must be numeric');
@@ -60,7 +64,7 @@ function customQuotes(
 			]);
 		case ActionType.QUOTE_DELETE:
 			if (action.id == null) return state;
-			return state.filter(quote => quote.id !== action.id);
+			return state.filter((quote) => quote.id !== action.id);
 	}
 	return state;
 }

@@ -15,7 +15,7 @@ export type Store = {
 export function createStore(): Store {
 	const store: Store = createReduxStore(
 		rootReducer,
-		{},
+		undefined,
 		applyMiddleware(effectsMiddleware(rootEffect))
 	);
 
