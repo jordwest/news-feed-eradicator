@@ -40,9 +40,7 @@ const listen: SettingsEffect = (store) => {
 			() => (pages = pages.filter((p) => p !== port))
 		);
 		port.onMessage.addListener((msg: Message) => {
-			console.log('im receiving', msg);
 			if (msg.t === MessageType.SETTINGS_ACTION) {
-				console.log('got an action from a client');
 				store.dispatch(msg.action);
 			}
 			if (msg.t === MessageType.OPTIONS_PAGE_OPEN) {
@@ -50,8 +48,6 @@ const listen: SettingsEffect = (store) => {
 			}
 		});
 	});
-
-	console.log('Listening');
 
 	// Then, after every store action we save the settings and
 	// let all the clients know the new settings

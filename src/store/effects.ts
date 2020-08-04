@@ -122,9 +122,7 @@ const quoteAddBulk: AppEffect = (store) => (action) => {
 const connect: AppEffect = (store) => {
 	const browser = getBrowser();
 	const port = browser.runtime.connect();
-	console.log('Connecting');
 	port.onMessage.addListener((msg: Message) => {
-		console.log('Message received', msg);
 		if (msg.t === MessageType.SETTINGS_CHANGED) {
 			store.dispatch({
 				type: ActionType.SETTINGS_CHANGED,
