@@ -72,9 +72,10 @@ const loadSettings: SettingsEffect = (store) => (action) => {
 			store.dispatch({ type: SettingsActionType.SETTINGS_LOADED, settings });
 
 			// Show the options page if there are new features
-			if (areNewFeaturesAvailable(settings)) {
-				getBrowser().runtime.openOptionsPage();
-			}
+			// (disabled for now)
+			//if (areNewFeaturesAvailable(settings)) {
+			//	getBrowser().runtime.openOptionsPage();
+			//}
 		});
 	}
 };
