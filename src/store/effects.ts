@@ -7,8 +7,9 @@ import { generateID } from '../lib/generate-id';
 import { getBrowser } from '../webextension';
 import { Message, MessageType } from '../messaging/types';
 import { SettingsActionType } from '../settings/action-types';
+import { sitesEffect } from './sites/effects';
 
-type AppEffect = Effect<IState, ActionObject>;
+export type AppEffect = Effect<IState, ActionObject>;
 
 // When the settings have changed, we might need to select a new quote
 const refreshQuotes: AppEffect = (store) => (action) => {
@@ -152,5 +153,6 @@ export const rootEffect: AppEffect = Effect.all(
 	quoteRemoveCurrent,
 	quoteSaveClicked,
 	quoteAddBulk,
-	connect
+	connect,
+	sitesEffect
 );

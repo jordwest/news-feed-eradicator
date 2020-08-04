@@ -4,11 +4,15 @@
 	"description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
 	"manifest_version": 2,
 	"permissions": [
-		"storage",
+		"storage"
+	],
+	"optional_permissions": [
 		"http://www.facebook.com/*",
 		"https://www.facebook.com/*",
 		"http://web.facebook.com/*",
-		"https://web.facebook.com/*"
+		"https://web.facebook.com/*",
+		"http://twitter.com/*",
+		"https://twitter.com/*"
 	],
 	"background": {
 		"page": "background.html"
@@ -28,29 +32,5 @@
 		"gecko": {
 			"id": "@news-feed-eradicator"
 		}
-	},
-	"content_scripts": [
-		{
-			"matches": [
-				"http://www.facebook.com/*",
-				"https://www.facebook.com/*",
-				"http://web.facebook.com/*",
-				"https://web.facebook.com/*"
-			],
-			"js": ["intercept.js"],
-			"css": ["eradicate.css"],
-			"run_at": "document_start"
-		},
-		{
-			"matches": [
-				"http://www.facebook.com/*",
-				"https://www.facebook.com/*",
-				"http://web.facebook.com/*",
-				"https://web.facebook.com/*"
-			],
-			"js": ["eradicate.js"],
-			"css": ["eradicate.css"],
-			"run_at": "document_idle"
-		}
-	]
+	}
 }

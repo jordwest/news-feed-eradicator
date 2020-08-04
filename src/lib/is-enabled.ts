@@ -1,5 +1,12 @@
-const paths = ['', '/'];
+const paths = {
+	'facebook.com': ['', '/'],
+	'twitter.com': ['/home'],
+};
 
 export default function isEnabled() {
-	return paths.indexOf(window.location.pathname) > -1;
+	for (let domain of Object.keys(paths)) {
+		if (window.location.host.includes(domain)) {
+			return paths[domain].indexOf(window.location.pathname) > -1;
+		}
+	}
 }

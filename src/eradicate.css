@@ -1,3 +1,30 @@
+#nfe-container ul {
+	list-style: none;
+}
+#nfe-container a {
+	text-decoration: none;
+}
+
+#nfe-container {
+	font-family: sans-serif;
+	font-weight: normal;
+	line-height: 1.4;
+
+	/* Needed for detecting the background color with getComputedStyle */
+	background-color: inherit;
+}
+
+.margin-0 {
+	margin: 0;
+}
+.pad-0 {
+	padding: 0;
+}
+
+.pad-1 {
+	padding: 8px;
+}
+
 .nfe-quote {
 	position: relative;
 	font-size: 24px;
@@ -12,7 +39,8 @@
 	text-align: left;
 }
 
-.__fb-dark-mode .nfe-quote-text {
+.__fb-dark-mode .nfe-quote-text,
+.__nfe-dark-mode .nfe-quote-text {
 	color: white;
 }
 
@@ -178,6 +206,27 @@ div.ego_column,
 
 html:not([data-nfe-enabled='false']) div[role='feed'],
 div[aria-label='Stories'] {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+
+/* Twitter */
+html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > #nfe-container {
+	padding: 16px;
+}
+@media(prefers-color-scheme: dark) {
+	html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > #nfe-container .nfe-quote-text {
+		color: white;
+	}
+}
+html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > div:not(#nfe-container) {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+/* "What's Happening" section on Twitter */
+[data-testid="sidebarColumn"] [role="region"] {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;

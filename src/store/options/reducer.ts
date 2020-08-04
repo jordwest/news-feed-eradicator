@@ -7,7 +7,7 @@ import {
 } from '../action-types';
 
 const tab = (
-	state: UiOptionsTabShow['tab'] | undefined = 'quotes',
+	state: UiOptionsTabShow['tab'] | undefined = 'sites',
 	action: ActionObject
 ) => {
 	if (action.type === ActionType.UI_OPTIONS_TAB_SHOW) {

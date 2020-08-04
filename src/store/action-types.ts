@@ -1,5 +1,7 @@
 import { SettingsActionObject } from '../settings/action-types';
 import { SettingsState } from '../settings/reducer';
+import { SiteState } from './sites/reducer';
+import { SiteId } from '../sites';
 
 export enum ActionType {
 	SELECT_NEW_QUOTE = 'SELECT_NEW_QUOTE',
@@ -16,6 +18,10 @@ export enum ActionType {
 	UI_OPTIONS_SHOW = 'ui/options/show',
 	UI_OPTIONS_TAB_SHOW = 'ui/options/tab/show',
 	UI_OPTIONS_QUOTE_TAB_SHOW = 'ui/options/quote/tab/show',
+	UI_SITES_ENABLED_CHECK = 'ui/sites/enabled/check',
+	UI_SITES_ENABLED_UPDATE = 'ui/sites/enabled/update',
+	UI_SITES_ENABLED_REQUEST_PERMISSIONS = 'ui/sites/enabled/request_permissions',
+	UI_SITES_ENABLED_REMOVE_PERMISSIONS = 'ui/sites/enabled/remove_permissions',
 }
 
 export type ActionObject =
@@ -31,7 +37,11 @@ export type ActionObject =
 	| SettingsChanged
 	| UiOptionsShow
 	| UiOptionsTabShow
-	| UiOptionsQuoteTabShow;
+	| UiOptionsQuoteTabShow
+	| UiSitesEnabledCheck
+	| UiSitesEnabledUpdate
+	| UiSitesEnabledRequestPermissions
+	| UiSitesEnabledRemovePermissions;
 
 export type UiOptionsShow = {
 	type: ActionType.UI_OPTIONS_SHOW;
@@ -100,13 +110,25 @@ export type SettingsChanged = {
 
 export type UiOptionsTabShow = {
 	type: ActionType.UI_OPTIONS_TAB_SHOW;
-	tab: 'quotes' | 'about';
+	tab: 'sites' | 'quotes' | 'about';
 };
 export type UiOptionsQuoteTabShow = {
 	type: ActionType.UI_OPTIONS_QUOTE_TAB_SHOW;
 	tab: 'custom' | 'builtin';
 };
 
-export interface ActionTypeObject {
-	type: ActionType;
-}
+export type UiSitesEnabledCheck = {
+	type: ActionType.UI_SITES_ENABLED_CHECK;
+};
+export type UiSitesEnabledUpdate = {
+	type: ActionType.UI_SITES_ENABLED_UPDATE;
+	sitesEnabled: Record<SiteId, SiteState>;
+};
+export type UiSitesEnabledRequestPermissions = {
+	type: ActionType.UI_SITES_ENABLED_REQUEST_PERMISSIONS;
+	site: SiteId;
+};
+export type UiSitesEnabledRemovePermissions = {
+	type: ActionType.UI_SITES_ENABLED_REMOVE_PERMISSIONS;
+	site: SiteId;
+};

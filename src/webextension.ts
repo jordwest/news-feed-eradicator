@@ -9,6 +9,19 @@ type WebExtensionAPI = {
 		connect: () => Port;
 		onConnect: WebExtensionEvent<Port>;
 	};
+	permissions: {
+		getAll: () => Promise<Permissions>;
+		remove: (p: Permissions) => Promise<boolean>;
+		request: (p: Permissions) => Promise<boolean>;
+	};
+	tabs: {
+		onUpdated: WebExtensionEvent<TabId>;
+		insertCSS: (tabId: TabId, opts: ExecuteOptions) => Promise<any>;
+		executeScript: <Returns = void>(
+			tabId: TabId,
+			opts: ExecuteOptions
+		) => Promise<[Returns] | [] | undefined>;
+	};
 	storage: {
 		sync: {
 			get(keys: string | string[] | null): Promise<any>;
@@ -17,8 +30,21 @@ type WebExtensionAPI = {
 	};
 };
 
+export type TabId = number & { __tabId: never };
+
+type ExecuteOptions = {
+	file?: string;
+	code?: string;
+	runAt?: 'document_start' | 'document_end' | 'document_idle';
+};
+
 type WebExtensionEvent<Arg> = {
 	addListener: (cb: (a: Arg) => void) => void;
+};
+
+export type Permissions = {
+	permissions: string[];
+	origins: string[];
 };
 
 export type Port = {
@@ -28,7 +54,8 @@ export type Port = {
 };
 
 /**
- * Chrome doesn't exactly match the WebExtension API, see full list of incompatibilities here:
+ * Chrome doesn't exactly match the WebExtension API, notably using callbacks instead of promises.
+ * See full list of incompatibilities here:
  *
  * https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Chrome_incompatibilities
  */
@@ -43,6 +70,24 @@ type ChromeWebExtensionAPI = {
 		) => void;
 		connect: () => Port;
 		onConnect: WebExtensionEvent<Port>;
+	};
+	permissions: {
+		getAll: (cb: (p: Permissions) => void) => void;
+		remove: (p: Permissions, cb: (removed: boolean) => void) => void;
+		request: (p: Permissions, cb: (granted: boolean) => void) => void;
+	};
+	tabs: {
+		onUpdated: WebExtensionEvent<TabId>;
+		insertCSS: (
+			tabId: TabId,
+			opts: ExecuteOptions,
+			cb: (data: any) => void
+		) => void;
+		executeScript: (
+			tabId: TabId,
+			opts: ExecuteOptions,
+			cb: (data: any) => void
+		) => void;
 	};
 	storage: {
 		sync: {
@@ -59,6 +104,7 @@ export function getBrowser(): WebExtensionAPI {
 	if (typeof browser !== 'undefined') {
 		return browser;
 	} else if (typeof chrome !== 'undefined') {
+		// Chrome uses callbacks instead of promises, so we promisify everything
 		return {
 			runtime: {
 				openOptionsPage: () =>
@@ -69,6 +115,21 @@ export function getBrowser(): WebExtensionAPI {
 					),
 				connect: chrome.runtime.connect,
 				onConnect: chrome.runtime.onConnect,
+			},
+			permissions: {
+				getAll: () =>
+					new Promise((resolve) => chrome!.permissions?.getAll(resolve)),
+				request: (p) =>
+					new Promise((resolve) => chrome!.permissions?.request(p, resolve)),
+				remove: (p) =>
+					new Promise((resolve) => chrome!.permissions?.remove(p, resolve)),
+			},
+			tabs: {
+				insertCSS: (a, b) =>
+					new Promise((resolve) => chrome!.tabs?.insertCSS(a, b, resolve)),
+				executeScript: (a, b) =>
+					new Promise((resolve) => chrome!.tabs?.executeScript(a, b, resolve)),
+				onUpdated: chrome!.tabs?.onUpdated,
 			},
 			storage: {
 				sync: {
