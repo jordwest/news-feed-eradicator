@@ -5,6 +5,7 @@ import {
 import config from '../config';
 import { CustomQuote } from '../quote';
 import { combineReducers } from 'redux';
+import { sitesReducer, SitesState } from './sites/reducer';
 
 function showQuotes(state = true, action: ActionObject) {
 	switch (action.type) {
@@ -75,6 +76,7 @@ export type SettingsState = {
 	featureIncrement: number;
 	hiddenBuiltinQuotes: number[];
 	customQuotes: CustomQuote[];
+	sites: SitesState;
 };
 
 export type SettingsRoot =
@@ -90,6 +92,7 @@ const settingsReducer = combineReducers({
 	featureIncrement,
 	hiddenBuiltinQuotes,
 	customQuotes,
+	sites: sitesReducer,
 });
 
 export default (

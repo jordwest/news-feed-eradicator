@@ -1,4 +1,6 @@
 import { SettingsState } from './reducer';
+import { SiteId } from '../sites';
+import { SiteState } from './sites/reducer';
 
 export enum SettingsActionType {
 	QUOTES_SHOW_TOGGLE = 'QUOTES_SHOW_TOGGLE',
@@ -11,6 +13,8 @@ export enum SettingsActionType {
 	FEATURE_INCREMENT = 'FEATURE_INCREMENT',
 	SETTINGS_LOAD = 'SETTINGS_LOAD',
 	SETTINGS_LOADED = 'SETTINGS_LOADED',
+	SITES_ENABLED_CHECK = 'sites/enabled/check',
+	SITES_ENABLED_UPDATE = 'sites/enabled/update',
 }
 
 export type SettingsActionObject =
@@ -23,7 +27,9 @@ export type SettingsActionObject =
 	| QuoteAdd
 	| QuoteHiddenReset
 	| SettingsLoad
-	| SettingsLoaded;
+	| SettingsLoaded
+	| SitesEnabledCheck
+	| SitesEnabledUpdate;
 
 export type FeatureIncrement = { type: SettingsActionType.FEATURE_INCREMENT };
 
@@ -63,4 +69,12 @@ export type SettingsLoad = { type: SettingsActionType.SETTINGS_LOAD };
 export type SettingsLoaded = {
 	type: SettingsActionType.SETTINGS_LOADED;
 	settings: SettingsState;
+};
+
+export type SitesEnabledCheck = {
+	type: SettingsActionType.SITES_ENABLED_CHECK;
+};
+export type SitesEnabledUpdate = {
+	type: SettingsActionType.SITES_ENABLED_UPDATE;
+	sitesEnabled: Record<SiteId, SiteState>;
 };

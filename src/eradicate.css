@@ -40,7 +40,7 @@
 }
 
 .__fb-dark-mode .nfe-quote-text,
-.__nfe-dark-mode .nfe-quote-text {
+body[data-nfe-color-scheme="dark"] .nfe-quote-text {
 	color: white;
 }
 
@@ -215,11 +215,7 @@ div[aria-label='Stories'] {
 html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > #nfe-container {
 	padding: 16px;
 }
-@media(prefers-color-scheme: dark) {
-	html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > #nfe-container .nfe-quote-text {
-		color: white;
-	}
-}
+
 html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > div:not(#nfe-container) {
 	opacity: 0 !important;
 	pointer-events: none !important;

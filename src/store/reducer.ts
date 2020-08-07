@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import { ActionObject, ActionType, CurrentQuote } from './action-types';
 import { SettingsState } from '../settings/reducer';
 import { OptionsState, optionsReducer } from './options/reducer';
-import { SitesState, sitesReducer } from './sites/reducer';
 
 function currentQuote(
 	state: CurrentQuote | null = null,
@@ -120,7 +119,6 @@ export interface IState {
 	error: string;
 	settings: SettingsState | null;
 	uiOptions: OptionsState;
-	sites: SitesState;
 }
 
 export default combineReducers({
@@ -133,5 +131,4 @@ export default combineReducers({
 	error,
 	settings,
 	uiOptions: optionsReducer,
-	sites: sitesReducer,
 });

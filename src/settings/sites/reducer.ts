@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ActionObject, ActionType } from '../action-types';
+import { SettingsActionObject, SettingsActionType } from '../action-types';
 import { SiteId } from '../../sites';
 
 export enum SiteState {
@@ -10,9 +10,9 @@ export enum SiteState {
 
 const sitesEnabled = (
 	state: Record<SiteId, SiteState> | undefined,
-	action: ActionObject
+	action: SettingsActionObject
 ): Record<SiteId, SiteState> | null => {
-	if (action.type === ActionType.UI_SITES_ENABLED_UPDATE) {
+	if (action.type === SettingsActionType.SITES_ENABLED_UPDATE) {
 		return action.sitesEnabled;
 	}
 	return state || null;

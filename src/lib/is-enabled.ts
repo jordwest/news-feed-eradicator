@@ -1,6 +1,6 @@
 const paths = {
 	'facebook.com': ['', '/'],
-	'twitter.com': ['/home'],
+	'twitter.com': ['/home', '/compose/tweet'],
 };
 
 export default function isEnabled() {

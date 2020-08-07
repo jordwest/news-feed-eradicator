@@ -5,18 +5,20 @@ import { getBrowser, Port } from '../webextension';
 import { Message, MessageType } from '../messaging/types';
 import { Settings } from '../settings';
 import config from '../config';
+import { sitesEffect, getPermissions } from './sites/effects';
+import { SiteState } from './sites/reducer';
+import { getSettingsHealth } from './sites/selectors';
 
-type SettingsEffect = Effect<SettingsRoot, SettingsActionObject>;
+export type SettingsEffect = Effect<SettingsRoot, SettingsActionObject>;
 
-const getSettings = (state: SettingsRoot): Settings.T | undefined => {
-	if (!state.ready) return undefined;
+const getSettings = (state: SettingsState): Settings.T => {
 	return {
 		version: 1,
-		showQuotes: state.settings.showQuotes,
-		builtinQuotesEnabled: state.settings.builtinQuotesEnabled,
-		featureIncrement: state.settings.featureIncrement,
-		hiddenBuiltinQuotes: state.settings.hiddenBuiltinQuotes,
-		customQuotes: state.settings.customQuotes,
+		showQuotes: state.showQuotes,
+		builtinQuotesEnabled: state.builtinQuotesEnabled,
+		featureIncrement: state.featureIncrement,
+		hiddenBuiltinQuotes: state.hiddenBuiltinQuotes,
+		customQuotes: state.customQuotes,
 	};
 };
 
@@ -29,9 +31,10 @@ const listen: SettingsEffect = (store) => {
 	browser.runtime.onConnect.addListener((port) => {
 		pages.push(port);
 
+		const state = store.getState();
 		// Send the new client the latest settings
-		const settings: Settings.T | undefined = getSettings(store.getState());
-		if (settings != null) {
+		if (state.ready === true) {
+			const settings: SettingsState = state.settings;
 			port.postMessage({ t: MessageType.SETTINGS_CHANGED, settings });
 		}
 
@@ -44,7 +47,7 @@ const listen: SettingsEffect = (store) => {
 				store.dispatch(msg.action);
 			}
 			if (msg.t === MessageType.OPTIONS_PAGE_OPEN) {
-				browser.runtime.openOptionsPage();
+				browser.runtime.openOptionsPage().catch((e) => console.error(e));
 			}
 		});
 	});
@@ -52,9 +55,11 @@ const listen: SettingsEffect = (store) => {
 	// Then, after every store action we save the settings and
 	// let all the clients know the new settings
 	return () => {
-		const settings: Settings.T | undefined = getSettings(store.getState());
-		if (settings != null) {
-			Settings.save(settings);
+		const state = store.getState();
+		// Send the new client the latest settings
+		if (state.ready === true) {
+			const settings: SettingsState = state.settings;
+			Settings.save(getSettings(state.settings));
 			pages.forEach((port) =>
 				port.postMessage({ t: MessageType.SETTINGS_CHANGED, settings })
 			);
@@ -66,18 +71,40 @@ export function areNewFeaturesAvailable(state: SettingsState) {
 	return config.newFeatureIncrement > state.featureIncrement;
 }
 
-const loadSettings: SettingsEffect = (store) => (action) => {
+const loadSettings: SettingsEffect = (store) => async (action) => {
 	if (action.type === SettingsActionType.SETTINGS_LOAD) {
-		Settings.load().then((settings) => {
-			store.dispatch({ type: SettingsActionType.SETTINGS_LOADED, settings });
+		const [settings, sites] = await Promise.all([
+			Settings.load(),
+			getPermissions(),
+		]);
 
-			// Show the options page if there are new features
-			// (disabled for now)
-			//if (areNewFeaturesAvailable(settings)) {
-			//	getBrowser().runtime.openOptionsPage();
-			//}
+		const state: SettingsState = {
+			showQuotes: settings.showQuotes,
+			builtinQuotesEnabled: settings.builtinQuotesEnabled,
+			featureIncrement: settings.featureIncrement,
+			hiddenBuiltinQuotes: settings.hiddenBuiltinQuotes,
+			customQuotes: settings.customQuotes,
+			sites: {
+				sitesEnabled: sites,
+			},
+		};
+
+		store.dispatch({
+			type: SettingsActionType.SETTINGS_LOADED,
+			settings: state,
 		});
+		const newFeaturesAvailable = areNewFeaturesAvailable(state);
+		const settingsHealth = getSettingsHealth(state);
+
+		// Show the options page at startup if something needs addressing
+		if (
+			settingsHealth.noSitesEnabled ||
+			settingsHealth.sitesNeedingPermissions >= 1 ||
+			newFeaturesAvailable
+		) {
+			getBrowser().runtime.openOptionsPage();
+		}
 	}
 };
 
-export const rootEffect = Effect.all(listen, loadSettings);
+export const rootEffect = Effect.all(listen, loadSettings, sitesEffect);

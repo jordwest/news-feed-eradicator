@@ -45,6 +45,7 @@ export default function injectUI(streamContainer: Node) {
 			} else {
 				mode = 'light';
 			}
+			document.body.dataset.nfeColorScheme = mode;
 			console.log(mode, 'mode');
 		}
 	};

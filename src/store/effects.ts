@@ -7,7 +7,7 @@ import { generateID } from '../lib/generate-id';
 import { getBrowser } from '../webextension';
 import { Message, MessageType } from '../messaging/types';
 import { SettingsActionType } from '../settings/action-types';
-import { sitesEffect } from './sites/effects';
+import { Sites } from '../sites';
 
 export type AppEffect = Effect<IState, ActionObject>;
 
@@ -119,6 +119,40 @@ const quoteAddBulk: AppEffect = (store) => (action) => {
 	store.dispatch(cancelEditing());
 };
 
+const requestPermissions: AppEffect = (store) => async (action) => {
+	if (action.type === ActionType.UI_SITES_ENABLED_REQUEST_PERMISSIONS) {
+		const site = Sites[action.site];
+		const success = await getBrowser().permissions.request({
+			permissions: [],
+			origins: site.origins,
+		});
+		if (success) {
+			// Check and update permissions
+			store.dispatch({
+				type: ActionType.SETTINGS_ACTION,
+				action: { type: SettingsActionType.SITES_ENABLED_CHECK },
+			});
+		}
+	}
+};
+
+const removePermissions: AppEffect = (store) => async (action) => {
+	if (action.type === ActionType.UI_SITES_ENABLED_REMOVE_PERMISSIONS) {
+		const site = Sites[action.site];
+		const success = await getBrowser().permissions.remove({
+			permissions: [],
+			origins: site.origins,
+		});
+		if (success) {
+			// Check and update permissions
+			store.dispatch({
+				type: ActionType.SETTINGS_ACTION,
+				action: { type: SettingsActionType.SITES_ENABLED_CHECK },
+			});
+		}
+	}
+};
+
 // Connect to the background script at startup
 const connect: AppEffect = (store) => {
 	const browser = getBrowser();
@@ -153,6 +187,7 @@ export const rootEffect: AppEffect = Effect.all(
 	quoteRemoveCurrent,
 	quoteSaveClicked,
 	quoteAddBulk,
-	connect,
-	sitesEffect
+	requestPermissions,
+	removePermissions,
+	connect
 );
