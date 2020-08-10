@@ -141,8 +141,14 @@ const BuiltinQuoteTable = (store: Store) => {
 		return (
 			quote &&
 			h('tr', [
-				h(isHidden ? 'td.text-muted.text-strike' : 'td', quote.text),
-				h(isHidden ? 'td.text-muted.text-strike' : 'td', quote.source),
+				h(
+					isHidden ? 'td.pad-1.text-muted.text-strike' : 'td.pad-1',
+					quote.text
+				),
+				h(
+					isHidden ? 'td.pad-1.text-muted.text-strike' : 'td.pad-1',
+					quote.source
+				),
 				h('td', [
 					h(
 						'a.underline-hover',
@@ -157,8 +163,14 @@ const BuiltinQuoteTable = (store: Store) => {
 		);
 	};
 
-	return h('table.quote-table.scrollable-table', [
-		h('thead', [h('tr', [h('th', 'Quote'), h('th', 'Source'), h('th', '')])]),
+	return h('table.border.scrollable-table', [
+		h('thead', [
+			h('tr', [
+				h('th.pad-1', 'Quote'),
+				h('th.pad-1', 'Source'),
+				h('th.pad-1', ''),
+			]),
+		]),
 		h('tbody', [...BuiltinQuotes.sort(quoteCompare).map(BuiltinQuote)]),
 	]);
 };
@@ -182,9 +194,9 @@ const CustomQuoteTable = (store: Store) => {
 		return (
 			quote &&
 			h('tr', [
-				h('td', quote.text),
-				h('td', quote.source),
-				h('td', [
+				h('td.pad-1', quote.text),
+				h('td.pad-1', quote.source),
+				h('td.pad-1', [
 					h(
 						'a.underline-hover',
 						{
@@ -198,12 +210,18 @@ const CustomQuoteTable = (store: Store) => {
 		);
 	};
 
-	return h('table.quote-table.scrollable-table', [
-		h('thead', [h('tr', [h('th', 'Quote'), h('th', 'Source'), h('th', '')])]),
+	return h('table.border.scrollable-table', [
+		h('thead', [
+			h('tr', [
+				h('th.pad-1', 'Quote'),
+				h('th.pad-1', 'Source'),
+				h('th.pad-1', ''),
+			]),
+		]),
 		h('tbody', [
 			...state.settings.customQuotes.sort(quoteCompare).map(CustomQuote),
 			state.settings.customQuotes.length === 0
-				? h('tr', [h('td', 'No custom quotes added'), h('td'), h('td')])
+				? h('tr', [h('td.pad-1', 'No custom quotes added'), h('td'), h('td')])
 				: null,
 		]),
 	]);

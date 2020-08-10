@@ -52,6 +52,11 @@ const quoteSaveClicked: AppEffect = (store) => (action) => {
 	const state = store.getState();
 
 	if (action.type === ActionType.QUOTE_SAVE_CLICKED) {
+		// Don't do anything if quote is empty
+		if (state.editingText.trim().length < 1) {
+			return;
+		}
+
 		const id = generateID();
 		store.dispatch(addQuote(id, state.editingText, state.editingSource));
 		store.dispatch(cancelEditing());

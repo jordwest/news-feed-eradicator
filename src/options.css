@@ -60,14 +60,6 @@ a:visited {
 	min-height: 100vh;
 }
 
-.quote-table {
-	border: 1px solid black;
-}
-.quote-table td,
-.quote-table th {
-	padding: 8px;
-}
-
 .text-smaller-1 {
 	font-size: 0.8em;
 }
