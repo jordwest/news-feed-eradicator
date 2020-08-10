@@ -1,5 +1,5 @@
 import {
-	SettingsActionObject as ActionObject,
+	BackgroundActionObject as ActionObject,
 	BackgroundActionType as ActionType,
 } from './action-types';
 import config from '../../config';
