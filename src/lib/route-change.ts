@@ -1,4 +1,5 @@
 import isEnabled from './is-enabled';
+import { Store } from '../store';
 
 // Unforunately the browser provides no native way to observe route changes initiated
 // by the page. The `popstate` event only observes browser initiated back/forward events.
@@ -10,7 +11,8 @@ const CHECK_INTERVAL = 1000;
 
 let lastPath: string | undefined = undefined;
 let element = document.querySelector('html');
-export function setupRouteChange() {
+
+export function setupRouteChange(store: Store) {
 	const onChange = (): any => {
 		if (isEnabled()) {
 			element!.dataset.nfeEnabled = 'true';

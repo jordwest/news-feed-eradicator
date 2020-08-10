@@ -1,6 +1,8 @@
 import { Sites, Site } from '../sites';
+import { SettingsState } from '../background/store/reducer';
+import { SiteState } from '../background/store/sites/reducer';
 
-export default function isEnabled(): boolean {
+export default function isEnabled(state: SettingsState): boolean {
 	for (let siteId of Object.keys(Sites)) {
 		let site: Site = Sites[siteId];
 		if (window.location.host.includes(site.domain)) {

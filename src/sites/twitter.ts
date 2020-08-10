@@ -1,11 +1,12 @@
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
 import isEnabled from '../lib/is-enabled';
+import { Store } from '../store';
 
 export function checkSite(): boolean {
 	return window.location.host.includes('twitter.com');
 }
 
-export function eradicate() {
+export function eradicate(store: Store) {
 	function eradicateRetry() {
 		if (!isEnabled()) {
 			return;
@@ -25,8 +26,7 @@ export function eradicate() {
 
 		// Add News Feed Eradicator quote/info panel
 		if (container && !isAlreadyInjected()) {
-			console.log('injecting into', feed);
-			injectUI(container);
+			injectUI(container, store);
 		}
 	}
 

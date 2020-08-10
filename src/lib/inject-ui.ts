@@ -1,6 +1,5 @@
-import { createStore } from '../store/index';
+import { createStore, Store } from '../store/index';
 import NewsFeedEradicator from '../components/index';
-
 import { init } from 'snabbdom';
 import { h } from 'snabbdom/h';
 import propsModule from 'snabbdom/modules/props';
@@ -8,15 +7,13 @@ import attrsModule from 'snabbdom/modules/attributes';
 import eventsModule from 'snabbdom/modules/eventlisteners';
 import { toVNode } from 'snabbdom/tovnode';
 
-const store = createStore();
-
 export function isAlreadyInjected() {
 	return document.querySelector('#nfe-container') != null;
 }
 
 const rgbRe = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/;
 
-export default function injectUI(streamContainer: Node) {
+export default function injectUI(streamContainer: Node, store: Store) {
 	var nfeContainer = document.createElement('div');
 	nfeContainer.id = 'nfe-container';
 	streamContainer.appendChild(nfeContainer);

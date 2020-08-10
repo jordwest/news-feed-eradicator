@@ -34,10 +34,10 @@ const onTabChange = async (tabId: TabId) => {
 				file: 'intercept.js',
 				runAt: 'document_start',
 			});
-			getBrowser().tabs.executeScript(tabId, {
-				file: 'eradicate.js',
-				runAt: 'document_idle',
-			});
+			//getBrowser().tabs.executeScript(tabId, {
+			//	file: 'eradicate.js',
+			//	runAt: 'document_idle',
+			//});
 			await getBrowser().tabs.executeScript(tabId, {
 				code: 'document.nfeScriptsInjected = true;',
 				runAt: 'document_start',

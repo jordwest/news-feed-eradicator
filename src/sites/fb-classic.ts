@@ -1,6 +1,7 @@
 import { remove } from '../lib/remove-news-feed';
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
 import isEnabled from '../lib/is-enabled';
+import { Store } from '../store';
 
 // Elements here are removed from the DOM.
 // These selectors should also be added to `eradicate.css`
@@ -22,7 +23,7 @@ export function checkSite(): boolean {
 	return !!document.querySelector('#stream_pagelet');
 }
 
-export function eradicate() {
+export function eradicate(store: Store) {
 	function eradicateRetry() {
 		if (!isEnabled()) {
 			return;
@@ -38,7 +39,7 @@ export function eradicate() {
 
 		// Add News Feed Eradicator quote/info panel
 		if (!isAlreadyInjected()) {
-			injectUI(streamContainer);
+			injectUI(streamContainer, store);
 		}
 	}
 
