@@ -1,4 +1,4 @@
-import { SettingsActionObject } from '../background/store/action-types';
+import { BackgroundActionObject } from '../background/store/action-types';
 import { SettingsState } from '../background/store/reducer';
 import { SiteId } from '../sites';
 
@@ -96,7 +96,7 @@ export type QuoteBulkParseError = {
 
 export type SettingsAction = {
 	type: ActionType.SETTINGS_ACTION;
-	action: SettingsActionObject;
+	action: BackgroundActionObject;
 };
 export type SettingsChanged = {
 	type: ActionType.SETTINGS_CHANGED;

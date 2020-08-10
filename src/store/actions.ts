@@ -8,7 +8,7 @@ import {
 	SettingsAction,
 	UiOptionsShow,
 } from './action-types';
-import { SettingsActionType } from '../background/store/action-types';
+import { BackgroundActionType } from '../background/store/action-types';
 
 export function addQuote(
 	id: string,
@@ -18,7 +18,7 @@ export function addQuote(
 	return {
 		type: ActionType.SETTINGS_ACTION,
 		action: {
-			type: SettingsActionType.QUOTE_ADD,
+			type: BackgroundActionType.QUOTE_ADD,
 			id,
 			text,
 			source,

@@ -1,6 +1,6 @@
 import {
 	SettingsActionObject as ActionObject,
-	SettingsActionType as ActionType,
+	BackgroundActionType as ActionType,
 } from './action-types';
 import config from '../../config';
 import { CustomQuote } from '../../quote';
@@ -79,7 +79,7 @@ export type SettingsState = {
 	sites: SitesState;
 };
 
-export type SettingsRoot =
+export type BackgroundState =
 	| { ready: false }
 	| {
 			ready: true;
@@ -96,9 +96,9 @@ const settingsReducer = combineReducers({
 });
 
 export default (
-	state: SettingsRoot | undefined,
+	state: BackgroundState | undefined,
 	action: ActionObject
-): SettingsRoot => {
+): BackgroundState => {
 	// We can't do anything until the initial settings have been loaded,
 
 	if (action.type === ActionType.SETTINGS_LOADED) {

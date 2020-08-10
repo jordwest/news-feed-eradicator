@@ -6,7 +6,7 @@ import {
 } from '../store/action-types';
 import { Store } from '../store';
 import { QuoteEditor } from './quote-editor';
-import { SettingsActionType } from '../background/store/action-types';
+import { BackgroundActionType } from '../background/store/action-types';
 import { BuiltinQuotes, BuiltinQuote, CustomQuote } from '../quote';
 import { startEditing } from '../store/actions';
 import { VNode } from 'snabbdom/vnode';
@@ -46,7 +46,7 @@ const QuoteOptions = (store: Store) => {
 		{
 			type: ActionType.SETTINGS_ACTION,
 			action: {
-				type: SettingsActionType.QUOTES_SHOW_TOGGLE,
+				type: BackgroundActionType.QUOTES_SHOW_TOGGLE,
 			},
 		}
 	);
@@ -58,7 +58,7 @@ const QuoteOptions = (store: Store) => {
 		{
 			type: ActionType.SETTINGS_ACTION,
 			action: {
-				type: SettingsActionType.QUOTES_BUILTIN_TOGGLE,
+				type: BackgroundActionType.QUOTES_BUILTIN_TOGGLE,
 			},
 		},
 		!state.settings.showQuotes
@@ -129,8 +129,8 @@ const BuiltinQuoteTable = (store: Store) => {
 			type: ActionType.SETTINGS_ACTION,
 			action: {
 				type: hidden
-					? SettingsActionType.QUOTE_SHOW
-					: SettingsActionType.QUOTE_HIDE,
+					? BackgroundActionType.QUOTE_SHOW
+					: BackgroundActionType.QUOTE_HIDE,
 				id,
 			},
 		});
@@ -185,7 +185,7 @@ const CustomQuoteTable = (store: Store) => {
 		store.dispatch({
 			type: ActionType.SETTINGS_ACTION,
 			action: {
-				type: SettingsActionType.QUOTE_DELETE,
+				type: BackgroundActionType.QUOTE_DELETE,
 				id,
 			},
 		});

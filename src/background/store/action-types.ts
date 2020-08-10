@@ -2,7 +2,7 @@ import { SettingsState } from './reducer';
 import { SiteId } from '../../sites';
 import { SiteState } from './sites/reducer';
 
-export enum SettingsActionType {
+export enum BackgroundActionType {
 	QUOTES_SHOW_TOGGLE = 'QUOTES_SHOW_TOGGLE',
 	QUOTES_BUILTIN_TOGGLE = 'QUOTES_BUILTIN_TOGGLE',
 	QUOTE_HIDE = 'QUOTE_HIDE',
@@ -17,7 +17,7 @@ export enum SettingsActionType {
 	SITES_ENABLED_UPDATE = 'sites/enabled/update',
 }
 
-export type SettingsActionObject =
+export type BackgroundActionObject =
 	| FeatureIncrement
 	| QuotesShowToggle
 	| QuotesBuiltinToggle
@@ -31,50 +31,50 @@ export type SettingsActionObject =
 	| SitesEnabledCheck
 	| SitesEnabledUpdate;
 
-export type FeatureIncrement = { type: SettingsActionType.FEATURE_INCREMENT };
+export type FeatureIncrement = { type: BackgroundActionType.FEATURE_INCREMENT };
 
 export type QuotesShowToggle = {
-	type: SettingsActionType.QUOTES_SHOW_TOGGLE;
+	type: BackgroundActionType.QUOTES_SHOW_TOGGLE;
 };
 
 export type QuotesBuiltinToggle = {
-	type: SettingsActionType.QUOTES_BUILTIN_TOGGLE;
+	type: BackgroundActionType.QUOTES_BUILTIN_TOGGLE;
 };
 
 export type QuoteHide = {
-	type: SettingsActionType.QUOTE_HIDE;
+	type: BackgroundActionType.QUOTE_HIDE;
 	id: number;
 };
 export type QuoteShow = {
-	type: SettingsActionType.QUOTE_SHOW;
+	type: BackgroundActionType.QUOTE_SHOW;
 	id: number;
 };
 export type QuoteDelete = {
-	type: SettingsActionType.QUOTE_DELETE;
+	type: BackgroundActionType.QUOTE_DELETE;
 	id: string;
 };
 
 export type QuoteAdd = {
-	type: SettingsActionType.QUOTE_ADD;
+	type: BackgroundActionType.QUOTE_ADD;
 	id: string;
 	text: string;
 	source: string;
 };
 
 export type QuoteHiddenReset = {
-	type: SettingsActionType.QUOTE_HIDDEN_RESET;
+	type: BackgroundActionType.QUOTE_HIDDEN_RESET;
 };
 
-export type SettingsLoad = { type: SettingsActionType.SETTINGS_LOAD };
+export type SettingsLoad = { type: BackgroundActionType.SETTINGS_LOAD };
 export type SettingsLoaded = {
-	type: SettingsActionType.SETTINGS_LOADED;
+	type: BackgroundActionType.SETTINGS_LOADED;
 	settings: SettingsState;
 };
 
 export type SitesEnabledCheck = {
-	type: SettingsActionType.SITES_ENABLED_CHECK;
+	type: BackgroundActionType.SITES_ENABLED_CHECK;
 };
 export type SitesEnabledUpdate = {
-	type: SettingsActionType.SITES_ENABLED_UPDATE;
+	type: BackgroundActionType.SITES_ENABLED_UPDATE;
 	sitesEnabled: Record<SiteId, SiteState>;
 };

@@ -8,7 +8,7 @@ import eventsModule from 'snabbdom/modules/eventlisteners';
 import { toVNode } from 'snabbdom/tovnode';
 import InfoPanel from '../components/info-panel';
 import { ActionType } from '../store/action-types';
-import { SettingsActionType } from '../background/store/action-types';
+import { BackgroundActionType } from '../background/store/action-types';
 
 const store = createStore();
 
@@ -28,7 +28,7 @@ export function start(container: Node | null) {
 	store.dispatch({
 		type: ActionType.SETTINGS_ACTION,
 		action: {
-			type: SettingsActionType.FEATURE_INCREMENT,
+			type: BackgroundActionType.FEATURE_INCREMENT,
 		},
 	});
 

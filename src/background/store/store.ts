@@ -1,23 +1,23 @@
 import { createStore as createReduxStore, applyMiddleware } from 'redux';
 import { effectsMiddleware } from '../../lib/redux-effects';
 import { rootEffect } from './effects';
-import rootReducer, { SettingsRoot } from './reducer';
-import { SettingsActionObject, SettingsActionType } from './action-types';
+import rootReducer, { BackgroundState } from './reducer';
+import { BackgroundActionObject, BackgroundActionType } from './action-types';
 
-export type SettingsStore = {
-	getState(): SettingsRoot;
+export type BackgroundStore = {
+	getState(): BackgroundState;
 	subscribe(cb: () => void): void;
-	dispatch(action: SettingsActionObject): void;
+	dispatch(action: BackgroundActionObject): void;
 };
 
-export function createSettingsStore(): SettingsStore {
-	const store: SettingsStore = createReduxStore(
+export function createBackgroundStore(): BackgroundStore {
+	const store: BackgroundStore = createReduxStore(
 		rootReducer,
 		{ ready: false },
 		applyMiddleware(effectsMiddleware(rootEffect))
 	);
 
-	store.dispatch({ type: SettingsActionType.SETTINGS_LOAD });
+	store.dispatch({ type: BackgroundActionType.SETTINGS_LOAD });
 
 	return store;
 }

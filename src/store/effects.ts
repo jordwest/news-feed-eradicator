@@ -6,7 +6,7 @@ import { cancelEditing, addQuote } from './actions';
 import { generateID } from '../lib/generate-id';
 import { getBrowser } from '../webextension';
 import { Message, MessageType } from '../messaging/types';
-import { SettingsActionType } from '../background/store/action-types';
+import { BackgroundActionType } from '../background/store/action-types';
 import { Sites } from '../sites';
 
 export type AppEffect = Effect<IState, ActionObject>;
@@ -77,7 +77,7 @@ const quoteRemoveCurrent: AppEffect = (store) => (action) => {
 		store.dispatch({
 			type: ActionType.SETTINGS_ACTION,
 			action: {
-				type: SettingsActionType.QUOTE_DELETE,
+				type: BackgroundActionType.QUOTE_DELETE,
 				id: state.currentQuote.id,
 			},
 		});
@@ -85,7 +85,7 @@ const quoteRemoveCurrent: AppEffect = (store) => (action) => {
 		store.dispatch({
 			type: ActionType.SETTINGS_ACTION,
 			action: {
-				type: SettingsActionType.QUOTE_HIDE,
+				type: BackgroundActionType.QUOTE_HIDE,
 				id: state.currentQuote.id,
 			},
 		});
@@ -135,7 +135,7 @@ const requestPermissions: AppEffect = (store) => async (action) => {
 			// Check and update permissions
 			store.dispatch({
 				type: ActionType.SETTINGS_ACTION,
-				action: { type: SettingsActionType.SITES_ENABLED_CHECK },
+				action: { type: BackgroundActionType.SITES_ENABLED_CHECK },
 			});
 		}
 	}
@@ -152,7 +152,7 @@ const removePermissions: AppEffect = (store) => async (action) => {
 			// Check and update permissions
 			store.dispatch({
 				type: ActionType.SETTINGS_ACTION,
-				action: { type: SettingsActionType.SITES_ENABLED_CHECK },
+				action: { type: BackgroundActionType.SITES_ENABLED_CHECK },
 			});
 		}
 	}

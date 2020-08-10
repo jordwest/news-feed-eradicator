@@ -1,6 +1,6 @@
 import { Effect } from '../../lib/redux-effects';
-import { SettingsRoot, SettingsState } from './reducer';
-import { SettingsActionObject, SettingsActionType } from './action-types';
+import { BackgroundState, SettingsState } from './reducer';
+import { BackgroundActionObject, BackgroundActionType } from './action-types';
 import { getBrowser, Port } from '../../webextension';
 import { Message, MessageType } from '../../messaging/types';
 import { Settings } from './index';
@@ -8,7 +8,7 @@ import config from '../../config';
 import { sitesEffect, getPermissions } from './sites/effects';
 import { getSettingsHealth } from './sites/selectors';
 
-export type SettingsEffect = Effect<SettingsRoot, SettingsActionObject>;
+export type BackgroundEffect = Effect<BackgroundState, BackgroundActionObject>;
 
 const getSettings = (state: SettingsState): Settings.T => {
 	return {
@@ -24,7 +24,7 @@ const getSettings = (state: SettingsState): Settings.T => {
 /**
  * Listen for content scripts
  */
-const listen: SettingsEffect = (store) => {
+const listen: BackgroundEffect = (store) => {
 	const browser = getBrowser();
 	let pages: Port[] = [];
 	browser.runtime.onConnect.addListener((port) => {
@@ -70,8 +70,8 @@ export function areNewFeaturesAvailable(state: SettingsState) {
 	return config.newFeatureIncrement > state.featureIncrement;
 }
 
-const loadSettings: SettingsEffect = (store) => async (action) => {
-	if (action.type === SettingsActionType.SETTINGS_LOAD) {
+const loadSettings: BackgroundEffect = (store) => async (action) => {
+	if (action.type === BackgroundActionType.SETTINGS_LOAD) {
 		const [settings, sites] = await Promise.all([
 			Settings.load(),
 			getPermissions(),
@@ -89,7 +89,7 @@ const loadSettings: SettingsEffect = (store) => async (action) => {
 		};
 
 		store.dispatch({
-			type: SettingsActionType.SETTINGS_LOADED,
+			type: BackgroundActionType.SETTINGS_LOADED,
 			settings: state,
 		});
 		const newFeaturesAvailable = areNewFeaturesAvailable(state);

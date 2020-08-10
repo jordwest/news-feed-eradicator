@@ -1,7 +1,7 @@
-import { createSettingsStore } from './store/store';
+import { createBackgroundStore } from './store/store';
 import { getBrowser, TabId } from '../webextension';
 
-createSettingsStore();
+createBackgroundStore();
 
 const tabMutex = new Set<number>();
 const onTabChange = async (tabId: TabId) => {

@@ -1,6 +1,6 @@
-import { SettingsEffect } from '../effects';
+import { BackgroundEffect } from '../effects';
 import { Effect } from '../../../lib/redux-effects';
-import { SettingsActionType } from '../action-types';
+import { BackgroundActionType } from '../action-types';
 import { getBrowser } from '../../../webextension';
 import { Sites, SiteId } from '../../../sites';
 import { SiteState } from './reducer';
@@ -26,14 +26,14 @@ export const getPermissions = async () => {
 	return states;
 };
 
-const checkPermissions: SettingsEffect = (store) => async (action) => {
-	if (action.type === SettingsActionType.SITES_ENABLED_CHECK) {
+const checkPermissions: BackgroundEffect = (store) => async (action) => {
+	if (action.type === BackgroundActionType.SITES_ENABLED_CHECK) {
 		const states = await getPermissions();
 		store.dispatch({
-			type: SettingsActionType.SITES_ENABLED_UPDATE,
+			type: BackgroundActionType.SITES_ENABLED_UPDATE,
 			sitesEnabled: states,
 		});
 	}
 };
 
-export const sitesEffect: SettingsEffect = Effect.all(checkPermissions);
+export const sitesEffect: BackgroundEffect = Effect.all(checkPermissions);
