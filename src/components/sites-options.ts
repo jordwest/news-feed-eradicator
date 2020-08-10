@@ -1,9 +1,9 @@
 import { Store } from '../store';
 import { h } from 'snabbdom';
 import { Sites, SiteId } from '../sites';
-import { SiteState } from '../settings/sites/reducer';
+import { SiteState } from '../background/store/sites/reducer';
 import { ActionType } from '../store/action-types';
-import { getSettingsHealth } from '../settings/sites/selectors';
+import { getSettingsHealth } from '../background/store/sites/selectors';
 import { WarningAlert } from './alert';
 import { VNode } from 'snabbdom/vnode';
 

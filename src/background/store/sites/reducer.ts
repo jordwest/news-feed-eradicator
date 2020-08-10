@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { SettingsActionObject, SettingsActionType } from '../action-types';
-import { SiteId } from '../../sites';
+import { SiteId } from '../../../sites';
 
 export enum SiteState {
 	ENABLED,

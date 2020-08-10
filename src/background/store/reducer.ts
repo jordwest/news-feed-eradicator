@@ -2,8 +2,8 @@ import {
 	SettingsActionObject as ActionObject,
 	SettingsActionType as ActionType,
 } from './action-types';
-import config from '../config';
-import { CustomQuote } from '../quote';
+import config from '../../config';
+import { CustomQuote } from '../../quote';
 import { combineReducers } from 'redux';
 import { sitesReducer, SitesState } from './sites/reducer';
 

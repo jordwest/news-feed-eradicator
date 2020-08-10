@@ -1,5 +1,5 @@
-import { CustomQuote } from '../quote';
-import { getBrowser } from '../webextension';
+import { CustomQuote } from '../../quote';
+import { getBrowser } from '../../webextension';
 
 export namespace Settings {
 	type V1 = {

@@ -6,7 +6,7 @@ import {
 } from '../store/action-types';
 import { Store } from '../store';
 import { QuoteEditor } from './quote-editor';
-import { SettingsActionType } from '../settings/action-types';
+import { SettingsActionType } from '../background/store/action-types';
 import { BuiltinQuotes, BuiltinQuote, CustomQuote } from '../quote';
 import { startEditing } from '../store/actions';
 import { VNode } from 'snabbdom/vnode';

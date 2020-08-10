@@ -1,8 +1,8 @@
 import { SettingsEffect } from '../effects';
-import { Effect } from '../../lib/redux-effects';
+import { Effect } from '../../../lib/redux-effects';
 import { SettingsActionType } from '../action-types';
-import { getBrowser } from '../../webextension';
-import { Sites, SiteId } from '../../sites';
+import { getBrowser } from '../../../webextension';
+import { Sites, SiteId } from '../../../sites';
 import { SiteState } from './reducer';
 
 export const getPermissions = async () => {

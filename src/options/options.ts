@@ -1,4 +1,4 @@
-import { createStore } from './store/index';
+import { createStore } from '../store/index';
 import './options.css';
 import { init } from 'snabbdom';
 import { h } from 'snabbdom/h';
@@ -6,9 +6,9 @@ import propsModule from 'snabbdom/modules/props';
 import attrsModule from 'snabbdom/modules/attributes';
 import eventsModule from 'snabbdom/modules/eventlisteners';
 import { toVNode } from 'snabbdom/tovnode';
-import InfoPanel from './components/info-panel';
-import { ActionType } from './store/action-types';
-import { SettingsActionType } from './settings/action-types';
+import InfoPanel from '../components/info-panel';
+import { ActionType } from '../store/action-types';
+import { SettingsActionType } from '../background/store/action-types';
 
 const store = createStore();
 

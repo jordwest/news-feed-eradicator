@@ -1,4 +1,4 @@
-import { createSettingsStore } from '../settings/store';
+import { createSettingsStore } from './store/store';
 import { getBrowser, TabId } from '../webextension';
 
 createSettingsStore();

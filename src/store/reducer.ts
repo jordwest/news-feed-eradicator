@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { ActionObject, ActionType, CurrentQuote } from './action-types';
-import { SettingsState } from '../settings/reducer';
+import { SettingsState } from '../background/store/reducer';
 import { OptionsState, optionsReducer } from './options/reducer';
 
 function currentQuote(

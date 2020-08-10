@@ -1,5 +1,5 @@
-import { SettingsActionObject } from '../settings/action-types';
-import { SettingsState } from '../settings/reducer';
+import { SettingsActionObject } from '../background/store/action-types';
+import { SettingsState } from '../background/store/reducer';
 import { SiteId } from '../sites';
 
 export enum ActionType {

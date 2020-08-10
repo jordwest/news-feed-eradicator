@@ -1,5 +1,5 @@
 import { SettingsState } from './reducer';
-import { SiteId } from '../sites';
+import { SiteId } from '../../sites';
 import { SiteState } from './sites/reducer';
 
 export enum SettingsActionType {

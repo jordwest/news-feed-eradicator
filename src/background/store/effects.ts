@@ -1,12 +1,11 @@
-import { Effect } from '../lib/redux-effects';
+import { Effect } from '../../lib/redux-effects';
 import { SettingsRoot, SettingsState } from './reducer';
 import { SettingsActionObject, SettingsActionType } from './action-types';
-import { getBrowser, Port } from '../webextension';
-import { Message, MessageType } from '../messaging/types';
-import { Settings } from '../settings';
-import config from '../config';
+import { getBrowser, Port } from '../../webextension';
+import { Message, MessageType } from '../../messaging/types';
+import { Settings } from './index';
+import config from '../../config';
 import { sitesEffect, getPermissions } from './sites/effects';
-import { SiteState } from './sites/reducer';
 import { getSettingsHealth } from './sites/selectors';
 
 export type SettingsEffect = Effect<SettingsRoot, SettingsActionObject>;

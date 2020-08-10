@@ -1,5 +1,5 @@
 import { createStore as createReduxStore, applyMiddleware } from 'redux';
-import { effectsMiddleware } from '../lib/redux-effects';
+import { effectsMiddleware } from '../../lib/redux-effects';
 import { rootEffect } from './effects';
 import rootReducer, { SettingsRoot } from './reducer';
 import { SettingsActionObject, SettingsActionType } from './action-types';

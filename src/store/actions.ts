@@ -8,7 +8,7 @@ import {
 	SettingsAction,
 	UiOptionsShow,
 } from './action-types';
-import { SettingsActionType } from '../settings/action-types';
+import { SettingsActionType } from '../background/store/action-types';
 
 export function addQuote(
 	id: string,

@@ -6,7 +6,7 @@ import { cancelEditing, addQuote } from './actions';
 import { generateID } from '../lib/generate-id';
 import { getBrowser } from '../webextension';
 import { Message, MessageType } from '../messaging/types';
-import { SettingsActionType } from '../settings/action-types';
+import { SettingsActionType } from '../background/store/action-types';
 import { Sites } from '../sites';
 
 export type AppEffect = Effect<IState, ActionObject>;

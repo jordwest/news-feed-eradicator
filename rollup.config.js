@@ -32,7 +32,7 @@ const intercept = {
 };
 
 const options = {
-	input: 'src/options.ts',
+	input: 'src/options/options.ts',
 	output: {
 		file: 'build/options.js',
 		format: 'iife',
