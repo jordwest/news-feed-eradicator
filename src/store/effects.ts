@@ -13,7 +13,7 @@ export type AppEffect = Effect<IState, ActionObject>;
 
 // When the settings have changed, we might need to select a new quote
 const refreshQuotes: AppEffect = (store) => (action) => {
-	if (action.type === ActionType.SETTINGS_CHANGED) {
+	if (action.type === ActionType.BACKGROUND_SETTINGS_CHANGED) {
 		// Check if current quote still exists
 		const state = store.getState();
 		const current = currentQuote(state);
@@ -75,7 +75,7 @@ const quoteRemoveCurrent: AppEffect = (store) => (action) => {
 		return;
 	} else if (state.currentQuote.type === 'custom') {
 		store.dispatch({
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
 				type: BackgroundActionType.QUOTE_DELETE,
 				id: state.currentQuote.id,
@@ -83,7 +83,7 @@ const quoteRemoveCurrent: AppEffect = (store) => (action) => {
 		});
 	} else {
 		store.dispatch({
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
 				type: BackgroundActionType.QUOTE_HIDE,
 				id: state.currentQuote.id,
@@ -134,7 +134,7 @@ const requestPermissions: AppEffect = (store) => async (action) => {
 		if (success) {
 			// Check and update permissions
 			store.dispatch({
-				type: ActionType.SETTINGS_ACTION,
+				type: ActionType.BACKGROUND_ACTION,
 				action: { type: BackgroundActionType.SITES_ENABLED_CHECK },
 			});
 		}
@@ -151,7 +151,7 @@ const removePermissions: AppEffect = (store) => async (action) => {
 		if (success) {
 			// Check and update permissions
 			store.dispatch({
-				type: ActionType.SETTINGS_ACTION,
+				type: ActionType.BACKGROUND_ACTION,
 				action: { type: BackgroundActionType.SITES_ENABLED_CHECK },
 			});
 		}
@@ -165,7 +165,7 @@ const connect: AppEffect = (store) => {
 	port.onMessage.addListener((msg: Message) => {
 		if (msg.t === MessageType.SETTINGS_CHANGED) {
 			store.dispatch({
-				type: ActionType.SETTINGS_CHANGED,
+				type: ActionType.BACKGROUND_SETTINGS_CHANGED,
 				settings: msg.settings,
 			});
 		}
@@ -173,7 +173,7 @@ const connect: AppEffect = (store) => {
 
 	return (action) => {
 		// Forward any actions to the background script
-		if (action.type === ActionType.SETTINGS_ACTION) {
+		if (action.type === ActionType.BACKGROUND_ACTION) {
 			port.postMessage({
 				t: MessageType.SETTINGS_ACTION,
 				action: action.action,

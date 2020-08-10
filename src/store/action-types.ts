@@ -11,8 +11,8 @@ export enum ActionType {
 	QUOTE_REMOVE_CURRENT = 'QUOTE_REMOVE_CURRENT',
 	QUOTE_MENU_SHOW = 'QUOTE_MENU_SHOW',
 	RESET_HIDDEN_QUOTES = 'RESET_HIDDEN_QUOTES',
-	SETTINGS_ACTION = 'SETTINGS_ACTION',
-	SETTINGS_CHANGED = 'SETTINGS_CHANGED',
+	BACKGROUND_ACTION = 'BACKGROUND_ACTION',
+	BACKGROUND_SETTINGS_CHANGED = 'BACKGROUND_SETTINGS_CHANGED',
 	PARSE_ERROR = 'PARSE_ERROR',
 	UI_OPTIONS_SHOW = 'ui/options/show',
 	UI_OPTIONS_TAB_SHOW = 'ui/options/tab/show',
@@ -22,6 +22,7 @@ export enum ActionType {
 }
 
 export type ActionObject =
+	| BackgroundAction
 	| QuoteSelectNew
 	| QuoteRemoveCurrent
 	| QuoteMenuShow
@@ -30,13 +31,21 @@ export type ActionObject =
 	| QuoteSaveClicked
 	| QuoteAddBulk
 	| QuoteBulkParseError
-	| SettingsAction
-	| SettingsChanged
+	| BackgroundSettingsChanged
 	| UiOptionsShow
 	| UiOptionsTabShow
 	| UiOptionsQuoteTabShow
 	| UiSitesEnabledRequestPermissions
 	| UiSitesEnabledRemovePermissions;
+
+export type BackgroundAction = {
+	type: ActionType.BACKGROUND_ACTION;
+	action: BackgroundActionObject;
+};
+export type BackgroundSettingsChanged = {
+	type: ActionType.BACKGROUND_SETTINGS_CHANGED;
+	settings: SettingsState;
+};
 
 export type UiOptionsShow = {
 	type: ActionType.UI_OPTIONS_SHOW;
@@ -92,15 +101,6 @@ export type QuoteEdit = {
 export type QuoteBulkParseError = {
 	type: ActionType.PARSE_ERROR;
 	message: string;
-};
-
-export type SettingsAction = {
-	type: ActionType.SETTINGS_ACTION;
-	action: BackgroundActionObject;
-};
-export type SettingsChanged = {
-	type: ActionType.SETTINGS_CHANGED;
-	settings: SettingsState;
 };
 
 export type UiOptionsTabShow = {

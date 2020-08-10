@@ -26,7 +26,7 @@ export function start(container: Node | null) {
 	let vnode = toVNode(nfeContainer);
 
 	store.dispatch({
-		type: ActionType.SETTINGS_ACTION,
+		type: ActionType.BACKGROUND_ACTION,
 		action: {
 			type: BackgroundActionType.FEATURE_INCREMENT,
 		},

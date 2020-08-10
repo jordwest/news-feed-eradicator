@@ -24,7 +24,7 @@ const quotesTab = (
 	}
 	// Deactivate builtin quotes tab if they've been disabled
 	if (
-		action.type === ActionType.SETTINGS_CHANGED &&
+		action.type === ActionType.BACKGROUND_SETTINGS_CHANGED &&
 		action.settings.builtinQuotesEnabled === false &&
 		state === 'builtin'
 	) {

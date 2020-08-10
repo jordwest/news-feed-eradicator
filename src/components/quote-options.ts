@@ -44,7 +44,7 @@ const QuoteOptions = (store: Store) => {
 		state.settings.showQuotes,
 		'Show Quotes',
 		{
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
 				type: BackgroundActionType.QUOTES_SHOW_TOGGLE,
 			},
@@ -56,7 +56,7 @@ const QuoteOptions = (store: Store) => {
 		state.settings.builtinQuotesEnabled,
 		'Enable Built-in Quotes',
 		{
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
 				type: BackgroundActionType.QUOTES_BUILTIN_TOGGLE,
 			},
@@ -126,7 +126,7 @@ const BuiltinQuoteTable = (store: Store) => {
 
 	const showHideQuote = (id: number, hidden: boolean) => () => {
 		store.dispatch({
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
 				type: hidden
 					? BackgroundActionType.QUOTE_SHOW
@@ -183,7 +183,7 @@ const CustomQuoteTable = (store: Store) => {
 
 	const deleteQuote = (id: string) => () => {
 		store.dispatch({
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
 				type: BackgroundActionType.QUOTE_DELETE,
 				id,

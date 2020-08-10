@@ -5,7 +5,7 @@ import {
 	QuoteSelectNew,
 	QuoteRemoveCurrent,
 	QuoteAddBulk,
-	SettingsAction,
+	BackgroundAction,
 	UiOptionsShow,
 } from './action-types';
 import { BackgroundActionType } from '../background/store/action-types';
@@ -14,9 +14,9 @@ export function addQuote(
 	id: string,
 	text: string,
 	source: string
-): SettingsAction {
+): BackgroundAction {
 	return {
-		type: ActionType.SETTINGS_ACTION,
+		type: ActionType.BACKGROUND_ACTION,
 		action: {
 			type: BackgroundActionType.QUOTE_ADD,
 			id,

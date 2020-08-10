@@ -103,7 +103,7 @@ const settings = (
 	state: SettingsState | null = null,
 	action: ActionObject
 ): SettingsState | null => {
-	if (action.type === ActionType.SETTINGS_CHANGED) {
+	if (action.type === ActionType.BACKGROUND_SETTINGS_CHANGED) {
 		return action.settings;
 	}
 	return state;
