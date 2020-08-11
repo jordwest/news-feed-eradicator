@@ -1,5 +1,5 @@
-import { SettingsActionObject } from '../settings/action-types';
-import { SettingsState } from '../settings/reducer';
+import { BackgroundActionObject } from '../background/store/action-types';
+import { SettingsState } from '../background/store/reducer';
 
 export enum MessageType {
 	OPTIONS_PAGE_OPEN,
@@ -11,7 +11,7 @@ export type Message =
 	| { t: MessageType.OPTIONS_PAGE_OPEN }
 	| {
 			t: MessageType.SETTINGS_ACTION;
-			action: SettingsActionObject;
+			action: BackgroundActionObject;
 	  }
 	| {
 			t: MessageType.SETTINGS_CHANGED;

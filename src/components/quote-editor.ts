@@ -9,6 +9,7 @@ import {
 	addQuotesBulk,
 } from '../store/actions';
 import { ActionType } from '../store/action-types';
+import { ErrorAlert } from './alert';
 
 export const QuoteEditor = (store: Store) => {
 	const state = store.getState();
@@ -103,9 +104,7 @@ export const QuoteEditor = (store: Store) => {
 			'Save'
 		),
 	]);
-	const error = errorMessage
-		? h('div.pad-2.col-bg-err.shadow', errorMessage)
-		: null;
+	const error = errorMessage ? ErrorAlert(errorMessage) : null;
 
 	const Tab = (label: string, value: boolean) => {
 		return isEditingBulk === value

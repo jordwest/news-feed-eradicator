@@ -17,9 +17,9 @@ const MenuItem = (store: Store, action: ActionObject, children: string) => {
 		store.dispatch(action);
 	};
 
-	return h('li', [
+	return h('li.margin-0.pad-0', [
 		h(
-			'a.nfe-quote-action-menu-item',
+			'a.nfe-quote-action-menu-item.underline-off',
 			{ props: { href: '#' }, on: { click: onClick } },
 			children
 		),
@@ -28,7 +28,7 @@ const MenuItem = (store: Store, action: ActionObject, children: string) => {
 
 const QuoteMenu = (store: Store) => {
 	return h('div.nfe-quote-action-menu-content', [
-		h('ul', [
+		h('ul.margin-0.pad-0.list-unstyled', [
 			MenuItem(store, removeCurrentQuote(), 'Remove this quote'),
 			MenuItem(store, selectNewQuote(), 'See another quote'),
 			MenuItem(store, showOptions(), 'Settings...'),

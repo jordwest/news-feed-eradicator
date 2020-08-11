@@ -2,6 +2,7 @@ import { h } from 'snabbdom/h';
 import QuoteOptions from './quote-options';
 import { Store } from '../store';
 import { UiOptionsTabShow, ActionType } from '../store/action-types';
+import { SitesOptions } from './sites-options';
 
 const Heading = () => {
 	return h('h3.text-center', 'News Feed Eradicator');
@@ -125,6 +126,18 @@ const About = () => {
 	]);
 };
 
+const CurrentTab = (store: Store) => {
+	const tab = store.getState().uiOptions.tab;
+	switch (tab) {
+		case 'sites':
+			return SitesOptions(store);
+		case 'quotes':
+			return QuoteOptions(store);
+		case 'about':
+			return About();
+	}
+};
+
 const InfoPanel = (store: Store) => {
 	const state = store.getState();
 
@@ -146,13 +159,12 @@ const InfoPanel = (store: Store) => {
 		h('div.nfe-info-col.v-stack-4', [
 			Heading(),
 			h('div.flex.justify-center.h-stack-2', [
+				Tab('sites', 'Sites'),
 				Tab('quotes', 'Quotes'),
 				Tab('about', 'About'),
 			]),
 
-			h('div.shadow-mid.bg-1.pad-3', [
-				state.uiOptions.tab === 'quotes' ? QuoteOptions(store) : About(),
-			]),
+			h('div.shadow-mid.bg-1.pad-3', [CurrentTab(store)]),
 			Footer(),
 		]),
 	]);

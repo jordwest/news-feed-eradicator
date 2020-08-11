@@ -1,20 +1,20 @@
-import { removeNode } from '../lib/remove-news-feed';
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
-import isEnabled from '../lib/is-enabled';
+import { isEnabled } from '../lib/is-enabled';
+import { Store } from '../store';
 
 //export function checkSite(): boolean {
 //	return !!document.querySelector('#stream_pagelet');
 //}
 
-export function eradicate() {
+export function eradicate(store: Store) {
 	function eradicateRetry() {
-		if (!isEnabled()) {
+		const settings = store.getState().settings;
+		if (settings == null || !isEnabled(settings)) {
 			return;
 		}
 
 		// Don't do anything if the FB UI hasn't loaded yet
 		const feed = document.querySelector('[role=feed]');
-		const stories = document.querySelector('[aria-label=Stories]');
 
 		if (feed == null) {
 			return;
@@ -35,7 +35,7 @@ export function eradicate() {
 
 		// Add News Feed Eradicator quote/info panel
 		if (container && !isAlreadyInjected()) {
-			injectUI(container);
+			injectUI(container, store);
 		}
 	}
 

@@ -1,5 +1,6 @@
-import { SettingsActionObject } from '../settings/action-types';
-import { SettingsState } from '../settings/reducer';
+import { BackgroundActionObject } from '../background/store/action-types';
+import { SettingsState } from '../background/store/reducer';
+import { SiteId } from '../sites';
 
 export enum ActionType {
 	SELECT_NEW_QUOTE = 'SELECT_NEW_QUOTE',
@@ -10,15 +11,27 @@ export enum ActionType {
 	QUOTE_REMOVE_CURRENT = 'QUOTE_REMOVE_CURRENT',
 	QUOTE_MENU_SHOW = 'QUOTE_MENU_SHOW',
 	RESET_HIDDEN_QUOTES = 'RESET_HIDDEN_QUOTES',
-	SETTINGS_ACTION = 'SETTINGS_ACTION',
-	SETTINGS_CHANGED = 'SETTINGS_CHANGED',
+	BACKGROUND_ACTION = 'BACKGROUND_ACTION',
+	BACKGROUND_SETTINGS_CHANGED = 'BACKGROUND_SETTINGS_CHANGED',
 	PARSE_ERROR = 'PARSE_ERROR',
 	UI_OPTIONS_SHOW = 'ui/options/show',
 	UI_OPTIONS_TAB_SHOW = 'ui/options/tab/show',
 	UI_OPTIONS_QUOTE_TAB_SHOW = 'ui/options/quote/tab/show',
+	UI_SITES_SITE_CLICK = 'sites/site/click',
+
+	/**
+	 * Show the confirmation for disabling News Feed Eradicator for a site
+	 */
+	UI_SITES_SITE_DISABLE_CONFIRM_SHOW = 'sites/site/disable/confirm/show',
+
+	/**
+	 * User confirmed site being disabled
+	 */
+	UI_SITES_SITE_DISABLE_CONFIRMED = 'sites/site/disable/confirmed',
 }
 
 export type ActionObject =
+	| BackgroundAction
 	| QuoteSelectNew
 	| QuoteRemoveCurrent
 	| QuoteMenuShow
@@ -27,11 +40,22 @@ export type ActionObject =
 	| QuoteSaveClicked
 	| QuoteAddBulk
 	| QuoteBulkParseError
-	| SettingsAction
-	| SettingsChanged
+	| BackgroundSettingsChanged
 	| UiOptionsShow
 	| UiOptionsTabShow
-	| UiOptionsQuoteTabShow;
+	| UiOptionsQuoteTabShow
+	| UiSitesSiteClick
+	| UiSitesSiteDisableConfirmShow
+	| UiSitesSiteDisableConfirmed;
+
+export type BackgroundAction = {
+	type: ActionType.BACKGROUND_ACTION;
+	action: BackgroundActionObject;
+};
+export type BackgroundSettingsChanged = {
+	type: ActionType.BACKGROUND_SETTINGS_CHANGED;
+	settings: SettingsState;
+};
 
 export type UiOptionsShow = {
 	type: ActionType.UI_OPTIONS_SHOW;
@@ -89,24 +113,24 @@ export type QuoteBulkParseError = {
 	message: string;
 };
 
-export type SettingsAction = {
-	type: ActionType.SETTINGS_ACTION;
-	action: SettingsActionObject;
-};
-export type SettingsChanged = {
-	type: ActionType.SETTINGS_CHANGED;
-	settings: SettingsState;
-};
-
 export type UiOptionsTabShow = {
 	type: ActionType.UI_OPTIONS_TAB_SHOW;
-	tab: 'quotes' | 'about';
+	tab: 'sites' | 'quotes' | 'about';
 };
 export type UiOptionsQuoteTabShow = {
 	type: ActionType.UI_OPTIONS_QUOTE_TAB_SHOW;
 	tab: 'custom' | 'builtin';
 };
-
-export interface ActionTypeObject {
-	type: ActionType;
-}
+export type UiSitesSiteClick = {
+	type: ActionType.UI_SITES_SITE_CLICK;
+	site: SiteId;
+};
+export type UiSitesSiteDisableConfirmShow = {
+	type: ActionType.UI_SITES_SITE_DISABLE_CONFIRM_SHOW;
+	site: SiteId;
+};
+export type UiSitesSiteDisableConfirmed = {
+	type: ActionType.UI_SITES_SITE_DISABLE_CONFIRMED;
+	site: SiteId;
+	until: { t: 'forever' } | { t: 'temporarily'; milliseconds: number };
+};

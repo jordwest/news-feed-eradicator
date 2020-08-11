@@ -6,7 +6,7 @@ import {
 } from '../store/action-types';
 import { Store } from '../store';
 import { QuoteEditor } from './quote-editor';
-import { SettingsActionType } from '../settings/action-types';
+import { BackgroundActionType } from '../background/store/action-types';
 import { BuiltinQuotes, BuiltinQuote, CustomQuote } from '../quote';
 import { startEditing } from '../store/actions';
 import { VNode } from 'snabbdom/vnode';
@@ -44,9 +44,9 @@ const QuoteOptions = (store: Store) => {
 		state.settings.showQuotes,
 		'Show Quotes',
 		{
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
-				type: SettingsActionType.QUOTES_SHOW_TOGGLE,
+				type: BackgroundActionType.QUOTES_SHOW_TOGGLE,
 			},
 		}
 	);
@@ -56,9 +56,9 @@ const QuoteOptions = (store: Store) => {
 		state.settings.builtinQuotesEnabled,
 		'Enable Built-in Quotes',
 		{
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
-				type: SettingsActionType.QUOTES_BUILTIN_TOGGLE,
+				type: BackgroundActionType.QUOTES_BUILTIN_TOGGLE,
 			},
 		},
 		!state.settings.showQuotes
@@ -126,11 +126,11 @@ const BuiltinQuoteTable = (store: Store) => {
 
 	const showHideQuote = (id: number, hidden: boolean) => () => {
 		store.dispatch({
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
 				type: hidden
-					? SettingsActionType.QUOTE_SHOW
-					: SettingsActionType.QUOTE_HIDE,
+					? BackgroundActionType.QUOTE_SHOW
+					: BackgroundActionType.QUOTE_HIDE,
 				id,
 			},
 		});
@@ -141,8 +141,14 @@ const BuiltinQuoteTable = (store: Store) => {
 		return (
 			quote &&
 			h('tr', [
-				h(isHidden ? 'td.text-muted.text-strike' : 'td', quote.text),
-				h(isHidden ? 'td.text-muted.text-strike' : 'td', quote.source),
+				h(
+					isHidden ? 'td.pad-1.text-muted.text-strike' : 'td.pad-1',
+					quote.text
+				),
+				h(
+					isHidden ? 'td.pad-1.text-muted.text-strike' : 'td.pad-1',
+					quote.source
+				),
 				h('td', [
 					h(
 						'a.underline-hover',
@@ -157,8 +163,14 @@ const BuiltinQuoteTable = (store: Store) => {
 		);
 	};
 
-	return h('table.quote-table.scrollable-table', [
-		h('thead', [h('tr', [h('th', 'Quote'), h('th', 'Source'), h('th', '')])]),
+	return h('table.border.scrollable-table', [
+		h('thead', [
+			h('tr', [
+				h('th.pad-1', 'Quote'),
+				h('th.pad-1', 'Source'),
+				h('th.pad-1', ''),
+			]),
+		]),
 		h('tbody', [...BuiltinQuotes.sort(quoteCompare).map(BuiltinQuote)]),
 	]);
 };
@@ -171,9 +183,9 @@ const CustomQuoteTable = (store: Store) => {
 
 	const deleteQuote = (id: string) => () => {
 		store.dispatch({
-			type: ActionType.SETTINGS_ACTION,
+			type: ActionType.BACKGROUND_ACTION,
 			action: {
-				type: SettingsActionType.QUOTE_DELETE,
+				type: BackgroundActionType.QUOTE_DELETE,
 				id,
 			},
 		});
@@ -182,9 +194,9 @@ const CustomQuoteTable = (store: Store) => {
 		return (
 			quote &&
 			h('tr', [
-				h('td', quote.text),
-				h('td', quote.source),
-				h('td', [
+				h('td.pad-1', quote.text),
+				h('td.pad-1', quote.source),
+				h('td.pad-1', [
 					h(
 						'a.underline-hover',
 						{
@@ -198,12 +210,18 @@ const CustomQuoteTable = (store: Store) => {
 		);
 	};
 
-	return h('table.quote-table.scrollable-table', [
-		h('thead', [h('tr', [h('th', 'Quote'), h('th', 'Source'), h('th', '')])]),
+	return h('table.border.scrollable-table', [
+		h('thead', [
+			h('tr', [
+				h('th.pad-1', 'Quote'),
+				h('th.pad-1', 'Source'),
+				h('th.pad-1', ''),
+			]),
+		]),
 		h('tbody', [
 			...state.settings.customQuotes.sort(quoteCompare).map(CustomQuote),
 			state.settings.customQuotes.length === 0
-				? h('tr', [h('td', 'No custom quotes added'), h('td'), h('td')])
+				? h('tr', [h('td.pad-1', 'No custom quotes added'), h('td'), h('td')])
 				: null,
 		]),
 	]);

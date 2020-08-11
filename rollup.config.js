@@ -13,6 +13,7 @@ const plugins = [
 	}),
 ];
 
+/*
 const eradicate = {
 	input: 'src/eradicate.ts',
 	output: {
@@ -21,6 +22,7 @@ const eradicate = {
 	},
 	plugins: [...plugins, css({ output: 'build/eradicate.css' })],
 };
+*/
 
 const intercept = {
 	input: 'src/intercept.ts',
@@ -28,11 +30,11 @@ const intercept = {
 		file: 'build/intercept.js',
 		format: 'iife',
 	},
-	plugins: [typescript()],
+	plugins: [...plugins, css({ output: 'build/eradicate.css' })],
 };
 
 const options = {
-	input: 'src/options.ts',
+	input: 'src/options/options.ts',
 	output: {
 		file: 'build/options.js',
 		format: 'iife',
@@ -49,4 +51,4 @@ const background = {
 	plugins,
 };
 
-export default [eradicate, intercept, options, background];
+export default [intercept, options, background];

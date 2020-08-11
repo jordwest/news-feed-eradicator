@@ -1,10 +1,13 @@
 import {
-	SettingsActionObject as ActionObject,
-	SettingsActionType as ActionType,
+	BackgroundActionObject as ActionObject,
+	BackgroundActionType as ActionType,
 } from './action-types';
-import config from '../config';
-import { CustomQuote } from '../quote';
+import config from '../../config';
+import { CustomQuote } from '../../quote';
 import { combineReducers } from 'redux';
+import { Permissions } from '../../webextension';
+import { SiteId } from '../../sites';
+import { Settings } from './index';
 
 function showQuotes(state = true, action: ActionObject) {
 	switch (action.type) {
@@ -69,15 +72,39 @@ function customQuotes(
 	return state;
 }
 
+function permissions(
+	state: Permissions | undefined,
+	action: ActionObject
+): Permissions {
+	switch (action.type) {
+		case ActionType.PERMISSIONS_UPDATE:
+			return action.permissions;
+	}
+	return state || { permissions: [], origins: [] };
+}
+
+function sites(
+	state: Settings.SitesState | undefined = Settings.defaultSites(),
+	action: ActionObject
+): Record<SiteId, Settings.SiteState> {
+	switch (action.type) {
+		case ActionType.SITES_SET_STATE:
+			return { ...state, [action.siteId]: action.state };
+	}
+	return state || {};
+}
+
 export type SettingsState = {
 	showQuotes: boolean;
 	builtinQuotesEnabled: boolean;
 	featureIncrement: number;
 	hiddenBuiltinQuotes: number[];
 	customQuotes: CustomQuote[];
+	sites: Record<SiteId, Settings.SiteState>;
+	permissions: Permissions;
 };
 
-export type SettingsRoot =
+export type BackgroundState =
 	| { ready: false }
 	| {
 			ready: true;
@@ -90,12 +117,14 @@ const settingsReducer = combineReducers({
 	featureIncrement,
 	hiddenBuiltinQuotes,
 	customQuotes,
+	sites,
+	permissions,
 });
 
 export default (
-	state: SettingsRoot | undefined,
+	state: BackgroundState | undefined,
 	action: ActionObject
-): SettingsRoot => {
+): BackgroundState => {
 	// We can't do anything until the initial settings have been loaded,
 
 	if (action.type === ActionType.SETTINGS_LOADED) {

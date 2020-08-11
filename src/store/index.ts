@@ -1,7 +1,6 @@
 import { createStore as createReduxStore, applyMiddleware } from 'redux';
 
 import rootReducer, { IState } from './reducer';
-import { selectNewQuote } from './actions';
 import { effectsMiddleware } from '../lib/redux-effects';
 import { ActionObject } from './action-types';
 import { rootEffect } from './effects';
