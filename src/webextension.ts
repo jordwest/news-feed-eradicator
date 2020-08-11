@@ -67,7 +67,7 @@ export function getBrowser(): WebExtensionAPI {
 					new Promise((resolve) =>
 						chrome!.runtime.sendMessage(undefined, m, undefined, resolve)
 					),
-				connect: chrome.runtime.connect,
+				connect: chrome.runtime.connect.bind(chrome.runtime),
 				onConnect: chrome.runtime.onConnect,
 			},
 			storage: {
@@ -76,7 +76,7 @@ export function getBrowser(): WebExtensionAPI {
 						new Promise((resolve) => {
 							chrome!.storage.sync.get(key, resolve);
 						}),
-					set: chrome.storage.sync.set,
+					set: chrome.storage.sync.set.bind(chrome!.storage.sync),
 				},
 			},
 		};
