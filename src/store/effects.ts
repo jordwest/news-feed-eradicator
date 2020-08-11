@@ -186,7 +186,6 @@ const siteClicked: AppEffect = (store) => async (action) => {
 				);
 			}
 		} else if (s.type === SiteStatusTag.DISABLED) {
-			// TODO: Check site permissions
 			const success = await requestPermissions(store as Store, site.origins);
 			if (success) {
 				store.dispatch(
