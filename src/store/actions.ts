@@ -7,8 +7,11 @@ import {
 	QuoteAddBulk,
 	BackgroundAction,
 	UiOptionsShow,
+	ActionObject,
 } from './action-types';
 import { BackgroundActionType } from '../background/store/action-types';
+import { SiteId } from '../sites';
+import { Settings } from '../background/store';
 
 export function addQuote(
 	id: string,
@@ -85,4 +88,16 @@ export function addQuotesBulk(text: string): QuoteAddBulk {
 
 export const showOptions = (): UiOptionsShow => ({
 	type: ActionType.UI_OPTIONS_SHOW,
+});
+
+export const setSiteState = (
+	siteId: SiteId,
+	state: Settings.SiteState
+): ActionObject => ({
+	type: ActionType.BACKGROUND_ACTION,
+	action: {
+		type: BackgroundActionType.SITES_SET_STATE,
+		siteId,
+		state,
+	},
 });

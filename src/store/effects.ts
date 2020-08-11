@@ -2,7 +2,7 @@ import { Effect } from '../lib/redux-effects';
 import { IState } from './reducer';
 import { currentQuote, getAvailableQuotes } from './selectors';
 import { ActionType, ActionObject } from './action-types';
-import { cancelEditing, addQuote } from './actions';
+import { cancelEditing, addQuote, setSiteState } from './actions';
 import { generateID } from '../lib/generate-id';
 import { getBrowser } from '../webextension';
 import { Message, MessageType } from '../messaging/types';
@@ -172,55 +172,35 @@ const siteClicked: AppEffect = (store) => async (action) => {
 		const s = sites[action.site];
 		if (s.type == SiteStatusTag.NEEDS_NEW_PERMISSIONS) {
 			if (await requestPermissions(store as Store, site.origins)) {
-				store.dispatch({
-					type: ActionType.BACKGROUND_ACTION,
-					action: {
-						type: BackgroundActionType.SITES_SET_STATE,
-						siteId: action.site,
-						state: {
-							type: Settings.SiteStateTag.ENABLED,
-						},
-					},
-				});
+				store.dispatch(
+					setSiteState(action.site, {
+						type: Settings.SiteStateTag.ENABLED,
+					})
+				);
 			} else {
 				// Permission denied, disable the site
-				store.dispatch({
-					type: ActionType.BACKGROUND_ACTION,
-					action: {
-						type: BackgroundActionType.SITES_SET_STATE,
-						siteId: action.site,
-						state: {
-							type: Settings.SiteStateTag.DISABLED,
-						},
-					},
-				});
+				store.dispatch(
+					setSiteState(action.site, {
+						type: Settings.SiteStateTag.DISABLED,
+					})
+				);
 			}
 		} else if (s.type === SiteStatusTag.DISABLED) {
 			// TODO: Check site permissions
 			const success = await requestPermissions(store as Store, site.origins);
 			if (success) {
-				store.dispatch({
-					type: ActionType.BACKGROUND_ACTION,
-					action: {
-						type: BackgroundActionType.SITES_SET_STATE,
-						siteId: action.site,
-						state: {
-							type: Settings.SiteStateTag.ENABLED,
-						},
-					},
-				});
+				store.dispatch(
+					setSiteState(action.site, {
+						type: Settings.SiteStateTag.ENABLED,
+					})
+				);
 			}
 		} else if (s.type === SiteStatusTag.DISABLED_TEMPORARILY) {
-			store.dispatch({
-				type: ActionType.BACKGROUND_ACTION,
-				action: {
-					type: BackgroundActionType.SITES_SET_STATE,
-					siteId: action.site,
-					state: {
-						type: Settings.SiteStateTag.ENABLED,
-					},
-				},
-			});
+			store.dispatch(
+				setSiteState(action.site, {
+					type: Settings.SiteStateTag.ENABLED,
+				})
+			);
 		} else if (s.type === SiteStatusTag.ENABLED) {
 			store.dispatch({
 				type: ActionType.UI_SITES_SITE_DISABLE_CONFIRM_SHOW,
