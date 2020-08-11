@@ -8,6 +8,12 @@ import { getBrowser } from '../webextension';
 import { Message, MessageType } from '../messaging/types';
 import { BackgroundActionType } from '../background/store/action-types';
 import { Sites } from '../sites';
+import {
+	getSiteStatus,
+	SiteStatusTag,
+} from '../background/store/sites/selectors';
+import { Store } from '.';
+import { Settings } from '../background/store';
 
 export type AppEffect = Effect<IState, ActionObject>;
 
@@ -124,35 +130,116 @@ const quoteAddBulk: AppEffect = (store) => (action) => {
 	store.dispatch(cancelEditing());
 };
 
-const requestPermissions: AppEffect = (store) => async (action) => {
-	if (action.type === ActionType.UI_SITES_ENABLED_REQUEST_PERMISSIONS) {
-		const site = Sites[action.site];
-		const success = await getBrowser().permissions.request({
-			permissions: [],
-			origins: site.origins,
+const requestPermissions = async (store: Store, origins: string[]) => {
+	const success = await getBrowser().permissions.request({
+		permissions: [],
+		origins: origins,
+	});
+	if (success) {
+		// Check and update permissions
+		store.dispatch({
+			type: ActionType.BACKGROUND_ACTION,
+			action: { type: BackgroundActionType.PERMISSIONS_CHECK },
 		});
-		if (success) {
-			// Check and update permissions
+	}
+	return success;
+};
+const removePermissions = async (store: Store, origins: string[]) => {
+	const success = await getBrowser().permissions.remove({
+		permissions: [],
+		origins: origins,
+	});
+	if (success) {
+		// Check and update permissions
+		store.dispatch({
+			type: ActionType.BACKGROUND_ACTION,
+			action: { type: BackgroundActionType.PERMISSIONS_CHECK },
+		});
+	}
+	return success;
+};
+
+const siteClicked: AppEffect = (store) => async (action) => {
+	if (action.type === ActionType.UI_SITES_SITE_CLICK) {
+		const state = store.getState();
+		if (state.settings == null) {
+			// Can't do anything until settings have loaded
+			return;
+		}
+		const sites = getSiteStatus(state.settings);
+		const site = Sites[action.site];
+
+		const s = sites[action.site];
+		if (s.type == SiteStatusTag.NEEDS_NEW_PERMISSIONS) {
+			await requestPermissions(store as Store, site.origins);
 			store.dispatch({
 				type: ActionType.BACKGROUND_ACTION,
-				action: { type: BackgroundActionType.SITES_ENABLED_CHECK },
+				action: {
+					type: BackgroundActionType.SITES_SET_STATE,
+					siteId: action.site,
+					state: {
+						type: Settings.SiteStateTag.ENABLED,
+					},
+				},
+			});
+		} else if (s.type === SiteStatusTag.DISABLED) {
+			// TODO: Check site permissions
+			await requestPermissions(store as Store, site.origins);
+			store.dispatch({
+				type: ActionType.BACKGROUND_ACTION,
+				action: {
+					type: BackgroundActionType.SITES_SET_STATE,
+					siteId: action.site,
+					state: {
+						type: Settings.SiteStateTag.ENABLED,
+					},
+				},
+			});
+		} else if (s.type === SiteStatusTag.DISABLED_TEMPORARILY) {
+			store.dispatch({
+				type: ActionType.BACKGROUND_ACTION,
+				action: {
+					type: BackgroundActionType.SITES_SET_STATE,
+					siteId: action.site,
+					state: {
+						type: Settings.SiteStateTag.ENABLED,
+					},
+				},
+			});
+		} else if (s.type === SiteStatusTag.ENABLED) {
+			store.dispatch({
+				type: ActionType.UI_SITES_SITE_DISABLE_CONFIRM_SHOW,
+				site: action.site,
 			});
 		}
 	}
 };
 
-const removePermissions: AppEffect = (store) => async (action) => {
-	if (action.type === ActionType.UI_SITES_ENABLED_REMOVE_PERMISSIONS) {
-		const site = Sites[action.site];
-		const success = await getBrowser().permissions.remove({
-			permissions: [],
-			origins: site.origins,
-		});
-		if (success) {
-			// Check and update permissions
+const confirmSiteDisabled: AppEffect = (store) => async (action) => {
+	if (action.type === ActionType.UI_SITES_SITE_DISABLE_CONFIRMED) {
+		if (action.until.t === 'forever') {
+			// Don't need the permissions anymore
+			const site = Sites[action.site];
+			await removePermissions(store as Store, site.origins);
 			store.dispatch({
 				type: ActionType.BACKGROUND_ACTION,
-				action: { type: BackgroundActionType.SITES_ENABLED_CHECK },
+				action: {
+					type: BackgroundActionType.SITES_SET_STATE,
+					siteId: action.site,
+					state: { type: Settings.SiteStateTag.DISABLED },
+				},
+			});
+		} else {
+			store.dispatch({
+				type: ActionType.BACKGROUND_ACTION,
+				action: {
+					type: BackgroundActionType.SITES_SET_STATE,
+					siteId: action.site,
+					state: {
+						type: Settings.SiteStateTag.DISABLED_TEMPORARILY,
+						disabled_until: Date.now() + action.until.milliseconds,
+					},
+				},
 			});
 		}
 	}
@@ -192,7 +279,7 @@ export const rootEffect: AppEffect = Effect.all(
 	quoteRemoveCurrent,
 	quoteSaveClicked,
 	quoteAddBulk,
-	requestPermissions,
-	removePermissions,
+	siteClicked,
+	confirmSiteDisabled,
 	connect
 );

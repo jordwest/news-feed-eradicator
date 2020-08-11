@@ -7,6 +7,7 @@ import { Settings } from './index';
 import config from '../../config';
 import { sitesEffect, getPermissions } from './sites/effects';
 import { getSettingsHealth } from './sites/selectors';
+import { SiteId, Sites } from '../../sites';
 
 export type BackgroundEffect = Effect<BackgroundState, BackgroundActionObject>;
 
@@ -18,6 +19,7 @@ const getSettings = (state: SettingsState): Settings.T => {
 		featureIncrement: state.featureIncrement,
 		hiddenBuiltinQuotes: state.hiddenBuiltinQuotes,
 		customQuotes: state.customQuotes,
+		sites: state.sites,
 	};
 };
 
@@ -72,10 +74,24 @@ export function areNewFeaturesAvailable(state: SettingsState) {
 
 const loadSettings: BackgroundEffect = (store) => async (action) => {
 	if (action.type === BackgroundActionType.SETTINGS_LOAD) {
-		const [settings, sites] = await Promise.all([
+		const [settings, permissions] = await Promise.all([
 			Settings.load(),
 			getPermissions(),
 		]);
+
+		const sites: Record<SiteId, Settings.SiteState> = {} as Record<
+			SiteId,
+			Settings.SiteState
+		>;
+		// For any sites that don't yet exist in the settings,
+		// add a note to look at the permissions as the source of
+		// truth instead
+		for (const key of Object.keys(Sites)) {
+			sites[key] =
+				settings.sites[key] != null
+					? settings.sites[key]
+					: { type: Settings.SiteStateTag.CHECK_PERMISSIONS };
+		}
 
 		const state: SettingsState = {
 			showQuotes: settings.showQuotes,
@@ -83,9 +99,8 @@ const loadSettings: BackgroundEffect = (store) => async (action) => {
 			featureIncrement: settings.featureIncrement,
 			hiddenBuiltinQuotes: settings.hiddenBuiltinQuotes,
 			customQuotes: settings.customQuotes,
-			sites: {
-				sitesEnabled: sites,
-			},
+			sites,
+			permissions,
 		};
 
 		store.dispatch({

@@ -4,7 +4,6 @@
  */
 
 import './eradicate.css';
-import disableInfiniteScroll from './lib/disable-infinite-scroll';
 import { setupRouteChange } from './lib/route-change';
 
 import * as FbClassic from './sites/fb-classic';
@@ -25,6 +24,5 @@ export function eradicate(store: Store) {
 	}
 }
 
-disableInfiniteScroll();
 setupRouteChange(store);
 eradicate(store);

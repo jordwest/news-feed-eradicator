@@ -1,6 +1,6 @@
 import { remove } from '../lib/remove-news-feed';
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
-import isEnabled from '../lib/is-enabled';
+import { isEnabled } from '../lib/is-enabled';
 import { Store } from '../store';
 
 // Elements here are removed from the DOM.
@@ -25,7 +25,8 @@ export function checkSite(): boolean {
 
 export function eradicate(store: Store) {
 	function eradicateRetry() {
-		if (!isEnabled()) {
+		const settings = store.getState().settings;
+		if (settings == null || !isEnabled(settings)) {
 			return;
 		}
 

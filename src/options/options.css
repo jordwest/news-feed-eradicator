@@ -81,6 +81,12 @@ a:visited {
 .justify-center {
 	justify-content: center;
 }
+.justify-right {
+	justify-content: right;
+}
+.align-items-center {
+	align-items: center;
+}
 .block {
 	display: block;
 }
@@ -139,8 +145,12 @@ a.underline-hover:hover {
 .col-bg-err {
 	background-color: #fcc;
 }
-.col-bg-active {
-	background-color: #caffb7;
+.bg-active {
+	background-color: #dae7ff;
+}
+.bg-active-light,
+.bg-active-light-hover:hover {
+	background-color: #e7f0ff;
 }
 .bg-1 {
 	background-color: #fbfefb;

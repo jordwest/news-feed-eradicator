@@ -9,6 +9,7 @@ import { toVNode } from 'snabbdom/tovnode';
 import InfoPanel from '../components/info-panel';
 import { ActionType } from '../store/action-types';
 import { BackgroundActionType } from '../background/store/action-types';
+import { SECOND } from '../lib/time';
 
 const store = createStore();
 
@@ -39,6 +40,12 @@ export function start(container: Node | null) {
 		vnode = newVnode;
 	};
 	store.subscribe(render);
+
+	// We need to force re-render when time remaining is shown
+	setInterval(() => {
+		const state = store.getState();
+		if (state.uiOptions.tab === 'sites') render();
+	}, 30 * SECOND);
 
 	render();
 }

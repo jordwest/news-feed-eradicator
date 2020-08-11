@@ -1,4 +1,4 @@
-import { createStore, Store } from '../store/index';
+import { Store } from '../store/index';
 import NewsFeedEradicator from '../components/index';
 import { init } from 'snabbdom';
 import { h } from 'snabbdom/h';
@@ -35,7 +35,6 @@ export default function injectUI(streamContainer: Node, store: Store) {
 			const g = parseInt(match[2], 10);
 			const b = parseInt(match[3], 10);
 			// Check the background color
-			console.log('bg color is ', r, g, b);
 			let mode: string;
 			if (r < 100 && g < 100 && b < 100) {
 				mode = 'dark';
@@ -43,7 +42,6 @@ export default function injectUI(streamContainer: Node, store: Store) {
 				mode = 'light';
 			}
 			document.body.dataset.nfeColorScheme = mode;
-			console.log(mode, 'mode');
 		}
 	};
 

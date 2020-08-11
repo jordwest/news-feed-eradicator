@@ -1,5 +1,5 @@
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
-import isEnabled from '../lib/is-enabled';
+import { isEnabled } from '../lib/is-enabled';
 import { Store } from '../store';
 
 //export function checkSite(): boolean {
@@ -8,7 +8,8 @@ import { Store } from '../store';
 
 export function eradicate(store: Store) {
 	function eradicateRetry() {
-		if (!isEnabled()) {
+		const settings = store.getState().settings;
+		if (settings == null || !isEnabled(settings)) {
 			return;
 		}
 

@@ -1,6 +1,7 @@
 import { SettingsState } from './reducer';
+import { Permissions } from '../../webextension';
 import { SiteId } from '../../sites';
-import { SiteState } from './sites/reducer';
+import { Settings } from '.';
 
 export enum BackgroundActionType {
 	QUOTES_SHOW_TOGGLE = 'QUOTES_SHOW_TOGGLE',
@@ -13,8 +14,9 @@ export enum BackgroundActionType {
 	FEATURE_INCREMENT = 'FEATURE_INCREMENT',
 	SETTINGS_LOAD = 'SETTINGS_LOAD',
 	SETTINGS_LOADED = 'SETTINGS_LOADED',
-	SITES_ENABLED_CHECK = 'sites/enabled/check',
-	SITES_ENABLED_UPDATE = 'sites/enabled/update',
+	PERMISSIONS_CHECK = 'permissions/check',
+	PERMISSIONS_UPDATE = 'permissions/update',
+	SITES_SET_STATE = 'sites/set_state',
 }
 
 export type BackgroundActionObject =
@@ -28,8 +30,9 @@ export type BackgroundActionObject =
 	| QuoteHiddenReset
 	| SettingsLoad
 	| SettingsLoaded
-	| SitesEnabledCheck
-	| SitesEnabledUpdate;
+	| PermissionsCheck
+	| PermissionsUpdate
+	| SitesSetState;
 
 export type FeatureIncrement = { type: BackgroundActionType.FEATURE_INCREMENT };
 
@@ -71,10 +74,15 @@ export type SettingsLoaded = {
 	settings: SettingsState;
 };
 
-export type SitesEnabledCheck = {
-	type: BackgroundActionType.SITES_ENABLED_CHECK;
+export type PermissionsCheck = {
+	type: BackgroundActionType.PERMISSIONS_CHECK;
 };
-export type SitesEnabledUpdate = {
-	type: BackgroundActionType.SITES_ENABLED_UPDATE;
-	sitesEnabled: Record<SiteId, SiteState>;
+export type PermissionsUpdate = {
+	type: BackgroundActionType.PERMISSIONS_UPDATE;
+	permissions: Permissions;
+};
+export type SitesSetState = {
+	type: BackgroundActionType.SITES_SET_STATE;
+	siteId: SiteId;
+	state: Settings.SiteState;
 };

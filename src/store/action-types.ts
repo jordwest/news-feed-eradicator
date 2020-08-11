@@ -17,8 +17,17 @@ export enum ActionType {
 	UI_OPTIONS_SHOW = 'ui/options/show',
 	UI_OPTIONS_TAB_SHOW = 'ui/options/tab/show',
 	UI_OPTIONS_QUOTE_TAB_SHOW = 'ui/options/quote/tab/show',
-	UI_SITES_ENABLED_REQUEST_PERMISSIONS = 'sites/enabled/request_permissions',
-	UI_SITES_ENABLED_REMOVE_PERMISSIONS = 'sites/enabled/remove_permissions',
+	UI_SITES_SITE_CLICK = 'sites/site/click',
+
+	/**
+	 * Show the confirmation for disabling News Feed Eradicator for a site
+	 */
+	UI_SITES_SITE_DISABLE_CONFIRM_SHOW = 'sites/site/disable/confirm/show',
+
+	/**
+	 * User confirmed site being disabled
+	 */
+	UI_SITES_SITE_DISABLE_CONFIRMED = 'sites/site/disable/confirmed',
 }
 
 export type ActionObject =
@@ -35,8 +44,9 @@ export type ActionObject =
 	| UiOptionsShow
 	| UiOptionsTabShow
 	| UiOptionsQuoteTabShow
-	| UiSitesEnabledRequestPermissions
-	| UiSitesEnabledRemovePermissions;
+	| UiSitesSiteClick
+	| UiSitesSiteDisableConfirmShow
+	| UiSitesSiteDisableConfirmed;
 
 export type BackgroundAction = {
 	type: ActionType.BACKGROUND_ACTION;
@@ -111,11 +121,16 @@ export type UiOptionsQuoteTabShow = {
 	type: ActionType.UI_OPTIONS_QUOTE_TAB_SHOW;
 	tab: 'custom' | 'builtin';
 };
-export type UiSitesEnabledRequestPermissions = {
-	type: ActionType.UI_SITES_ENABLED_REQUEST_PERMISSIONS;
+export type UiSitesSiteClick = {
+	type: ActionType.UI_SITES_SITE_CLICK;
 	site: SiteId;
 };
-export type UiSitesEnabledRemovePermissions = {
-	type: ActionType.UI_SITES_ENABLED_REMOVE_PERMISSIONS;
+export type UiSitesSiteDisableConfirmShow = {
+	type: ActionType.UI_SITES_SITE_DISABLE_CONFIRM_SHOW;
 	site: SiteId;
+};
+export type UiSitesSiteDisableConfirmed = {
+	type: ActionType.UI_SITES_SITE_DISABLE_CONFIRMED;
+	site: SiteId;
+	until: { t: 'forever' } | { t: 'temporarily'; milliseconds: number };
 };

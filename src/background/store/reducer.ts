@@ -5,7 +5,9 @@ import {
 import config from '../../config';
 import { CustomQuote } from '../../quote';
 import { combineReducers } from 'redux';
-import { sitesReducer, SitesState } from './sites/reducer';
+import { Permissions } from '../../webextension';
+import { SiteId } from '../../sites';
+import { Settings } from './index';
 
 function showQuotes(state = true, action: ActionObject) {
 	switch (action.type) {
@@ -70,13 +72,36 @@ function customQuotes(
 	return state;
 }
 
+function permissions(
+	state: Permissions | undefined,
+	action: ActionObject
+): Permissions {
+	switch (action.type) {
+		case ActionType.PERMISSIONS_UPDATE:
+			return action.permissions;
+	}
+	return state || { permissions: [], origins: [] };
+}
+
+function sites(
+	state: Settings.SitesState | undefined = Settings.defaultSites(),
+	action: ActionObject
+): Record<SiteId, Settings.SiteState> {
+	switch (action.type) {
+		case ActionType.SITES_SET_STATE:
+			return { ...state, [action.siteId]: action.state };
+	}
+	return state || {};
+}
+
 export type SettingsState = {
 	showQuotes: boolean;
 	builtinQuotesEnabled: boolean;
 	featureIncrement: number;
 	hiddenBuiltinQuotes: number[];
 	customQuotes: CustomQuote[];
-	sites: SitesState;
+	sites: Record<SiteId, Settings.SiteState>;
+	permissions: Permissions;
 };
 
 export type BackgroundState =
@@ -92,7 +117,8 @@ const settingsReducer = combineReducers({
 	featureIncrement,
 	hiddenBuiltinQuotes,
 	customQuotes,
-	sites: sitesReducer,
+	sites,
+	permissions,
 });
 
 export default (
