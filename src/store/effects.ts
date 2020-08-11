@@ -216,26 +216,18 @@ const confirmSiteDisabled: AppEffect = (store) => async (action) => {
 			// Don't need the permissions anymore
 			const site = Sites[action.site];
 			await removePermissions(store as Store, site.origins);
-			store.dispatch({
-				type: ActionType.BACKGROUND_ACTION,
-				action: {
-					type: BackgroundActionType.SITES_SET_STATE,
-					siteId: action.site,
-					state: { type: Settings.SiteStateTag.DISABLED },
-				},
-			});
+			store.dispatch(
+				setSiteState(action.site, {
+					type: Settings.SiteStateTag.DISABLED,
+				})
+			);
 		} else {
-			store.dispatch({
-				type: ActionType.BACKGROUND_ACTION,
-				action: {
-					type: BackgroundActionType.SITES_SET_STATE,
-					siteId: action.site,
-					state: {
-						type: Settings.SiteStateTag.DISABLED_TEMPORARILY,
-						disabled_until: Date.now() + action.until.milliseconds,
-					},
-				},
-			});
+			store.dispatch(
+				setSiteState(action.site, {
+					type: Settings.SiteStateTag.DISABLED_TEMPORARILY,
+					disabled_until: Date.now() + action.until.milliseconds,
+				})
+			);
 		}
 	}
 };
