@@ -171,30 +171,45 @@ const siteClicked: AppEffect = (store) => async (action) => {
 
 		const s = sites[action.site];
 		if (s.type == SiteStatusTag.NEEDS_NEW_PERMISSIONS) {
-			await requestPermissions(store as Store, site.origins);
-			store.dispatch({
-				type: ActionType.BACKGROUND_ACTION,
-				action: {
-					type: BackgroundActionType.SITES_SET_STATE,
-					siteId: action.site,
-					state: {
-						type: Settings.SiteStateTag.ENABLED,
+			if (await requestPermissions(store as Store, site.origins)) {
+				store.dispatch({
+					type: ActionType.BACKGROUND_ACTION,
+					action: {
+						type: BackgroundActionType.SITES_SET_STATE,
+						siteId: action.site,
+						state: {
+							type: Settings.SiteStateTag.ENABLED,
+						},
 					},
-				},
-			});
+				});
+			} else {
+				// Permission denied, disable the site
+				store.dispatch({
+					type: ActionType.BACKGROUND_ACTION,
+					action: {
+						type: BackgroundActionType.SITES_SET_STATE,
+						siteId: action.site,
+						state: {
+							type: Settings.SiteStateTag.DISABLED,
+						},
+					},
+				});
+			}
 		} else if (s.type === SiteStatusTag.DISABLED) {
 			// TODO: Check site permissions
-			await requestPermissions(store as Store, site.origins);
-			store.dispatch({
-				type: ActionType.BACKGROUND_ACTION,
-				action: {
-					type: BackgroundActionType.SITES_SET_STATE,
-					siteId: action.site,
-					state: {
-						type: Settings.SiteStateTag.ENABLED,
+			const success = await requestPermissions(store as Store, site.origins);
+			if (success) {
+				store.dispatch({
+					type: ActionType.BACKGROUND_ACTION,
+					action: {
+						type: BackgroundActionType.SITES_SET_STATE,
+						siteId: action.site,
+						state: {
+							type: Settings.SiteStateTag.ENABLED,
+						},
 					},
-				},
-			});
+				});
+			}
 		} else if (s.type === SiteStatusTag.DISABLED_TEMPORARILY) {
 			store.dispatch({
 				type: ActionType.BACKGROUND_ACTION,
