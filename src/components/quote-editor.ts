@@ -96,10 +96,10 @@ export const QuoteEditor = (store: Store) => {
 			},
 		}),
 	]);
-	const buttons = h('div', [
-		h('button.nfe-button', { on: { click: onCancel } }, 'Cancel'),
+	const buttons = h('div.h-stack', [
+		h('button', { on: { click: onCancel } }, 'Cancel'),
 		h(
-			'button.nfe-button.nfe-button-primary',
+			'button.bg-active',
 			{ props: { type: 'button' }, on: { click: onSave } },
 			'Save'
 		),

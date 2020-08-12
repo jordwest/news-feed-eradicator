@@ -3,6 +3,11 @@ import { getBrowser, TabId } from '../webextension';
 
 createBackgroundStore();
 
+const browser = getBrowser();
+browser.browserAction.onClicked.addListener(() => {
+	browser.runtime.openOptionsPage();
+});
+
 const tabMutex = new Set<number>();
 const onTabChange = async (tabId: TabId) => {
 	// Ensures we're only running this listener once per tab simultaneously
@@ -26,19 +31,15 @@ const onTabChange = async (tabId: TabId) => {
 			injectInfo[0].loaded !== true
 		) {
 			// Inject them scripts (and CSS)
-			getBrowser().tabs.insertCSS(tabId, {
+			browser.tabs.insertCSS(tabId, {
 				file: 'eradicate.css',
 				runAt: 'document_start',
 			});
-			getBrowser().tabs.executeScript(tabId, {
+			browser.tabs.executeScript(tabId, {
 				file: 'intercept.js',
 				runAt: 'document_start',
 			});
-			//getBrowser().tabs.executeScript(tabId, {
-			//	file: 'eradicate.js',
-			//	runAt: 'document_idle',
-			//});
-			await getBrowser().tabs.executeScript(tabId, {
+			await browser.tabs.executeScript(tabId, {
 				code: 'document.nfeScriptsInjected = true;',
 				runAt: 'document_start',
 			});
@@ -50,4 +51,4 @@ const onTabChange = async (tabId: TabId) => {
 	}
 };
 
-(getBrowser() as any).tabs.onUpdated.addListener(onTabChange);
+browser.tabs.onUpdated.addListener(onTabChange);

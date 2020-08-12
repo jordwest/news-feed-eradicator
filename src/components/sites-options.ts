@@ -32,7 +32,7 @@ const DisableConfirmation = (store: Store, siteId: SiteId) => {
 			label
 		);
 
-	return h('div.bg-active-light.pad-1', [
+	return h('div.bg-active-light.pad-1.h-stack', [
 		h('strong', `Show feed for`),
 		button('5 min', { t: 'temporarily', milliseconds: 5 * MINUTE }),
 		button('10 min', { t: 'temporarily', milliseconds: 10 * MINUTE }),

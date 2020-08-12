@@ -26,9 +26,11 @@ copy-assets:
 	cp src/manifest.json build/manifest.json
 	cp src/options/options.html build/options.html
 	cp src/background/background.html build/background.html
-	cp assets/icon16.jpg build/icon16.jpg
-	cp assets/icon48.jpg build/icon48.jpg
-	cp assets/icon128.jpg build/icon128.jpg
+	cp assets/icon16.png build/icon16.png
+	cp assets/icon32.png build/icon32.png
+	cp assets/icon48.png build/icon48.png
+	cp assets/icon64.png build/icon64.png
+	cp assets/icon128.png build/icon128.png
 
 dev: install copy-assets
 	mkdir -p build

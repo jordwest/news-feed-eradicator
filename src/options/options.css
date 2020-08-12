@@ -30,9 +30,14 @@ button {
 }
 
 button {
-	border: 0;
-	background: transparent;
+	border: 1px solid #ccc;
+	background-image: none;
 	color: #00f;
+	padding: 8px;
+	background: #fafafa;
+}
+button:hover {
+	background-color: #e7f0ff;
 }
 
 button:hover {
@@ -94,6 +99,9 @@ a:visited {
 	display: inline-block;
 }
 
+.pad-0 {
+	padding: 0;
+}
 .pad-1 {
 	padding: 8px;
 }

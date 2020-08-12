@@ -9,6 +9,9 @@ type WebExtensionAPI = {
 		connect: () => Port;
 		onConnect: WebExtensionEvent<Port>;
 	};
+	browserAction: {
+		onClicked: WebExtensionEvent<void>;
+	};
 	permissions: {
 		getAll: () => Promise<Permissions>;
 		remove: (p: Permissions) => Promise<boolean>;
@@ -71,6 +74,9 @@ type ChromeWebExtensionAPI = {
 		connect: () => Port;
 		onConnect: WebExtensionEvent<Port>;
 	};
+	browserAction: {
+		onClicked: WebExtensionEvent<void>;
+	};
 	permissions: {
 		getAll: (cb: (p: Permissions) => void) => void;
 		remove: (p: Permissions, cb: (removed: boolean) => void) => void;
@@ -116,6 +122,7 @@ export function getBrowser(): WebExtensionAPI {
 				connect: chrome.runtime.connect.bind(chrome.runtime),
 				onConnect: chrome.runtime.onConnect,
 			},
+			browserAction: chrome.browserAction,
 			permissions: {
 				getAll: () =>
 					new Promise((resolve) => chrome!.permissions?.getAll(resolve)),

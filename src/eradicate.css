@@ -140,20 +140,6 @@ body[data-nfe-color-scheme="dark"] .nfe-quote-text {
 	min-height: 120px;
 }
 
-#nfe-container .nfe-button,
-#nfe-container button.nfe-button {
-	margin: 5px 10px;
-	font-size: 22px;
-	border: 1px solid #aaa;
-	border-radius: 2px;
-	padding: 5px;
-	cursor: pointer;
-}
-.nfe-button-primary,
-button.nfe-button-primary {
-	background-color: #aaf;
-}
-
 .nfe-label {
 	background-color: #ddd;
 	color: #000;
