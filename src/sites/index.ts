@@ -20,7 +20,9 @@ export const Sites: Record<SiteId, Site> = {
 	reddit: {
 		label: 'Reddit',
 		domain: 'reddit.com',
-		paths: ['/', '/r/all', '/r/popular'],
+		paths: ['/', '/r/all/', '/r/popular/']
+			.map((i) => [i + '', i + 'home/', i + 'hot/', i + 'new/', i + 'top/', i + 'rising/'])
+			.reduce((i, j) => i.concat(j)),
 		origins: ["https://www.reddit.com/*", "http://www.reddit.com/*"],
 	},
 };
