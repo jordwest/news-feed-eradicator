@@ -209,3 +209,18 @@ html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last
 	pointer-events: none !important;
 	height: 0 !important;
 }
+
+/* Reddit Home | Popular | All */
+#SHORTCUT_FOCUSABLE_DIV > :not([class^=SubredditVars-r-]) .scrollerItem,
+.SubredditVars-r-all .scrollerItem, .SubredditVars-r-popular .scrollerItem {
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* Reddit's Popular's Trending Part */
+#TrendingPostsContainer{
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+ 

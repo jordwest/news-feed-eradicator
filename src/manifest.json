@@ -12,8 +12,10 @@
 		"http://web.facebook.com/*",
 		"https://web.facebook.com/*",
 		"http://twitter.com/*",
-		"https://twitter.com/*"
-	],	
+		"https://twitter.com/*",
+		"https://www.reddit.com/",
+		"http://www.reddit.com/"
+	],
 	"browser_action": {
 		"default_icon": {
 			"16": "icon16.png",

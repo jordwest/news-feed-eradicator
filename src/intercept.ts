@@ -9,13 +9,16 @@ import { setupRouteChange } from './lib/route-change';
 import * as FbClassic from './sites/fb-classic';
 import * as Fb2020 from './sites/fb-2020';
 import * as Twitter from './sites/twitter';
+import * as Reddit from './sites/reddit';
 import { createStore, Store } from './store';
 
 const store = createStore();
 
 export function eradicate(store: Store) {
 	// Determine which site we're working with
-	if (Twitter.checkSite()) {
+	if (Reddit.checkSite()) {
+		Reddit.eradicate(store);
+	} else if (Twitter.checkSite()) {
 		Twitter.eradicate(store);
 	} else if (FbClassic.checkSite()) {
 		FbClassic.eradicate(store);

@@ -1,4 +1,4 @@
-export type SiteId = 'facebook' | 'twitter';
+export type SiteId = 'facebook' | 'twitter' | 'reddit';
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
 		label: 'Facebook',
@@ -16,6 +16,12 @@ export const Sites: Record<SiteId, Site> = {
 		domain: 'twitter.com',
 		paths: ['/home', '/compose/tweet'],
 		origins: ['http://twitter.com/*', 'https://twitter.com/*'],
+	},
+	reddit: {
+		label: 'Reddit',
+		domain: 'reddit.com',
+		paths: ['/', '/r/all', '/r/popular'],
+		origins: ["https://www.reddit.com/*", "http://www.reddit.com/*"],
 	},
 };
 
