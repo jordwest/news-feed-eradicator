@@ -18,7 +18,7 @@ export const Sites: Record<SiteId, Site> = {
 		origins: ['http://twitter.com/*', 'https://twitter.com/*'],
 	},
 	hackernews: {
-		label: 'HackerNews',
+		label: 'Y Combinator News (HN)',
 		domain: 'news.ycombinator.com',
 		paths: ['/'],
 		origins: ['https://news.ycombinator.com/*'],
