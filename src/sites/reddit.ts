@@ -18,15 +18,23 @@ export function eradicate(store: Store) {
             '.scrollerItem'
         );
 
-        if (scroll_item == null) {
+        const new_reddit_container = scroll_item?.parentNode?.parentNode?.parentNode?.previousSibling;
+        const old_reddit_container = document
+            .querySelector('.listing-page > .content');
+        const container = new_reddit_container || old_reddit_container;
+
+        if (container == null) {
             console.log('not ready yet');
             return;
         }
 
-        const container = scroll_item.parentNode?.parentNode?.parentNode?.previousSibling;
-
         // Add News Feed Eradicator quote/info panel
-        if (container && !isAlreadyInjected()) {
+        if (!isAlreadyInjected()) {
+            const main_body = document.getElementById("2x-container")?.firstElementChild;
+            if (main_body != null) {
+                // Hack so that injectUI can handle new-reddit theme
+                document.body.style.background = getComputedStyle(main_body).getPropertyValue('background');
+            }
             injectUI(container, store);
         }
     }

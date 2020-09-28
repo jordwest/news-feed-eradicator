@@ -14,7 +14,9 @@
 		"http://twitter.com/*",
 		"https://twitter.com/*",
 		"https://www.reddit.com/",
-		"http://www.reddit.com/"
+		"http://www.reddit.com/",
+		"https://old.reddit.com/",
+		"http://old.reddit.com/"
 	],
 	"browser_action": {
 		"default_icon": {

@@ -224,3 +224,9 @@ html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last
 	height: 0 !important;
 }
  
+/* Reddit old */
+.listing-page.with-listing-chooser .content #siteTable {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+} 
