@@ -230,3 +230,8 @@ html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last
 	pointer-events: none !important;
 	height: 0 !important;
 } 
+
+/* Hacker News */
+html:not([data-nfe-enabled='false']) table#hnmain .itemlist {
+  display: none;
+}

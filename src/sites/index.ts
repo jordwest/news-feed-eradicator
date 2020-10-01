@@ -1,4 +1,4 @@
-export type SiteId = 'facebook' | 'twitter' | 'reddit';
+export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews';
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
 		label: 'Facebook',
@@ -25,6 +25,12 @@ export const Sites: Record<SiteId, Site> = {
 			.reduce((i, j) => i.concat(j)),
 		origins: ["https://www.reddit.com/*", "http://www.reddit.com/*",
 			"https://old.reddit.com/*", "http://old.reddit.com/*"],
+  },
+	hackernews: {
+		label: 'Y Combinator News (HN)',
+		domain: 'news.ycombinator.com',
+		paths: ['/'],
+		origins: ['https://news.ycombinator.com/*'],
 	},
 };
 
