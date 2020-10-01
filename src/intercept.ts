@@ -9,6 +9,7 @@ import { setupRouteChange } from './lib/route-change';
 import * as FbClassic from './sites/fb-classic';
 import * as Fb2020 from './sites/fb-2020';
 import * as Twitter from './sites/twitter';
+import * as HackerNews from './sites/hackernews';
 import { createStore, Store } from './store';
 
 const store = createStore();
@@ -19,9 +20,11 @@ export function eradicate(store: Store) {
 		Twitter.eradicate(store);
 	} else if (FbClassic.checkSite()) {
 		FbClassic.eradicate(store);
-	} else {
+	} else if (HackerNews.checkSite()) {
+		HackerNews.eradicate(store);
+	} else  {
 		Fb2020.eradicate(store);
-	}
+  }
 }
 
 setupRouteChange(store);
