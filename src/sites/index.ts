@@ -1,4 +1,4 @@
-export type SiteId = 'facebook' | 'twitter' | 'hackernews';
+export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews';
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
 		label: 'Facebook',
@@ -17,6 +17,15 @@ export const Sites: Record<SiteId, Site> = {
 		paths: ['/home', '/compose/tweet'],
 		origins: ['http://twitter.com/*', 'https://twitter.com/*'],
 	},
+	reddit: {
+		label: 'Reddit',
+		domain: 'reddit.com',
+		paths: ['/', '/r/all/', '/r/popular/']
+			.map((i) => [i + '', i + 'home/', i + 'hot/', i + 'new/', i + 'top/', i + 'rising/'])
+			.reduce((i, j) => i.concat(j)),
+		origins: ["https://www.reddit.com/*", "http://www.reddit.com/*",
+			"https://old.reddit.com/*", "http://old.reddit.com/*"],
+  },
 	hackernews: {
 		label: 'Y Combinator News (HN)',
 		domain: 'news.ycombinator.com',

@@ -13,6 +13,10 @@
 		"https://web.facebook.com/*",
 		"http://twitter.com/*",
 		"https://twitter.com/*",
+		"https://www.reddit.com/",
+		"http://www.reddit.com/",
+		"https://old.reddit.com/",
+		"http://old.reddit.com/",
 		"https://news.ycombinator.com/*"
 	],
 	"browser_action": {
