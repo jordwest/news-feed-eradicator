@@ -180,11 +180,6 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 		source: 'Napoleon Hill',
 	},
 	{
-		id: 32,
-		text: "Whether you think you can, or you think you can't, you're right.",
-		source: 'Henry Ford',
-	},
-	{
 		id: 33,
 		text:
 			'Even if I knew that tomorrow the world would go to pieces, I would still plant my apple tree.',
