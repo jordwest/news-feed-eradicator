@@ -44,7 +44,7 @@ const onTabChange = async (tabId: TabId) => {
 				runAt: 'document_start',
 			});
 		} else {
-			console.log('already injected or unavailable');
+			// already injected or unavailable
 		}
 	} finally {
 		tabMutex.delete(tabId);

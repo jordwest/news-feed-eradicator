@@ -25,13 +25,21 @@ export function setupRouteChange(store: Store) {
 		switch (status.type) {
 			case 'enabled':
 				element!.dataset.nfeEnabled = 'true';
+				// Scroll back to top when reenabled
+				setTimeout(() => window.scrollTo(0, 0), 100);
 				return;
 			case 'disabled':
 				// Delay showing the feed when switching pages, sometimes it can appear
 				// before the page has switched
-				setTimeout(() => {
-					element!.dataset.nfeEnabled = 'false';
-				}, 1000);
+				//
+				// Removed for now as this was causing issues when loading twitter. When
+				// it's disabled then enabled immediately after, the timeout still hangs around
+				// for a second and eventually disables it.
+				// setTimeout(() => {
+				// 	element!.dataset.nfeEnabled = 'false';
+				// }, 1000);
+				
+				element!.dataset.nfeEnabled = 'false';
 				return;
 			case 'disabled-temporarily':
 				element!.dataset.nfeEnabled = 'false';

@@ -2,7 +2,7 @@
 
 # The current git tag is used as the version number
 GITTAG=$(shell git describe --always --tag)
-BIN=$(shell yarn bin)
+BIN=$(shell npm bin)
 
 build: install copy-assets
 	mkdir -p build

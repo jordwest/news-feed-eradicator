@@ -19,7 +19,6 @@ export function eradicate(store: Store) {
 		);
 
 		if (feed == null) {
-			console.log('not ready yet');
 			return;
 		}
 

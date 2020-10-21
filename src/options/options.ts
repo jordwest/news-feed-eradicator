@@ -19,7 +19,7 @@ export function start(container: Node | null) {
 	}
 
 	var nfeContainer = document.createElement('div');
-	nfeContainer.id = 'nfe-container';
+	nfeContainer.id = 'options-container';
 	container.appendChild(nfeContainer);
 
 	const patch = init([propsModule, attrsModule, eventsModule]);
@@ -34,7 +34,7 @@ export function start(container: Node | null) {
 	});
 
 	const render = () => {
-		const newVnode = h('div#nfe-container', [InfoPanel(store)]);
+		const newVnode = h('div#options-container', [InfoPanel(store)]);
 
 		patch(vnode, newVnode);
 		vnode = newVnode;

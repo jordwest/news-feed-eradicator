@@ -7,6 +7,10 @@
 	background-color: inherit;
 }
 
+html[data-nfe-enabled='false'] #nfe-container {
+	display: none;
+}
+
 .margin-0 {
 	margin: 0;
 }
