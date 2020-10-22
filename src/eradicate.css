@@ -239,3 +239,17 @@ html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last
 html:not([data-nfe-enabled='false']) table#hnmain .itemlist {
   display: none;
 }
+
+/* LinkedIn */
+html:not([data-nfe-enabled='false']) div.core-rail > div:last-child > div:not(#nfe-container) {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+
+/* LinkedIn trending news section */
+.right-rail > div:nth-child(2) {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}

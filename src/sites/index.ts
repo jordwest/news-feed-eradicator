@@ -1,4 +1,4 @@
-export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews';
+export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin';
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
 		label: 'Facebook',
@@ -31,6 +31,15 @@ export const Sites: Record<SiteId, Site> = {
 		domain: 'news.ycombinator.com',
 		paths: ['/'],
 		origins: ['https://news.ycombinator.com/*'],
+	},
+	linkedin: {
+		label: 'LinkedIn',
+		domain: 'linkedin.com',
+		paths: ['/', '/feed/'],
+		origins: [
+			'http://www.linkedin.com/*',
+			'https://www.linkedin.com/*',
+		],
 	},
 };
 
