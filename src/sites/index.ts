@@ -1,9 +1,9 @@
-export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin';
+export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin' | 'youtube';
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
 		label: 'Facebook',
 		domain: 'facebook.com',
-		paths: ['/', '/'],
+		paths: ['/'],
 		origins: [
 			'http://www.facebook.com/*',
 			'https://www.facebook.com/*',
@@ -25,7 +25,7 @@ export const Sites: Record<SiteId, Site> = {
 			.reduce((i, j) => i.concat(j)),
 		origins: ["https://www.reddit.com/*", "http://www.reddit.com/*",
 			"https://old.reddit.com/*", "http://old.reddit.com/*"],
-  },
+	},
 	hackernews: {
 		label: 'Y Combinator News (HN)',
 		domain: 'news.ycombinator.com',
@@ -40,6 +40,12 @@ export const Sites: Record<SiteId, Site> = {
 			'http://www.linkedin.com/*',
 			'https://www.linkedin.com/*',
 		],
+  },
+	youtube: {
+		label: 'YouTube',
+		domain: 'youtube.com',
+		paths: ['/', '/feed/trending'],
+		origins: ['https://www.youtube.com/*'],
 	},
 };
 

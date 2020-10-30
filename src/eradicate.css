@@ -215,7 +215,7 @@ html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last
 }
 
 /* Reddit Home | Popular | All */
-#SHORTCUT_FOCUSABLE_DIV > :not([class^=SubredditVars-r-]) .scrollerItem,
+html:not([data-nfe-enabled='false']) #SHORTCUT_FOCUSABLE_DIV > :not([class^=SubredditVars-r-]) .scrollerItem,
 .SubredditVars-r-all .scrollerItem, .SubredditVars-r-popular .scrollerItem {
 	opacity: 0 !important;
 	pointer-events: none !important;
@@ -229,7 +229,7 @@ html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last
 }
  
 /* Reddit old */
-.listing-page.with-listing-chooser .content #siteTable {
+html:not([data-nfe-enabled='false']) .listing-page.with-listing-chooser .content #siteTable {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
@@ -249,6 +249,23 @@ html:not([data-nfe-enabled='false']) div.core-rail > div:last-child > div:not(#n
 
 /* LinkedIn trending news section */
 .right-rail > div:nth-child(2) {
+  opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+
+/* Youtube */
+html:not([data-nfe-enabled='false']) #primary > :not(#nfe-container) {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+
+html:not([data-nfe-enabled='false']) #primary > #nfe-container {
+	margin: 64px;
+}
+/* Youtube related */
+#content #related {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
