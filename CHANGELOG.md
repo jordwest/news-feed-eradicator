@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+ - YouTube support
+
 ## [2.1.0] - 2020-10-21
 
 ### Added
+
  - [Reddit support by @kessido](https://github.com/jordwest/news-feed-eradicator/pull/98)
  - [Hacker News support by @rjshade](https://github.com/jordwest/news-feed-eradicator/pull/97)
 

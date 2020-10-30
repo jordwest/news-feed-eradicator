@@ -11,6 +11,7 @@ import * as Fb2020 from './sites/fb-2020';
 import * as Twitter from './sites/twitter';
 import * as Reddit from './sites/reddit';
 import * as HackerNews from './sites/hackernews';
+import * as YouTube from './sites/youtube';
 import { createStore, Store } from './store';
 
 const store = createStore();
@@ -21,10 +22,12 @@ export function eradicate(store: Store) {
 		Reddit.eradicate(store);
 	} else if (Twitter.checkSite()) {
 		Twitter.eradicate(store);
-	} else if (FbClassic.checkSite()) {
-		FbClassic.eradicate(store);
 	} else if (HackerNews.checkSite()) {
 		HackerNews.eradicate(store);
+	} else if (YouTube.checkSite()) {
+		YouTube.eradicate(store);
+	} else if (FbClassic.checkSite()) {
+		FbClassic.eradicate(store);
 	} else  {
 		Fb2020.eradicate(store);
   }

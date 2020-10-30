@@ -17,7 +17,8 @@
 		"http://www.reddit.com/",
 		"https://old.reddit.com/",
 		"http://old.reddit.com/",
-		"https://news.ycombinator.com/*"
+		"https://news.ycombinator.com/*",
+	  	"https://www.youtube.com/*"
 	],
 	"browser_action": {
 		"default_icon": {

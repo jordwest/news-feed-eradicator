@@ -42,7 +42,10 @@ const QuoteDisplay = (store: Store) => {
 
 	if (quote == null) return null;
 
-	const toggleMenu = () => store.dispatch(menuToggle());
+	const toggleMenu = (e: MouseEvent) => {
+		e.preventDefault();
+		store.dispatch(menuToggle());
+	}
 	return h('div.nfe-quote', [
 		h('nfe-quote-action-menu', [
 			h(
