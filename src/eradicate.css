@@ -114,6 +114,7 @@ body[data-nfe-color-scheme="dark"] .nfe-quote-text {
 	color: #77f;
 	font-size: 12px;
 	display: block;
+	cursor: pointer;
 }
 
 .nfe-info-link:hover {

@@ -17,6 +17,21 @@ export const Sites: Record<SiteId, Site> = {
 		paths: ['/home', '/compose/tweet'],
 		origins: ['http://twitter.com/*', 'https://twitter.com/*'],
 	},
+	youtube: {
+		label: 'YouTube',
+		domain: 'youtube.com',
+		paths: ['/', '/feed/trending'],
+		origins: ['https://www.youtube.com/*'],
+	},
+	linkedin: {
+		label: 'LinkedIn',
+		domain: 'linkedin.com',
+		paths: ['/', '/feed/'],
+		origins: [
+			'http://www.linkedin.com/*',
+			'https://www.linkedin.com/*',
+		],
+	},
 	reddit: {
 		label: 'Reddit',
 		domain: 'reddit.com',
@@ -31,21 +46,6 @@ export const Sites: Record<SiteId, Site> = {
 		domain: 'news.ycombinator.com',
 		paths: ['/'],
 		origins: ['https://news.ycombinator.com/*'],
-	},
-	linkedin: {
-		label: 'LinkedIn',
-		domain: 'linkedin.com',
-		paths: ['/', '/feed/'],
-		origins: [
-			'http://www.linkedin.com/*',
-			'https://www.linkedin.com/*',
-		],
-  },
-	youtube: {
-		label: 'YouTube',
-		domain: 'youtube.com',
-		paths: ['/', '/feed/trending'],
-		origins: ['https://www.youtube.com/*'],
 	},
 };
 
