@@ -274,12 +274,12 @@ html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 
 /* Instagram feed, stories, recommended accounts */
 
-html:not([data-nfe-enabled='false']) main > section {
+html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
 	display: none;
 }
 
-html:not([data-nfe-enabled='false']) main > #nfe-container {
-	margin: 64px;
+html:not([data-nfe-enabled='false']) main > section > #nfe-container {
+	/*margin: 64px;*/
 }
 
 

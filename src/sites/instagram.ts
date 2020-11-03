@@ -14,7 +14,7 @@ export function eradicate(store: Store) {
     }
 
     // Don't do anything if the UI hasn't loaded yet
-    const feed = document.querySelector('main');
+    const feed = document.querySelector('main > section');
     if (feed == null) {
       return;
     }
