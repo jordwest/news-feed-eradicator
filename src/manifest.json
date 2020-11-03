@@ -20,7 +20,8 @@
 		"https://news.ycombinator.com/*",
 		"http://www.linkedin.com/*",
 		"https://www.linkedin.com/*",
-	  "https://www.youtube.com/*"
+	  "https://www.youtube.com/*",
+		"https://www.instagram.com/*"
 	],
 	"browser_action": {
 		"default_icon": {
