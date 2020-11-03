@@ -279,7 +279,5 @@ html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
 }
 
 html:not([data-nfe-enabled='false']) main > section > #nfe-container {
-	/*margin: 64px;*/
+	width: 100%;
 }
-
-
