@@ -11,6 +11,7 @@ import * as Fb2020 from './sites/fb-2020';
 import * as Twitter from './sites/twitter';
 import * as Reddit from './sites/reddit';
 import * as HackerNews from './sites/hackernews';
+import * as Github from './sites/github';
 import * as LinkedIn from './sites/linkedin';
 import * as YouTube from './sites/youtube';
 import { createStore, Store } from './store';
@@ -25,6 +26,8 @@ export function eradicate(store: Store) {
 		Twitter.eradicate(store);
 	} else if (HackerNews.checkSite()) {
 		HackerNews.eradicate(store);
+	} else if (Github.checkSite()) {
+		Github.eradicate(store);
 	} else if (LinkedIn.checkSite()) {
 		LinkedIn.eradicate(store);
 	} else if (YouTube.checkSite()) {
