@@ -14,18 +14,27 @@ export function eradicate(store: Store) {
 			return;
 		}
 
-		const feedSelector =
-      '#dashboard > div > div:nth-child(3)[data-repository-hovercards-enabled]';
-    
-		// Don't do anything if the UI hasn't loaded yet
-		const feed = document.querySelector(feedSelector);
-		if (feed == null) {
-			return;
+		let feedSelector: string = '';
+
+		const feedSelector1 =
+			'#dashboard > div > div:nth-child(3)[data-repository-hovercards-enabled]';
+		const feedSelector2 =
+			'#dashboard > div > div:nth-child(5)[data-repository-hovercards-enabled]';
+
+		if (document.querySelector(feedSelector1)) {
+			feedSelector = feedSelector1;
+		} else if (document.querySelector(feedSelector2)) {
+			feedSelector = feedSelector2;
 		}
 
-    const proTipsSelector = '#dashboard > div > div.f6.text-gray.mt-4'
+		// Don't do anything if the UI hasn't loaded yet
+		if (feedSelector.length === 0) return;
 
-		remove({ toRemove: [feedSelector, proTipsSelector] });
+		const proTipsSelector = '#dashboard > div > div.f6.text-gray.mt-4';
+		const allActivityHeader =
+			'#dashboard > div > h2.f4.text-normal.js-all-activity-header';
+
+		remove({ toRemove: [feedSelector, proTipsSelector, allActivityHeader] });
 
 		const container = document.querySelector(
 			'body > div.application-main > div > div > div > main'
