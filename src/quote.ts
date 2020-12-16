@@ -226,7 +226,7 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 		id: 41,
 		text:
 			'Whatever you think the world is withholding from you, you are withholding from the world.',
-		source: 'Ekhart Tolle',
+		source: 'Eckhart Tolle',
 	},
 	{
 		id: 42,
