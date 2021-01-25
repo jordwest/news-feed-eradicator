@@ -176,7 +176,7 @@ body[data-nfe-color-scheme="dark"] .nfe-quote-text {
 	color: #ff0000;
 }
 
-/* This hides the news feed before the JS kicks in */
+/* Old Facebook (pre-2020) */
 div[id^='explorefeed_main_stream'],
 div[id^='topnews_main_stream'],
 div.ticker_stream,
@@ -191,10 +191,13 @@ div.ego_column,
 	pointer-events: none !important;
 }
 
+/* New Facebook (2020) */
 html:not([data-nfe-enabled='false']) div[role='feed'],
 div[aria-label='Stories'] {
+	position: absolute !important;
 	opacity: 0 !important;
 	pointer-events: none !important;
+	width: 0 !important;
 	height: 0 !important;
 }
 

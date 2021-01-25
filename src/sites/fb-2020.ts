@@ -22,17 +22,6 @@ export function eradicate(store: Store) {
 
 		const container = feed.parentNode;
 
-		// For some reason, removing these nodes are causing CPU usage to
-		// sit at 100% while the page is open. Same thing if they're set to
-		// display: none in CSS. I suspect it's to do with infinite scroll
-		// again, so I'm going to leave the nodes in the tree for now, CSS
-		// takes care of hiding them. It just means there's a scrollbar that
-		// scrolls into emptiness, but it's better than constantly chewing CPU
-		// for now.
-		//
-		//removeNode(feed);
-		//removeNode(stories);
-
 		// Add News Feed Eradicator quote/info panel
 		if (container && !isAlreadyInjected()) {
 			injectUI(container, store);

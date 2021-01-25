@@ -13,8 +13,11 @@ export function isAlreadyInjected() {
 
 const rgbRe = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/;
 
+/**
+ * Inject the News Feed Eradicator panel into the page.
+ */
 export default function injectUI(streamContainer: Node, store: Store) {
-	var nfeContainer = document.createElement('div');
+	const nfeContainer = document.createElement('div');
 	nfeContainer.id = 'nfe-container';
 	streamContainer.appendChild(nfeContainer);
 
