@@ -251,8 +251,8 @@ html:not([data-nfe-enabled='false']) div.core-rail > div:last-child > div:not(#n
 /* LinkedIn trending news section */
 .right-rail > div:nth-child(2) {
   opacity: 0 !important;
-	pointer-events: none !important;
-	height: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
 }
 
 /* Youtube */
@@ -269,5 +269,4 @@ html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 #content #related {
 	opacity: 0 !important;
 	pointer-events: none !important;
-	height: 0 !important;
 }
