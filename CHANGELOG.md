@@ -15,6 +15,11 @@ No unreleased changes
  - YouTube support
  - [LinkedIn support by @viswanathgs](https://github.com/jordwest/news-feed-eradicator/pull/101)
 
+### Fixed
+
+ - Also blocks feed on `facebook.com/home.php` [(thanks @hannoeru)](https://github.com/jordwest/news-feed-eradicator/pull/109)
+ - Ekhart Tolle is Eckhart Tolle
+
 ## [2.1.0] - 2020-10-21
 
 ### Added
