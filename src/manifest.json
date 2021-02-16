@@ -20,7 +20,9 @@
 		"https://news.ycombinator.com/*",
 		"http://www.linkedin.com/*",
 		"https://www.linkedin.com/*",
-		"https://www.youtube.com/*", 
+    "https://www.youtube.com/*",
+    "https://www.github.com/*",
+    "https://github.com/*",
 		"http://www.instagram.com/*",
 		"https://www.instagram.com/*"
 	],

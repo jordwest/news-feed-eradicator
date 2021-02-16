@@ -8,11 +8,13 @@ const removeChildren = (node: Element) => {
 };
 
 type ElementList = {
-	toRemove: string[];
-	toEmpty: string[];
+	toRemove?: string[];
+	toEmpty?: string[];
 };
 
 export const remove = (elements: ElementList) => {
-	document.querySelectorAll(elements.toRemove.join(',')).forEach(removeNode);
-	document.querySelectorAll(elements.toEmpty.join(',')).forEach(removeChildren);
+  if (elements.toRemove)
+    document.querySelectorAll(elements.toRemove.join(',')).forEach(removeNode);
+  if (elements.toEmpty)
+	  document.querySelectorAll(elements.toEmpty.join(',')).forEach(removeChildren);
 };
