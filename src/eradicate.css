@@ -273,3 +273,13 @@ html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 	opacity: 0 !important;
 	pointer-events: none !important;
 }
+
+/* Instagram feed, stories, recommended accounts */
+
+html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
+	display: none;
+}
+
+html:not([data-nfe-enabled='false']) main > section > #nfe-container {
+	width: 100%;
+}

@@ -12,6 +12,7 @@ import * as Twitter from './sites/twitter';
 import * as Reddit from './sites/reddit';
 import * as HackerNews from './sites/hackernews';
 import * as LinkedIn from './sites/linkedin';
+import * as Instagram from './sites/instagram';
 import * as YouTube from './sites/youtube';
 import { createStore, Store } from './store';
 
@@ -29,6 +30,8 @@ export function eradicate(store: Store) {
 		LinkedIn.eradicate(store);
 	} else if (YouTube.checkSite()) {
 		YouTube.eradicate(store);
+	} else if (Instagram.checkSite()) {
+		Instagram.eradicate(store);
 	} else if (FbClassic.checkSite()) {
 		FbClassic.eradicate(store);
 	} else  {
