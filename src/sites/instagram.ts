@@ -3,7 +3,7 @@ import {isEnabled} from '../lib/is-enabled';
 import {Store} from '../store';
 
 export function checkSite(): boolean {
-  return window.location.host.includes('linkedin.com');
+  return window.location.host.includes('instagram.com');
 }
 
 export function eradicate(store: Store) {
@@ -14,7 +14,7 @@ export function eradicate(store: Store) {
     }
 
     // Don't do anything if the UI hasn't loaded yet
-    const feed = document.querySelector('main.scaffold-layout__main > div:last-child');
+    const feed = document.querySelector('main > section');
     if (feed == null) {
       return;
     }

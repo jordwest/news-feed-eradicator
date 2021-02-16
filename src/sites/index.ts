@@ -1,14 +1,24 @@
-export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'github' | 'linkedin' | 'youtube';
+export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin' | 'youtube' | 'instagram' | 'github';
+
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
 		label: 'Facebook',
 		domain: 'facebook.com',
-		paths: ['/'],
+		paths: ['/', '/home.php'],
 		origins: [
 			'http://www.facebook.com/*',
 			'https://www.facebook.com/*',
 			'http://web.facebook.com/*',
 			'https://web.facebook.com/*',
+		],
+	},
+	instagram: {
+		label: 'Instagram',
+		domain: 'instagram.com',
+		paths: ['/'],
+		origins: [
+			'http://www.instagram.com/*',
+			'https://www.instagram.com/*',
 		],
 	},
 	twitter: {

@@ -176,7 +176,7 @@ body[data-nfe-color-scheme="dark"] .nfe-quote-text {
 	color: #ff0000;
 }
 
-/* This hides the news feed before the JS kicks in */
+/* Old Facebook (pre-2020) */
 div[id^='explorefeed_main_stream'],
 div[id^='topnews_main_stream'],
 div.ticker_stream,
@@ -191,10 +191,13 @@ div.ego_column,
 	pointer-events: none !important;
 }
 
+/* New Facebook (2020) */
 html:not([data-nfe-enabled='false']) div[role='feed'],
 div[aria-label='Stories'] {
+	position: absolute !important;
 	opacity: 0 !important;
 	pointer-events: none !important;
+	width: 0 !important;
 	height: 0 !important;
 }
 
@@ -242,7 +245,7 @@ html:not([data-nfe-enabled='false']) table#hnmain .itemlist {
 }
 
 /* LinkedIn */
-html:not([data-nfe-enabled='false']) div.core-rail > div:last-child > div:not(#nfe-container) {
+html:not([data-nfe-enabled='false']) main.scaffold-layout__main > div:last-child > div:not(#nfe-container) {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
@@ -251,8 +254,8 @@ html:not([data-nfe-enabled='false']) div.core-rail > div:last-child > div:not(#n
 /* LinkedIn trending news section */
 .right-rail > div:nth-child(2) {
   opacity: 0 !important;
-	pointer-events: none !important;
-	height: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
 }
 
 /* Youtube */
@@ -269,5 +272,14 @@ html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 #content #related {
 	opacity: 0 !important;
 	pointer-events: none !important;
-	height: 0 !important;
+}
+
+/* Instagram feed, stories, recommended accounts */
+
+html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
+	display: none;
+}
+
+html:not([data-nfe-enabled='false']) main > section > #nfe-container {
+	width: 100%;
 }
