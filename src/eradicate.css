@@ -245,7 +245,7 @@ html:not([data-nfe-enabled='false']) table#hnmain .itemlist {
 }
 
 /* LinkedIn */
-html:not([data-nfe-enabled='false']) div.core-rail > div:last-child > div:not(#nfe-container) {
+html:not([data-nfe-enabled='false']) main.scaffold-layout__main > div:last-child > div:not(#nfe-container) {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;

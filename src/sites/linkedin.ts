@@ -14,7 +14,7 @@ export function eradicate(store: Store) {
     }
 
     // Don't do anything if the UI hasn't loaded yet
-    const feed = document.querySelector('div.core-rail > div:last-child');
+    const feed = document.querySelector('main.scaffold-layout__main > div:last-child');
     if (feed == null) {
       return;
     }
