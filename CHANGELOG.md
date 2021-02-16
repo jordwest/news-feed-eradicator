@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+ - [Instagram support by @ryanmonro](https://github.com/jordwest/news-feed-eradicator/pull/105)
+
 ### Fixed
 
  - LinkedIn

@@ -11,6 +11,15 @@ export const Sites: Record<SiteId, Site> = {
 			'https://web.facebook.com/*',
 		],
 	},
+	instagram: {
+		label: 'Instagram',
+		domain: 'instagram.com',
+		paths: ['/'],
+		origins: [
+			'http://www.instagram.com/*',
+			'https://www.instagram.com/*',
+		],
+	},
 	twitter: {
 		label: 'Twitter',
 		domain: 'twitter.com',
@@ -46,12 +55,6 @@ export const Sites: Record<SiteId, Site> = {
 		domain: 'news.ycombinator.com',
 		paths: ['/'],
 		origins: ['https://news.ycombinator.com/*'],
-	},
-	instagram: {
-		label: 'Instagram',
-		domain: 'www.instagram.com',
-		paths: ['/'],
-		origins: ['https://www.instagram.com/*'],
 	},
 };
 
