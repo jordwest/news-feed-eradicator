@@ -209,3 +209,10 @@ input[type='checkbox'] {
 	grid-template-columns: 1fr 260px;
 	text-align: left;
 }
+
+.nfe-csv-screenshot {
+	max-width: 100%;
+	height: auto;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
