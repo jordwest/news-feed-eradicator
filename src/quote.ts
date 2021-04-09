@@ -418,7 +418,7 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 	{
 		id: 75,
 		text:
-			'No matter how big a nation is, it is no stronger that its weakest people, and as long as you keep a person down, some part of you has to be down there to hold him down, so it means you cannot soar as you might otherwise.',
+			'No matter how big a nation is, it is no stronger than its weakest people, and as long as you keep a person down, some part of you has to be down there to hold him down, so it means you cannot soar as you might otherwise.',
 		source: 'Marian Anderson',
 	},
 	{
