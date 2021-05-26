@@ -252,7 +252,7 @@ html:not([data-nfe-enabled='false']) main.scaffold-layout__main > div:last-child
 }
 
 /* LinkedIn trending news section */
-.right-rail > div:nth-child(2) {
+aside.scaffold-layout__aside > div:nth-child(2) {
   opacity: 0 !important;
   pointer-events: none !important;
   height: 0 !important;
