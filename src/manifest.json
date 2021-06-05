@@ -1,6 +1,6 @@
 {
 	"name": "News Feed Eradicator",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"description": "Find yourself spending too much time on social media? Eradicate distractions by replacing your entire news feed with an inspiring quote",
 	"manifest_version": 2,
 	"permissions": [
@@ -20,9 +20,9 @@
 		"https://news.ycombinator.com/*",
 		"http://www.linkedin.com/*",
 		"https://www.linkedin.com/*",
-    "https://www.youtube.com/*",
-    "https://www.github.com/*",
-    "https://github.com/*",
+		"https://www.youtube.com/*",
+		"https://www.github.com/*",
+		"https://github.com/*",
 		"http://www.instagram.com/*",
 		"https://www.instagram.com/*"
 	],
