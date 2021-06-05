@@ -54,7 +54,7 @@ export const Sites: Record<SiteId, Site> = {
 	hackernews: {
 		label: 'Y Combinator News (HN)',
 		domain: 'news.ycombinator.com',
-		paths: ['/'],
+		paths: ['/', '/news'],
 		origins: ['https://news.ycombinator.com/*'],
 	},
 	github: {
