@@ -111,7 +111,6 @@ export const QuoteEditor = (store: Store) => {
 
 	const importCSV = h('div.nfe-csv-import', [
 		h('div.nfe-csv-or', 'Or, Import from a CSV'),
-		h('img.nfe-csv-screenshot', { attrs: { src: './images/csv-screenshot.jpg' } }),
 		h('input.nfe-csv-import-input', {
 			on: {
 				change: csvUploadListener,
