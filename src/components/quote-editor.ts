@@ -10,6 +10,7 @@ import {
 } from '../store/actions';
 import { ActionType } from '../store/action-types';
 import { ErrorAlert } from './alert';
+import parseCsv from '../lib/parse-csv';
 
 export const QuoteEditor = (store: Store) => {
 	const state = store.getState();
@@ -83,6 +84,45 @@ export const QuoteEditor = (store: Store) => {
 			})
 		),
 	]);
+
+	const csvUploadListener = (e: Event) => {
+		const csvFiles = (<HTMLInputElement>e.target).files;
+		const csvFile = csvFiles && csvFiles[0];
+		if (csvFile) {
+			const reader = new FileReader();
+			reader.readAsText(csvFile);
+			reader.onload = () => {
+				const csvText = reader.result;
+				if (csvText && typeof csvText === 'string') {
+					const parsedCSV = parseCsv(csvText);
+					const parsedCSVFormatted = parsedCSV.map(item => {
+						return {
+							text: item[0],
+							source: item[1]
+						}
+					}).reduce((accu, curr) => {
+						return accu + `${curr['text']} ~ ${curr['source'] || ''}\n`
+					}, '');
+					store.dispatch(setQuoteText(parsedCSVFormatted));					
+				}
+			}
+		}
+	}
+
+	const importCSV = h('div.nfe-csv-import', [
+		h('div.nfe-csv-or', 'Or, Import from a CSV'),
+		h('input.nfe-csv-import-input', {
+			on: {
+				change: csvUploadListener,
+			},
+			props: {
+				name: 'nfecsvimporter',
+				type: 'file',
+				id: 'nfe-csv-importer',
+				accept: '.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel'
+			}
+		})
+	]);
 	const sourceEditor = h('div.v-stack', [
 		h('label.inline-block.strong', 'Quote source'),
 		h('input.pad-1.width-100pc', {
@@ -127,7 +167,7 @@ export const QuoteEditor = (store: Store) => {
 	const header = h('h3.text-center', 'Add a quote');
 
 	if (isEditingBulk) {
-		return h('div.v-stack-2', [header, tabs, error, quoteEditorBulk, buttons]);
+		return h('div.v-stack-2', [header, tabs, error, quoteEditorBulk, importCSV, buttons]);
 	}
 
 	return h('div.v-stack-2', [header, tabs, quoteEditor, sourceEditor, buttons]);
