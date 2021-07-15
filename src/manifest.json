@@ -24,7 +24,8 @@
 		"https://www.github.com/*",
 		"https://github.com/*",
 		"http://www.instagram.com/*",
-		"https://www.instagram.com/*"
+		"https://www.instagram.com/*",
+		"https://www.quora.com/*"
 	],
 	"browser_action": {
 		"default_icon": {
