@@ -283,3 +283,14 @@ html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
 html:not([data-nfe-enabled='false']) main > section > #nfe-container {
 	width: 100%;
 }
+
+/* Quora*/
+html:not([data-nfe-enabled='false']) #mainContent > :not(#nfe-container) {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+
+html:not([data-nfe-enabled='false']) #mainContent > #nfe-container {
+	margin: 64px;
+}
