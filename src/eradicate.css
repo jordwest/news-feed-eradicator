@@ -192,7 +192,9 @@ div.ego_column,
 }
 
 /* New Facebook (2020) */
-html:not([data-nfe-enabled='false']) div[role='feed'],
+html:not([data-nfe-enabled='false']) div[role='feed'], /* For home and groups feeds */
+div[data-pagelet='MainFeed'], /* For watch and marketplace feeds */
+div[aria-label='Gaming'][role='main'],
 div[aria-label='Stories'] {
 	position: absolute !important;
 	opacity: 0 !important;

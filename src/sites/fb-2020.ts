@@ -14,7 +14,10 @@ export function eradicate(store: Store) {
 		}
 
 		// Don't do anything if the FB UI hasn't loaded yet
-		const feed = document.querySelector('[role=feed]');
+		const feed =
+			document.querySelector('[role=feed]') || // For home and groups feed
+			document.querySelector('[data-pagelet=MainFeed]') || // For watch and marketplace feeds
+			document.querySelector('div[aria-label=Gaming][role=main]'); // For gaming feed
 
 		if (feed == null) {
 			return;
