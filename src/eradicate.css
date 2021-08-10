@@ -200,6 +200,9 @@ div[aria-label='Stories'] {
 	width: 0 !important;
 	height: 0 !important;
 }
+html:not([data-nfe-enabled='false']) {
+	--notification-badge: var(--base-blue);
+}
 
 /* Twitter */
 html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > #nfe-container {
