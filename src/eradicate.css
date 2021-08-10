@@ -288,3 +288,19 @@ html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
 html:not([data-nfe-enabled='false']) main > section > #nfe-container {
 	width: 100%;
 }
+
+/* Twitch feed */
+html:not([data-nfe-enabled='false'])
+	[data-test-selector='scrollable-area-wrapper'] {
+	display: none;
+}
+html:not([data-nfe-enabled='false']) .twilight-main #nfe-container {
+	margin-top: 15px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Twitch recommended channels left side bar */
+html:not([data-nfe-enabled='false']) [data-test-selector='side-nav'] {
+	display: none;
+}

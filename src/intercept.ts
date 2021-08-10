@@ -15,6 +15,7 @@ import * as Github from './sites/github';
 import * as LinkedIn from './sites/linkedin';
 import * as Instagram from './sites/instagram';
 import * as YouTube from './sites/youtube';
+import * as Twitch from './sites/twitch';
 import { createStore, Store } from './store';
 
 const store = createStore();
@@ -35,11 +36,13 @@ export function eradicate(store: Store) {
 		YouTube.eradicate(store);
 	} else if (Instagram.checkSite()) {
 		Instagram.eradicate(store);
+	} else if (Twitch.checkSite()) {
+		Twitch.eradicate(store);
 	} else if (FbClassic.checkSite()) {
 		FbClassic.eradicate(store);
-	} else  {
+	} else {
 		Fb2020.eradicate(store);
-  }
+	}
 }
 
 setupRouteChange(store);
