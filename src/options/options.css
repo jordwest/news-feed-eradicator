@@ -209,3 +209,7 @@ input[type='checkbox'] {
 	grid-template-columns: 1fr 260px;
 	text-align: left;
 }
+
+.nfe-csv-or {
+	margin-bottom: 4px;
+}
