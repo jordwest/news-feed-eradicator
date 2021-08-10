@@ -23,14 +23,9 @@ export function eradicate(store: Store) {
 
 		// Add News Feed Eradicator quote/info panel
 		if (container && !isAlreadyInjected()) {
-			// Hack so that injectUI can handle dark theme
-			// document.body.style.background = 'var(--yt-spec-general-background-a)';
 
 			injectUI(container, store);
 		}
 	}
-
-	// This delay ensures that the elements have been created before we attempt
-	// to replace them
 	setInterval(eradicateRetry, 1000);
 }
