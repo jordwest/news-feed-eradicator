@@ -13,6 +13,11 @@ export function eradicate(store: Store) {
 			return;
 		}
 
+		// Remove notification text from document.title (i.e. '(7)' in '(7) Facebook')
+		if (document.title !== 'Facebook') {
+			document.title = 'Facebook';
+		}
+
 		// Don't do anything if the FB UI hasn't loaded yet
 		const feed =
 			document.querySelector('[role=feed]') || // For home and groups feed
