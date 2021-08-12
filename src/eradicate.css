@@ -258,12 +258,12 @@ html:not([data-nfe-enabled='false']) main.scaffold-layout__main > div:last-child
 
 /* LinkedIn trending news section */
 aside.scaffold-layout__aside > div:nth-child(2) {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  height: 0 !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
 }
 
-/* Youtube */
+/* YouTube */
 html:not([data-nfe-enabled='false']) #primary > :not(#nfe-container) {
 	opacity: 0 !important;
 	pointer-events: none !important;
@@ -273,10 +273,14 @@ html:not([data-nfe-enabled='false']) #primary > :not(#nfe-container) {
 html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 	margin: 64px;
 }
-/* Youtube related */
+/* YouTube related */
 #content #related {
 	opacity: 0 !important;
 	pointer-events: none !important;
+}
+/* YouTube end-screen recommended videos */
+.videowall-endscreen {
+	display: none;
 }
 
 /* Instagram feed, stories, recommended accounts */
