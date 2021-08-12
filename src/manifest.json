@@ -11,6 +11,8 @@
 		"https://www.facebook.com/*",
 		"http://web.facebook.com/*",
 		"https://web.facebook.com/*",
+		"http://m.facebook.com/*",
+		"https://m.facebook.com/*",
 		"http://twitter.com/*",
 		"https://twitter.com/*",
 		"https://www.reddit.com/",

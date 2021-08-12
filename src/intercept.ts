@@ -7,6 +7,7 @@ import './eradicate.css';
 import { setupRouteChange } from './lib/route-change';
 
 import * as FbClassic from './sites/fb-classic';
+import * as FbMobile from './sites/fb-mobile';
 import * as Fb2020 from './sites/fb-2020';
 import * as Twitter from './sites/twitter';
 import * as Reddit from './sites/reddit';
@@ -37,9 +38,11 @@ export function eradicate(store: Store) {
 		Instagram.eradicate(store);
 	} else if (FbClassic.checkSite()) {
 		FbClassic.eradicate(store);
-	} else  {
+	} else if (FbMobile.checkSite()) {
+		FbMobile.eradicate(store);
+	} else {
 		Fb2020.eradicate(store);
-  }
+	}
 }
 
 setupRouteChange(store);
