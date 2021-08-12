@@ -202,8 +202,8 @@ div[aria-label='Stories'] {
 	width: 0 !important;
 	height: 0 !important;
 }
-html:not([data-nfe-enabled='false']) {
-	--notification-badge: var(--base-blue);
+:root {
+	--notification-badge: var(--base-blue) !important;
 }
 
 /* Twitter */
@@ -250,10 +250,16 @@ html:not([data-nfe-enabled='false']) table#hnmain .itemlist {
 }
 
 /* LinkedIn */
-html:not([data-nfe-enabled='false']) main.scaffold-layout__main > div:last-child > div:not(#nfe-container) {
+html:not([data-nfe-enabled='false'])
+	main.scaffold-layout__main
+	> div:last-child
+	> div:not(#nfe-container) {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
+}
+:root {
+	--voyager-color-background-badge-notification: #0a66c2 !important;
 }
 
 /* LinkedIn trending news section */
