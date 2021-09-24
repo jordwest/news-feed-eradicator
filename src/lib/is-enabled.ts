@@ -22,7 +22,7 @@ export function enabledStatus(state: SettingsState): EnabledStatus {
 		const siteStatus: SiteStatus = siteStatuses[siteId];
 		if (window.location.host.includes(site.domain)) {
 			// Always disabled if the path doesn't match
-			if (site.paths.indexOf(window.location.pathname) === -1) {
+			if (!_isPathEnabledForSite(window.location.pathname, site)) {
 				return { type: 'disabled' };
 			}
 
@@ -37,4 +37,16 @@ export function enabledStatus(state: SettingsState): EnabledStatus {
 	}
 
 	return { type: 'disabled' };
+}
+
+function _isPathEnabledForSite(pathname: string, site: Site) {
+	if (site.paths.some((p) => p === window.location.pathname)) {
+		return true;
+	}
+
+	if (site.pathRegExps !== undefined) {
+		return site.pathRegExps.some((regExp) => regExp.test(pathname));
+	}
+
+	return false;
 }

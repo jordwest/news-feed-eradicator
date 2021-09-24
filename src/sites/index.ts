@@ -52,11 +52,14 @@ export const Sites: Record<SiteId, Site> = {
 	reddit: {
 		label: 'Reddit',
 		domain: 'reddit.com',
-		paths: ['/', '/r/all/', '/r/popular/']
-			.map((i) => [i + '', i + 'home/', i + 'hot/', i + 'new/', i + 'top/', i + 'rising/'])
-			.reduce((i, j) => i.concat(j)),
-		origins: ["https://www.reddit.com/*", "http://www.reddit.com/*",
-			"https://old.reddit.com/*", "http://old.reddit.com/*"],
+		paths: ['/', '/home/', '/hot/', '/new/', '/top/', '/rising/'],
+		pathRegExps: [/^\/r\/\w*\//], // represents: `/r/*`, as every subreddit has a feed and every post has a feed below the comments
+		origins: [
+			'https://www.reddit.com/*',
+			'http://www.reddit.com/*',
+			'https://old.reddit.com/*',
+			'http://old.reddit.com/*',
+		],
 	},
 	hackernews: {
 		label: 'Y Combinator News (HN)',
@@ -84,4 +87,7 @@ export type Site = {
 
 	// Will only be enabled for these paths
 	paths: string[];
+
+	// Optional, regular expressions to represent enabled paths
+	pathRegExps?: RegExp[];
 };
