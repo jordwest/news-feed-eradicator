@@ -279,6 +279,18 @@ html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 	pointer-events: none !important;
 }
 
+/* Google News */
+html:not([data-nfe-enabled='false']) .FVeGwb.CVnAc.Haq2Hf.bWfURe > div:not(#nfe-container) {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+
+html:not([data-nfe-enabled='false']) .FVeGwb.CVnAc.Haq2Hf.bWfURe > #nfe-container {
+	padding-top: 36px;
+
+}
+
 /* Instagram feed, stories, recommended accounts */
 
 html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
