@@ -288,3 +288,13 @@ html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
 html:not([data-nfe-enabled='false']) main > section > #nfe-container {
 	width: 100%;
 }
+
+/* Tiktok: Firefox */
+html:not([data-nfe-enabled='false']) div[class*='DivMainContainer'] > :not(#nfe-container) {
+	display: none;
+}
+
+/* Tiktok: Chrome */
+html:not([data-nfe-enabled='false']) .tt-feed {
+	display: none;
+}
