@@ -1,4 +1,4 @@
-export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin' | 'youtube' | 'instagram' | 'github';
+export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin' | 'youtube' | 'instagram' | 'github'	| 'odysee';
 
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
@@ -69,6 +69,12 @@ export const Sites: Record<SiteId, Site> = {
 		domain: 'github.com',
 		paths: ['/'],
 		origins: ['https://github.com/*'],
+	},
+	odysee: {
+		label: 'Odysee',
+		domain: 'odysee.com',
+		paths: ['/'],
+		origins: ['https://odysee.com/*', 'https://odysee.com/*'],
 	},
 };
 

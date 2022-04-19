@@ -288,3 +288,16 @@ html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
 html:not([data-nfe-enabled='false']) main > section > #nfe-container {
 	width: 100%;
 }
+
+/* Odysee */
+html:not([data-nfe-enabled='false']) #main-content > :not(#nfe-container) {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+html[theme='dark'] #main-content > #nfe-container .nfe-quote-text {
+	color: white;
+}

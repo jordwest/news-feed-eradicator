@@ -15,6 +15,7 @@ import * as Github from './sites/github';
 import * as LinkedIn from './sites/linkedin';
 import * as Instagram from './sites/instagram';
 import * as YouTube from './sites/youtube';
+import * as Odysee from './sites/odysee';
 import { createStore, Store } from './store';
 
 const store = createStore();
@@ -22,6 +23,9 @@ const store = createStore();
 export function eradicate(store: Store) {
 	// Determine which site we're working with
 	switch (true) {
+		case Odysee.checkSite():
+			Odysee.eradicate(store);
+			break;
 		case Reddit.checkSite():
 			Reddit.eradicate(store);
 			break;
