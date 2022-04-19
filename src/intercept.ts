@@ -21,25 +21,35 @@ const store = createStore();
 
 export function eradicate(store: Store) {
 	// Determine which site we're working with
-	if (Reddit.checkSite()) {
-		Reddit.eradicate(store);
-	} else if (Twitter.checkSite()) {
-		Twitter.eradicate(store);
-	} else if (HackerNews.checkSite()) {
-		HackerNews.eradicate(store);
-	} else if (Github.checkSite()) {
-		Github.eradicate(store);
-	} else if (LinkedIn.checkSite()) {
-		LinkedIn.eradicate(store);
-	} else if (YouTube.checkSite()) {
-		YouTube.eradicate(store);
-	} else if (Instagram.checkSite()) {
-		Instagram.eradicate(store);
-	} else if (FbClassic.checkSite()) {
-		FbClassic.eradicate(store);
-	} else  {
-		Fb2020.eradicate(store);
-  }
+	switch (true) {
+		case Reddit.checkSite():
+			Reddit.eradicate(store);
+			break;
+		case Twitter.checkSite():
+			Twitter.eradicate(store);
+			break;
+		case HackerNews.checkSite():
+			HackerNews.eradicate(store);
+			break;
+		case Github.checkSite():
+			Github.eradicate(store);
+			break;
+		case LinkedIn.checkSite():
+			LinkedIn.eradicate(store);
+			break;
+		case YouTube.checkSite():
+			YouTube.eradicate(store);
+			break;
+		case Instagram.checkSite():
+			Instagram.eradicate(store);
+			break;
+		case FbClassic.checkSite():
+			FbClassic.eradicate(store);
+			break;
+		default:
+			Fb2020.eradicate(store);
+			break;
+	}
 }
 
 setupRouteChange(store);
