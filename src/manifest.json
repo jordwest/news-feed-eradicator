@@ -23,6 +23,8 @@
 		"https://www.youtube.com/*",
 		"https://www.github.com/*",
 		"https://github.com/*",
+		"http://9gag.com/*",
+		"https://9gag.com/*",
 		"http://www.instagram.com/*",
 		"https://www.instagram.com/*"
 	],

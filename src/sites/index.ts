@@ -1,4 +1,4 @@
-export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin' | 'youtube' | 'instagram' | 'github';
+export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin' | 'youtube' | 'instagram' | 'gag9' | 'github';
 
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
@@ -26,6 +26,15 @@ export const Sites: Record<SiteId, Site> = {
 		origins: [
 			'http://www.instagram.com/*',
 			'https://www.instagram.com/*',
+		],
+	},
+	gag9: {
+		label: '9gag',
+		domain: '9gag.com',
+		paths: ['/'],
+		origins: [
+			'http://9gag.com/*',
+			'https://9gag.com/*',
 		],
 	},
 	twitter: {

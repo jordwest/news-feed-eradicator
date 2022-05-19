@@ -236,13 +236,13 @@ html:not([data-nfe-enabled='false']) #SHORTCUT_FOCUSABLE_DIV > :not([class^=Subr
 	pointer-events: none !important;
 	height: 0 !important;
 }
- 
+
 /* Reddit old */
 html:not([data-nfe-enabled='false']) .listing-page.with-listing-chooser .content #siteTable {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
-} 
+}
 
 /* Hacker News */
 html:not([data-nfe-enabled='false']) table#hnmain .itemlist {
@@ -287,4 +287,10 @@ html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
 
 html:not([data-nfe-enabled='false']) main > section > #nfe-container {
 	width: 100%;
+}
+
+/* 9gag main page */
+#page {
+	opacity: 0 !important;
+	pointer-events: none !important;
 }
