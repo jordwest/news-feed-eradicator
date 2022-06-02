@@ -32,7 +32,12 @@ export const Sites: Record<SiteId, Site> = {
 		label: 'Twitter',
 		domain: 'twitter.com',
 		paths: ['/home', '/compose/tweet'],
-		origins: ['http://twitter.com/*', 'https://twitter.com/*'],
+		origins: [
+			'http://mobile.twitter.com/*', 
+			'https://mobile.twitter.com/*',
+			'http://twitter.com/*', 
+			'https://twitter.com/*'
+		],
 	},
 	youtube: {
 		label: 'YouTube',
