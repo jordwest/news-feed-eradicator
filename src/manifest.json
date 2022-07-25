@@ -24,7 +24,11 @@
 		"https://www.github.com/*",
 		"https://github.com/*",
 		"http://www.instagram.com/*",
-		"https://www.instagram.com/*"
+		"https://www.instagram.com/*",
+		"http://tiktok.com/*",
+		"https://tiktok.com/*",
+		"http://www.tiktok.com/*",
+		"https://www.tiktok.com/*"
 	],
 	"browser_action": {
 		"default_icon": {
