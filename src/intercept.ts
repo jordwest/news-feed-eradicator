@@ -14,6 +14,7 @@ import * as HackerNews from './sites/hackernews';
 import * as Github from './sites/github';
 import * as LinkedIn from './sites/linkedin';
 import * as Instagram from './sites/instagram';
+import * as Gag9 from './sites/gag9';
 import * as YouTube from './sites/youtube';
 import { createStore, Store } from './store';
 
@@ -35,6 +36,8 @@ export function eradicate(store: Store) {
 		YouTube.eradicate(store);
 	} else if (Instagram.checkSite()) {
 		Instagram.eradicate(store);
+	} else if (Gag9.checkSite()) {
+		Gag9.eradicate(store);
 	} else if (FbClassic.checkSite()) {
 		FbClassic.eradicate(store);
 	} else  {
