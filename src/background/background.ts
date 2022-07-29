@@ -39,12 +39,9 @@ const onTabChange = async (tabId: TabId) => {
 			
 			// Site specific CSS
 			for(let siteKey in Sites) {
-				console.log('checking', siteKey, 'against', injectInfo[0].host);
 				const site = Sites[siteKey];
-				console.log(site);
 				if (injectInfo[0].host.endsWith(site.domain)) {
 					const css = site.css;
-					console.log('matches. css is', css);
 					if (css != null) {
 						browser.tabs.insertCSS(tabId, {
 							code: css,
