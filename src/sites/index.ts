@@ -1,3 +1,5 @@
+import instagramCss from './instagram.str.css';
+
 export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin' | 'youtube' | 'instagram' | 'github';
 
 export const Sites: Record<SiteId, Site> = {
@@ -27,6 +29,7 @@ export const Sites: Record<SiteId, Site> = {
 			'http://www.instagram.com/*',
 			'https://www.instagram.com/*',
 		],
+		css: instagramCss,
 	},
 	twitter: {
 		label: 'Twitter',
@@ -84,4 +87,6 @@ export type Site = {
 
 	// Will only be enabled for these paths
 	paths: string[];
+	
+	css?: string;
 };

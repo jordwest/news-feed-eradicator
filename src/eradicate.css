@@ -112,15 +112,14 @@ body[data-nfe-color-scheme="dark"] .nfe-quote-text {
 .nfe-info-link {
 	margin-left: 15px;
 	color: #77f;
-	font-size: 12px;
+	font-size: 18px;
 	display: block;
 	cursor: pointer;
 }
 
 .nfe-info-link:hover {
-	margin-left: 15px;
 	color: #77f;
-	font-size: 12px;
+	font-size: 18px;
 	display: block;
 	background-color: #ddd;
 }
@@ -277,14 +276,4 @@ html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 #content #related {
 	opacity: 0 !important;
 	pointer-events: none !important;
-}
-
-/* Instagram feed, stories, recommended accounts */
-
-html:not([data-nfe-enabled='false']) main > section > :not(#nfe-container) {
-	display: none;
-}
-
-html:not([data-nfe-enabled='false']) main > section > #nfe-container {
-	width: 100%;
 }

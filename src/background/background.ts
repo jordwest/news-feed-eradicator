@@ -1,5 +1,6 @@
 import { createBackgroundStore } from './store/store';
 import { getBrowser, TabId } from '../webextension';
+import {Sites} from "../sites";
 
 createBackgroundStore();
 
@@ -35,6 +36,24 @@ const onTabChange = async (tabId: TabId) => {
 				file: 'eradicate.css',
 				runAt: 'document_start',
 			});
+			
+			// Site specific CSS
+			for(let siteKey in Sites) {
+				console.log('checking', siteKey, 'against', injectInfo[0].host);
+				const site = Sites[siteKey];
+				console.log(site);
+				if (injectInfo[0].host.endsWith(site.domain)) {
+					const css = site.css;
+					console.log('matches. css is', css);
+					if (css != null) {
+						browser.tabs.insertCSS(tabId, {
+							code: css,
+							runAt: 'document_start',
+						});
+					}
+				}
+			}
+			
 			browser.tabs.executeScript(tabId, {
 				file: 'intercept.js',
 				runAt: 'document_start',

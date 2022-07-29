@@ -1,0 +1,10 @@
+/* Instagram feed, stories, recommended accounts */
+html:not([data-nfe-enabled='false']) main > :not(#nfe-container) {
+	display: none;
+}
+
+html:not([data-nfe-enabled='false']) main > #nfe-container {
+	width: 100%;
+	font-size: 24px;
+	padding: 128px;
+}
