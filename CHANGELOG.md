@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - No unreleased changes yet
 
+## [2.2.2] - 2022-07-29
+
+ - Fixed instagram
+
 ## [2.2.1] - 2021-06-05
 
 ### Added
