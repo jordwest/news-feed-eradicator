@@ -273,7 +273,7 @@ html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 	margin: 64px;
 }
 /* Youtube related */
-#content #related {
+html:not([data-nfe-enabled='false']) #content #related {
 	opacity: 0 !important;
 	pointer-events: none !important;
 }
