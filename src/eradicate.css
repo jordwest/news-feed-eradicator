@@ -205,6 +205,21 @@ html:not([data-nfe-enabled='false']) {
 	--notification-badge: var(--base-blue);
 }
 
+/* Facebook Mobile */
+html:not([data-nfe-enabled='false']) #rootcontainer #root {
+	position: absolute !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+	width: 0 !important;
+	height: 0 !important;
+}
+html:not([data-nfe-enabled='false']) #rootcontainer #nfe-container {
+	margin: 15px;
+}
+[data-sigil='messenger_icon'] > span[data-sigil='count'] {
+	background-color: #3b5998 !important; /* Use blue instead of red for notification badges */
+}
+
 /* Twitter */
 html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > #nfe-container {
 	padding: 16px;

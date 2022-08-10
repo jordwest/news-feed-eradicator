@@ -10,6 +10,7 @@ export const Sites: Record<SiteId, Site> = {
 			'/',
 			'/home.php',
 			'/watch',
+			'/watch/',
 			'/marketplace/',
 			'/groups/feed/',
 			'/gaming/feed/',
@@ -19,6 +20,8 @@ export const Sites: Record<SiteId, Site> = {
 			'https://www.facebook.com/*',
 			'http://web.facebook.com/*',
 			'https://web.facebook.com/*',
+			'http://m.facebook.com/*',
+			'https://m.facebook.com/*',
 		],
 	},
 	instagram: {
