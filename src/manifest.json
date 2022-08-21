@@ -13,6 +13,8 @@
 		"https://web.facebook.com/*",
 		"http://twitter.com/*",
 		"https://twitter.com/*",
+		"http://mobile.twitter.com/*",
+		"https://mobile.twitter.com/*",
 		"https://www.reddit.com/",
 		"http://www.reddit.com/",
 		"https://old.reddit.com/",
