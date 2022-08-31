@@ -33,10 +33,37 @@ export function eradicate(store: Store) {
 		// Add News Feed Eradicator quote/info panel
 		if (container && !isAlreadyInjected()) {
 			injectUI(container, store);
+			remove_story();
 		}
 	}
 
 	// This delay ensures that the elements have been created by Facebook's
 	// scripts before we attempt to replace them
 	setInterval(eradicateRetry, 1000);
+}
+
+//@ts-nocheck
+function remove_story(){
+	let story = document.querySelector('[role=region]')
+	if (story == null) {
+		return
+	}
+
+	// Hidden all story feeds
+	for (let i = 0; i <  story.children[1].children[0].children.length; i++) {
+		// Still able to create new story
+		if (i == 0) {
+			continue
+		}
+		let child = story.children[1].children[0].children[i]
+		// Make others' story invisible and unclickable
+		// @ts-ignore
+		child.style.opacity = 0
+		// @ts-ignore
+		child.style['pointer-events'] = 'none'
+	}
+	// @ts-ignore
+	story.children[2].hidden = true 
+	
+	
 }
