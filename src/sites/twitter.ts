@@ -15,7 +15,7 @@ export function eradicate(store: Store) {
 
 		// Don't do anything if the UI hasn't loaded yet
 		const feed = document.querySelector(
-			'div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4)'
+			'div[data-testid="primaryColumn"] > div:last-child > div:nth-child(5)'
 		);
 
 		if (feed == null) {
