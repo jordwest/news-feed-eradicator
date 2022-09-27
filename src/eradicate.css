@@ -205,23 +205,6 @@ html:not([data-nfe-enabled='false']) {
 	--notification-badge: var(--base-blue);
 }
 
-/* Twitter */
-html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > #nfe-container {
-	padding: 16px;
-}
-
-html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > div:not(#nfe-container) {
-	opacity: 0 !important;
-	pointer-events: none !important;
-	height: 0 !important;
-}
-/* "What's Happening" section on Twitter */
-[data-testid="sidebarColumn"] [role="region"] {
-	opacity: 0 !important;
-	pointer-events: none !important;
-	height: 0 !important;
-}
-
 /* Reddit Home | Popular | All */
 html:not([data-nfe-enabled='false']) #SHORTCUT_FOCUSABLE_DIV > :not([class^=SubredditVars-r-]) .scrollerItem,
 .SubredditVars-r-all .scrollerItem, .SubredditVars-r-popular .scrollerItem {
@@ -230,22 +213,22 @@ html:not([data-nfe-enabled='false']) #SHORTCUT_FOCUSABLE_DIV > :not([class^=Subr
 }
 
 /* Reddit's Popular's Trending Part */
-#TrendingPostsContainer{
+#TrendingPostsContainer {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
 }
- 
+
 /* Reddit old */
 html:not([data-nfe-enabled='false']) .listing-page.with-listing-chooser .content #siteTable {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
-} 
+}
 
 /* Hacker News */
 html:not([data-nfe-enabled='false']) table#hnmain .itemlist {
-  display: none;
+	display: none;
 }
 
 /* LinkedIn */
@@ -257,9 +240,9 @@ html:not([data-nfe-enabled='false']) main.scaffold-layout__main > div:last-child
 
 /* LinkedIn trending news section */
 aside.scaffold-layout__aside > div:nth-child(2) {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  height: 0 !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
 }
 
 /* Youtube */

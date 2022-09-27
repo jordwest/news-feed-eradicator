@@ -1,6 +1,6 @@
-import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
-import { isEnabled } from '../lib/is-enabled';
-import { Store } from '../store';
+import injectUI, {isAlreadyInjected} from '../lib/inject-ui';
+import {isEnabled} from '../lib/is-enabled';
+import {Store} from '../store';
 
 export function checkSite(): boolean {
 	return window.location.host.includes('twitter.com');

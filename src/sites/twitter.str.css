@@ -1,0 +1,17 @@
+/* Twitter */
+html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4) > #nfe-container {
+	padding: 16px;
+}
+
+html:not([data-nfe-enabled='false']) div[aria-label*="Timeline"] {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+
+/* "What's Happening" section on Twitter */
+[data-testid="sidebarColumn"] [role="region"] {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}

@@ -1,4 +1,5 @@
 import instagramCss from './instagram.str.css';
+import twitterCss from './twitter.str.css';
 
 export type SiteId = 'facebook' | 'twitter' | 'reddit' | 'hackernews' | 'linkedin' | 'youtube' | 'instagram' | 'github';
 
@@ -36,6 +37,7 @@ export const Sites: Record<SiteId, Site> = {
 		domain: 'twitter.com',
 		paths: ['/home', '/compose/tweet'],
 		origins: ['http://twitter.com/*', 'https://twitter.com/*'],
+		css: twitterCss,
 	},
 	youtube: {
 		label: 'YouTube',
@@ -87,6 +89,6 @@ export type Site = {
 
 	// Will only be enabled for these paths
 	paths: string[];
-	
+
 	css?: string;
 };
