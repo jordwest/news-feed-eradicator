@@ -1,6 +1,6 @@
-import injectUI, {isAlreadyInjected} from '../lib/inject-ui';
-import {isEnabled} from '../lib/is-enabled';
-import {Store} from '../store';
+import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
+import { isEnabled } from '../lib/is-enabled';
+import { Store } from '../store';
 
 //export function checkSite(): boolean {
 //	return !!document.querySelector('#stream_pagelet');
@@ -22,7 +22,8 @@ export function eradicate(store: Store) {
 		const feed =
 			document.querySelector('#ssrb_feed_start + div') || // For home and groups feed
 			document.querySelector('[data-pagelet=MainFeed]') || // For watch and marketplace feeds
-			document.querySelector('div[aria-label=Gaming][role=main]'); // For gaming feed
+			document.querySelector('div[aria-label=Gaming][role=main]') || // For gaming feed
+			document.querySelector('div.x1hc1fzr.x1unhpq9.x6o7n8i'); // For new fb layout (Q4 2022)
 
 		if (feed == null) {
 			return;
