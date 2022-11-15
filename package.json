@@ -1,31 +1,31 @@
 {
-	"name": "news-feed-eradicator",
-	"title": "News Feed Eradicator for Facebook",
-	"id": "jid1-oWTXWc3MRzRuiQ",
-	"description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
-	"author": "Jordan West",
-	"license": "MIT",
-	"version": "2.2.3",
-	"scripts": {
-		"format": "prettier --write \"./src\"",
-		"check": "tsc --noEmit"
-	},
-	"devDependencies": {
-		"@rollup/plugin-commonjs": "^11.0.2",
-		"@rollup/plugin-replace": "^2.3.1",
-		"@rollup/plugin-typescript": "^4.0.0",
-		"prettier": "^2.0.5",
-		"redux": "^4.0.5",
-		"redux-thunk": "^2.3.0",
-		"rollup": "^2.2.0",
-		"rollup-plugin-css-only": "^2.0.0",
-		"rollup-plugin-node-resolve": "^3.4.0",
-	    "rollup-plugin-string": "^3.0.0",
-		"snabbdom": "^0.7.2",
-		"tslib": "^1.9.3",
-		"typescript": "^3.8.3"
-	},
-	"dependencies": {
-		"@types/node": "^8.10.36"
-	}
+  "name": "news-feed-eradicator",
+  "title": "News Feed Eradicator for Facebook",
+  "id": "jid1-oWTXWc3MRzRuiQ",
+  "description": "Find yourself spending too much time on Facebook? Eradicate distractions by replacing your entire news feed with an inspiring quote",
+  "author": "Jordan West",
+  "license": "MIT",
+  "version": "2.2.4",
+  "scripts": {
+	"format": "prettier --write \"./src\"",
+	"check": "tsc --noEmit"
+  },
+  "devDependencies": {
+	"@rollup/plugin-commonjs": "^11.0.2",
+	"@rollup/plugin-replace": "^2.3.1",
+	"@rollup/plugin-typescript": "^4.0.0",
+	"prettier": "^2.0.5",
+	"redux": "^4.0.5",
+	"redux-thunk": "^2.3.0",
+	"rollup": "^2.2.0",
+	"rollup-plugin-css-only": "^2.0.0",
+	"rollup-plugin-node-resolve": "^3.4.0",
+	"rollup-plugin-string": "^3.0.0",
+	"snabbdom": "^0.7.2",
+	"tslib": "^1.9.3",
+	"typescript": "^3.8.3"
+  },
+  "dependencies": {
+	"@types/node": "^8.10.36"
+  }
 }

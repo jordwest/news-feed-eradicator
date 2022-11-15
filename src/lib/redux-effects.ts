@@ -30,13 +30,15 @@ export namespace Effect {
 	}
 }
 
-export const effectsMiddleware = <State, Action extends ReduxAction>(
-	rootEffect: Effect<State, Action>
-): Middleware<State, Action> => (store: MiddlewareAPI<State, Action>) => {
-	const eff = rootEffect(store);
+export const effectsMiddleware =
+	<State, Action extends ReduxAction>(
+		rootEffect: Effect<State, Action>
+	): Middleware<State, Action> =>
+	(store: MiddlewareAPI<State, Action>) => {
+		const eff = rootEffect(store);
 
-	return (next: Dispatch<Action>) => (action: Action) => {
-		next(action);
-		eff(action);
+		return (next: Dispatch<Action>) => (action: Action) => {
+			next(action);
+			eff(action);
+		};
 	};
-};

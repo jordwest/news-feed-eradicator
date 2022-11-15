@@ -1,6 +1,6 @@
-import injectUI, {isAlreadyInjected} from '../lib/inject-ui';
-import {isEnabled} from '../lib/is-enabled';
-import {Store} from '../store';
+import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
+import { isEnabled } from '../lib/is-enabled';
+import { Store } from '../store';
 
 export function checkSite(): boolean {
 	return window.location.host.includes('news.ycombinator.com');
@@ -14,9 +14,7 @@ export function eradicate(store: Store) {
 		}
 
 		// Don't do anything if the UI hasn't loaded yet
-		const feed = document.querySelector(
-			'table#hnmain tr:nth-of-type(3) td'
-		);
+		const feed = document.querySelector('table#hnmain tr:nth-of-type(3) td');
 
 		if (feed == null) {
 			return;

@@ -13,8 +13,10 @@ type ElementList = {
 };
 
 export const remove = (elements: ElementList) => {
-  if (elements.toRemove)
-    document.querySelectorAll(elements.toRemove.join(',')).forEach(removeNode);
-  if (elements.toEmpty)
-	  document.querySelectorAll(elements.toEmpty.join(',')).forEach(removeChildren);
+	if (elements.toRemove)
+		document.querySelectorAll(elements.toRemove.join(',')).forEach(removeNode);
+	if (elements.toEmpty)
+		document
+			.querySelectorAll(elements.toEmpty.join(','))
+			.forEach(removeChildren);
 };

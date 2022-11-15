@@ -77,8 +77,12 @@ a:visited {
 .text-strike {
 	text-decoration: line-through;
 }
-.text-center { text-align: center; }
-.text-right { text-align: right; }
+.text-center {
+	text-align: center;
+}
+.text-right {
+	text-align: right;
+}
 
 .flex {
 	display: flex;
@@ -137,7 +141,7 @@ a:visited {
 }
 
 a.underline-off,
-.underline-off:hover, 
+.underline-off:hover,
 a.underline-hover {
 	text-decoration: none;
 }
@@ -169,7 +173,9 @@ a.underline-hover:hover {
 .bg-3 {
 	background-color: #efe5dc;
 }
-.bg-3-hover:hover { background-color: #efe5dc; }
+.bg-3-hover:hover {
+	background-color: #efe5dc;
+}
 .bg-4 {
 	background-color: #d0b8ac;
 }

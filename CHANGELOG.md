@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - No unreleased changes yet
 
+## [2.2.4] - 2022-11-15
+
+- [Fixed Facebook (thanks @nzawirski)](https://github.com/jordwest/news-feed-eradicator/pull/244)
+- Fixed Hacker News
+
 ## [2.2.3] - 2022-09-27
 
 ### Fixed

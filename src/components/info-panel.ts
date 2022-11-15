@@ -17,8 +17,7 @@ const Footer = () => {
 			'a',
 			{
 				props: {
-					href:
-						'https://github.com/jordwest/news-feed-eradicator/graphs/contributors',
+					href: 'https://github.com/jordwest/news-feed-eradicator/graphs/contributors',
 				},
 			},
 			'contributors'
@@ -74,8 +73,7 @@ const About = () => {
 						'a.underline-hover',
 						{
 							props: {
-								href:
-									'https://chrome.google.com/webstore/detail/news-feed-eradicator-for/fjcldmjmjhkklehbacihaiopjklihlgg?hl=en',
+								href: 'https://chrome.google.com/webstore/detail/news-feed-eradicator-for/fjcldmjmjhkklehbacihaiopjklihlgg?hl=en',
 							},
 						},
 						'Chrome'
@@ -85,8 +83,7 @@ const About = () => {
 						'a.underline-hover',
 						{
 							props: {
-								href:
-									'https://addons.mozilla.org/en-US/firefox/addon/news-feed-eradicator/',
+								href: 'https://addons.mozilla.org/en-US/firefox/addon/news-feed-eradicator/',
 							},
 						},
 						'Firefox'

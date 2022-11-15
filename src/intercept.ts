@@ -37,9 +37,9 @@ export function eradicate(store: Store) {
 		Instagram.eradicate(store);
 	} else if (FbClassic.checkSite()) {
 		FbClassic.eradicate(store);
-	} else  {
+	} else {
 		Fb2020.eradicate(store);
-  }
+	}
 }
 
 setupRouteChange(store);

@@ -38,7 +38,7 @@ export function setupRouteChange(store: Store) {
 				// setTimeout(() => {
 				// 	element!.dataset.nfeEnabled = 'false';
 				// }, 1000);
-				
+
 				element!.dataset.nfeEnabled = 'false';
 				return;
 			case 'disabled-temporarily':

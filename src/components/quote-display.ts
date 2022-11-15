@@ -45,7 +45,7 @@ const QuoteDisplay = (store: Store) => {
 	const toggleMenu = (e: MouseEvent) => {
 		e.preventDefault();
 		store.dispatch(menuToggle());
-	}
+	};
 	return h('div.nfe-quote', [
 		h('nfe-quote-action-menu', [
 			h(

@@ -27,8 +27,12 @@ html[data-nfe-enabled='false'] #nfe-container {
 	font-size: 24px;
 }
 
-.list-unstyled { list-style: none; }
-.underline-off { text-decoration: none; }
+.list-unstyled {
+	list-style: none;
+}
+.underline-off {
+	text-decoration: none;
+}
 
 .nfe-quote-text {
 	color: #000;
@@ -40,7 +44,7 @@ html[data-nfe-enabled='false'] #nfe-container {
 }
 
 .__fb-dark-mode .nfe-quote-text,
-body[data-nfe-color-scheme="dark"] .nfe-quote-text {
+body[data-nfe-color-scheme='dark'] .nfe-quote-text {
 	color: white;
 }
 
@@ -195,7 +199,8 @@ html:not([data-nfe-enabled='false']) #ssrb_feed_start + div, /* For home and gro
 html:not([data-nfe-enabled='false']) div[data-pagelet='MainFeed'], /* For watch and marketplace feeds */
 html:not([data-nfe-enabled='false']) div[aria-label='Gaming'][role='main'],
 html:not([data-nfe-enabled='false']) div[aria-label='Stories'],
-html:not([data-nfe-enabled='false']) div.x1hc1fzr.x1unhpq9.x6o7n8i > :not(#nfe-container) { /* For new fb layout (Q4 2022) */
+html:not([data-nfe-enabled='false']) div.x1hc1fzr.x1unhpq9.x6o7n8i > :not(#nfe-container) {
+	/* For new fb layout (Q4 2022) */
 	position: absolute !important;
 	opacity: 0 !important;
 	pointer-events: none !important;
@@ -207,8 +212,12 @@ html:not([data-nfe-enabled='false']) {
 }
 
 /* Reddit Home | Popular | All */
-html:not([data-nfe-enabled='false']) #SHORTCUT_FOCUSABLE_DIV > :not([class^=SubredditVars-r-]) .scrollerItem,
-.SubredditVars-r-all .scrollerItem, .SubredditVars-r-popular .scrollerItem {
+html:not([data-nfe-enabled='false'])
+	#SHORTCUT_FOCUSABLE_DIV
+	> :not([class^='SubredditVars-r-'])
+	.scrollerItem,
+.SubredditVars-r-all .scrollerItem,
+.SubredditVars-r-popular .scrollerItem {
 	opacity: 0 !important;
 	pointer-events: none !important;
 }
@@ -221,7 +230,10 @@ html:not([data-nfe-enabled='false']) #SHORTCUT_FOCUSABLE_DIV > :not([class^=Subr
 }
 
 /* Reddit old */
-html:not([data-nfe-enabled='false']) .listing-page.with-listing-chooser .content #siteTable {
+html:not([data-nfe-enabled='false'])
+	.listing-page.with-listing-chooser
+	.content
+	#siteTable {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
@@ -233,7 +245,10 @@ html:not([data-nfe-enabled='false']) table#hnmain tr:nth-of-type(3) td > table {
 }
 
 /* LinkedIn */
-html:not([data-nfe-enabled='false']) main.scaffold-layout__main > div:last-child > div:not(#nfe-container) {
+html:not([data-nfe-enabled='false'])
+	main.scaffold-layout__main
+	> div:last-child
+	> div:not(#nfe-container) {
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
