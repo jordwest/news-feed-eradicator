@@ -1,6 +1,6 @@
-import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
-import { isEnabled } from '../lib/is-enabled';
-import { Store } from '../store';
+import injectUI, {isAlreadyInjected} from '../lib/inject-ui';
+import {isEnabled} from '../lib/is-enabled';
+import {Store} from '../store';
 
 export function checkSite(): boolean {
 	return window.location.host.includes('news.ycombinator.com');
@@ -15,7 +15,7 @@ export function eradicate(store: Store) {
 
 		// Don't do anything if the UI hasn't loaded yet
 		const feed = document.querySelector(
-			'table#hnmain tr:nth-of-type(2)'
+			'table#hnmain tr:nth-of-type(3) td'
 		);
 
 		if (feed == null) {
@@ -30,7 +30,7 @@ export function eradicate(store: Store) {
 		}
 	}
 
-  // This delay ensures that the elements have been created before we attempt
-  // to replace them
+	// This delay ensures that the elements have been created before we attempt
+	// to replace them
 	setInterval(eradicateRetry, 1000);
 }

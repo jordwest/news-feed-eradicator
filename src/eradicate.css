@@ -195,7 +195,7 @@ html:not([data-nfe-enabled='false']) #ssrb_feed_start + div, /* For home and gro
 html:not([data-nfe-enabled='false']) div[data-pagelet='MainFeed'], /* For watch and marketplace feeds */
 html:not([data-nfe-enabled='false']) div[aria-label='Gaming'][role='main'],
 html:not([data-nfe-enabled='false']) div[aria-label='Stories'],
-html:not([data-nfe-enabled='false']) div.x1hc1fzr.x1unhpq9.x6o7n8i { /* For new fb layout (Q4 2022) */
+html:not([data-nfe-enabled='false']) div.x1hc1fzr.x1unhpq9.x6o7n8i > :not(#nfe-container) { /* For new fb layout (Q4 2022) */
 	position: absolute !important;
 	opacity: 0 !important;
 	pointer-events: none !important;
@@ -228,7 +228,7 @@ html:not([data-nfe-enabled='false']) .listing-page.with-listing-chooser .content
 }
 
 /* Hacker News */
-html:not([data-nfe-enabled='false']) table#hnmain .itemlist {
+html:not([data-nfe-enabled='false']) table#hnmain tr:nth-of-type(3) td > table {
 	display: none;
 }
 
