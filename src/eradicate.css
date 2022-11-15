@@ -192,9 +192,10 @@ div.ego_column,
 
 /* New Facebook (2020) */
 html:not([data-nfe-enabled='false']) #ssrb_feed_start + div, /* For home and groups feeds */
-div[data-pagelet='MainFeed'], /* For watch and marketplace feeds */
-div[aria-label='Gaming'][role='main'],
-div[aria-label='Stories'] {
+html:not([data-nfe-enabled='false']) div[data-pagelet='MainFeed'], /* For watch and marketplace feeds */
+html:not([data-nfe-enabled='false']) div[aria-label='Gaming'][role='main'],
+html:not([data-nfe-enabled='false']) div[aria-label='Stories'],
+html:not([data-nfe-enabled='false']) div.x1hc1fzr.x1unhpq9.x6o7n8i { /* For new fb layout (Q4 2022) */
 	position: absolute !important;
 	opacity: 0 !important;
 	pointer-events: none !important;
