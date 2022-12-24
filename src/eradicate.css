@@ -268,9 +268,21 @@ html:not([data-nfe-enabled='false']) #primary > :not(#nfe-container) {
 	height: 0 !important;
 }
 
+/* Youtube shorts container */
+html:not([data-nfe-enabled='false']) #page-manager {
+	display: block;
+	padding-top: 50px;
+	margin: 20px 10%;
+}
+
+html:not([data-nfe-enabled='false']) #shorts-inner-container {
+	display: none;
+}
+
 html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 	margin: 64px;
 }
+
 /* Youtube related */
 #content #related {
 	opacity: 0 !important;
