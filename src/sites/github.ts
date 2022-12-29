@@ -14,31 +14,11 @@ export function eradicate(store: Store) {
 			return;
 		}
 
-		let feedSelector: string = '';
-
-		const feedSelector1 =
-			'#dashboard > div > div:nth-child(3)[data-repository-hovercards-enabled]';
-		const feedSelector2 =
-			'#dashboard > div > div:nth-child(5)[data-repository-hovercards-enabled]';
-
-		if (document.querySelector(feedSelector1)) {
-			feedSelector = feedSelector1;
-		} else if (document.querySelector(feedSelector2)) {
-			feedSelector = feedSelector2;
-		}
-
 		// Don't do anything if the UI hasn't loaded yet
-		if (feedSelector.length === 0) return;
+		const feed = document.querySelector('#dashboard-feed-frame');
+		if (feed === null) return;
 
-		const proTipsSelector = '#dashboard > div > div.f6.text-gray.mt-4';
-		const allActivityHeader =
-			'#dashboard > div > h2.f4.text-normal.js-all-activity-header';
-
-		remove({ toRemove: [feedSelector, proTipsSelector, allActivityHeader] });
-
-		const container = document.querySelector(
-			'body > div.application-main > div > div > div > main'
-		);
+		const container = feed;
 
 		// Add News Feed Eradicator quote/info panel
 		if (container && !isAlreadyInjected()) {
@@ -46,7 +26,7 @@ export function eradicate(store: Store) {
 		}
 	}
 
-	// This delay ensures that the elements have been created by Twitter's
+	// This delay ensures that the elements have been created by GitHub's
 	// scripts before we attempt to replace them
 	setInterval(eradicateRetry, 1000);
 }
