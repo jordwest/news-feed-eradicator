@@ -199,8 +199,10 @@ html:not([data-nfe-enabled='false']) #ssrb_feed_start + div, /* For home and gro
 html:not([data-nfe-enabled='false']) div[data-pagelet='MainFeed'], /* For watch and marketplace feeds */
 html:not([data-nfe-enabled='false']) div[aria-label='Gaming'][role='main'],
 html:not([data-nfe-enabled='false']) div[aria-label='Stories'],
-html:not([data-nfe-enabled='false']) div.x1hc1fzr.x1unhpq9.x6o7n8i > :not(#nfe-container) {
-	/* For new fb layout (Q4 2022) */
+html:not([data-nfe-enabled='false'])
+div.x1hc1fzr.x1unhpq9.x6o7n8i > :not(#nfe-container), /* For new fb layout (Q4 2022) */
+html:not([data-nfe-enabled='false'])
+div[role='region'][data-visualcompletion='ignore-dynamic'] /* For stories in non-english versions */ {
 	position: absolute !important;
 	opacity: 0 !important;
 	pointer-events: none !important;
