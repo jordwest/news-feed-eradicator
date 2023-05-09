@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - No unreleased changes yet
 
+## [2.2.5] - 2023-05-09
+
+- [Fix Facebook for languages other than English (thanks @nzawirski)](https://github.com/jordwest/news-feed-eradicator/pull/256)
+- [Fix GitHub home (thanks @Khanaru220)](https://github.com/jordwest/news-feed-eradicator/pull/251)
+- [Fix logged out Twitter feed (thanks @weeksling)](https://github.com/jordwest/news-feed-eradicator/pull/263)
+
 ## [2.2.4] - 2022-11-15
 
 - [Fixed Facebook (thanks @nzawirski)](https://github.com/jordwest/news-feed-eradicator/pull/244)
