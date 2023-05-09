@@ -12,11 +12,18 @@ export function eradicate(store: Store) {
 		if (settings == null || !isEnabled(settings)) {
 			return;
 		}
-
+		
+		// Determine if the user is logged in or not
+    		const isUserLoggedOut = document.querySelector('[data-testid="login"]');
+		
 		// Don't do anything if the UI hasn't loaded yet
-		const feed = document.querySelector(
-			'div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4)'
-		);
+		// Select the correct Twitter feed based on the user's login status
+		let feed;
+	        if (isUserLoggedOut) {
+	 		feed = document.querySelector('div[data-testid="primaryColumn"] > div:last-child > div:nth-child(3)');
+		} else {
+			feed = document.querySelector('div[data-testid="primaryColumn"] > div:last-child > div:nth-child(4)');
+		}
 
 		if (feed == null) {
 			return;
