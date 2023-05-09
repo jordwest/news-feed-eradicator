@@ -1,0 +1,40 @@
+/* GitHub Home (feed, footer links, change log ,explore repo) */
+
+html:not([data-nfe-enabled='false'])
+	aside[aria-label='Account']
+	+ div
+	div[role='contentinfo'],
+html:not([data-nfe-enabled='false'])
+	aside[aria-label='Account']
+	+ div
+	aside[aria-label='Explore'] {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+	overflow-y: hidden !important;
+}
+
+html:not([data-nfe-enabled='false'])
+	aside[aria-label='Account']
+	+ div
+	#dashboard-feed-frame
+	> :not(#nfe-container) {
+	display: none;
+	/* fix Chrome not overflow:hidden with way above*/
+}
+
+/* addtional: stretch quote full width */
+html:not([data-nfe-enabled='false'])
+	aside[aria-label='Account']
+	+ div
+	aside[aria-label='Explore'] {
+	width: 0 !important;
+}
+
+html:not([data-nfe-enabled='false'])
+	aside[aria-label='Account']
+	+ div
+	> [class*='d-'][class*='-flex']
+	> :first-child {
+	width: 100% !important;
+}
