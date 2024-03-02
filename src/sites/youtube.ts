@@ -1,10 +1,8 @@
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
 import { isEnabled } from '../lib/is-enabled';
 import { Store } from '../store';
-
 export function checkSite(): boolean {
 	return window.location.host.includes('youtube.com');
-}
 
 export function eradicate(store: Store) {
 	function eradicateRetry() {
@@ -14,7 +12,7 @@ export function eradicate(store: Store) {
 		}
 
 		// Don't do anything if the UI hasn't loaded yet
-		const feed = document.querySelector('#primary');
+		const feed = document.querySelector("#page-manager");
 
 		if (feed == null) {
 			return;

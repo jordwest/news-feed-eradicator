@@ -21,18 +21,30 @@ export function enabledStatus(state: SettingsState): EnabledStatus {
 		let site: Site = Sites[siteId];
 		const siteStatus: SiteStatus = siteStatuses[siteId];
 		if (window.location.host.includes(site.domain)) {
+			if (site.dynamicPaths) {
+				console.log("site.dynamicPaths", site.dynamicPaths);
+				const match = site.dynamicPaths.find(path => {
+					if (window.location.pathname.includes(path)) {
+						return { type: "enabled" };
+					}
+				});
+
+				if (match) {
+					return { type: "enabled" };
+				}
+			}
+
 			// Always disabled if the path doesn't match
 			if (site.paths.indexOf(window.location.pathname) === -1) {
-				return { type: 'disabled' };
+				return { type: "disabled" };
 			}
 
 			if (siteStatus.type === SiteStatusTag.DISABLED) {
-				return { type: 'disabled' };
+				return { type: "disabled" };
 			} else if (siteStatus.type === SiteStatusTag.DISABLED_TEMPORARILY) {
-				return { type: 'disabled-temporarily', until: siteStatus.until };
+				return { type: "disabled-temporarily", until: siteStatus.until };
 			}
-
-			return { type: 'enabled' };
+			return { type: "enabled" };
 		}
 	}
 

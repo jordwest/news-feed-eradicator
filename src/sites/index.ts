@@ -54,6 +54,7 @@ export const Sites: Record<SiteId, Site> = {
 		label: 'YouTube',
 		domain: 'youtube.com',
 		paths: ['/', '/feed/trending'],
+		dynamicPaths: ['/shorts/'],
 		origins: ['https://www.youtube.com/*'],
 	},
 	linkedin: {
@@ -109,6 +110,9 @@ export type Site = {
 
 	// Will only be enabled for these paths
 	paths: string[];
+
+	// Will be enabled for any dynamic path.
+	dynamicPaths?: string[];
 
 	css?: string;
 };
