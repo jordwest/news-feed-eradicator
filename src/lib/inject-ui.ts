@@ -16,10 +16,14 @@ const rgbRe = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/;
 /**
  * Inject the News Feed Eradicator panel into the page.
  */
-export default function injectUI(streamContainer: Node, store: Store) {
+export default function injectUI(streamContainer: Node, store: Store, asFirstChild = false) {
 	const nfeContainer = document.createElement('div');
 	nfeContainer.id = 'nfe-container';
-	streamContainer.appendChild(nfeContainer);
+	if (asFirstChild && streamContainer.firstChild) {
+		streamContainer.insertBefore(nfeContainer, streamContainer.firstChild);
+	} else {
+		streamContainer.appendChild(nfeContainer);
+	}
 
 	const patch = init([propsModule, attrsModule, eventsModule]);
 

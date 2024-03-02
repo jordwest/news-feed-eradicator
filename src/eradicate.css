@@ -213,6 +213,12 @@ html:not([data-nfe-enabled='false']) {
 	--notification-badge: var(--base-blue);
 }
 
+/* Reddit 2024 update */
+shreddit-feed > article {
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
 /* Reddit Home | Popular | All */
 html:not([data-nfe-enabled='false'])
 	#SHORTCUT_FOCUSABLE_DIV
