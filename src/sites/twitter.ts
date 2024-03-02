@@ -3,7 +3,8 @@ import { isEnabled } from '../lib/is-enabled';
 import { Store } from '../store';
 
 export function checkSite(): boolean {
-	return window.location.host.includes('twitter.com');
+	return window.location.host.includes('twitter.com')
+		|| window.location.host.includes('x.com');
 }
 
 export function eradicate(store: Store) {

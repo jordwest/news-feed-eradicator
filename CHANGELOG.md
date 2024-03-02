@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - Fix new Reddit
+- Fix non-English Twitter/X and prepare for redirect to x.com
 
 ## [2.2.5] - 2023-05-09
 

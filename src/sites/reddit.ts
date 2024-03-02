@@ -34,8 +34,6 @@ export function eradicate(store: Store) {
 			// Hack so that injectUI can handle new-reddit theme
 			document.body.style.background = 'var(--newRedditTheme-body)';
 
-			console.log('not injected containers', new_new_reddit_container, new_reddit_container, old_reddit_container);
-
 			injectUI(container, store, true);
 		}
 	}

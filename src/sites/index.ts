@@ -39,10 +39,15 @@ export const Sites: Record<SiteId, Site> = {
 		css: instagramCss,
 	},
 	twitter: {
-		label: 'Twitter',
+		label: 'Twitter/X',
 		domain: 'twitter.com',
 		paths: ['/home', '/compose/tweet'],
-		origins: ['http://twitter.com/*', 'https://twitter.com/*'],
+		origins: [
+			'http://twitter.com/*',
+			'https://twitter.com/*',
+			'http://x.com/*',
+			'https://x.com/*',
+		],
 		css: twitterCss,
 	},
 	youtube: {

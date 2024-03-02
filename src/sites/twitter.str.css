@@ -7,10 +7,11 @@ html:not([data-nfe-enabled='false'])
 	padding: 16px;
 }
 
-html:not([data-nfe-enabled='false']) div[aria-label*='Timeline'] {
+html:not([data-nfe-enabled='false']) div[aria-label*='Timeline'],
+html:not([data-nfe-enabled='false']) div[data-testid="primaryColumn"] > div:last-child > div:last-child
+{
 	opacity: 0 !important;
 	pointer-events: none !important;
-	height: 0 !important;
 }
 
 /* "What's Happening" section on Twitter */
