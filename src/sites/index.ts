@@ -53,7 +53,7 @@ export const Sites: Record<SiteId, Site> = {
 	youtube: {
 		label: 'YouTube',
 		domain: 'youtube.com',
-		paths: ['/', '/feed/trending'],
+		paths: ['/', '/feed/trending', '/feed/explore'],
 		origins: ['https://www.youtube.com/*'],
 	},
 	linkedin: {
