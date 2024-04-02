@@ -22,7 +22,8 @@ export const Sites: Record<SiteId, Site> = {
 			'/watch',
 			'/marketplace/',
 			'/groups/feed/',
-			'/gaming/feed/',
+			'/gaming/video/',
+			// '/reel'
 		],
 		origins: [
 			'http://www.facebook.com/*',
