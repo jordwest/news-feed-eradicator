@@ -17,6 +17,7 @@ export enum BackgroundActionType {
 	PERMISSIONS_CHECK = 'permissions/check',
 	PERMISSIONS_UPDATE = 'permissions/update',
 	SITES_SET_STATE = 'sites/set_state',
+	CONTENT_SCRIPTS_REGISTER = 'content_scripts/register',
 }
 
 export type BackgroundActionObject =
@@ -32,7 +33,8 @@ export type BackgroundActionObject =
 	| SettingsLoaded
 	| PermissionsCheck
 	| PermissionsUpdate
-	| SitesSetState;
+	| SitesSetState
+	| ContentScriptsRegister;
 
 export type FeatureIncrement = { type: BackgroundActionType.FEATURE_INCREMENT };
 
@@ -85,4 +87,7 @@ export type SitesSetState = {
 	type: BackgroundActionType.SITES_SET_STATE;
 	siteId: SiteId;
 	state: Settings.SiteState;
+};
+export type ContentScriptsRegister = {
+	type: BackgroundActionType.CONTENT_SCRIPTS_REGISTER;
 };

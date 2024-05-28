@@ -5,7 +5,7 @@ import { getBrowser, Port } from '../../webextension';
 import { Message, MessageType } from '../../messaging/types';
 import { Settings } from './index';
 import config from '../../config';
-import { sitesEffect, getPermissions } from './sites/effects';
+import { getPermissions, sitesEffect } from './sites/effects';
 import { getSettingsHealth } from './sites/selectors';
 import { SiteId, Sites } from '../../sites';
 
@@ -118,7 +118,34 @@ const loadSettings: BackgroundEffect = (store) => async (action) => {
 		) {
 			getBrowser().runtime.openOptionsPage();
 		}
+
+		store.dispatch({ type: BackgroundActionType.CONTENT_SCRIPTS_REGISTER });
 	}
 };
 
-export const rootEffect = Effect.all(listen, loadSettings, sitesEffect);
+export const registerContentScripts: BackgroundEffect =
+	(store) => async (action) => {
+		if (action.type === BackgroundActionType.CONTENT_SCRIPTS_REGISTER) {
+			const browser = getBrowser();
+			await browser.scripting.unregisterContentScripts();
+			browser.scripting.registerContentScripts([{
+				id: 'intercept',
+				js: ['intercept.js'],
+				css: ['eradicate.css'],
+				matches: ['https://news.ycombinator.com/*'],
+				runAt: 'document_start',
+			}]);
+		}
+	};
+
+export const logAction: BackgroundEffect = (store) => async (action) => {
+	console.info(action);
+};
+
+export const rootEffect = Effect.all(
+	listen,
+	loadSettings,
+	sitesEffect,
+	registerContentScripts,
+	logAction
+);

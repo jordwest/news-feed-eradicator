@@ -9,7 +9,7 @@ type WebExtensionAPI = {
 		connect: () => Port;
 		onConnect: WebExtensionEvent<Port>;
 	};
-	browserAction: {
+	action: {
 		onClicked: WebExtensionEvent<void>;
 	};
 	permissions: {
@@ -19,11 +19,12 @@ type WebExtensionAPI = {
 	};
 	tabs: {
 		onUpdated: WebExtensionEvent<TabId>;
-		insertCSS: (tabId: TabId, opts: ExecuteOptions) => Promise<any>;
-		executeScript: <Returns = void>(
-			tabId: TabId,
-			opts: ExecuteOptions
-		) => Promise<[Returns] | [] | undefined>;
+	};
+	scripting: {
+		executeScript: (opts: ExecuteOptions) => Promise<any>;
+		insertCSS: (opts: InsertCssOptions) => Promise<any>;
+		registerContentScripts: (opts: RegisteredContentScript[]) => Promise<void>;
+		unregisterContentScripts: () => Promise<void>;
 	};
 	storage: {
 		sync: {
@@ -35,10 +36,27 @@ type WebExtensionAPI = {
 
 export type TabId = number & { __tabId: never };
 
+type InjectionTarget = {
+	tabId: TabId;
+};
+type InsertCssOptions = {
+	target: InjectionTarget;
+	files?: string[];
+	css?: string;
+};
 type ExecuteOptions = {
-	file?: string;
-	code?: string;
-	runAt?: 'document_start' | 'document_end' | 'document_idle';
+	target: { tabId: TabId };
+	injectImmediately?: boolean;
+	files?: string[];
+	func?: () => void;
+};
+
+type RegisteredContentScript = {
+	id: string;
+	js?: string[];
+	css?: string[];
+	matches: string[];
+	runAt: 'document_start' | 'document_end' | 'document_idle';
 };
 
 type WebExtensionEvent<Arg> = {
@@ -74,7 +92,7 @@ type ChromeWebExtensionAPI = {
 		connect: () => Port;
 		onConnect: WebExtensionEvent<Port>;
 	};
-	browserAction: {
+	action: {
 		onClicked: WebExtensionEvent<void>;
 	};
 	permissions: {
@@ -84,16 +102,12 @@ type ChromeWebExtensionAPI = {
 	};
 	tabs: {
 		onUpdated: WebExtensionEvent<TabId>;
-		insertCSS: (
-			tabId: TabId,
-			opts: ExecuteOptions,
-			cb: (data: any) => void
-		) => void;
-		executeScript: (
-			tabId: TabId,
-			opts: ExecuteOptions,
-			cb: (data: any) => void
-		) => void;
+	};
+	scripting: {
+		executeScript: (opts: ExecuteOptions) => Promise<any>;
+		insertCSS: (opts: InsertCssOptions) => Promise<any>;
+		registerContentScripts: (opts: RegisteredContentScript[]) => Promise<void>;
+		unregisterContentScripts: () => Promise<void>;
 	};
 	storage: {
 		sync: {
@@ -122,7 +136,7 @@ export function getBrowser(): WebExtensionAPI {
 				connect: chrome.runtime.connect.bind(chrome.runtime),
 				onConnect: chrome.runtime.onConnect,
 			},
-			browserAction: chrome.browserAction,
+			action: chrome.action,
 			permissions: {
 				getAll: () =>
 					new Promise((resolve) => chrome!.permissions?.getAll(resolve)),
@@ -132,12 +146,9 @@ export function getBrowser(): WebExtensionAPI {
 					new Promise((resolve) => chrome!.permissions?.remove(p, resolve)),
 			},
 			tabs: {
-				insertCSS: (a, b) =>
-					new Promise((resolve) => chrome!.tabs?.insertCSS(a, b, resolve)),
-				executeScript: (a, b) =>
-					new Promise((resolve) => chrome!.tabs?.executeScript(a, b, resolve)),
 				onUpdated: chrome!.tabs?.onUpdated,
 			},
+			scripting: chrome.scripting,
 			storage: {
 				sync: {
 					get: (key: string | string[]) =>

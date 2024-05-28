@@ -17,17 +17,6 @@ const plugins = [
 	}),
 ];
 
-/*
-const eradicate = {
-	input: 'src/eradicate.ts',
-	output: {
-		file: 'build/eradicate.js',
-		format: 'iife',
-	},
-	plugins: [...plugins, css({ output: 'build/eradicate.css' })],
-};
-*/
-
 const intercept = {
 	input: 'src/intercept.ts',
 	output: {
@@ -47,9 +36,9 @@ const options = {
 };
 
 const background = {
-	input: 'src/background/background.ts',
+	input: 'src/background/service-worker.ts',
 	output: {
-		file: 'build/background.js',
+		file: 'build/service-worker.js',
 		format: 'iife',
 	},
 	plugins,
