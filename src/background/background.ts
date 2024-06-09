@@ -1,6 +1,6 @@
 import { createBackgroundStore } from './store/store';
 import { getBrowser, TabId } from '../webextension';
-import { Sites } from '../sites';
+import {Site, Sites} from '../sites';
 
 createBackgroundStore();
 
@@ -38,8 +38,8 @@ const onTabChange = async (tabId: TabId) => {
 
 			// Site specific CSS
 			for (let siteKey in Sites) {
-				const site = Sites[siteKey];
-				if (injectInfo[0].host.endsWith(site.domain)) {
+				const site: Site = Sites[siteKey];
+				if (site.domain.find(domain => injectInfo[0]?.host.endsWith(domain)) != null) {
 					const css = site.css;
 					if (css != null) {
 						browser.tabs.insertCSS(tabId, {

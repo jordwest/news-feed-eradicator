@@ -20,7 +20,7 @@ export function enabledStatus(state: SettingsState): EnabledStatus {
 	for (let siteId of Object.keys(Sites)) {
 		let site: Site = Sites[siteId];
 		const siteStatus: SiteStatus = siteStatuses[siteId];
-		if (window.location.host.includes(site.domain)) {
+		if (site.domain.find(domain => window.location.host.includes(domain)) != null) {
 			// Always disabled if the path doesn't match
 			if (site.paths.indexOf(window.location.pathname) === -1) {
 				return { type: 'disabled' };
