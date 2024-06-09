@@ -1,0 +1,55 @@
+{
+	"name": "News Feed Eradicator",
+	"version": "2.2.6",
+	"description": "Eradicate social media noise by replacing your entire news feed with an inspiring quote",
+	"manifest_version": 3,
+	"permissions": ["storage", "scripting"],
+	"optional_host_permissions": [
+		"http://www.facebook.com/*",
+		"https://www.facebook.com/*",
+		"http://web.facebook.com/*",
+		"https://web.facebook.com/*",
+		"http://twitter.com/*",
+		"https://twitter.com/*",
+		"http://x.com/*",
+		"https://x.com/*",
+		"https://www.reddit.com/",
+		"http://www.reddit.com/",
+		"https://old.reddit.com/",
+		"http://old.reddit.com/",
+		"https://news.ycombinator.com/*",
+		"http://www.linkedin.com/*",
+		"https://www.linkedin.com/*",
+		"https://www.youtube.com/*",
+		"https://www.github.com/*",
+		"https://github.com/*",
+		"http://www.instagram.com/*",
+		"https://www.instagram.com/*"
+	],
+	"action": {
+		"default_icon": {
+			"16": "icon16.png",
+			"32": "icon32.png",
+			"48": "icon48.png",
+			"64": "icon64.png",
+			"128": "icon128.png"
+		},
+		"default_title": "News Feed Eradicator"
+	},
+	"background": {
+		"service_worker": "service-worker.js",
+		"type": "module"
+	},
+	"options_ui": {
+		"page": "options.html",
+		"open_in_tab": true,
+		"browser_style": false
+	},
+	"icons": {
+		"16": "icon16.png",
+		"32": "icon32.png",
+		"48": "icon48.png",
+		"64": "icon64.png",
+		"128": "icon128.png"
+	}
+}

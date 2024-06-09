@@ -1,12 +1,15 @@
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
 import { isEnabled } from '../lib/is-enabled';
 import { Store } from '../store';
+import {injectCSS} from "./shared";
 
 export function checkSite(): boolean {
 	return window.location.host.includes('instagram.com');
 }
 
 export function eradicate(store: Store) {
+	injectCSS('instagram');
+
 	function eradicateRetry() {
 		const settings = store.getState().settings;
 		if (settings == null || !isEnabled(settings)) {
