@@ -2,12 +2,15 @@ import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
 import { isEnabled } from '../lib/is-enabled';
 import { remove } from '../lib/remove-news-feed';
 import { Store } from '../store';
+import {injectCSS} from "./shared";
 
 export function checkSite(): boolean {
 	return window.location.host.includes('github.com');
 }
 
 export function eradicate(store: Store) {
+	injectCSS('github');
+
 	function eradicateRetry() {
 		const settings = store.getState().settings;
 		if (settings == null || !isEnabled(settings)) {

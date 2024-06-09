@@ -8,6 +8,7 @@ import config from '../../config';
 import { getPermissions, sitesEffect } from './sites/effects';
 import { getSettingsHealth } from './sites/selectors';
 import { SiteId, Sites } from '../../sites';
+import SiteStateTag = Settings.SiteStateTag;
 
 export type BackgroundEffect = Effect<BackgroundState, BackgroundActionObject>;
 
@@ -128,13 +129,24 @@ export const registerContentScripts: BackgroundEffect =
 		if (action.type === BackgroundActionType.CONTENT_SCRIPTS_REGISTER) {
 			const browser = getBrowser();
 			await browser.scripting.unregisterContentScripts();
-			browser.scripting.registerContentScripts([{
-				id: 'intercept',
-				js: ['intercept.js'],
-				css: ['eradicate.css'],
-				matches: ['https://news.ycombinator.com/*'],
-				runAt: 'document_start',
-			}]);
+
+			const state = store.getState();
+			if (state.ready === false) {
+				return;
+			}
+
+			const siteIds = Object.keys(state.settings.sites) as SiteId[];
+			const siteMatches = siteIds.flatMap((siteId) => Sites[siteId].origins);
+
+			await browser.scripting.registerContentScripts([
+				{
+					id: 'intercept',
+					js: ['intercept.js'],
+					css: ['eradicate.css'],
+					matches: siteMatches,
+					runAt: 'document_start',
+				},
+			]);
 		}
 	};
 
