@@ -209,8 +209,8 @@ div[role='region'][data-visualcompletion='ignore-dynamic'] /* For stories in non
 	width: 0 !important;
 	height: 0 !important;
 }
-html:not([data-nfe-enabled='false']) {
-	--notification-badge: var(--base-blue);
+:root {
+	--notification-badge: var(--base-blue) !important;
 }
 
 /* Reddit 2024 update */
@@ -260,6 +260,9 @@ html:not([data-nfe-enabled='false'])
 	opacity: 0 !important;
 	pointer-events: none !important;
 	height: 0 !important;
+}
+:root {
+	--voyager-color-background-badge-notification: #0a66c2 !important;
 }
 
 /* LinkedIn trending news section */
