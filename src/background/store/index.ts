@@ -37,6 +37,7 @@ export namespace Settings {
 		CHECK_PERMISSIONS = 'check_permissions',
 		DISABLED = 'disabled',
 		DISABLED_TEMPORARILY = 'disabled_temporarily',
+		ENABLED_TEMPORARILY = "ENABLED_TEMPORARILY",
 	}
 
 	export type SiteState =
