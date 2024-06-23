@@ -23,6 +23,7 @@ export const Sites: Record<SiteId, Site> = {
 			'/marketplace/',
 			'/groups/feed/',
 			'/gaming/video/',
+			'/watch/'
 			// '/reel'
 		],
 		origins: [
