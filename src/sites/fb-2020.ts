@@ -28,8 +28,6 @@ export function eradicate(store: Store) {
 			// document.querySelector("div.x6s0dn4.x78zum5.x1q0g3np.x5yr21d.xl56j7k.x1n2onr6") // reels
 			document.querySelector('div.x9f619.x1n2onr6.x1ja2u2z.x78zum5.xdt5ytf.x193iq5w.xeuugli.x1r8uery.x1iyjqo2.xs83m0k.x1dr59a3.xadl8oe')
 
-		console.log({feed})
-
 		if (feed == null) {
 			return;
 		}
