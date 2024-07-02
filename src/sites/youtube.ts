@@ -30,7 +30,8 @@ export function eradicate(store: Store) {
 
       // Redirect the user to the main page and quote if they are on the shorts page
 			if (shorts) {
-				window.location.href = '/';
+				history.pushState({}, '', '/');
+				window.dispatchEvent(new Event('popstate'));
 			}
 
       // Add News Feed Eradicator quote/info panel
