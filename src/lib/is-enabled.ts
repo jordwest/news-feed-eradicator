@@ -6,6 +6,14 @@ import {
 	SiteStatus,
 } from '../background/store/sites/selectors';
 
+function pathMatches(path: string, patterns: string[]): boolean {
+  return patterns.some(pattern => {
+      // Convert wildcard patterns to regex to accomodate for wildcards in YouTube Shorts
+      const regexPattern = new RegExp(`^${pattern.replace(/\*/g, '.*')}$`);
+      return regexPattern.test(path);
+  });
+}
+
 export type EnabledStatus =
 	| { type: 'enabled' }
 	| { type: 'disabled' }
@@ -20,9 +28,9 @@ export function enabledStatus(state: SettingsState): EnabledStatus {
 	for (let siteId of Object.keys(Sites)) {
 		let site: Site = Sites[siteId];
 		const siteStatus: SiteStatus = siteStatuses[siteId];
-		if (site.domain.find(domain => window.location.host.includes(domain)) != null) {
-			// Always disabled if the path doesn't match
-			if (site.paths.indexOf(window.location.pathname) === -1) {
+		if (window.location.host.includes(site.domain)) {
+      // Check if the current path is in the list of paths for this site
+			if (!pathMatches(window.location.pathname, site.paths)) {
 				return { type: 'disabled' };
 			}
 
@@ -31,10 +39,8 @@ export function enabledStatus(state: SettingsState): EnabledStatus {
 			} else if (siteStatus.type === SiteStatusTag.DISABLED_TEMPORARILY) {
 				return { type: 'disabled-temporarily', until: siteStatus.until };
 			}
-
 			return { type: 'enabled' };
 		}
 	}
-
 	return { type: 'disabled' };
 }

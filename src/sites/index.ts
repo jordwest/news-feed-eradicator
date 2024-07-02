@@ -12,6 +12,7 @@ export type SiteId =
 	| 'instagram'
 	| 'github';
 
+
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
 		label: 'Facebook',
@@ -53,7 +54,7 @@ export const Sites: Record<SiteId, Site> = {
 	youtube: {
 		label: 'YouTube',
 		domain: ['youtube.com'],
-		paths: ['/', '/feed/trending'],
+		paths: ['/', '/feed/trending', '/shorts', '/shorts/*'],
 		origins: ['https://www.youtube.com/*'],
 	},
 	linkedin: {

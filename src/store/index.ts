@@ -17,6 +17,5 @@ export function createStore(): Store {
 		undefined,
 		applyMiddleware(effectsMiddleware(rootEffect))
 	);
-
 	return store;
 }
