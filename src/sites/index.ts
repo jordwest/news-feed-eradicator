@@ -10,7 +10,8 @@ export type SiteId =
 	| 'linkedin'
 	| 'youtube'
 	| 'instagram'
-	| 'github';
+	| 'github'
+	| 'venmo';
 
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
@@ -94,6 +95,12 @@ export const Sites: Record<SiteId, Site> = {
 		paths: ['/', '/dashboard'],
 		origins: ['https://github.com/*'],
 		css: githubCss,
+	},
+	venmo: {
+		label: 'Venmo',
+		domain: ['account.venmo.com'],
+		paths: ['/'],
+		origins: ['https://account.venmo.com/*'],
 	},
 };
 

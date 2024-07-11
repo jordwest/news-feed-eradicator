@@ -284,3 +284,19 @@ html:not([data-nfe-enabled='false']) #primary > #nfe-container {
 	opacity: 0 !important;
 	pointer-events: none !important;
 }
+
+/* Venmo */
+html:not([data-nfe-enabled='false'])
+div[data-testid="friend-feed-container"]
+> div:not(#nfe-container) {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
+
+html:not([data-nfe-enabled='false'])
+div[data-testid="friend-feed-container"] + div {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	height: 0 !important;
+}
