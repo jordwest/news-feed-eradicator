@@ -14,6 +14,7 @@ import * as HackerNews from './sites/hackernews';
 import * as Github from './sites/github';
 import * as LinkedIn from './sites/linkedin';
 import * as Instagram from './sites/instagram';
+import * as Venmo from './sites/venmo';
 import * as YouTube from './sites/youtube';
 import { createStore, Store } from './store';
 
@@ -23,6 +24,8 @@ export function eradicate(store: Store) {
 	// Determine which site we're working with
 	if (Reddit.checkSite()) {
 		Reddit.eradicate(store);
+	} else if (Venmo.checkSite()) {
+		Venmo.eradicate(store);
 	} else if (Twitter.checkSite()) {
 		Twitter.eradicate(store);
 	} else if (HackerNews.checkSite()) {

@@ -24,7 +24,9 @@
 		"https://www.github.com/*",
 		"https://github.com/*",
 		"http://www.instagram.com/*",
-		"https://www.instagram.com/*"
+		"https://www.instagram.com/*",
+		"http://account.venmo.com/*",
+		"https://account.venmo.com/*"
 	],
 	"action": {
 		"default_icon": {

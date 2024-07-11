@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- No unreleased changes
+- Added support for Venmo friends feed
+
+## [2.3.0] - 2024-06-09
+
+- Upgraded to manifest v3
 
 ## [2.2.7] - 2024-06-09
 
