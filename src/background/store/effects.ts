@@ -111,6 +111,16 @@ const loadSettings: BackgroundEffect = (store) => async (action) => {
 		const newFeaturesAvailable = areNewFeaturesAvailable(state);
 		const settingsHealth = getSettingsHealth(state);
 
+		store.dispatch({ type: BackgroundActionType.CONTENT_SCRIPTS_REGISTER });
+	}
+};
+
+const loadSettings: BackgroundEffect = (store) => async (action) => {
+	if (action.type === BackgroundActionType.STARTUP) {
+		const state = store.getState();
+		const newFeaturesAvailable = areNewFeaturesAvailable(state);
+		const settingsHealth = getSettingsHealth(state);
+
 		// Show the options page at startup if something needs addressing
 		if (
 			settingsHealth.noSitesEnabled ||
@@ -119,8 +129,6 @@ const loadSettings: BackgroundEffect = (store) => async (action) => {
 		) {
 			getBrowser().runtime.openOptionsPage();
 		}
-
-		store.dispatch({ type: BackgroundActionType.CONTENT_SCRIPTS_REGISTER });
 	}
 };
 
