@@ -1,12 +1,15 @@
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
 import { isEnabled } from '../lib/is-enabled';
 import { Store } from '../store';
+import { injectCSS } from './shared';
 
 export function checkSite(): boolean {
 	return window.location.host.includes('linkedin.com');
 }
 
 export function eradicate(store: Store) {
+	injectCSS('linkedin');
+
 	function eradicateRetry() {
 		const settings = store.getState().settings;
 		if (settings == null || !isEnabled(settings)) {
@@ -14,9 +17,7 @@ export function eradicate(store: Store) {
 		}
 
 		// Don't do anything if the UI hasn't loaded yet
-		const feed = document.querySelector(
-			'main.scaffold-layout__main > div:last-child'
-		);
+		const feed = document.querySelector('.scaffold-finite-scroll');
 		if (feed == null) {
 			return;
 		}
@@ -25,11 +26,11 @@ export function eradicate(store: Store) {
 
 		// Add News Feed Eradicator quote/info panel
 		if (feed && !isAlreadyInjected()) {
-			injectUI(feed, store);
+			injectUI(feed, store, { asFirstChild: true });
 		}
 	}
 
-	// This delay ensures that the elements have been created by Twitter's
+	// This delay ensures that the elements have been created by Linkedin's
 	// scripts before we attempt to replace them
 	setInterval(eradicateRetry, 1000);
 }

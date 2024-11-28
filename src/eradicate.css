@@ -252,23 +252,6 @@ html:not([data-nfe-enabled='false']) table#hnmain tr:nth-of-type(3) td > table {
 	display: none;
 }
 
-/* LinkedIn */
-html:not([data-nfe-enabled='false'])
-	main.scaffold-layout__main
-	> div:last-child
-	> div:not(#nfe-container) {
-	opacity: 0 !important;
-	pointer-events: none !important;
-	height: 0 !important;
-}
-
-/* LinkedIn trending news section */
-aside.scaffold-layout__aside > div:nth-child(2) {
-	opacity: 0 !important;
-	pointer-events: none !important;
-	height: 0 !important;
-}
-
 /* Youtube */
 html:not([data-nfe-enabled='false']) #primary > :not(#nfe-container) {
 	opacity: 0 !important;

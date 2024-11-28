@@ -1,5 +1,6 @@
 import instagramCss from './instagram.str.css';
 import twitterCss from './twitter.str.css';
+import linkedinCss from './linkedin.str.css';
 import githubCss from './github.str.css';
 
 export type SiteId =
@@ -61,6 +62,7 @@ export const Sites: Record<SiteId, Site> = {
 		domain: ['linkedin.com'],
 		paths: ['/', '/feed/'],
 		origins: ['http://www.linkedin.com/*', 'https://www.linkedin.com/*'],
+		css: linkedinCss,
 	},
 	reddit: {
 		label: 'Reddit',

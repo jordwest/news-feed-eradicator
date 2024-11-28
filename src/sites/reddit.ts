@@ -16,14 +16,14 @@ export function eradicate(store: Store) {
 		// Don't do anything if the UI hasn't loaded yet
 		const scroll_item = document.querySelector('.scrollerItem');
 
-		const new_new_reddit_container =
-			document.querySelector('shreddit-feed');
+		const new_new_reddit_container = document.querySelector('shreddit-feed');
 		const new_reddit_container =
 			scroll_item?.parentNode?.parentNode?.parentNode?.previousSibling;
 		const old_reddit_container = document.querySelector(
 			'.listing-page > .content'
 		);
-		const container = new_new_reddit_container || new_reddit_container || old_reddit_container;
+		const container =
+			new_new_reddit_container || new_reddit_container || old_reddit_container;
 
 		if (container == null) {
 			return;
@@ -34,7 +34,7 @@ export function eradicate(store: Store) {
 			// Hack so that injectUI can handle new-reddit theme
 			document.body.style.background = 'var(--newRedditTheme-body)';
 
-			injectUI(container, store, true);
+			injectUI(container, store, { asFirstChild: true });
 		}
 	}
 
