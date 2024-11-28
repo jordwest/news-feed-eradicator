@@ -8,7 +8,6 @@ type WebExtensionAPI = {
 		sendMessage: (message: any) => Promise<void>;
 		connect: () => Port;
 		onConnect: WebExtensionEvent<Port>;
-		onStartup: WebExtensionEvent<void>;
 	};
 	action: {
 		onClicked: WebExtensionEvent<void>;
@@ -92,7 +91,6 @@ type ChromeWebExtensionAPI = {
 		) => void;
 		connect: () => Port;
 		onConnect: WebExtensionEvent<Port>;
-		onStartup: WebExtensionEvent<void>;
 	};
 	action: {
 		onClicked: WebExtensionEvent<void>;
@@ -137,7 +135,6 @@ export function getBrowser(): WebExtensionAPI {
 					),
 				connect: chrome.runtime.connect.bind(chrome.runtime),
 				onConnect: chrome.runtime.onConnect,
-				onStartup: chrome.runtime.onStartup,
 			},
 			action: chrome.action,
 			permissions: {
