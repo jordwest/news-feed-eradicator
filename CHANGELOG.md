@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- No unreleased changes
+- Fix Reddit
 
 ## [2.2.7] - 2024-06-09
 
