@@ -8,3 +8,9 @@ html:not([data-nfe-enabled='false']) main > #nfe-container {
 	font-size: 24px;
 	padding: 128px;
 }
+
+@media (max-width: 767px) {
+	html:not([data-nfe-enabled='false']) main > #nfe-container {
+		padding: 0;
+	}
+}
