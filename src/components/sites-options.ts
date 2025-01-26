@@ -7,10 +7,10 @@ import {
 	getSiteStatus,
 	SiteStatusTag,
 } from '../background/store/sites/selectors';
-import { ActionType } from '../store/action-types';
 import { WarningAlert } from './alert';
 import { VNode } from 'snabbdom/vnode';
 import { MINUTE, HOUR, DAY, readableDuration } from '../lib/time';
+import { uiSitesSiteClick, uiSitesSiteDisableConfirmed } from '../store/slices';
 
 const DisableConfirmation = (store: Store, siteId: SiteId) => {
 	const button = (
@@ -22,11 +22,7 @@ const DisableConfirmation = (store: Store, siteId: SiteId) => {
 			{
 				on: {
 					click: () =>
-						store.dispatch({
-							type: ActionType.UI_SITES_SITE_DISABLE_CONFIRMED,
-							site: siteId,
-							until,
-						}),
+						store.dispatch(uiSitesSiteDisableConfirmed({site: siteId, until}))
 				},
 			},
 			label
@@ -97,10 +93,7 @@ export const SitesOptions = (store: Store) => {
 		const siteStatus = sites[id];
 
 		const onClick = () => {
-			store.dispatch({
-				type: ActionType.UI_SITES_SITE_CLICK,
-				site: id,
-			});
+			store.dispatch(uiSitesSiteClick({site: id}))
 		};
 
 		const bgColor = stateColor(siteStatus);

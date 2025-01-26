@@ -1,19 +1,16 @@
 import { BackgroundEffect } from '../effects';
 import { Effect } from '../../../lib/redux-effects';
-import { BackgroundActionType } from '../action-types';
 import { getBrowser } from '../../../webextension';
+import { checkPermissions as checkPermissionsAction, updatePermissions } from '../slices/permissions';
 
 export const getPermissions = async () => {
 	return getBrowser().permissions.getAll();
 };
 
 const checkPermissions: BackgroundEffect = (store) => async (action) => {
-	if (action.type === BackgroundActionType.PERMISSIONS_CHECK) {
+	if (action.type === checkPermissionsAction.type) {
 		const permissions = await getPermissions();
-		store.dispatch({
-			type: BackgroundActionType.PERMISSIONS_UPDATE,
-			permissions,
-		});
+		store.dispatch(updatePermissions(permissions));
 	}
 };
 

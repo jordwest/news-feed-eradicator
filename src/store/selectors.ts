@@ -1,8 +1,8 @@
-import { IState } from './reducer';
+import { IState } from './index';
 import config from '../config';
 
 import { BuiltinQuotes, Quote } from '../quote';
-import { CurrentQuote } from './action-types';
+import { CurrentQuote } from './slices';
 
 export function getBuiltinQuotes(state: IState) {
 	if (state.settings == null) return [];

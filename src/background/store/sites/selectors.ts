@@ -1,4 +1,4 @@
-import { SettingsState } from '../reducer';
+import { SettingsState } from '../state-types';
 import { SiteId, Sites, Site } from '../../../sites';
 import { Settings } from '..';
 

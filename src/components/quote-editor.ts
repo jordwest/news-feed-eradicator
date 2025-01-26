@@ -4,11 +4,11 @@ import { Store } from '../store/index';
 import {
 	setQuoteText,
 	setQuoteSource,
-	cancelEditing,
+	cancelEditText,
 	toggleBulkEdit,
 	addQuotesBulk,
-} from '../store/actions';
-import { ActionType } from '../store/action-types';
+	quoteSaveClicked
+} from '../store/slices';
 import { ErrorAlert } from './alert';
 import parseCsv from '../lib/parse-csv';
 
@@ -30,13 +30,13 @@ export const QuoteEditor = (store: Store) => {
 
 	const onSave = () => {
 		if (!isEditingBulk) {
-			store.dispatch({ type: ActionType.QUOTE_SAVE_CLICKED });
+			store.dispatch(quoteSaveClicked());
 		} else {
-			store.dispatch(addQuotesBulk(text));
+			store.dispatch(addQuotesBulk({text}));
 		}
 	};
 	const onCancel = () => {
-		store.dispatch(cancelEditing());
+		store.dispatch(cancelEditText());
 	};
 	const onToggleBulkEdit = () => {
 		store.dispatch(toggleBulkEdit());
