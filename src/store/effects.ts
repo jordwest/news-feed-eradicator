@@ -5,7 +5,7 @@ import { currentQuote, getAvailableQuotes } from './selectors';
 import { generateID } from '../lib/generate-id';
 import { getBrowser } from '../webextension';
 import { Message, MessageType } from '../messaging/types';
-import { Sites } from '../sites';
+import { SiteId, Sites } from '../sites';
 import {
 	getSiteStatus,
 	SiteStatusTag,
@@ -34,6 +34,7 @@ import {
 	hideHiddenBuiltinQuote,
 	setSiteState,
 } from '../background/store/slices';
+import { SiteDisabledConfirmed } from './slices/options';
 
 export type AppEffect = Effect<IState, UnknownAction>;
 
@@ -104,7 +105,7 @@ const quoteRemoveCurrent: AppEffect = (store) => (action) => {
 const quoteAddBulk: AppEffect = (store) => (action: PayloadAction<{text: string}>) => {
 	if (action.type !== addQuotesBulk.type) return;
 
-	const lines = action.text.split('\n');
+	const lines = action.payload.text.split('\n');
 	const quotes: string[][] = [];
 	for (var lineCount = 0; lineCount < lines.length; lineCount++) {
 		const line = lines[lineCount];
@@ -159,7 +160,7 @@ const removePermissions = async (store: Store, origins: string[]) => {
 	return success;
 };
 
-const siteClicked: AppEffect = (store) => async (action) => {
+const siteClicked: AppEffect = (store) => async (action: PayloadAction<{ site: SiteId }>) => {
 	if (action.type === uiSitesSiteClick.type) {
 		const state = store.getState();
 		if (state.settings == null) {
@@ -167,14 +168,14 @@ const siteClicked: AppEffect = (store) => async (action) => {
 			return;
 		}
 		const sites = getSiteStatus(state.settings);
-		const site = Sites[action.site];
+		const site = Sites[action.payload.site];
 
-		const s = sites[action.site];
+		const s = sites[action.payload.site];
 		if (s.type == SiteStatusTag.NEEDS_NEW_PERMISSIONS) {
 			if (await requestPermissions(store as Store, site.origins)) {
 				store.dispatch(
 					setSiteState({
-						siteId: action.site,
+						siteId: action.payload.site,
 						state: {
 							type: Settings.SiteStateTag.ENABLED,
 						}
@@ -184,7 +185,7 @@ const siteClicked: AppEffect = (store) => async (action) => {
 				// Permission denied, disable the site
 				store.dispatch(
 					setSiteState({
-						siteId: action.site,
+						siteId: action.payload.site,
 						state: {
 							type: Settings.SiteStateTag.DISABLED,
 						}
@@ -196,7 +197,7 @@ const siteClicked: AppEffect = (store) => async (action) => {
 			if (success) {
 				store.dispatch(
 					setSiteState({
-						siteId: action.site, 
+						siteId: action.payload.site, 
 						state: {
 							type: Settings.SiteStateTag.ENABLED,
 						}
@@ -206,28 +207,28 @@ const siteClicked: AppEffect = (store) => async (action) => {
 		} else if (s.type === SiteStatusTag.DISABLED_TEMPORARILY) {
 			store.dispatch(
 				setSiteState({
-					siteId: action.site, 
+					siteId: action.payload.site, 
 					state: {
 						type: Settings.SiteStateTag.ENABLED,
 					}
 				})
 			);
 		} else if (s.type === SiteStatusTag.ENABLED) {
-			store.dispatch(uiSitesSiteDisableConfirmShow(action.site));
+			store.dispatch(uiSitesSiteDisableConfirmShow(action.payload.site));
 			// ? store.dispatch(uiSitesSiteDisableConfirmShow(action.site));
 		}
 	}
 };
 
-const confirmSiteDisabled: AppEffect = (store) => async (action) => {
+const confirmSiteDisabled: AppEffect = (store) => async (action: PayloadAction<SiteDisabledConfirmed>) => {
 	if (action.type === uiSitesSiteDisableConfirmed.type) {
-		if (action.until.t === 'forever') {
+		if (action.payload.until.t === 'forever') {
 			// Don't need the permissions anymore
-			const site = Sites[action.site];
+			const site = Sites[action.payload.site];
 			await removePermissions(store as Store, site.origins);
 			store.dispatch(
 				setSiteState({
-					siteId: action.site, 
+					siteId: action.payload.site,
 					state: {
 						type: Settings.SiteStateTag.DISABLED,
 					}
@@ -236,10 +237,10 @@ const confirmSiteDisabled: AppEffect = (store) => async (action) => {
 		} else {
 			store.dispatch(
 				setSiteState({
-					siteId: action.site, 
+					siteId: action.payload.site,
 					state: {
 						type: Settings.SiteStateTag.DISABLED_TEMPORARILY,
-						disabled_until: Date.now() + (action.until as { milliseconds: number }).milliseconds
+						disabled_until: Date.now() + (action.payload.until as { milliseconds: number }).milliseconds
 					}
 				})
 			);
