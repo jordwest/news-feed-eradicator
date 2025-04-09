@@ -22,7 +22,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-	* {
+	:root {
 		--color-body-background: #141312;
 		--color-body-text: #e6e1e0;
 		--color-button-border: #a1a3a9;
