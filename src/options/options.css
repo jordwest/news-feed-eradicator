@@ -1,10 +1,33 @@
+:root {
+	--color-body-background: #f8e8dd;
+	--color-body-text: #333;
+	--color-button-border: #ccc;
+	--color-button-text: #00f;
+	--color-button-bg: #fafafa;
+	--color-button-bg-hover: #e7f0ff;
+	--color-link: #55f;
+	--color-text-muted: #aaa;
+	--color-border: #ccc;
+	--color-col-bg-warn: #ffc;
+	--color-col-bg-err: #fcc;
+	--color-bg-active: #dbe8ff;
+	--color-bg-active-light: #e5efff;
+	--color-bg-1: #fbfefb;
+	--color-bg-2: #f8e8dd;
+	--color-bg-3: #efe5dc;
+	--color-bg-3-hover: #efe5dc;
+	--color-bg-4: #d0b8ac;
+	--color-col-fg: black;
+	--color-scrollable-table-th: white;
+}
+
 body {
 	font-family: sans-serif;
 	font-size: 1.4em;
-	background: #f8e8dd;
+	background: var(--color-body-background);
 	margin: 0;
 	padding: 0;
-	color: #333;
+	color: var(--color-body-text);
 }
 
 h1,
@@ -30,14 +53,14 @@ button {
 }
 
 button {
-	border: 1px solid #ccc;
+	border: 1px solid var(--color-button-border);
 	background-image: none;
-	color: #00f;
+	color: var(--color-button-text);
 	padding: 8px;
-	background: #fafafa;
+	background: var(--color-button-bg);
 }
 button:hover {
-	background-color: #e7f0ff;
+	background-color: var(--color-button-bg-hover);
 }
 
 button:hover {
@@ -51,7 +74,7 @@ a {
 }
 a,
 a:visited {
-	color: #55f;
+	color: var(--color-link);
 }
 
 #options-container {
@@ -72,7 +95,7 @@ a:visited {
 	font-size: 1.2em;
 }
 .text-muted {
-	color: #aaa;
+	color: var(--color-text-muted);
 }
 .text-strike {
 	text-decoration: line-through;
@@ -117,7 +140,7 @@ a:visited {
 }
 
 .border {
-	border: 1px solid #ccc;
+	border: 1px solid var(--color-border);
 }
 .width-100pc {
 	width: 100%;
@@ -152,35 +175,35 @@ a.underline-hover:hover {
 }
 
 .col-bg-warn {
-	background-color: #ffc;
+	background-color: var(--color-col-bg-warn);
 }
 .col-bg-err {
-	background-color: #fcc;
+	background-color: var(--color-col-bg-err);
 }
 .bg-active {
-	background-color: #dae7ff;
+	background-color: var(--color-bg-active);
 }
 .bg-active-light,
 .bg-active-light-hover:hover {
-	background-color: #e7f0ff;
+	background-color: var(--color-bg-active-light);
 }
 .bg-1 {
-	background-color: #fbfefb;
+	background-color: var(--color-bg-1);
 }
 .bg-2 {
-	background-color: #f8e8dd;
+	background-color: var(--color-bg-2);
 }
 .bg-3 {
-	background-color: #efe5dc;
+	background-color: var(--color-bg-3);
 }
 .bg-3-hover:hover {
-	background-color: #efe5dc;
+	background-color: var(--color-bg-3-hover);
 }
 .bg-4 {
-	background-color: #d0b8ac;
+	background-color: var(--color-bg-4);
 }
 .col-fg {
-	color: black;
+	color: var(--color-col-fg);
 }
 .strong {
 	font-weight: bold;
@@ -196,7 +219,7 @@ a.underline-hover:hover {
 .scrollable-table th {
 	top: 0;
 	position: sticky;
-	background: white;
+	background: var(--color-scrollable-table-th);
 }
 .scrollable-table {
 	display: block;
