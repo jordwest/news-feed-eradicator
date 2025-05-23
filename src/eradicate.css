@@ -239,7 +239,7 @@ html:not([data-nfe-enabled='false'])
 
 /* Reddit old */
 html:not([data-nfe-enabled='false'])
-	.listing-page.with-listing-chooser
+	.listing-page
 	.content
 	#siteTable {
 	opacity: 0 !important;
