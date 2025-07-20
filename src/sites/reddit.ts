@@ -7,24 +7,23 @@ export function checkSite(): boolean {
 }
 
 export function eradicate(store: Store) {
-	function eradicateRetry() {       
+	function eradicateRetry() {
 		const settings = store.getState().settings;
 		if (settings == null || !isEnabled(settings)) {
-
 			return;
 		}
 
-        // Don't do anything if we're on a subreddit feed -- Only the main Reddit feed should be affected
-        const isSubredditFeed =
-            window.location.pathname.startsWith('/r/') &&
-            !window.location.pathname.startsWith('/r/all') &&
-            !window.location.pathname.startsWith('/r/popular');
+		// Don't do anything if we're on a subreddit feed -- Only the main Reddit feed should be affected
+		const isSubredditFeed =
+			window.location.pathname.startsWith('/r/') &&
+			!window.location.pathname.startsWith('/r/all') &&
+			!window.location.pathname.startsWith('/r/popular');
 
-        if (isSubredditFeed) {
-            // Disable eradication CSS
-            document.documentElement.setAttribute('data-nfe-enabled', 'false');
-            return;
-        }
+		if (isSubredditFeed) {
+			// Disable eradication CSS
+			document.documentElement.setAttribute('data-nfe-enabled', 'false');
+			return;
+		}
 
 		// Don't do anything if the UI hasn't loaded yet
 		const scroll_item = document.querySelector('.scrollerItem');
@@ -45,9 +44,9 @@ export function eradicate(store: Store) {
 		// Add News Feed Eradicator quote/info panel
 		if (!isAlreadyInjected()) {
 			// Hack so that injectUI can handle new-reddit theme
-            document.body.style.background = 'var(--newRedditTheme-body)';
-            document.documentElement.setAttribute('data-nfe-enabled', 'true');
-            injectUI(container, store, { asFirstChild: true });
+			document.body.style.background = 'var(--newRedditTheme-body)';
+			document.documentElement.setAttribute('data-nfe-enabled', 'true');
+			injectUI(container, store, { asFirstChild: true });
 		}
 	}
 
