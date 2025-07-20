@@ -214,6 +214,7 @@ html:not([data-nfe-enabled='false']) {
 }
 
 /* Reddit 2024 update */
+html:not([data-nfe-enabled='false'])
 shreddit-feed > article {
 	opacity: 0 !important;
 	pointer-events: none !important;
