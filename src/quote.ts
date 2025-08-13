@@ -229,7 +229,7 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 	{
 		id: 46,
 		text: 'We must believe that we are gifted for something, and that this thing, at whatever cost, must be attained.',
-		source: 'Marie Curie',
+		source: 'Marie Skłodowska-Curie',
 	},
 	{
 		id: 47,
