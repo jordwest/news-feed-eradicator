@@ -1,21 +1,17 @@
 import { h } from 'snabbdom/h';
-import {
-	ActionType,
-	ActionObject,
-	UiOptionsQuoteTabShow,
-} from '../store/action-types';
 import { Store } from '../store';
 import { QuoteEditor } from './quote-editor';
-import { BackgroundActionType } from '../background/store/action-types';
 import { BuiltinQuotes, BuiltinQuote, CustomQuote } from '../quote';
-import { startEditing } from '../store/actions';
+import { backgroundAction, OptionsState, startEditText, uiOptionsQuoteTabShow } from '../store/slices';
 import { VNode } from 'snabbdom/vnode';
+import { UnknownAction } from '@reduxjs/toolkit';
+import { hideHiddenBuiltinQuote, removeCustomQuote, showHiddenBuiltinQuote, toggleBuiltinQuotesEnabled, toggleShowQuotes } from '../background/store/slices';
 
 const CheckboxField = (
 	store: Store,
 	checked: boolean,
 	text: string,
-	toggleAction: ActionObject,
+	toggleAction: UnknownAction,
 	disabled = false
 ) => {
 	return h('label', [
@@ -26,7 +22,7 @@ const CheckboxField = (
 				disabled,
 			},
 			on: {
-				change: () => store.dispatch(toggleAction),
+				change: () => store.dispatch(toggleAction),  // ? should toggleAction be toggleAction()
 			},
 		}),
 		h('span', ' ' + text),
@@ -43,28 +39,18 @@ const QuoteOptions = (store: Store) => {
 		store,
 		state.settings.showQuotes,
 		'Show Quotes',
-		{
-			type: ActionType.BACKGROUND_ACTION,
-			action: {
-				type: BackgroundActionType.QUOTES_SHOW_TOGGLE,
-			},
-		}
+		backgroundAction(toggleShowQuotes())
 	);
 
 	const fieldShowBuiltin = CheckboxField(
 		store,
 		state.settings.builtinQuotesEnabled,
 		'Enable Built-in Quotes',
-		{
-			type: ActionType.BACKGROUND_ACTION,
-			action: {
-				type: BackgroundActionType.QUOTES_BUILTIN_TOGGLE,
-			},
-		},
+		backgroundAction(toggleBuiltinQuotesEnabled()),
 		!state.settings.showQuotes
 	);
 
-	const Tab = (label: string, id: UiOptionsQuoteTabShow['tab']) =>
+	const Tab = (label: string, id: OptionsState['quotesTab']) =>
 		h(
 			id === state.uiOptions.quotesTab
 				? 'a.col-fg.strong'
@@ -73,10 +59,7 @@ const QuoteOptions = (store: Store) => {
 				props: { href: 'javascript:;' },
 				on: {
 					click: () => {
-						store.dispatch({
-							type: ActionType.UI_OPTIONS_QUOTE_TAB_SHOW,
-							tab: id,
-						});
+						store.dispatch(uiOptionsQuoteTabShow(id));
 					},
 				},
 			},
@@ -88,7 +71,7 @@ const QuoteOptions = (store: Store) => {
 		// Instead of quote table, show the quote editor
 		quoteTable = h('div.pad-2.bg-3.shadow', QuoteEditor(store));
 	} else {
-		const onClickAddQuote = () => store.dispatch(startEditing());
+		const onClickAddQuote = () => store.dispatch(startEditText());
 		quoteTable = h('div.v-stack', [
 			h('div.flex.justify-center.h-stack-2', [
 				Tab('Custom quotes', 'custom'),
@@ -125,15 +108,11 @@ const BuiltinQuoteTable = (store: Store) => {
 	}
 
 	const showHideQuote = (id: number, hidden: boolean) => () => {
-		store.dispatch({
-			type: ActionType.BACKGROUND_ACTION,
-			action: {
-				type: hidden
-					? BackgroundActionType.QUOTE_SHOW
-					: BackgroundActionType.QUOTE_HIDE,
-				id,
-			},
-		});
+		store.dispatch(backgroundAction(
+			hidden 
+				? showHiddenBuiltinQuote (id)
+				: hideHiddenBuiltinQuote (id)
+		))
 	};
 	const BuiltinQuote = (quote: BuiltinQuote) => {
 		const isHidden =
@@ -182,13 +161,7 @@ const CustomQuoteTable = (store: Store) => {
 	}
 
 	const deleteQuote = (id: string) => () => {
-		store.dispatch({
-			type: ActionType.BACKGROUND_ACTION,
-			action: {
-				type: BackgroundActionType.QUOTE_DELETE,
-				id,
-			},
-		});
+		store.dispatch(backgroundAction(removeCustomQuote(id)))
 	};
 	const CustomQuote = (quote: CustomQuote) => {
 		return (

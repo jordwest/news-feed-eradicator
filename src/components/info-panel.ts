@@ -1,8 +1,8 @@
 import { h } from 'snabbdom/h';
 import QuoteOptions from './quote-options';
 import { Store } from '../store';
-import { UiOptionsTabShow, ActionType } from '../store/action-types';
 import { SitesOptions } from './sites-options';
+import { uiOptionsTabShow, OptionsState } from '../store/slices';
 
 const Heading = () => {
 	return h('h3.text-center', 'News Feed Eradicator');
@@ -138,12 +138,9 @@ const CurrentTab = (store: Store) => {
 const InfoPanel = (store: Store) => {
 	const state = store.getState();
 
-	const visitTab = (id: UiOptionsTabShow['tab']) => () =>
-		store.dispatch({
-			type: ActionType.UI_OPTIONS_TAB_SHOW,
-			tab: id,
-		});
-	const Tab = (id: UiOptionsTabShow['tab'], label: string) =>
+	const visitTab = (id: OptionsState['tab']) => () =>
+		store.dispatch(uiOptionsTabShow(id));
+	const Tab = (id: OptionsState['tab'], label: string) =>
 		state.uiOptions.tab === id
 			? h('a.strong.text-larger-1', { props: { href: 'javascript:;' } }, label)
 			: h(

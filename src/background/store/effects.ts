@@ -1,6 +1,5 @@
+import { UnknownAction } from '@reduxjs/toolkit';
 import { Effect } from '../../lib/redux-effects';
-import { BackgroundState, SettingsState } from './reducer';
-import { BackgroundActionObject, BackgroundActionType } from './action-types';
 import { getBrowser, Port } from '../../webextension';
 import { Message, MessageType } from '../../messaging/types';
 import { Settings } from './index';
@@ -8,9 +7,10 @@ import config from '../../config';
 import { getPermissions, sitesEffect } from './sites/effects';
 import { getSettingsHealth } from './sites/selectors';
 import { SiteId, Sites } from '../../sites';
-import SiteStateTag = Settings.SiteStateTag;
+import { BackgroundState, SettingsState } from './state-types';
+import { settingsLoad, contentScriptsRegister, settingsLoaded } from './slices';
 
-export type BackgroundEffect = Effect<BackgroundState, BackgroundActionObject>;
+export type BackgroundEffect = Effect<BackgroundState, UnknownAction>;
 
 const getSettings = (state: SettingsState): Settings.T => {
 	return {
@@ -74,7 +74,7 @@ export function areNewFeaturesAvailable(state: SettingsState) {
 }
 
 const loadSettings: BackgroundEffect = (store) => async (action) => {
-	if (action.type === BackgroundActionType.SETTINGS_LOAD) {
+	if (action.type === settingsLoad.type) {
 		const [settings, permissions] = await Promise.all([
 			Settings.load(),
 			getPermissions(),
@@ -104,10 +104,7 @@ const loadSettings: BackgroundEffect = (store) => async (action) => {
 			permissions,
 		};
 
-		store.dispatch({
-			type: BackgroundActionType.SETTINGS_LOADED,
-			settings: state,
-		});
+		store.dispatch(settingsLoaded(state));
 		const newFeaturesAvailable = areNewFeaturesAvailable(state);
 		const settingsHealth = getSettingsHealth(state);
 
@@ -120,13 +117,13 @@ const loadSettings: BackgroundEffect = (store) => async (action) => {
 			getBrowser().runtime.openOptionsPage();
 		}
 
-		store.dispatch({ type: BackgroundActionType.CONTENT_SCRIPTS_REGISTER });
+		store.dispatch(contentScriptsRegister());
 	}
 };
 
 export const registerContentScripts: BackgroundEffect =
 	(store) => async (action) => {
-		if (action.type === BackgroundActionType.CONTENT_SCRIPTS_REGISTER) {
+		if (action.type === contentScriptsRegister.type) {
 			const browser = getBrowser();
 			await browser.scripting.unregisterContentScripts();
 

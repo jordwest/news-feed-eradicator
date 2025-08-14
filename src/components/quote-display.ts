@@ -1,19 +1,19 @@
 import { h } from 'snabbdom/h';
 import { currentQuote } from '../store/selectors';
 import {
-	removeCurrentQuote,
+	quoteRemoveCurrent,
 	selectNewQuote,
-	menuHide,
-	menuToggle,
-	showOptions,
-} from '../store/actions';
+	hideMenu,
+	toggleMenu as toggleMenuAction,
+	uiOptionsShow,
+} from '../store/slices';
 import { Store } from '../store';
-import { ActionObject } from '../store/action-types';
+import { UnknownAction } from '@reduxjs/toolkit';
 
-const MenuItem = (store: Store, action: ActionObject, children: string) => {
+const MenuItem = (store: Store, action: UnknownAction, children: string) => {
 	const onClick = (e: Event) => {
 		e.preventDefault();
-		store.dispatch(menuHide());
+		store.dispatch(hideMenu());
 		store.dispatch(action);
 	};
 
@@ -29,9 +29,9 @@ const MenuItem = (store: Store, action: ActionObject, children: string) => {
 const QuoteMenu = (store: Store) => {
 	return h('div.nfe-quote-action-menu-content', [
 		h('ul.margin-0.pad-0.list-unstyled', [
-			MenuItem(store, removeCurrentQuote(), 'Remove this quote'),
+			MenuItem(store, quoteRemoveCurrent(), 'Remove this quote'),
 			MenuItem(store, selectNewQuote(), 'See another quote'),
-			MenuItem(store, showOptions(), 'Settings...'),
+			MenuItem(store, uiOptionsShow(), 'Settings...'),
 		]),
 	]);
 };
@@ -44,7 +44,7 @@ const QuoteDisplay = (store: Store) => {
 
 	const toggleMenu = (e: MouseEvent) => {
 		e.preventDefault();
-		store.dispatch(menuToggle());
+		store.dispatch(toggleMenuAction());
 	};
 	return h('div.nfe-quote', [
 		h('nfe-quote-action-menu', [
