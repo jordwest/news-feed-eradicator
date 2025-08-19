@@ -34,6 +34,17 @@ export function eradicate(store: Store) {
 			// Hack so that injectUI can handle new-reddit theme
 			document.body.style.background = 'var(--newRedditTheme-body)';
 
+			// Detect Reddit's dark mode and set appropriate data attribute
+			if (
+				document.body.classList.contains('theme-dark') ||
+				document.documentElement.classList.contains('theme-dark') ||
+				(!document.body.classList.contains('theme-light') &&
+					!document.documentElement.classList.contains('theme-light') &&
+					window.matchMedia('(prefers-color-scheme: dark)').matches)
+			) {
+				document.body.dataset.nfeColorScheme = 'dark';
+			}
+
 			injectUI(container, store, { asFirstChild: true });
 		}
 	}
