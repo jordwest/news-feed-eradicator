@@ -19,17 +19,17 @@ export function eradicate(store: Store) {
         }
 
         // Don't do anything if the UI hasn't loaded yet
-        const feed = document.querySelector('div[aria-label="Notes feed"]');
-        console.log("feed?")
-        if (feed == null) {
+        const note = document.querySelector('div[aria-label="Note"');
+        const post = document.querySelector('div[aria-label="Post"');
+        if (note == null || post == null) {
             return;
         }
 
-        const container = feed;
+        const container = document.querySelector('div[aria-label="Notes feed"]');
 
         // Add News Feed Eradicator quote/info panel
-        if (feed && !isAlreadyInjected()) {
-            injectUI(feed, store, { asFirstChild: true });
+        if (container && !isAlreadyInjected()) {
+            injectUI(container, store, { asFirstChild: true });
         }
     }
 
