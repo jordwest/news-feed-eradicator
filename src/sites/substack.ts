@@ -8,8 +8,6 @@ export function checkSite(): boolean {
 }
 
 export function eradicate(store: Store) {
-    injectCSS('linkedin');
-
     function eradicateRetry() {
         const settings = store.getState().settings;
         if (settings == null || !isEnabled(settings)) {
@@ -21,8 +19,6 @@ export function eradicate(store: Store) {
         if (feed == null) {
             return;
         }
-
-        const container = feed;
 
         // Add News Feed Eradicator quote/info panel
         if (feed && !isAlreadyInjected()) {

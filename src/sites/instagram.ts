@@ -1,7 +1,7 @@
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
 import { isEnabled } from '../lib/is-enabled';
 import { Store } from '../store';
-import {injectCSS} from "./shared";
+import { injectCSS } from "./shared";
 
 export function checkSite(): boolean {
 	return window.location.host.includes('instagram.com');
@@ -17,13 +17,10 @@ export function eradicate(store: Store) {
 		}
 
 		// Don't do anything if the UI hasn't loaded yet
-		const feed = document.querySelector('main');
+		const feed = document.querySelector('[aria-label="notes feed"]');
 		if (feed == null) {
 			return;
 		}
-
-		const container = feed;
-
 		// Add News Feed Eradicator quote/info panel
 		if (feed && !isAlreadyInjected()) {
 			injectUI(feed, store);
