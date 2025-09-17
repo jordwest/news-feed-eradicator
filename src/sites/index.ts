@@ -2,7 +2,6 @@ import instagramCss from './instagram.str.css';
 import twitterCss from './twitter.str.css';
 import linkedinCss from './linkedin.str.css';
 import githubCss from './github.str.css';
-import substackCss from './substack.str.css';
 
 export type SiteId =
 	| 'facebook'

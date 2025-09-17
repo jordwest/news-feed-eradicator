@@ -94,6 +94,7 @@ export const SitesOptions = (store: Store) => {
 	};
 	const sites = getSiteStatus(state.settings);
 	const Site = (id: SiteId, label: string) => {
+		console.log(id, label)
 		const siteStatus = sites[id];
 
 		const onClick = () => {
