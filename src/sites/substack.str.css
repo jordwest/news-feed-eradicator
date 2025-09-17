@@ -1,0 +1,6 @@
+/* Substack */
+html:not([data-nfe-enabled='false']) div[aria-label='Notes feed'] {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    height: 0 !important;
+}
