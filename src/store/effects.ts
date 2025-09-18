@@ -131,7 +131,6 @@ const quoteAddBulk: AppEffect = (store) => (action) => {
 };
 
 const requestPermissions = async (store: Store, origins: string[]) => {
-	console.log("uuh", origins)
 	const success = await getBrowser().permissions.request({
 		permissions: [],
 		origins: origins,

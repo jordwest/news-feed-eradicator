@@ -18,13 +18,6 @@ export function eradicate(store: Store) {
             return;
         }
 
-        // Don't do anything if the UI hasn't loaded yet
-        // const note = document.querySelector('div[aria-label="Note"');
-        // const post = document.querySelector('div[aria-label="Post"');
-        // if (note == null || post == null) {
-        //     return;
-        // }
-
         const container = document.querySelector('div[aria-label="Notes feed"]');
         if (container == null) {
             return;
