@@ -99,7 +99,7 @@ export const Sites: Record<SiteId, Site> = {
 		css: githubCss,
 	},
 	substack: {
-		label: 'Substack15',
+		label: 'Substack',
 		domain: ['substack.com'],
 		paths: ['/', '/home'],
 		origins: ['https://substack.com/*'],
