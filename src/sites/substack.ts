@@ -4,8 +4,6 @@ import { Store } from '../store';
 import { injectCSS } from "./shared";
 
 export function checkSite(): boolean {
-    console.log(window.location.host)
-    console.log('waaa', window.location.host.includes('substack.com'))
     return window.location.host.includes('substack.com');
 }
 
