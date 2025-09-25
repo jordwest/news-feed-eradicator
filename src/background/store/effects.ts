@@ -145,6 +145,7 @@ export const registerContentScripts: BackgroundEffect =
 					css: ['eradicate.css'],
 					matches: siteMatches,
 					runAt: 'document_start',
+					allFrames: true,
 				},
 			]);
 		}
