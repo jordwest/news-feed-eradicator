@@ -24,7 +24,13 @@
 		"https://www.github.com/*",
 		"https://github.com/*",
 		"http://www.instagram.com/*",
-		"https://www.instagram.com/*"
+		"https://www.instagram.com/*",
+		"http://substack.com/*",
+		"https://substack.com/*",
+		"http://www.substack.com/*",
+		"https://www.substack.com/*",
+		"http://*.substack.com/*",
+		"https://*.substack.com/*"
 	],
 	"browser_action": {
 		"default_icon": {

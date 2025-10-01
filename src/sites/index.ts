@@ -2,6 +2,7 @@ import instagramCss from './instagram.str.css';
 import twitterCss from './twitter.str.css';
 import linkedinCss from './linkedin.str.css';
 import githubCss from './github.str.css';
+import substackCss from './substack.str.css';
 
 export type SiteId =
 	| 'facebook'
@@ -11,7 +12,8 @@ export type SiteId =
 	| 'linkedin'
 	| 'youtube'
 	| 'instagram'
-	| 'github';
+	| 'github'
+	| 'substack';
 
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
@@ -96,6 +98,20 @@ export const Sites: Record<SiteId, Site> = {
 		paths: ['/', '/dashboard'],
 		origins: ['https://github.com/*'],
 		css: githubCss,
+	},
+	substack: {
+		label: 'Substack',
+		domain: ['substack.com'],
+		paths: ['/', '/home', '/feed', '/latest'],
+		origins: [
+			'http://substack.com/*',
+			'https://substack.com/*',
+			'http://www.substack.com/*',
+			'https://www.substack.com/*',
+			'http://*.substack.com/*',
+			'https://*.substack.com/*',
+		],
+		css: substackCss,
 	},
 };
 

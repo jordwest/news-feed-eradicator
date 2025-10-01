@@ -1,0 +1,50 @@
+/* Substack feed */
+html:not([data-nfe-enabled='false'])
+	body[data-nfe-site='substack']
+	[data-nfe-feed='true']
+	> :not(#nfe-container) {
+	display: none !important;
+}
+
+html:not([data-nfe-enabled='false'])
+	body[data-nfe-site='substack']
+	[data-nfe-feed='true']
+	> #nfe-container {
+	max-width: 680px;
+	margin: 48px auto;
+	padding: 32px 24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	box-sizing: border-box;
+	gap: 16px;
+}
+
+html:not([data-nfe-enabled='false'])
+	body[data-nfe-site='substack']
+	[data-nfe-hidden='true'] {
+	display: none !important;
+	opacity: 0 !important;
+	pointer-events: none !important;
+}
+
+/* Catch any lingering post elements outside the feed container */
+html:not([data-nfe-enabled='false'])
+	body[data-nfe-site='substack']
+	.reader2-post-preview,
+html:not([data-nfe-enabled='false'])
+	body[data-nfe-site='substack']
+	.feed-item,
+html:not([data-nfe-enabled='false'])
+	body[data-nfe-site='substack']
+	.post-preview,
+html:not([data-nfe-enabled='false'])
+	body[data-nfe-site='substack']
+	article[data-testid*='post'],
+html:not([data-nfe-enabled='false'])
+	body[data-nfe-site='substack']
+	.substack-post-embed {
+	display: none !important;
+}
