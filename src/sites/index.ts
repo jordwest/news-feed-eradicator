@@ -2,6 +2,7 @@ import instagramCss from './instagram.str.css';
 import twitterCss from './twitter.str.css';
 import linkedinCss from './linkedin.str.css';
 import githubCss from './github.str.css';
+import tiktokCss from './tiktok.str.css';
 
 export type SiteId =
 	| 'facebook'
@@ -11,7 +12,8 @@ export type SiteId =
 	| 'linkedin'
 	| 'youtube'
 	| 'instagram'
-	| 'github';
+	| 'github'
+	| 'tiktok';
 
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
@@ -96,6 +98,13 @@ export const Sites: Record<SiteId, Site> = {
 		paths: ['/', '/dashboard'],
 		origins: ['https://github.com/*'],
 		css: githubCss,
+	},
+	tiktok: {
+		label: 'TikTok',
+		domain: ['tiktok.com'],
+		paths: ['/'],
+		origins: ['https://www.tiktok.com/*', 'https://tiktok.com/*'],
+		css: tiktokCss,
 	},
 };
 

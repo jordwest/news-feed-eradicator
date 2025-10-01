@@ -15,6 +15,7 @@ import * as Github from './sites/github';
 import * as LinkedIn from './sites/linkedin';
 import * as Instagram from './sites/instagram';
 import * as YouTube from './sites/youtube';
+import * as TikTok from './sites/tiktok';
 import { createStore, Store } from './store';
 
 const store = createStore();
@@ -35,6 +36,8 @@ export function eradicate(store: Store) {
 		YouTube.eradicate(store);
 	} else if (Instagram.checkSite()) {
 		Instagram.eradicate(store);
+	} else if (TikTok.checkSite()) {
+		TikTok.eradicate(store);
 	} else if (FbClassic.checkSite()) {
 		FbClassic.eradicate(store);
 	} else {
