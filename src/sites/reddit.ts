@@ -13,6 +13,18 @@ export function eradicate(store: Store) {
 			return;
 		}
 
+		// Don't do anything if we're on a subreddit feed -- Only the main Reddit feed should be affected
+		const isSubredditFeed =
+			window.location.pathname.startsWith('/r/') &&
+			!window.location.pathname.startsWith('/r/all') &&
+			!window.location.pathname.startsWith('/r/popular');
+
+		if (isSubredditFeed) {
+			// Disable eradication CSS
+			document.documentElement.setAttribute('data-nfe-enabled', 'false');
+			return;
+		}
+
 		// Don't do anything if the UI hasn't loaded yet
 		const scroll_item = document.querySelector('.scrollerItem');
 
@@ -33,7 +45,7 @@ export function eradicate(store: Store) {
 		if (!isAlreadyInjected()) {
 			// Hack so that injectUI can handle new-reddit theme
 			document.body.style.background = 'var(--newRedditTheme-body)';
-
+			document.documentElement.setAttribute('data-nfe-enabled', 'true');
 			injectUI(container, store, { asFirstChild: true });
 		}
 	}
