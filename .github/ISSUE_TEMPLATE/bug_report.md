@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Report an issue with an existing feature or site
 title: ''
 labels: bug/unconfirmed
 assignees: ''
