@@ -57,6 +57,7 @@ type RegisteredContentScript = {
 	css?: string[];
 	matches: string[];
 	runAt: 'document_start' | 'document_end' | 'document_idle';
+	allFrames: boolean;
 };
 
 type WebExtensionEvent<Arg> = {

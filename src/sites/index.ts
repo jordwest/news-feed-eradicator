@@ -60,7 +60,7 @@ export const Sites: Record<SiteId, Site> = {
 	linkedin: {
 		label: 'LinkedIn',
 		domain: ['linkedin.com'],
-		paths: ['/', '/feed/'],
+		paths: ['/', '/feed/', '/preload/'],
 		origins: ['http://www.linkedin.com/*', 'https://www.linkedin.com/*'],
 		css: linkedinCss,
 	},

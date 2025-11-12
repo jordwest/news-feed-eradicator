@@ -1,5 +1,6 @@
 /* LinkedIn */
 html:not([data-nfe-enabled='false'])
+	main[aria-label='Main Feed']
 	.scaffold-finite-scroll
 	> div:not(#nfe-container) {
 	opacity: 0 !important;
