@@ -1,13 +1,28 @@
 # News Feed Eradicator
 
-A browser extension that deletes your Facebook news feed
-and replaces it with a nice quote.
+A browser extension that replaces your social media feeds with a quote.
 
 [Install Chrome Extension](https://chrome.google.com/webstore/detail/news-feed-eradicator-for/fjcldmjmjhkklehbacihaiopjklihlgg?hl=en)
 
 [Install Firefox Add-on](https://addons.mozilla.org/en-US/firefox/addon/news-feed-eradicator/)
 
-![Screenshot](https://raw.githubusercontent.com/jordwest/news-feed-eradicator/master/assets/screenshot.jpg)
+---------
+
+## Contributing to News Feed Eradicator
+
+### Reporting issues
+
+For *bugs only*, please use the [issue tracker](https://github.com/jordwest/news-feed-eradicator/issues).
+
+### Feature requests, ideas, etc
+
+For feature requests, ideas, and new site suggestions, please use the [Ideas discussion board](https://github.com/jordwest/news-feed-eradicator/discussions/categories/ideas). Check first if your idea already exists and give it an upvote if so.
+
+### Pull requests
+
+In general, pull requests are only accepted for bug fixes or documentation improvements. In terms of features I mostly consider the project "done" and would like to keep it minimal and simple to reduce the maintenance burden. If you have ideas, please post in the [Ideas discussion board](https://github.com/jordwest/news-feed-eradicator/discussions/categories/ideas). You are of course welcome to fork the project if you'd like to make a more complex version.
+
+----------
 
 ## Development
 
