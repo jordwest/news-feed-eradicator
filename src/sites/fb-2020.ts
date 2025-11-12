@@ -23,7 +23,9 @@ export function eradicate(store: Store) {
 			document.querySelector('#ssrb_feed_start + div') || // For home and groups feed
 			document.querySelector('[data-pagelet=MainFeed]') || // For watch and marketplace feeds
 			document.querySelector('div[aria-label=Gaming][role=main]') || // For gaming feed
-			document.querySelector('div.x1hc1fzr.x1unhpq9.x6o7n8i'); // For new fb layout (Q4 2022)
+			document.querySelector('div.x1hc1fzr.x1unhpq9.x6o7n8i') || // For new fb layout (Q4 2022)
+			document.querySelector("#watch_feed") || // fb watch (new)
+			document.querySelector('div.x9f619.x1n2onr6.x1ja2u2z.x78zum5.xdt5ytf.x193iq5w.xeuugli.x1r8uery.x1iyjqo2.xs83m0k.x1dr59a3.xadl8oe')
 
 		if (feed == null) {
 			return;
