@@ -136,18 +136,19 @@ export const registerContentScripts: BackgroundEffect =
 			}
 
 			const siteIds = Object.keys(state.settings.sites) as SiteId[];
-			const siteMatches = siteIds.flatMap((siteId) => Sites[siteId].origins);
 
-			await browser.scripting.registerContentScripts([
-				{
-					id: 'intercept',
-					js: ['intercept.js'],
-					css: ['eradicate.css'],
-					matches: siteMatches,
-					runAt: 'document_start',
-					allFrames: true,
-				},
-			]);
+			await Promise.all(siteIds.map(siteId =>
+				browser.scripting.registerContentScripts([
+								{
+									id: `intercept-${siteId}`,
+									js: ['intercept.js'],
+									css: ['eradicate.css'],
+									matches: Sites[siteId].origins,
+									runAt: 'document_start',
+									allFrames: Sites[siteId].allFrames ?? false,
+								},
+				])
+			));
 		}
 	};
 

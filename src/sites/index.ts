@@ -62,6 +62,7 @@ export const Sites: Record<SiteId, Site> = {
 		domain: ['linkedin.com'],
 		paths: ['/', '/feed/', '/preload/'],
 		origins: ['http://www.linkedin.com/*', 'https://www.linkedin.com/*'],
+		allFrames: true,
 		css: linkedinCss,
 	},
 	reddit: {
@@ -105,6 +106,9 @@ export type Site = {
 
 	// Note: these must also be added to optional_permissions in manifest.json
 	origins: string[];
+
+	// Whether to inject the script into all iframes
+	allFrames?: boolean;
 
 	// Will be enabled for any hostnames containing this value
 	domain: string[];
