@@ -1,6 +1,6 @@
 {
 	"name": "News Feed Eradicator",
-	"version": "2.3.1",
+	"version": "2.3.2",
 	"description": "Eradicate social media noise by replacing your entire news feed with an inspiring quote",
 	"manifest_version": 3,
 	"permissions": ["storage", "scripting"],
