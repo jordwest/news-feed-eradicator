@@ -15,6 +15,7 @@ import * as Github from './sites/github';
 import * as LinkedIn from './sites/linkedin';
 import * as Instagram from './sites/instagram';
 import * as YouTube from './sites/youtube';
+import * as Substack from './sites/substack';
 import { createStore, Store } from './store';
 
 const store = createStore();
@@ -31,6 +32,8 @@ export function eradicate(store: Store) {
 		Github.eradicate(store);
 	} else if (LinkedIn.checkSite()) {
 		LinkedIn.eradicate(store);
+	} else if (Substack.checkSite()) {
+		Substack.eradicate(store)
 	} else if (YouTube.checkSite()) {
 		YouTube.eradicate(store);
 	} else if (Instagram.checkSite()) {

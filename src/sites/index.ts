@@ -11,7 +11,8 @@ export type SiteId =
 	| 'linkedin'
 	| 'youtube'
 	| 'instagram'
-	| 'github';
+	| 'github'
+	| 'substack';
 
 export const Sites: Record<SiteId, Site> = {
 	facebook: {
@@ -97,6 +98,12 @@ export const Sites: Record<SiteId, Site> = {
 		paths: ['/', '/dashboard'],
 		origins: ['https://github.com/*'],
 		css: githubCss,
+	},
+	substack: {
+		label: 'Substack',
+		domain: ['substack.com'],
+		paths: ['/', '/home'],
+		origins: ['https://substack.com/*'],
 	},
 };
 
