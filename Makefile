@@ -23,7 +23,6 @@ copy-assets:
 	mkdir -p build
 	mkdir -p build/icons
 	cp src/icons/* build/icons/
-	cp src/manifest-chrome.json build/manifest.json
 	cp src/options/options.html build/options.html
 	cp assets/icon16.png build/icon16.png
 	cp assets/icon32.png build/icon32.png
@@ -36,7 +35,7 @@ dev: install copy-assets
 	./node_modules/.bin/rollup -c --watch
 
 install:
-	npm install
+	bun install
 
 clean:
 	rm -rf dist

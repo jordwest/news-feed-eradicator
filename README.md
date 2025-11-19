@@ -28,6 +28,11 @@ In general, pull requests are only accepted for bug fixes or documentation impro
 
 This plugin is built as a WebExtension - a standard for browser plugins currently supported in both Chrome and Firefox.
 
+### Dependencies
+
+ - [bun](https://bun.com/)
+ - make
+
 To build for either browser, clone the repository and then run:
 
     make dev
