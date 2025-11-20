@@ -1,0 +1,35 @@
+schema {
+    table "roadmap" label="🔮 Roadmap" file="roadmap.csv" {
+        field "status" type="select" label="Status" {
+            option "plan" label="⚪️ Planned"
+            option "actv" label="🔵 Doing"
+            option "done" label="✅ Done"
+        }
+        field "type" type="select" label="Type" {
+            option "feature" label="Feature"
+            option "improve" label="Improvement"
+            option "internl" label="Internal/refactoring"
+            option "bug-fix" label="Bugfix"
+            option "miscell" label="Other"
+        }
+        field "version_id" label="Version" type="belongs_to" related_entity="version" related_key="id"
+        field "title"
+    }
+
+    table "changelog" label="✅ Changelog" file="changelog.csv" {
+        field "type" type="select" label="Type" {
+            option "feature" label="Feature"
+            option "improve" label="Improvement"
+            option "internl" label="Internal/refactoring"
+            option "bug-fix" label="Bugfix"
+            option "miscell" label="Other"
+        }
+        field "version_id" label="Version" type="belongs_to" related_entity="version" related_key="id"
+        field "title"
+    }
+
+    table "version" label="🔵 Milestones" file="version.csv" {
+        field "id"
+        field "title"
+    }
+}
