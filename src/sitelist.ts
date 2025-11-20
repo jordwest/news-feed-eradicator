@@ -6,6 +6,10 @@ export const siteList: SiteList = {
 		{
 			title: 'Old Reddit',
 			hosts: ['old.reddit.com'],
+			feed: {
+				selectors: ['#siteTable'],
+				insertAt: 'before',
+			},
 			styles: [
 				{
 					id: 'sidebar',
@@ -39,7 +43,7 @@ export const siteList: SiteList = {
 		},
 		{
 			title: 'Twitter/X',
-			hosts: ['twitter.com', 'www.twitter.com', 'x.com', 'www.x.com'],
+			hosts: ['x.com'],
 			feed: {
 				selectors: ['div[aria-label="Home timeline"] > div > section[role="region"]'],
 				insertAt: 'overlay',
