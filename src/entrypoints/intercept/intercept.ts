@@ -1,6 +1,7 @@
 // Injected into the relevant site
 import { getBrowser } from '../../lib/webextension';
 import type { Feed } from '../../types/sitelist';
+import nfeStyles from './nfe-container.css' with { type: 'text' };
 
 const browser = getBrowser();
 
@@ -46,7 +47,7 @@ function checkFeed() {
 				console.log('Found', el);
 
 				const nfeElement = document.createElement('div');
-				nfeElement.id = 'nfe-container'
+				nfeElement.id = 'nfe-root'
 				switch (feedState.feed.insertAt) {
 					case 'firstChild':
 						el.prepend(nfeElement);
@@ -77,16 +78,11 @@ function checkFeed() {
 
 				const shadow = nfeElement.attachShadow({ mode: "open" });
 				const style = document.createElement('style');
-				style.textContent = `
-					* {
-						background-color: #000;
-						font-size: 24px;
-						color: white;
-					}
-				`;
+				style.textContent = nfeStyles;
 				shadow.appendChild(style);
 
 				const container = document.createElement('div')
+				container.id = 'nfe-container';
 				container.textContent = "News Feed Eradicator";
 				shadow.appendChild(container);
 
@@ -116,11 +112,3 @@ browser.runtime.onMessage.addListener((msg) => {
 })
 
 port.postMessage({ type: 'scriptInjected', token });
-
-// const style = document.createElement('style');
-// style.textContent = 'body { background-color: red !important; }';
-// document.addEventListener('DOMContentLoaded', () => {
-// 	document.head.append(style);
-// });
-
-// console.log(style);

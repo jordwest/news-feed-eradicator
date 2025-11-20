@@ -1,11 +1,35 @@
-import { getBrowser } from "../../lib/webextension";
-console.log("Hi!");
+import { getBrowser, type Permissions } from "../../lib/webextension";
 
-document.querySelector("#test")!.addEventListener("click", async () => {
+import { render } from "solid-js/web";
+import h from "solid-js/h";
+import { createSignal, For } from "solid-js";
+import { siteList as builtinSitelist } from '../../sitelist';
+import type { Site } from "../../types/sitelist";
+
+const browser = getBrowser();
+
+const [permissions, setPermissions] = createSignal<Permissions>({permissions: [], origins: []});
+
+function reloadPermissions() {
+	browser.permissions.getAll().then(setPermissions);
+}
+
+reloadPermissions();
+
+const [sitelist, setSitelist] = createSignal(builtinSitelist);
+
+function originsForSite(site: Site) {
+	return site.hosts.map(host => [`http://${host}/*`, `https://${host}/*`]).flat();
+}
+
+async function requestSite(site: Site) {
 	const browser = getBrowser();
-	const domain = document.querySelector("#domain")!.value;
-	const origins = [`http://${domain}/*`, `https://${domain}/*`];
+	const origins = originsForSite(site);
 	const result = await browser.permissions.request({ origins, permissions: [] });
+
+	console.log('requesting permission for', origins);
+
+	reloadPermissions();
 
 	// const port = browser.runtime.connect();
 	browser.scripting.registerContentScripts([{
@@ -18,4 +42,21 @@ document.querySelector("#test")!.addEventListener("click", async () => {
 	}]);
 
 	console.log(result);
-});
+};
+
+const Site = ({ site }: { site: Site }) => {
+	return h('div.p-2', [
+		h('span', () => originsForSite(site).every(origin => permissions().origins.includes(origin)) ? 'ENABLED' : "X"),
+		h('span', site.title),
+		h('button', { onClick: (_e) => requestSite(site) }, 'Request permissions')
+	]);
+}
+
+const SiteList = () => {
+	return h(For, {
+		each: () => sitelist().sites,
+		children: (site: Site) => h(Site, { site })
+	});
+};
+
+render(h(SiteList), document.querySelector("#root")!);

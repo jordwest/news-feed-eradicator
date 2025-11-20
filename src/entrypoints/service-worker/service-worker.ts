@@ -47,15 +47,19 @@ browser.runtime.onConnect.addListener((port) => {
 
 				browser.tabs.sendMessage(port.sender.tab.id, { type: 'injectFeed', feed: site.feed })
 
-				const css = site.styles
+				let styles: string[] = site.styles
 					.map(style => {
 						const selector = style.selectors.join(',');
 						// return `${selector} { opacity: 0 !important; pointer-events: none !important; }`
 						return `${selector} { opacity: 0.25 !important; filter: blur(3px) !important; pointer-events: none !important; }`
 						// return `${selector} { filter: sepia(100%) !important; }`
 					})
-					.join('\n')
 
+				if (site.feed != null) {
+					styles = styles.concat(...site.feed.selectors.map(selector => `${selector} { opacity: 0 !important; pointer-events: none !important; }`))
+				}
+
+				const css = styles.join('\n')
 				console.log('injecting', css);
 
 				await browser.scripting.insertCSS({
