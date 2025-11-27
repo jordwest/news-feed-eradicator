@@ -1,10 +1,14 @@
+import { createResource } from 'solid-js';
 import { getBrowser, type Port } from '../../lib/webextension';
-import { siteList } from '../../sitelist';
+import type { SiteList } from '../../types/sitelist';
 
 const browser = getBrowser();
 browser.action.onClicked.addListener(() => {
 	browser.runtime.openOptionsPage();
 });
+
+const siteListUrl = browser.runtime.getURL('sitelist.json');
+const siteListPromise: Promise<SiteList> = fetch(siteListUrl).then(siteList => siteList.json());
 
 browser.runtime.onConnect.addListener((port) => {
 	console.log('Connected:', port.sender);
@@ -38,6 +42,8 @@ browser.runtime.onConnect.addListener((port) => {
 			console.log('sender', port.sender);
 
 			keepTrying = false;
+
+			const siteList = await siteListPromise;
 
 			const url = new URL(port.sender.url);
 			console.log(url);
