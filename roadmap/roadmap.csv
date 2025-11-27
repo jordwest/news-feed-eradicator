@@ -1,12 +1,14 @@
 status,type,version_id,title
 done,feature,v3.0.0,Options page - basic enabling of sites
 actv,internl,v3.0.0,Serve sitelist locally in dev mode
-plan,improve,v3.0.0,Fetch sitelist dynamically
+actv,improve,v3.0.0,Fetch sitelist dynamically
 plan,feature,v3.0.0,Disable sites completely
 plan,feature,v3.0.0,Disable temporarily
-plan,internl,v3.0.0,Migrate all sites to sitelist
-plan,feature,v3.0.0,Add (bulk) quote editing back in
+plan,feature,v3.0.0,Reload sitelist and reinject CSS after fetching new
+plan,feature,v3.0.0,Enable feed eradication only on particular pages
 plan,feature,v3.0.0,Get quote island working again
-plan,internl,v3.0.0,Migrate user data from old schema
+plan,feature,v3.0.0,Add (bulk) quote editing back in
 plan,improve,v3.0.0,Polish and style quote island
 plan,improve,v3.0.0,Polish and style options page
+plan,internl,v3.0.0,Migrate user data from old schema
+plan,internl,v3.0.0,Migrate all sites to sitelist

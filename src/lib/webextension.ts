@@ -8,6 +8,7 @@ type WebExtensionAPI = {
 		sendMessage(extensionId: string, message: any, options?: any): Promise<void>;
 		sendMessage(message: any): Promise<void>;
 		connect: () => Port;
+		getURL: (resource: string) => string;
 		onConnect: WebExtensionEvent<Port>;
 		onMessage: WebExtensionEvent<any>;
 	};
