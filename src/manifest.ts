@@ -32,5 +32,11 @@ export default {
 		"48": "assets/icon48.png",
 		"64": "assets/icon64.png",
 		"128": "assets/icon128.png"
-	}
+	},
+	"web_accessible_resources": [
+		{
+			"resources": ["sitelist.json"],
+			"extension_ids": [],
+		}
+	]
 }

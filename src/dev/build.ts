@@ -1,9 +1,13 @@
 import manifest from '../manifest';
 import { watch } from "fs/promises";
+import JSON5 from 'json5';
 
 const PROJECT_ROOT = `${__dirname}/../..`;
+const SITELIST_FILE = `${PROJECT_ROOT}/src/sitelist.json5`;
 
 async function buildAll(): Promise<void> {
+	console.log('Rebuilding')
+	await buildSiteList();
 	await buildServiceWorker();
 	await buildOptionsPage();
 	await buildIntercept();
@@ -16,8 +20,25 @@ async function buildAll(): Promise<void> {
 	copy('assets/icon128.png', 'build/assets/icon128.png');
 }
 
+function startServer() {
+	const server = Bun.serve({
+		port: 4080,
+		routes: {
+			'/sitelist.json': async () => {
+				return new Response(JSON.stringify(await JSON5.parse(await Bun.file(SITELIST_FILE).text())), {
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				});
+			}
+		}
+	})
+}
+
 async function watchAll(): Promise<void> {
 	await buildAll();
+
+	startServer();
 
 	const watcher = watch(`${PROJECT_ROOT}/src`, {recursive: true});
 
@@ -49,6 +70,13 @@ async function buildServiceWorker(): Promise<void> {
 			naming: '[name].[ext]',
 	  minify: false, // Never minify - for web store review
 	});
+}
+
+async function buildSiteList(): Promise<void> {
+	const siteList = JSON5.parse(await Bun.file(SITELIST_FILE).text());
+	const siteListJson = JSON.stringify(siteList, null, 2);
+
+	await Bun.write('./build/sitelist.json', siteListJson);
 }
 
 async function buildIntercept(): Promise<void> {

@@ -1,10 +1,8 @@
-import { type SiteList } from './types/sitelist';
-
-export const siteList: SiteList = {
+{
 	schemaVersion: 1,
 	sites: [
 		{
-			title: 'Old Reddit',
+			title: "Old Reddit",
 			hosts: ['old.reddit.com'],
 			feed: {
 				selectors: ['#siteTable'],
@@ -48,7 +46,7 @@ export const siteList: SiteList = {
 				selectors: ['div[aria-label="Home timeline"] > div > section[role="region"]'],
 				insertAt: 'overlay',
 			},
-			styles: [],
+			styles: []
 		}
 	]
-};
+}

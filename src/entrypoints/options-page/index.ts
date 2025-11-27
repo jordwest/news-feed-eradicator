@@ -2,9 +2,9 @@ import { getBrowser, type Permissions } from "../../lib/webextension";
 
 import { render } from "solid-js/web";
 import h from "solid-js/h";
-import { createSignal, For } from "solid-js";
-import { siteList as builtinSitelist } from '../../sitelist';
-import type { Site } from "../../types/sitelist";
+import { createSignal, For, createResource } from "solid-js";
+
+import { type SiteList, type Site } from "../../types/sitelist";
 
 const browser = getBrowser();
 
@@ -16,7 +16,10 @@ function reloadPermissions() {
 
 reloadPermissions();
 
-const [sitelist, setSitelist] = createSignal(builtinSitelist);
+const [siteList] = createResource<SiteList | undefined>(async () => {
+	const siteListUrl = browser.runtime.getURL('sitelist.json');
+	return await fetch(siteListUrl).then(siteList => siteList.json());
+});
 
 function originsForSite(site: Site) {
 	return site.hosts.map(host => [`http://${host}/*`, `https://${host}/*`]).flat();
@@ -54,7 +57,7 @@ const Site = ({ site }: { site: Site }) => {
 
 const SiteList = () => {
 	return h(For, {
-		each: () => sitelist().sites,
+		each: () => siteList()?.sites,
 		children: (site: Site) => h(Site, { site })
 	});
 };
