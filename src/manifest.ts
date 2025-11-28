@@ -19,6 +19,7 @@ export default {
 	},
 	"background": {
 		"service_worker": "service-worker/service-worker.js",
+		"scripts": ["service-worker/service-worker.js"],
 		"type": "module"
 	},
 	"options_ui": {
@@ -35,7 +36,7 @@ export default {
 	},
 	"web_accessible_resources": [
 		{
-			"resources": ["sitelist.json"],
+			"resources": ["sitelist.json", "intercept/intercept.js"],
 			"extension_ids": [],
 		}
 	]
