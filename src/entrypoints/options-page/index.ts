@@ -37,7 +37,7 @@ async function requestSite(site: Site) {
 	// const port = browser.runtime.connect();
 	browser.scripting.registerContentScripts([{
 		id: origins.join(''),
-		js: ['intercept/intercept.js'],
+		js: ['/intercept/intercept.js'],
 		runAt: "document_start",
 		matches: origins,
 		allFrames: false,
