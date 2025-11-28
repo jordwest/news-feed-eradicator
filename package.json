@@ -26,6 +26,7 @@
 		"typescript": "^5.4.5"
 	},
 	"dependencies": {
+		"@reduxjs/toolkit": "^2.5.1",
 		"@types/node": "^8.10.36"
 	}
 }

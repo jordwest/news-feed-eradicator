@@ -1,5 +1,5 @@
-import { BackgroundActionObject } from '../background/store/action-types';
-import { SettingsState } from '../background/store/reducer';
+import { UnknownAction } from '@reduxjs/toolkit';
+import { SettingsState } from '../background/store/state-types';
 
 export enum MessageType {
 	OPTIONS_PAGE_OPEN,
@@ -11,7 +11,7 @@ export type Message =
 	| { t: MessageType.OPTIONS_PAGE_OPEN }
 	| {
 			t: MessageType.SETTINGS_ACTION;
-			action: BackgroundActionObject;
+			action: UnknownAction;
 	  }
 	| {
 			t: MessageType.SETTINGS_CHANGED;

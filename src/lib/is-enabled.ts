@@ -1,5 +1,5 @@
 import { Sites, Site } from '../sites';
-import { SettingsState } from '../background/store/reducer';
+import { SettingsState } from '../background/store/state-types';
 import {
 	getSiteStatus,
 	SiteStatusTag,

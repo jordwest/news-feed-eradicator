@@ -7,9 +7,9 @@ import attrsModule from 'snabbdom/modules/attributes';
 import eventsModule from 'snabbdom/modules/eventlisteners';
 import { toVNode } from 'snabbdom/tovnode';
 import InfoPanel from '../components/info-panel';
-import { ActionType } from '../store/action-types';
-import { BackgroundActionType } from '../background/store/action-types';
 import { SECOND } from '../lib/time';
+import { backgroundAction } from '../store/slices';
+import { incrementFeature } from '../background/store/slices';
 
 const store = createStore();
 
@@ -26,12 +26,7 @@ export function start(container: Node | null) {
 
 	let vnode = toVNode(nfeContainer);
 
-	store.dispatch({
-		type: ActionType.BACKGROUND_ACTION,
-		action: {
-			type: BackgroundActionType.FEATURE_INCREMENT,
-		},
-	});
+	store.dispatch(backgroundAction(incrementFeature()));
 
 	const render = () => {
 		const newVnode = h('div#options-container', [InfoPanel(store)]);
