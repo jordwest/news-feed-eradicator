@@ -1,5 +1,6 @@
 // Injected into the relevant site
 import { getBrowser } from '../../lib/webextension';
+import type { ContentScriptMessage, ServiceWorkerMessage } from '../../messaging/messages';
 import type { Feed } from '../../types/sitelist';
 import nfeStyles from './nfe-container.css' with { type: 'text' };
 
@@ -10,16 +11,15 @@ console.log('Injecting NFE 3')
 const token = Math.floor(Math.random() * 1000000);
 
 console.log('runtime', browser.runtime);
-const port = browser.runtime.connect();
-
-let hasConfirmedToken = false;
+// const port = browser.runtime.connect();
+const sendMessage = (message: ContentScriptMessage) => browser.runtime.sendMessage(message);
 
 type FeedInjectState = {
 	type: 'waiting',
 } | {
 	type: 'searching',
 	feed: Feed,
-} | { type: 'injected' };
+} | { type: 'injected', el: Element } | { type: 'not-injected' };
 
 function createOverlay(el: Element, bounds: DOMRect, position: string) {
 	const overlay = document.createElement('div');
@@ -86,6 +86,11 @@ function checkFeed() {
 				container.textContent = "News Feed Eradicator";
 				shadow.appendChild(container);
 
+				feedState = {
+					type: 'injected',
+					el: nfeElement,
+				}
+
 				return
 			}
 		}
@@ -95,20 +100,33 @@ function checkFeed() {
 	}
 }
 
-browser.runtime.onMessage.addListener((msg) => {
+browser.runtime.onMessage.addListener((msg: ServiceWorkerMessage) => {
 	console.log("Got message", msg);
-	if (msg.token === token && !hasConfirmedToken) {
-		hasConfirmedToken = true;
-		console.log('Confirmed token');
-		port.postMessage({ type: 'injectCSS', token });
-	}
-
-	if (msg.type === 'injectFeed') {
-		const feedInfo: Feed = msg.feed;
-
-		feedState = { type: 'searching', feed: feedInfo };
+	if (msg.type == 'nfe#siteDetails' && msg.token === token && feedState.type === 'waiting') {
+		if (msg.css != null) {
+			sendMessage({ type: 'injectCss', css: msg.css })
+		}
+		feedState = msg.feed == null ? { type: 'not-injected' } : { type: 'searching', feed: msg.feed };
 		checkFeed();
 	}
 })
 
-port.postMessage({ type: 'scriptInjected', token });
+/*
+ * Keep pinging service worker for site details until we receive a response. This might be delayed because
+ * on Chrome at least the service worker tries to send a message to the tab while the user is still typing,
+ * and the tab might show the previous site (which is not this content script).
+ */
+const pingServiceWorker = () => {
+	if (feedState.type !== 'waiting') {
+		return;
+	}
+
+	sendMessage({
+		type: 'requestSiteDetails',
+		token
+	});
+
+	setTimeout(pingServiceWorker, 10);
+}
+
+pingServiceWorker();

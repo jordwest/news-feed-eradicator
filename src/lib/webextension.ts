@@ -10,7 +10,7 @@ type WebExtensionAPI = {
 		connect: () => Port;
 		getURL: (resource: string) => string;
 		onConnect: WebExtensionEvent<Port>;
-		onMessage: WebExtensionEvent<any>;
+		onMessage: WebExtensionEvent2<any, MessageSender>;
 	};
 	action: {
 		onClicked: WebExtensionEvent<void>;
@@ -27,6 +27,7 @@ type WebExtensionAPI = {
 	scripting: {
 		executeScript: (opts: ExecuteOptions) => Promise<any>;
 		insertCSS: (opts: InsertCssOptions) => Promise<any>;
+		removeCSS: (opts: InsertCssOptions) => Promise<any>;
 		registerContentScripts: (opts: RegisteredContentScript[]) => Promise<void>;
 		unregisterContentScripts: () => Promise<void>;
 	};
@@ -68,23 +69,28 @@ type RegisteredContentScript = {
 type WebExtensionEvent<Arg> = {
 	addListener: (cb: (a: Arg) => void) => void;
 };
+type WebExtensionEvent2<Arg, Arg2> = {
+	addListener: (cb: (a: Arg, b: Arg2) => void) => void;
+};
 
 export type Permissions = {
 	permissions: string[];
 	origins: string[];
 };
 
+type MessageSender = {
+	url: string;
+	tab: {
+		id: TabId;
+		url: string;
+	};
+};
+
 export type Port = {
 	postMessage(msg: any): void;
 	onDisconnect: WebExtensionEvent<Port>;
-	onMessage: WebExtensionEvent<any>;
-	sender: {
-		url: string;
-		tab: {
-			id: TabId;
-			url: string;
-		};
-	};
+	onMessage: WebExtensionEvent2<any, MessageSender>;
+	sender: MessageSender;
 };
 
 declare var browser: WebExtensionAPI | undefined;
