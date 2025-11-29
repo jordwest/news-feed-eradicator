@@ -3,7 +3,10 @@ export type SiteList = {
 	sites: Site[]
 };
 
+export type SiteId = string & { __siteId: never };
+
 export type Site = {
+	id: SiteId,
 	title: string,
 	hosts: string[],
 	feed?: Feed,

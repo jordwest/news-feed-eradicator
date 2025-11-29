@@ -1,8 +1,8 @@
 status,type,version_id,title
 done,feature,v3.0.0,Options page - basic enabling of sites
 done,feature,v3.0.0,Bundle sitelist with extension
-actv,feature,v3.0.0,Disable sites completely (and remove injected CSS)
-plan,feature,v3.0.0,Disable temporarily
+done,feature,v3.0.0,Disable sites completely (and remove injected CSS)
+actv,feature,v3.0.0,Disable temporarily
 plan,feature,v3.0.0,Reload sitelist and reinject CSS after fetching new
 plan,feature,v3.0.0,Enable feed eradication only on particular pages
 plan,feature,v3.0.0,Get quote island working again

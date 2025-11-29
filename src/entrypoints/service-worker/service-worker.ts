@@ -1,6 +1,7 @@
 import { getBrowser, type TabId } from '../../lib/webextension';
 import type { SiteList } from '../../types/sitelist';
-import type { ContentScriptMessage, ServiceWorkerMessage } from '../../messaging/messages';
+import type { ContentScriptMessage, OptionsPageMessage, ServiceWorkerMessage } from '../../messaging/messages';
+import { upgradeStorage } from '../../types/storage';
 
 const browser = getBrowser();
 browser.action.onClicked.addListener(() => {
@@ -10,11 +11,9 @@ browser.action.onClicked.addListener(() => {
 const siteListUrl = browser.runtime.getURL('sitelist.json');
 const siteListPromise: Promise<SiteList> = fetch(siteListUrl).then(siteList => siteList.json());
 
-const sendMessage = (tabId: TabId, message: ServiceWorkerMessage) => {
-	browser.tabs.sendMessage(tabId, message);
-}
+const sendMessage = (tabId: TabId, message: ServiceWorkerMessage) => browser.tabs.sendMessage(tabId, message);
 
-browser.runtime.onMessage.addListener(async (msg: ContentScriptMessage, sender) => {
+browser.runtime.onMessage.addListener(async (msg: ContentScriptMessage | OptionsPageMessage, sender) => {
 	if (msg.type === 'requestSiteDetails') {
 		const siteList = await siteListPromise;
 
@@ -49,6 +48,30 @@ browser.runtime.onMessage.addListener(async (msg: ContentScriptMessage, sender) 
 		}
 	}
 
+	if (msg.type === 'disableSite') {
+		const siteList = await siteListPromise;
+		const site = siteList.sites.find(site => site.id === msg.siteId);
+		if (site == null) {
+			return;
+		}
+
+		// This will only return tabs which we have permission to access, so we can message every relevant tab
+		const tabs = await browser.tabs.query({url: '*://*/*'});
+
+		await Promise.all(
+			tabs.map(tab => {
+				console.log('notify tab', tab)
+				return sendMessage(tab.id, { type: 'nfe#optionsUpdated' })
+			})
+		);
+	}
+
+	if (msg.type === 'snooze') {
+		const settings = await browser.storage.sync.get(null).then(upgradeStorage);
+		settings.sleepUntil = msg.until;
+		browser.storage.sync.set(settings);
+	}
+
 	if (msg.type === 'injectCss') {
 		console.log('inserting css', msg.css);
 		await browser.scripting.insertCSS({
@@ -58,6 +81,7 @@ browser.runtime.onMessage.addListener(async (msg: ContentScriptMessage, sender) 
 	}
 
 	if (msg.type === 'removeCss') {
+		console.log('removing css', msg.css);
 		await browser.scripting.removeCSS({
 			target: { tabId: sender.tab.id },
 			css: msg.css,

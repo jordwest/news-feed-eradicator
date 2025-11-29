@@ -1,13 +1,22 @@
-import type { Feed } from "../types/sitelist";
+import type { Feed, SiteId } from "../types/sitelist";
 
-export type ServiceWorkerMessage = SetTabCss;
+export type ServiceWorkerMessage = SetTabCss | OptionsUpdated;
 
-// Ask a tab to inject/change/remove some CSS.
+/**
+ * Respond to a content script with site details
+ */
 type SetTabCss = {
 	type: 'nfe#siteDetails',
 	token: number,
 	css: string | null,
 	feed: Feed | null,
+}
+
+/**
+ * Sent to content scripts to notify them that the options have changed and they will need to request an update
+ */
+type OptionsUpdated = {
+	type: 'nfe#optionsUpdated',
 }
 
 export type ContentScriptMessage = RequestSiteDetails | InjectCss | RemoveCss;
@@ -27,4 +36,16 @@ type InjectCss = {
 type RemoveCss = {
 	type: 'removeCss',
 	css: string,
+}
+
+export type OptionsPageMessage = DisableSite | Snooze;
+
+type DisableSite = {
+	type: 'disableSite',
+	siteId: SiteId,
+}
+
+type Snooze = {
+	type: 'snooze',
+	until: number
 }
