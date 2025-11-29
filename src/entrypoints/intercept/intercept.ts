@@ -37,6 +37,8 @@ function createOverlay(el: Element, bounds: DOMRect, position: string) {
 
 let feedState: FeedInjectState = { type: 'waiting' };
 
+let injectedCss: string | null = null;
+
 function checkFeed() {
 	if (feedState.type === 'searching') {
 		for (const selector of feedState.feed.selectors) {
@@ -100,14 +102,36 @@ function checkFeed() {
 	}
 }
 
+const setCss = (css: string | null) => {
+	// Remove any existing css first
+	if (css != injectedCss && injectedCss != null) {
+		sendMessage({ type: 'removeCss', css: injectedCss });
+		injectedCss = null;
+	}
+
+	// Inject new css
+	if (css != null) {
+		sendMessage({ type: 'injectCss', css });
+		injectedCss = css;
+	}
+}
+
 browser.runtime.onMessage.addListener((msg: ServiceWorkerMessage) => {
 	console.log("Got message", msg);
-	if (msg.type == 'nfe#siteDetails' && msg.token === token && feedState.type === 'waiting') {
-		if (msg.css != null) {
-			sendMessage({ type: 'injectCss', css: msg.css })
+	if (msg.type == 'nfe#siteDetails' && msg.token === token) {
+		setCss(msg.css);
+
+		if (feedState.type === 'waiting') {
+			feedState = msg.feed == null ? { type: 'not-injected' } : { type: 'searching', feed: msg.feed };
+			checkFeed();
 		}
-		feedState = msg.feed == null ? { type: 'not-injected' } : { type: 'searching', feed: msg.feed };
-		checkFeed();
+	}
+
+	if (msg.type === 'nfe#optionsUpdated') {
+		sendMessage({
+			type: 'requestSiteDetails',
+			token
+		});
 	}
 })
 

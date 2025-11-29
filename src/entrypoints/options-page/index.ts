@@ -4,7 +4,7 @@ import { render } from "solid-js/web";
 import h from "solid-js/h";
 import { createSignal, For, createResource } from "solid-js";
 
-import { type SiteList, type Site } from "../../types/sitelist";
+import { type SiteList, type Site, type SiteId } from "../../types/sitelist";
 
 const browser = getBrowser();
 
@@ -21,6 +21,12 @@ const [siteList] = createResource<SiteList | undefined>(async () => {
 	return await fetch(siteListUrl).then(siteList => siteList.json());
 });
 
+const [enabledSiteIds, { refetch: refreshEnabledSites }] = createResource(async () => {
+	const scripts = await browser.scripting.getRegisteredContentScripts();
+	return scripts.map(script => script.id) as SiteId[];
+});
+const isSiteEnabled = (site: Site) => enabledSiteIds()?.includes(site.id)
+
 function originsForSite(site: Site) {
 	return site.hosts.map(host => [`http://${host}/*`, `https://${host}/*`]).flat();
 }
@@ -35,8 +41,8 @@ async function requestSite(site: Site) {
 	reloadPermissions();
 
 	// const port = browser.runtime.connect();
-	browser.scripting.registerContentScripts([{
-		id: origins.join(''),
+	await browser.scripting.registerContentScripts([{
+		id: site.id,
 		js: ['/intercept/intercept.js'],
 		runAt: "document_start",
 		matches: origins,
@@ -44,18 +50,29 @@ async function requestSite(site: Site) {
 		// world: "MAIN"
 	}]);
 
-	console.log(result);
+	refreshEnabledSites();
 };
+
+const disableSite = async (site: Site) => {
+	await browser.scripting.unregisterContentScripts({ ids: [site.id] });
+	refreshEnabledSites();
+
+	browser.runtime.sendMessage({
+		type: 'disableSite',
+		siteId: site.id
+	})
+}
 
 const Site = ({ site }: { site: Site }) => {
 	return h('div.p-2', [
-		h('span', () => originsForSite(site).every(origin => permissions().origins.includes(origin)) ? 'ENABLED' : "X"),
+		h('span', () => isSiteEnabled(site) ? 'ENABLED' : "X"),
 		h('span', site.title),
-		h('button', { onClick: (_e) => requestSite(site) }, 'Request permissions')
+		h('button', { onClick: (_e) => isSiteEnabled(site) ? disableSite(site) : requestSite(site) }, () => isSiteEnabled(site) ? 'Disable' : 'Request permissions'),
 	]);
 }
 
 const SiteList = () => {
+
 	return h(For, {
 		each: () => siteList()?.sites,
 		children: (site: Site) => h(Site, { site })
