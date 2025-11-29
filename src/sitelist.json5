@@ -2,6 +2,7 @@
 	schemaVersion: 1,
 	sites: [
 		{
+			id: 'reddit-old',
 			title: "Old Reddit",
 			hosts: ['old.reddit.com'],
 			feed: {
@@ -18,6 +19,7 @@
 			]
 		},
 		{
+			id: 'youtube',
 			title: 'YouTube',
 			hosts: ['www.youtube.com', 'youtube.com'],
 			feed: {
@@ -40,6 +42,7 @@
 			]
 		},
 		{
+			id: 'twitter-x',
 			title: 'Twitter/X',
 			hosts: ['x.com'],
 			feed: {

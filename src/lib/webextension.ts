@@ -23,13 +23,15 @@ type WebExtensionAPI = {
 	tabs: {
 		onUpdated: WebExtensionEvent<TabId>;
 		sendMessage: (tabId: TabId, message: any) => Promise<void>;
+		query: (queryInfo: QueryInfo) => Promise<Tab[]>;
 	};
 	scripting: {
 		executeScript: (opts: ExecuteOptions) => Promise<any>;
 		insertCSS: (opts: InsertCssOptions) => Promise<any>;
 		removeCSS: (opts: InsertCssOptions) => Promise<any>;
 		registerContentScripts: (opts: RegisteredContentScript[]) => Promise<void>;
-		unregisterContentScripts: () => Promise<void>;
+		getRegisteredContentScripts: () => Promise<RegisteredContentScript[]>;
+		unregisterContentScripts: (filter?: ContentScriptFilter) => Promise<void>;
 	};
 	storage: {
 		sync: {
@@ -41,6 +43,12 @@ type WebExtensionAPI = {
 
 export type TabId = number & { __tabId: never };
 
+type ContentScriptFilter = {
+	ids: string[],
+};
+type QueryInfo = {
+	url?: string | string[];
+};
 type InjectionTarget = {
 	tabId: TabId;
 };
@@ -78,12 +86,14 @@ export type Permissions = {
 	origins: string[];
 };
 
+type Tab = {
+	id: TabId;
+	url: string;
+};
+
 type MessageSender = {
 	url: string;
-	tab: {
-		id: TabId;
-		url: string;
-	};
+	tab: Tab;
 };
 
 export type Port = {
