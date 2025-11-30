@@ -13,9 +13,27 @@ const siteListPromise: Promise<SiteList> = fetch(siteListUrl).then(siteList => s
 
 const sendMessage = (tabId: TabId, message: ServiceWorkerMessage) => browser.tabs.sendMessage(tabId, message);
 
+const notifyTabsOptionsUpdated = async () => {
+	// This will only return tabs which we have permission to access, so we can message
+	// every relevant tab that's running the content script
+	const tabs = await browser.tabs.query({url: '*://*/*'});
+
+	try {
+		await Promise.allSettled(
+			tabs.map(tab => {
+				console.log('notify tab', tab)
+				return sendMessage(tab.id, { type: 'nfe#optionsUpdated' })
+			})
+		);
+	} catch (e) {
+		// Ignore inevitable errors due to not having permissions for irrelevant tabs
+	}
+}
+
 browser.runtime.onMessage.addListener(async (msg: ContentScriptMessage | OptionsPageMessage, sender) => {
 	if (msg.type === 'requestSiteDetails') {
 		const siteList = await siteListPromise;
+		const settings = await browser.storage.sync.get(null).then(upgradeStorage);
 
 		const url = new URL(sender.url);
 		console.log(url);
@@ -44,6 +62,7 @@ browser.runtime.onMessage.addListener(async (msg: ContentScriptMessage | Options
 				css,
 				feed: site.feed ?? null,
 				token: msg.token,
+				snoozeUntil: settings.snoozeUntil ?? null,
 			})
 		}
 	}
@@ -55,21 +74,16 @@ browser.runtime.onMessage.addListener(async (msg: ContentScriptMessage | Options
 			return;
 		}
 
-		// This will only return tabs which we have permission to access, so we can message every relevant tab
-		const tabs = await browser.tabs.query({url: '*://*/*'});
-
-		await Promise.all(
-			tabs.map(tab => {
-				console.log('notify tab', tab)
-				return sendMessage(tab.id, { type: 'nfe#optionsUpdated' })
-			})
-		);
+		notifyTabsOptionsUpdated();
 	}
 
 	if (msg.type === 'snooze') {
 		const settings = await browser.storage.sync.get(null).then(upgradeStorage);
-		settings.sleepUntil = msg.until;
+		settings.snoozeUntil = msg.until;
 		browser.storage.sync.set(settings);
+		console.log('settings', settings);
+
+		notifyTabsOptionsUpdated();
 	}
 
 	if (msg.type === 'injectCss') {

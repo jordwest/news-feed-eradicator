@@ -19,7 +19,7 @@ type FeedInjectState = {
 } | {
 	type: 'searching',
 	feed: Feed,
-} | { type: 'injected', el: Element } | { type: 'not-injected' };
+} | { type: 'injected', el: HTMLDivElement } | { type: 'not-injected' };
 
 function createOverlay(el: Element, bounds: DOMRect, position: string) {
 	const overlay = document.createElement('div');
@@ -116,14 +116,42 @@ const setCss = (css: string | null) => {
 	}
 }
 
+const endSnooze = () => {
+	sendMessage({
+		type: 'requestSiteDetails',
+		token
+	});
+}
+
+let snoozeTimer: Timer | null = null;
+const setSnoozeTimer = (snoozeUntil: number | null) => {
+	if (snoozeTimer != null) {
+		clearTimeout(snoozeTimer);
+	}
+
+	if (snoozeUntil != null) {
+		const delay = snoozeUntil - Date.now();
+		snoozeTimer = setTimeout(() => endSnooze(), delay);
+	}
+}
+
 browser.runtime.onMessage.addListener((msg: ServiceWorkerMessage) => {
 	console.log("Got message", msg);
 	if (msg.type == 'nfe#siteDetails' && msg.token === token) {
-		setCss(msg.css);
+		if (msg.snoozeUntil != null && msg.snoozeUntil > Date.now()) {
+			setSnoozeTimer(msg.snoozeUntil);
+			setCss(null);
+		} else {
+			setSnoozeTimer(null);
+			setCss(msg.css);
+		}
 
 		if (feedState.type === 'waiting') {
 			feedState = msg.feed == null ? { type: 'not-injected' } : { type: 'searching', feed: msg.feed };
 			checkFeed();
+		} else if (feedState.type === 'injected') {
+			const showNfe = msg.css != null && (msg.snoozeUntil == null || msg.snoozeUntil <= Date.now());
+			feedState.el.style.display = showNfe ? 'block' : 'none';
 		}
 	}
 
