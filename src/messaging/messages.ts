@@ -10,6 +10,7 @@ type SetTabCss = {
 	token: number,
 	css: string | null,
 	feed: Feed | null,
+	snoozeUntil: number | null,
 }
 
 /**

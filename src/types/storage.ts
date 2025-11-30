@@ -24,7 +24,7 @@ type StorageV2 = {
 	hiddenBuiltinQuotes?: number[];
 	customQuotes?: CustomQuote[];
 	enabledSites?: SiteId[];
-	sleepUntil?: number;
+	snoozeUntil?: number;
 };
 
 type Storage = StorageV1 | StorageV2;
