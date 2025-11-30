@@ -2,13 +2,16 @@ status,type,version_id,title
 done,feature,v3.0.0,Options page - basic enabling of sites
 done,feature,v3.0.0,Bundle sitelist with extension
 done,feature,v3.0.0,Disable sites completely (and remove injected CSS)
+done,feature,v3.0.0,Reload sitelist and reinject CSS after fetching new
 actv,feature,v3.0.0,Disable temporarily
-plan,feature,v3.0.0,Reload sitelist and reinject CSS after fetching new
+plan,improve,v3.0.0,Fade out when feed disappears
 plan,feature,v3.0.0,Enable feed eradication only on particular pages
+plan,feature,v3.0.0,Add button hold mechanic for snoozing
 plan,feature,v3.0.0,Get quote island working again
 plan,feature,v3.0.0,Add (bulk) quote editing back in
 plan,improve,v3.0.0,Polish and style quote island
 plan,improve,v3.0.0,Polish and style options page
+plan,improve,v3.0.0,Host sitelist on separate repo
 plan,improve,v3.0.0,Fetch sitelist dynamically
 plan,internl,v3.0.0,Serve sitelist locally in dev mode
 plan,internl,v3.0.0,Migrate user data from old schema

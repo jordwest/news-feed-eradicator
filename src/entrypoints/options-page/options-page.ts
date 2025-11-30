@@ -72,11 +72,25 @@ const Site = ({ site }: { site: Site }) => {
 }
 
 const SiteList = () => {
-
 	return h(For, {
 		each: () => siteList()?.sites,
 		children: (site: Site) => h(Site, { site })
 	});
 };
 
-render(h(SiteList), document.querySelector("#root")!);
+const Snooze = () => {
+	return h('button', { onClick: (_e) => { browser.runtime.sendMessage({
+		type: 'snooze',
+		until: Date.now() + 1000 * 10,
+	})}}, 'Snooze')
+}
+
+const OptionsPage = () => {
+	return h('div', [
+		h('h1', 'Options'),
+		h(Snooze),
+		h(SiteList)
+	]);
+}
+
+render(h(OptionsPage), document.querySelector("#root")!);
