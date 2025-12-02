@@ -1,4 +1,5 @@
 // Injected into the relevant site
+import NewsFeedEradicator from '../../../src-old/components';
 import { getBrowser } from '../../lib/webextension';
 import type { ContentScriptMessage, ServiceWorkerMessage } from '../../messaging/messages';
 import type { Feed } from '../../types/sitelist';
@@ -14,6 +15,13 @@ console.log('runtime', browser.runtime);
 // const port = browser.runtime.connect();
 const sendMessage = (message: ContentScriptMessage) => browser.runtime.sendMessage(message);
 
+type ContentScriptState = {
+	feed?: Feed | null;
+	snoozeUntil?: number;
+	snoozeTimer?: Timer;
+};
+let state: ContentScriptState = {};
+
 type FeedInjectState = {
 	type: 'waiting',
 } | {
@@ -21,13 +29,13 @@ type FeedInjectState = {
 	feed: Feed,
 } | { type: 'injected', el: HTMLDivElement } | { type: 'not-injected' };
 
-function createOverlay(el: Element, bounds: DOMRect, position: string) {
+function createOverlay(el: Element, bounds: DOMRect, position: string, zIndex: number) {
 	const overlay = document.createElement('div');
 	overlay.id = 'nfe-overlay';
 	overlay.style.position = position;
 	overlay.style.width = `${bounds.width}px`;
 	overlay.style.height = `${bounds.height}px`;
-	overlay.style.zIndex = '999999999';
+	overlay.style.zIndex = `${zIndex}`;
 	overlay.style.pointerEvents = 'none';
 	overlay.style.top = `${bounds.top}px`;
 	overlay.style.left = `${bounds.left}px`;
@@ -66,12 +74,12 @@ function checkFeed() {
 						break;
 					case 'overlay': {
 						const bounds = el.getBoundingClientRect();
-						createOverlay(nfeElement, bounds, 'absolute');
+						createOverlay(nfeElement, bounds, 'absolute', feedState.feed.overlayZIndex ?? 99999999);
 						break;
 					}
 					case 'overlay-fixed': {
 						const bounds = el.getBoundingClientRect();
-						createOverlay(nfeElement, bounds, 'fixed');
+						createOverlay(nfeElement, bounds, 'fixed', feedState.feed.overlayZIndex ?? 99999999);
 						break;
 					}
 					default:
@@ -88,6 +96,8 @@ function checkFeed() {
 				container.textContent = "News Feed Eradicator";
 				shadow.appendChild(container);
 
+				nfeElement.style.display = isSnoozing() ? 'none' : 'block';
+
 				feedState = {
 					type: 'injected',
 					el: nfeElement,
@@ -102,55 +112,86 @@ function checkFeed() {
 	}
 }
 
-const setCss = (css: string | null) => {
+let path = window.location.pathname;
+setInterval(() => {
+	if (path != window.location.pathname) {
+		path = window.location.pathname;
+
+		console.log('path changed', path);
+
+		sendMessage({
+			type: 'requestSiteDetails',
+			path: window.location.pathname,
+			token
+		});
+	}
+}, 15);
+
+const setCss = async (css: string | null) => {
+	if (css === injectedCss) {
+		return;
+	}
+
 	// Remove any existing css first
-	if (css != injectedCss && injectedCss != null) {
-		sendMessage({ type: 'removeCss', css: injectedCss });
+	if (injectedCss != null) {
+		const removed = await sendMessage({ type: 'removeCss', css: injectedCss });
+		console.log('got response remove', removed)
 		injectedCss = null;
 	}
 
 	// Inject new css
 	if (css != null) {
-		sendMessage({ type: 'injectCss', css });
 		injectedCss = css;
+
+		const injected = await sendMessage({ type: 'injectCss', css });
+		console.log('got response injected', injected)
 	}
 }
 
 const endSnooze = () => {
 	sendMessage({
 		type: 'requestSiteDetails',
+		path: window.location.pathname,
 		token
 	});
+	state.snoozeTimer = undefined;
 }
 
-let snoozeTimer: Timer | null = null;
+const isSnoozing = () => {
+	return state.snoozeUntil != null && state.snoozeUntil > Date.now();
+}
+
 const setSnoozeTimer = (snoozeUntil: number | null) => {
-	if (snoozeTimer != null) {
-		clearTimeout(snoozeTimer);
+	state.snoozeUntil = snoozeUntil ?? undefined;
+
+	if (state.snoozeTimer != null) {
+		clearTimeout(state.snoozeTimer);
 	}
 
 	if (snoozeUntil != null) {
 		const delay = snoozeUntil - Date.now();
-		snoozeTimer = setTimeout(() => endSnooze(), delay);
+		state.snoozeTimer = setTimeout(() => endSnooze(), delay);
 	}
 }
 
-browser.runtime.onMessage.addListener((msg: ServiceWorkerMessage) => {
+browser.runtime.onMessage.addListener(async (msg: ServiceWorkerMessage) => {
 	console.log("Got message", msg);
 	if (msg.type == 'nfe#siteDetails' && msg.token === token) {
 		if (msg.snoozeUntil != null && msg.snoozeUntil > Date.now()) {
 			setSnoozeTimer(msg.snoozeUntil);
-			setCss(null);
+			await setCss(null);
 		} else {
 			setSnoozeTimer(null);
-			setCss(msg.css);
+			await setCss(msg.css);
 		}
+
+		state.feed = msg.feed;
 
 		if (feedState.type === 'waiting') {
 			feedState = msg.feed == null ? { type: 'not-injected' } : { type: 'searching', feed: msg.feed };
 			checkFeed();
 		} else if (feedState.type === 'injected') {
-			const showNfe = msg.css != null && (msg.snoozeUntil == null || msg.snoozeUntil <= Date.now());
+			const showNfe = msg.css != null && !isSnoozing();
 			feedState.el.style.display = showNfe ? 'block' : 'none';
 		}
 	}
@@ -158,6 +199,7 @@ browser.runtime.onMessage.addListener((msg: ServiceWorkerMessage) => {
 	if (msg.type === 'nfe#optionsUpdated') {
 		sendMessage({
 			type: 'requestSiteDetails',
+			path: window.location.pathname,
 			token
 		});
 	}
@@ -175,6 +217,7 @@ const pingServiceWorker = () => {
 
 	sendMessage({
 		type: 'requestSiteDetails',
+		path: window.location.pathname,
 		token
 	});
 

@@ -7,6 +7,7 @@
 			hosts: ['old.reddit.com'],
 			feed: {
 				selectors: ['#siteTable'],
+				path: ['/', '/new', '/rising', '/controversial', '/top', '/r/popular', '/r/all'],
 				insertAt: 'before',
 			},
 			styles: [
@@ -24,7 +25,9 @@
 			hosts: ['www.youtube.com', 'youtube.com'],
 			feed: {
 				selectors: ['ytd-browse'],
+				paths: ['/'],
 				insertAt: 'overlay-fixed',
+				overlayZIndex: 2019,
 			},
 			styles: [
 				{
@@ -38,6 +41,18 @@
 					title: 'Video comments',
 					type: 'hide',
 					selectors: ['ytd-comments'],
+				},
+				{
+					id: 'shorts-button',
+					title: 'Shorts button',
+					type: 'remove',
+					selectors: ['ytd-guide-entry-renderer:has(a[title="Shorts"])'],
+				},
+				{
+					id: 'explore-nav',
+					title: 'Explore navigation menu',
+					type: 'remove',
+					selectors: ['ytd-guide-section-renderer:nth-child(4)']
 				}
 			]
 		},

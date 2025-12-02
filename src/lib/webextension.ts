@@ -6,11 +6,11 @@ type WebExtensionAPI = {
 	runtime: {
 		openOptionsPage: () => Promise<void>;
 		sendMessage(extensionId: string, message: any, options?: any): Promise<void>;
-		sendMessage(message: any): Promise<void>;
+		sendMessage(message: any): Promise<any>;
 		connect: () => Port;
 		getURL: (resource: string) => string;
 		onConnect: WebExtensionEvent<Port>;
-		onMessage: WebExtensionEvent2<any, MessageSender>;
+		onMessage: WebExtensionEvent3<any, MessageSender, SendResponse>;
 	};
 	action: {
 		onClicked: WebExtensionEvent<void>;
@@ -80,6 +80,9 @@ type WebExtensionEvent<Arg> = {
 type WebExtensionEvent2<Arg, Arg2> = {
 	addListener: (cb: (a: Arg, b: Arg2) => void) => void;
 };
+type WebExtensionEvent3<Arg, Arg2, Arg3> = {
+	addListener: (cb: (a: Arg, b: Arg2, c: Arg3) => void) => void;
+};
 
 export type Permissions = {
 	permissions: string[];
@@ -91,10 +94,12 @@ type Tab = {
 	url: string;
 };
 
-type MessageSender = {
+export type MessageSender = {
 	url: string;
 	tab: Tab;
 };
+
+export type SendResponse = (response: any) => void;
 
 export type Port = {
 	postMessage(msg: any): void;
