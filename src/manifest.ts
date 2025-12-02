@@ -39,5 +39,14 @@ export default {
 			"resources": ["sitelist.json", "intercept/intercept.js"],
 			"extension_ids": [],
 		}
-	]
+	],
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "@news-feed-eradicator"
+		},
+		"gecko_android": {
+			"id": "@news-feed-eradicator",
+			"strict_min_version": "113.0"
+		}
+	}
 }

@@ -52,7 +52,7 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 
 					const effect = style.type === 'remove' ?
 						'display: none !important;':
-						'opacity: 0.25 !important; filter: blur(3px) !important; pointer-events: none !important;';
+						'opacity: 0.1 !important; filter: blur(32px) !important; pointer-events: none !important;';
 					// TODO: Sanitize selector!
 					// return `${selector} { opacity: 0 !important; pointer-events: none !important; }`
 					return `${selector} { ${effect} }`
@@ -60,7 +60,7 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 				})
 
 			if (site.feed != null && isEnabledFeedPath(site.feed, msg.path)) {
-				styles = styles.concat(...site.feed.selectors.map(selector => `${selector} { opacity: 0 !important; pointer-events: none !important; }`))
+				styles = styles.concat(...site.feed.selectors.map(selector => `${selector} { opacity: 0.1 !important; filter: grayscale(100%) blur(32px) !important; pointer-events: none !important; }`))
 			}
 
 			const css = styles.join('\n')
