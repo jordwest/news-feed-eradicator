@@ -25,6 +25,7 @@ export type ContentScriptMessage = RequestSiteDetails | InjectCss | RemoveCss;
 // Request site details from service worker.
 type RequestSiteDetails = {
 	type: 'requestSiteDetails',
+	path: string,
 	token: number
 };
 
