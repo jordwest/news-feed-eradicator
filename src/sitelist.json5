@@ -3,11 +3,11 @@
 	sites: [
 		{
 			id: 'reddit-old',
-			title: "Old Reddit",
-			hosts: ['old.reddit.com'],
+			title: "Reddit",
+			hosts: ['www.reddit.com', 'old.reddit.com'],
 			feed: {
 				selectors: ['#siteTable'],
-				path: ['/', '/new', '/rising', '/controversial', '/top', '/r/popular', '/r/all'],
+				paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', '/r/popular/', '/r/all/'],
 				insertAt: 'before',
 			},
 			styles: [
@@ -36,11 +36,18 @@
 					type: 'hide',
 					selectors: ['ytd-watch-next-secondary-results-renderer'],
 				},
+				//{
+				//	id: 'comments',
+				//	title: 'Video comments',
+				//	type: 'hide',
+				//	selectors: ['ytd-comments'],
+				//},
 				{
-					id: 'comments',
-					title: 'Video comments',
+					id: 'live-chat',
+					title: 'Live chat',
 					type: 'hide',
-					selectors: ['ytd-comments'],
+					default: false,
+					selectors: ['ytd-live-chat-frame'],
 				},
 				{
 					id: 'shorts-button',
@@ -61,6 +68,7 @@
 			title: 'Twitter/X',
 			hosts: ['x.com'],
 			feed: {
+				paths: ['/home', '/'],
 				selectors: ['div[aria-label="Home timeline"] > div > section[role="region"]'],
 				insertAt: 'overlay',
 			},

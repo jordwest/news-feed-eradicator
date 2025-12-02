@@ -5,6 +5,7 @@ done,feature,v3.0.0,Disable sites completely (and remove injected CSS)
 done,feature,v3.0.0,Reload sitelist and reinject CSS after fetching new
 done,feature,v3.0.0,Disable temporarily
 done,improve,v3.0.0,Enable feed eradication only on particular pages
+plan,internl,v3.0.0,Migrate to Vite & Deno for Solid JSX
 plan,feature,v3.0.0,Add button hold mechanic for snoozing
 plan,internl,v3.0.0,"Combine feeds and styles into ""sections"" in sitelist"
 plan,improve,v3.0.0,Fade out when feed disappears
