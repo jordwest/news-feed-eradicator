@@ -15,7 +15,9 @@ export type Site = {
 
 export type Feed = {
 	selectors: string[],
+	paths: string[],
 	insertAt: 'firstChild' | 'lastChild' | 'before' | 'after' | 'overlay' | 'overlay-fixed'
+	overlayZIndex: number;
 }
 
 export type StyleGroup = {
