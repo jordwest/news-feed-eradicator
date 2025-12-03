@@ -23,7 +23,7 @@ export default {
 		"type": "module"
 	},
 	"options_ui": {
-		"page": "options-page/index.html",
+		"page": "entrypoints/options-page/index.html",
 		"open_in_tab": true,
 		"browser_style": false
 	},
