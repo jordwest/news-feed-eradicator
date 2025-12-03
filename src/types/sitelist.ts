@@ -4,25 +4,27 @@ export type SiteList = {
 };
 
 export type SiteId = string & { __siteId: never };
+export type SectionId = string & { __sectionId: never };
 
 export type Site = {
 	id: SiteId,
 	title: string,
 	hosts: string[],
-	feed?: Feed,
-	styles: StyleGroup[]
+	paths: Path[],
+	sections: Section[]
 };
 
-export type Feed = {
-	selectors: string[],
-	paths: string[],
-	insertAt: 'firstChild' | 'lastChild' | 'before' | 'after' | 'overlay' | 'overlay-fixed'
-	overlayZIndex: number;
+export type Path = string;
+
+export type Inject = {
+	mode: 'firstChild' | 'lastChild' | 'before' | 'after' | 'overlay' | 'overlay-fixed'
+	overlayZIndex?: number;
 }
 
-export type StyleGroup = {
-	id: string,
-	title: string,
-	type: 'hide' | 'remove',
+export type Section = {
+	id: SectionId,
 	selectors: string[],
+	title: string,
+	type: 'hide' | 'remove' | 'dull',
+	inject?: Inject,
 }
