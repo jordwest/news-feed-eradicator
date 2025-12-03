@@ -1,11 +1,10 @@
 import manifest from '../manifest';
 import { watch } from "fs/promises";
 import { build } from 'vite';
-import JSON5 from 'json5';
+import { $ } from 'bun';
 import solidPlugin from 'vite-plugin-solid';
 
 const PROJECT_ROOT = `${__dirname}/../..`;
-const SITELIST_FILE = `${PROJECT_ROOT}/src/sitelist.json5`;
 
 async function buildAll(): Promise<void> {
 	console.log('Rebuilding')
@@ -27,7 +26,10 @@ function startServer() {
 		port: 4080,
 		routes: {
 			'/sitelist.json': async () => {
-				return new Response(JSON.stringify(await JSON5.parse(await Bun.file(SITELIST_FILE).text())), {
+				const output = await $`bun run ${__dirname}/build-sitelist.ts`.json();
+				console.info(output);
+
+				return new Response(JSON.stringify(output), {
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -38,6 +40,7 @@ function startServer() {
 }
 
 async function watchAll(): Promise<void> {
+
 	await buildAll();
 
 	startServer();
@@ -75,8 +78,8 @@ async function buildServiceWorker(): Promise<void> {
 }
 
 async function buildSiteList(): Promise<void> {
-	const siteList = JSON5.parse(await Bun.file(SITELIST_FILE).text());
-	const siteListJson = JSON.stringify(siteList, null, 2);
+	const output = await $`bun run ${__dirname}/build-sitelist.ts`.json();
+	const siteListJson = JSON.stringify(output, null, 2);
 
 	await Bun.write('./build/sitelist.json', siteListJson);
 }
