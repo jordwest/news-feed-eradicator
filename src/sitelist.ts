@@ -1,8 +1,10 @@
-{
+import type { SiteId, SiteList } from "./types/sitelist"
+
+const sitelist: SiteList = {
 	schemaVersion: 1,
 	sites: [
 		{
-			id: 'reddit-old',
+			id: 'reddit-old' as SiteId,
 			title: "Reddit",
 			hosts: ['www.reddit.com', 'old.reddit.com'],
 			feed: {
@@ -20,7 +22,7 @@
 			]
 		},
 		{
-			id: 'youtube',
+			id: 'youtube' as SiteId,
 			title: 'YouTube',
 			hosts: ['www.youtube.com', 'youtube.com'],
 			feed: {
@@ -76,3 +78,5 @@
 		}
 	]
 }
+
+export default sitelist;
