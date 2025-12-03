@@ -18,7 +18,7 @@ export function eradicate(store: Store) {
 
 		// Don't do anything if the UI hasn't loaded yet
 		const feed = document.querySelector(
-			"div[data-testid='mainFeed']"
+			"main[aria-label='Main Feed'] .scaffold-finite-scroll, div[data-testid='mainFeed']"
 		);
 		if (feed == null) {
 			return;
