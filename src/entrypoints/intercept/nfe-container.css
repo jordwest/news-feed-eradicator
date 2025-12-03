@@ -1,6 +1,8 @@
 #nfe-container {
-	border: 4px solid red;
-	background: #99f;
-	color: #000;
 	font-size: 18px;
+}
+
+#nfe-container.dark {
+	background: #000;
+	color: #fff;
 }

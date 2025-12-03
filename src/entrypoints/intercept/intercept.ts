@@ -1,9 +1,11 @@
 // Injected into the relevant site
-import NewsFeedEradicator from '../../../src-old/components';
 import { getBrowser } from '../../lib/webextension';
 import type { ContentScriptMessage, ServiceWorkerMessage } from '../../messaging/messages';
+import { QuoteWidget } from '../../shared/quote-widget';
 import type { Feed } from '../../types/sitelist';
-import nfeStyles from './nfe-container.css' with { type: 'text' };
+import { render } from 'solid-js/web';
+import nfeStyles from './nfe-container.css?raw';
+import sharedStyles from '../../shared/styles.css?raw';
 
 const browser = getBrowser();
 
@@ -88,13 +90,15 @@ function checkFeed() {
 
 				const shadow = nfeElement.attachShadow({ mode: "open" });
 				const style = document.createElement('style');
-				style.textContent = nfeStyles;
+				style.textContent = `${nfeStyles}\n${sharedStyles}`;
 				shadow.appendChild(style);
 
 				const container = document.createElement('div')
 				container.id = 'nfe-container';
-				container.textContent = "News Feed Eradicator";
+				container.className = 'dark';
 				shadow.appendChild(container);
+
+				render(QuoteWidget, container);
 
 				nfeElement.style.display = isSnoozing() ? 'none' : 'block';
 
