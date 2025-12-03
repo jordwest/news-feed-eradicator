@@ -1,6 +1,8 @@
 import manifest from '../manifest';
 import { watch } from "fs/promises";
+import { build } from 'vite';
 import JSON5 from 'json5';
+import solidPlugin from 'vite-plugin-solid';
 
 const PROJECT_ROOT = `${__dirname}/../..`;
 const SITELIST_FILE = `${PROJECT_ROOT}/src/sitelist.json5`;
@@ -80,13 +82,29 @@ async function buildSiteList(): Promise<void> {
 }
 
 async function buildIntercept(): Promise<void> {
-	await Bun.build({
-		root: PROJECT_ROOT,
-	  entrypoints: [`./src/entrypoints/intercept/intercept.ts`],
-	  outdir: `./build/intercept`,
-			naming: '[name].[ext]',
-	  minify: false, // Never minify - for web store review
+	await build({
+		root: `${PROJECT_ROOT}/src`,
+		plugins: [solidPlugin()],
+		build: {
+			outDir: `${PROJECT_ROOT}/build`,
+			rollupOptions: {
+				input: '/entrypoints/intercept/intercept.ts',
+				output: {
+					assetFileNames: 'entrypoints/intercept/[name].[ext]',
+					entryFileNames: 'entrypoints/intercept/[name].js'
+				},
+			},
+			minify: false,
+		}
 	});
+
+	// await Bun.build({
+	// 	root: PROJECT_ROOT,
+	//   entrypoints: [`./src/entrypoints/intercept/intercept.ts`],
+	//   outdir: `./build/intercept`,
+	// 		naming: '[name].[ext]',
+	//   minify: false, // Never minify - for web store review
+	// });
 }
 
 async function buildManifest(): Promise<void> {
@@ -94,12 +112,20 @@ async function buildManifest(): Promise<void> {
 }
 
 async function buildOptionsPage(): Promise<void> {
-	await Bun.build({
-		root: PROJECT_ROOT,
-	  entrypoints: [`./src/entrypoints/options-page/index.html`],
-	  outdir: `./build/options-page`,
-		naming: '[name].[ext]',
-	  minify: false, // Never minify - for web store review
+	await build({
+		root: `${PROJECT_ROOT}/src`,
+		plugins: [solidPlugin()],
+		build: {
+			outDir: `${PROJECT_ROOT}/build`,
+			rollupOptions: {
+				input: '/entrypoints/options-page/index.html',
+				output: {
+					assetFileNames: 'entrypoints/options-page/[name].[ext]',
+					entryFileNames: 'entrypoints/options-page/[name].js'
+				},
+			},
+			minify: false,
+		}
 	});
 }
 
