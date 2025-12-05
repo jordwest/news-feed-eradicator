@@ -1,8 +1,8 @@
 // Injected into the relevant site
 import { getBrowser } from '../../lib/webextension';
-import type { ContentScriptMessage, ServiceWorkerMessage } from '../../messaging/messages';
+import type { ContentScriptMessage, ServiceWorkerMessage, DesiredRegionState } from '../../messaging/messages';
 import { QuoteWidget } from '../../shared/quote-widget';
-import type { Feed } from '../../types/sitelist';
+import type { Region, RegionId } from '../../types/sitelist';
 import { render } from 'solid-js/web';
 import nfeStyles from './nfe-container.css?raw';
 import sharedStyles from '../../shared/styles.css?raw';
@@ -17,19 +17,24 @@ console.log('runtime', browser.runtime);
 // const port = browser.runtime.connect();
 const sendMessage = (message: ContentScriptMessage) => browser.runtime.sendMessage(message);
 
+type RegionState = {
+	config: Region;
+	injectedElement?: HTMLDivElement;
+	css?: string;
+	enabled?: boolean;
+};
+
 type ContentScriptState = {
-	feed?: Feed | null;
 	snoozeUntil?: number;
 	snoozeTimer?: Timer;
+	injectedCss?: string | null;
+	ready?: boolean;
+	regions: Map<RegionId, RegionState>;
 };
-let state: ContentScriptState = {};
 
-type FeedInjectState = {
-	type: 'waiting',
-} | {
-	type: 'searching',
-	feed: Feed,
-} | { type: 'injected', el: HTMLDivElement } | { type: 'not-injected' };
+let state: ContentScriptState = {
+	regions: new Map(),
+};
 
 function createOverlay(el: Element, bounds: DOMRect, position: string, zIndex: number) {
 	const overlay = document.createElement('div');
@@ -45,74 +50,87 @@ function createOverlay(el: Element, bounds: DOMRect, position: string, zIndex: n
 	overlay.appendChild(el);
 }
 
-let feedState: FeedInjectState = { type: 'waiting' };
+/**
+ * Continuously tries to inject NFE into any regions that it is not yet injected into
+ */
+function tryInject() {
+	if (state.ready !== true) {
+		return;
+	}
 
-let injectedCss: string | null = null;
+	let isMissingElements = false;
 
-function checkFeed() {
-	if (feedState.type === 'searching') {
-		for (const selector of feedState.feed.selectors) {
+	for (const region of state.regions.values()) {
+		const injectConfig = region.config.inject;
+		if (injectConfig == null) continue;
+
+		if (region.injectedElement != null && document.contains(region.injectedElement)) {
+			// Element already injected
+			continue;
+		}
+
+		for (const selector of region.config.selectors) {
 			console.log('Trying selector', selector);
 
 			const el = document.querySelector(selector);
-			if (el != null) {
-				console.log('Found', el);
-
-				const nfeElement = document.createElement('div');
-				nfeElement.id = 'nfe-root'
-				switch (feedState.feed.insertAt) {
-					case 'firstChild':
-						el.prepend(nfeElement);
-						break;
-					case 'lastChild':
-						el.appendChild(nfeElement);
-						break;
-					case 'before':
-						// el.parentElement?.insertBefore(nfeElement, el)
-						el.before(nfeElement)
-						break;
-					case 'after':
-						el.after('afterend')
-						break;
-					case 'overlay': {
-						const bounds = el.getBoundingClientRect();
-						createOverlay(nfeElement, bounds, 'absolute', feedState.feed.overlayZIndex ?? 99999999);
-						break;
-					}
-					case 'overlay-fixed': {
-						const bounds = el.getBoundingClientRect();
-						createOverlay(nfeElement, bounds, 'fixed', feedState.feed.overlayZIndex ?? 99999999);
-						break;
-					}
-					default:
-						throw new Error(`Invalid value for insertAt: ${feedState.feed.insertAt}`)
-				}
-
-				const shadow = nfeElement.attachShadow({ mode: "open" });
-				const style = document.createElement('style');
-				style.textContent = `${nfeStyles}\n${sharedStyles}`;
-				shadow.appendChild(style);
-
-				const container = document.createElement('div')
-				container.id = 'nfe-container';
-				container.className = 'dark';
-				shadow.appendChild(container);
-
-				render(QuoteWidget, container);
-
-				nfeElement.style.display = isSnoozing() ? 'none' : 'block';
-
-				feedState = {
-					type: 'injected',
-					el: nfeElement,
-				}
-
-				return
+			if (el == null) {
+				// Element not found
+				isMissingElements = true;
+				continue;
 			}
-		}
+			console.log('Found', el);
 
-		// Feed not found, check again
-		setTimeout(checkFeed, 100);
+			const nfeElement = document.createElement('div');
+			nfeElement.id = 'nfe-root'
+			switch (injectConfig.mode) {
+				case 'firstChild':
+					el.prepend(nfeElement);
+					break;
+				case 'lastChild':
+					el.appendChild(nfeElement);
+					break;
+				case 'before':
+					// el.parentElement?.insertBefore(nfeElement, el)
+					el.before(nfeElement)
+					break;
+				case 'after':
+					el.after('afterend')
+					break;
+				case 'overlay': {
+					const bounds = el.getBoundingClientRect();
+					createOverlay(nfeElement, bounds, 'absolute', injectConfig.overlayZIndex ?? 99999999);
+					break;
+				}
+				case 'overlay-fixed': {
+					const bounds = el.getBoundingClientRect();
+					createOverlay(nfeElement, bounds, 'fixed', injectConfig.overlayZIndex ?? 99999999);
+					break;
+				}
+				default:
+					throw new Error(`Invalid value for insertAt: ${injectConfig.mode}`)
+			}
+
+			const shadow = nfeElement.attachShadow({ mode: "open" });
+			const style = document.createElement('style');
+			style.textContent = `${nfeStyles}\n${sharedStyles}`;
+			shadow.appendChild(style);
+
+			const container = document.createElement('div')
+			container.id = 'nfe-container';
+			container.className = 'dark';
+			shadow.appendChild(container);
+
+			render(QuoteWidget, container);
+
+			nfeElement.style.display = isSnoozing() ? 'none' : 'block';
+
+			region.injectedElement = nfeElement;
+		}
+	}
+
+	if (isMissingElements) {
+		// At least one region's element hasn't been found/injected yet
+		setTimeout(tryInject, 1000);
 	}
 }
 
@@ -132,20 +150,20 @@ setInterval(() => {
 }, 15);
 
 const setCss = async (css: string | null) => {
-	if (css === injectedCss) {
+	if (css === state.injectedCss) {
 		return;
 	}
 
 	// Remove any existing css first
-	if (injectedCss != null) {
-		const removed = await sendMessage({ type: 'removeCss', css: injectedCss });
+	if (state.injectedCss != null) {
+		const removed = await sendMessage({ type: 'removeCss', css: state.injectedCss });
 		console.log('got response remove', removed)
-		injectedCss = null;
+		state.injectedCss = null;
 	}
 
 	// Inject new css
 	if (css != null) {
-		injectedCss = css;
+		state.injectedCss = css;
 
 		const injected = await sendMessage({ type: 'injectCss', css });
 		console.log('got response injected', injected)
@@ -178,26 +196,81 @@ const setSnoozeTimer = (snoozeUntil: number | null) => {
 	}
 }
 
+/**
+ * Calculate desired state from
+ */
+const patchState = (regions: DesiredRegionState[]) => {
+	let seenRegions: Set<RegionId> = new Set();
+
+	for (var region of regions) {
+		const id = region.config.id;
+		seenRegions.add(id);
+
+		if (!state.regions.has(id)) {
+			state.regions.set(id, { config: region.config });
+		}
+
+		const currentRegionState = state.regions.get(id)!;
+
+		currentRegionState.config = region.config;
+		currentRegionState.enabled = region.enabled;
+		currentRegionState.css = region.css ?? undefined;
+	}
+
+	let css = "";
+
+	// Scan all active regions and delete or update them
+	for (const [id, activeRegion] of state.regions.entries()) {
+		// Delete regions that no longer exist
+		if (!seenRegions.has(activeRegion.config.id)) {
+			if (activeRegion.injectedElement ) {
+				activeRegion.injectedElement.parentElement?.removeChild(activeRegion.injectedElement);
+				state.regions.delete(id);
+
+				// Done with the region, we won't see it again
+				continue;
+			}
+		}
+
+		if (activeRegion.injectedElement == null && activeRegion.config.inject != null) {
+			setTimeout(tryInject, 1);
+		} else if (activeRegion.injectedElement != null) {
+			const el = activeRegion.injectedElement;
+
+			// Hide or show NFE element depending on snooze state
+			if (isSnoozing() || !activeRegion.enabled) {
+				el.style.display = 'none';
+			} else {
+				el.style.display = 'block';
+			}
+		}
+
+		if (activeRegion.css != null) {
+			css += activeRegion.css + '\n';
+		}
+	}
+
+	setCss(css);
+}
+
 browser.runtime.onMessage.addListener(async (msg: ServiceWorkerMessage) => {
 	console.log("Got message", msg);
 	if (msg.type == 'nfe#siteDetails' && msg.token === token) {
 		if (msg.snoozeUntil != null && msg.snoozeUntil > Date.now()) {
 			setSnoozeTimer(msg.snoozeUntil);
-			await setCss(null);
 		} else {
 			setSnoozeTimer(null);
-			await setCss(msg.css);
 		}
+		// if (msg.snoozeUntil != null && msg.snoozeUntil > Date.now()) {
+		// 	setSnoozeTimer(msg.snoozeUntil);
+		// 	await setCss(null);
+		// } else {
+		// 	setSnoozeTimer(null);
+		// 	await setCss(msg.css);
+		// }
 
-		state.feed = msg.feed;
-
-		if (feedState.type === 'waiting') {
-			feedState = msg.feed == null ? { type: 'not-injected' } : { type: 'searching', feed: msg.feed };
-			checkFeed();
-		} else if (feedState.type === 'injected') {
-			const showNfe = msg.css != null && !isSnoozing();
-			feedState.el.style.display = showNfe ? 'block' : 'none';
-		}
+		state.ready = true;
+		patchState(msg.regions);
 	}
 
 	if (msg.type === 'nfe#optionsUpdated') {
@@ -215,7 +288,7 @@ browser.runtime.onMessage.addListener(async (msg: ServiceWorkerMessage) => {
  * and the tab might show the previous site (which is not this content script).
  */
 const pingServiceWorker = () => {
-	if (feedState.type !== 'waiting') {
+	if (state.ready) {
 		return;
 	}
 

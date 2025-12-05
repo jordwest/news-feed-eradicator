@@ -4,14 +4,14 @@ export type SiteList = {
 };
 
 export type SiteId = string & { __siteId: never };
-export type SectionId = string & { __sectionId: never };
+export type RegionId = string & { __sectionId: never };
 
 export type Site = {
 	id: SiteId,
 	title: string,
 	hosts: string[],
 	paths: Path[],
-	sections: Section[]
+	regions: Region[]
 };
 
 export type Path = string;
@@ -21,10 +21,11 @@ export type Inject = {
 	overlayZIndex?: number;
 }
 
-export type Section = {
-	id: SectionId,
+export type Region = {
+	id: RegionId,
 	selectors: string[],
 	title: string,
 	type: 'hide' | 'remove' | 'dull',
+	paths: 'inherit' | '*',
 	inject?: Inject,
 }

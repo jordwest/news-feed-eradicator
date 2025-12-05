@@ -1,81 +1,98 @@
-import type { SiteId, SiteList } from "./types/sitelist"
+import type { RegionId, SiteId, SiteList } from "./types/sitelist"
+
+const siteId = (id: string): SiteId => id as SiteId;
+const regionId = (id: string): RegionId => id as RegionId;
 
 const sitelist: SiteList = {
 	schemaVersion: 1,
 	sites: [
 		{
-			id: 'reddit-old' as SiteId,
+			id: siteId('reddit-old'),
 			title: "Reddit",
 			hosts: ['www.reddit.com', 'old.reddit.com'],
-			feed: {
-				selectors: ['#siteTable'],
-				paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', '/r/popular/', '/r/all/'],
-				insertAt: 'before',
-			},
-			styles: [
+			paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', '/r/popular/', '/r/all/'],
+			regions: [
 				{
-					id: 'sidebar',
-					title: 'Sidebar',
+					id: regionId('feed'),
+					title: 'Feed',
+					selectors: ['#siteTable'],
 					type: 'hide',
+					paths: 'inherit',
+					inject: {
+						mode: 'before',
+					}
+				},
+				{
+					id: regionId('sidebar'),
+					title: 'Sidebar',
 					selectors: ['div.side'],
+					type: 'hide',
+					paths: '*',
 				}
-			]
+			],
 		},
 		{
-			id: 'youtube' as SiteId,
+			id: siteId('youtube'),
 			title: 'YouTube',
 			hosts: ['www.youtube.com', 'youtube.com'],
-			feed: {
-				selectors: ['ytd-browse'],
-				paths: ['/'],
-				insertAt: 'overlay-fixed',
-				overlayZIndex: 2019,
-			},
-			styles: [
+			paths: ['/'],
+			regions: [
 				{
-					id: 'sidebar',
-					title: 'Related videos sidebar',
+					id: regionId('feed'),
+					title: 'Main feed',
+					selectors: ['ytd-browse'],
+					paths: 'inherit',
 					type: 'hide',
-					selectors: ['ytd-watch-next-secondary-results-renderer'],
-				},
-				//{
-				//	id: 'comments',
-				//	title: 'Video comments',
-				//	type: 'hide',
-				//	selectors: ['ytd-comments'],
-				//},
-				{
-					id: 'live-chat',
-					title: 'Live chat',
-					type: 'hide',
-					default: false,
-					selectors: ['ytd-live-chat-frame'],
+					inject: {
+						mode: 'overlay-fixed',
+						overlayZIndex: 2019,
+					},
 				},
 				{
-					id: 'shorts-button',
+					id: regionId('shorts-button'),
 					title: 'Shorts button',
 					type: 'remove',
+					paths: '*',
 					selectors: ['ytd-guide-entry-renderer:has(a[title="Shorts"])'],
 				},
-				{
-					id: 'explore-nav',
-					title: 'Explore navigation menu',
-					type: 'remove',
-					selectors: ['ytd-guide-section-renderer:nth-child(4)']
-				}
-			]
+				// {
+				// 	id: 'sidebar',
+				// 	title: 'Related videos sidebar',
+				// 	type: 'hide',
+				// 	selectors: ['ytd-watch-next-secondary-results-renderer'],
+				// },
+				// //{
+				// //	id: 'comments',
+				// //	title: 'Video comments',
+				// //	type: 'hide',
+				// //	selectors: ['ytd-comments'],
+				// //},
+				// {
+				// 	id: 'live-chat',
+				// 	title: 'Live chat',
+				// 	type: 'hide',
+				// 	default: false,
+				// 	selectors: ['ytd-live-chat-frame'],
+				// },
+				// {
+				// 	id: 'explore-nav',
+				// 	title: 'Explore navigation menu',
+				// 	type: 'remove',
+				// 	selectors: ['ytd-guide-section-renderer:nth-child(4)']
+				// }
+			],
 		},
-		{
-			id: 'twitter-x',
-			title: 'Twitter/X',
-			hosts: ['x.com'],
-			feed: {
-				paths: ['/home', '/'],
-				selectors: ['div[aria-label="Home timeline"] > div > section[role="region"]'],
-				insertAt: 'overlay',
-			},
-			styles: []
-		}
+		// {
+		// 	id: 'twitter-x',
+		// 	title: 'Twitter/X',
+		// 	hosts: ['x.com'],
+		// 	feed: {
+		// 		paths: ['/home', '/'],
+		// 		selectors: ['div[aria-label="Home timeline"] > div > section[role="region"]'],
+		// 		insertAt: 'overlay',
+		// 	},
+		// 	styles: []
+		// }
 	]
 }
 
