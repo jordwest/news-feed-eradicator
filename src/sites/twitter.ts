@@ -43,6 +43,10 @@ export function eradicate(store: Store) {
 
 		// Add News Feed Eradicator quote/info panel
 		if (container && !isAlreadyInjected()) {
+			// Clear the feed content to prevent any remaining posts from showing
+			container.innerHTML = '';
+			// Mark the container as processed by NFE
+			container.classList.add('nfe-processed');
 			injectUI(container, store);
 		}
 	}
