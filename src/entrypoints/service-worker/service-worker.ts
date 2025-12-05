@@ -105,6 +105,11 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 		notifyTabsOptionsUpdated();
 	}
 
+	if (msg.type === 'readSnooze') {
+		const settings = await browser.storage.sync.get(null).then(upgradeStorage);
+		return settings.snoozeUntil ?? null;
+	}
+
 	if (msg.type === 'injectCss') {
 		console.log('inserting css', msg.css);
 		await browser.scripting.insertCSS({

@@ -25,7 +25,7 @@ type OptionsUpdated = {
 	type: 'nfe#optionsUpdated',
 }
 
-export type ContentScriptMessage = RequestSiteDetails | InjectCss | RemoveCss;
+export type ContentScriptMessage = RequestSiteDetails | InjectCss | RemoveCss | ReadSnooze;
 
 // Request site details from service worker.
 type RequestSiteDetails = {
@@ -55,4 +55,8 @@ type DisableSite = {
 type Snooze = {
 	type: 'snooze',
 	until: number
+}
+
+type ReadSnooze = {
+	type: 'readSnooze',
 }

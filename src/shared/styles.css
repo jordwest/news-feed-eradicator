@@ -1,2 +1,10 @@
 .p-2 { padding: 8px; }
 .p-4 { padding: 16px; }
+
+.font-md {
+	font-size: 1rem;
+}
+
+.font-lg {
+	font-size: 1.5rem;
+}
