@@ -1,0 +1,9 @@
+#nfe-container {
+	font-size: 18px;
+	pointer-events: all;
+}
+
+#nfe-container.dark {
+	background: #000;
+	color: #fff;
+}

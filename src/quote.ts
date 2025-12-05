@@ -10,7 +10,7 @@ export type BuiltinQuote = {
 };
 export type Quote = CustomQuote | BuiltinQuote;
 
-export const BuiltinQuotes: Array<BuiltinQuote> = [
+export const BuiltinQuotes: Array<Quote> = [
 	{
 		id: 1,
 		text: 'I have just three things to teach: simplicity, patience, compassion. These three are your greatest treasures.',
@@ -431,4 +431,19 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 		text: 'Those who are not looking for happiness are the most likely to find it, because those who are searching forget that the surest way to be happy is to seek happiness for others.',
 		source: 'Martin Luther King Jr.',
 	},
+	{
+		id: '91a63ddb-2b38-4767-ba09-65db9c851d0e',
+		text: "The gardener does not make a plant grow. The job of a gardener is to create optimal conditions.",
+		source: "Sir Ken Robinson",
+	},
+	{
+		id: '51bf930c-b725-45c4-ade4-686446bdced3',
+		text: "I think everybody should get rich and famous and do everything they ever dreamed of so they can see that it's not the answer.",
+		source: "Jim Carrey",
+	},
+	{
+		id: "33b4d811-2869-4acc-b5c8-f842fb564272",
+		text: "It is difficult to get a man to understand something, when his salary depends on his not understanding it",
+		source: "Upton Sinclair",
+	}
 ];

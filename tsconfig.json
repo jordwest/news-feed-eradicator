@@ -1,14 +1,31 @@
 {
-	"compilerOptions": {
-		"module": "es6",
-		"target": "es6",
-		"lib": ["dom", "es2019"],
-		"noImplicitAny": false,
-		"sourceMap": false,
-		"allowJs": true,
-		"strictNullChecks": true,
-		"skipLibCheck": true,
-		"moduleResolution": "node"
-	},
-	"exclude": ["dist", "build", "node_modules"]
+  "compilerOptions": {
+    // Environment setup & latest features
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "removeComments": false,
+    "allowJs": true,
+
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false
+  }
 }
