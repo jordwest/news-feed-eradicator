@@ -27,5 +27,6 @@ export type Region = {
 	title: string,
 	type: 'hide' | 'remove' | 'dull',
 	paths: 'inherit' | '*',
+	default?: boolean,
 	inject?: Inject,
 }

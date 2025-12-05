@@ -6,10 +6,10 @@ schema {
             option "done" label="✅ Done"
         }
         field "type" type="select" label="Type" {
-            option "feature" label="Feature"
-            option "improve" label="Improvement"
-            option "internl" label="Internal/refactoring"
-            option "bug-fix" label="Bugfix"
+            option "feature" label="❇️ Feature"
+            option "improve" label="🔼 Improvement"
+            option "internl" label="⚙️ Internal/refactoring"
+            option "bug-fix" label="🪲 Bugfix"
             option "miscell" label="Other"
         }
         field "version_id" label="Version" type="belongs_to" related_entity="version" related_key="id"
