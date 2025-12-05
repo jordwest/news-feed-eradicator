@@ -1,6 +1,6 @@
 import { getBrowser, type MessageSender, type SendResponse, type TabId } from '../../lib/webextension';
-import type { Feed, SiteList } from '../../types/sitelist';
-import type { ContentScriptMessage, OptionsPageMessage, ServiceWorkerMessage } from '../../messaging/messages';
+import type { Feed, Region, Site, SiteList } from '../../types/sitelist';
+import type { ContentScriptMessage, DesiredRegionState, OptionsPageMessage, ServiceWorkerMessage } from '../../messaging/messages';
 import { upgradeStorage } from '../../types/storage';
 
 const browser = getBrowser();
@@ -30,9 +30,27 @@ const notifyTabsOptionsUpdated = async () => {
 	}
 }
 
-const isEnabledFeedPath = (feed: Feed, path: string): boolean | undefined => {
-	console.log('checking path', path, 'against', feed.paths);
-	return feed.paths.includes(path);
+const isEnabledPath = (site: Site, path: string): boolean | undefined => {
+	console.log('checking path', path, 'against', site.paths);
+	return site.paths.includes(path);
+}
+
+const cssForType = (type: Region['type']): string => {
+	switch (type) {
+		case 'remove':
+			return 'display: none !important;';
+		case 'hide':
+			return 'opacity: 0.1 !important; filter: blur(32px) !important; pointer-events: none !important;';
+		case 'dull':
+			return 'filter: grayscale(100%) !important';
+		default:
+			return '';
+	}
+}
+
+const sanitizeSelector = (selector: string): string => {
+	// TODO - make this more robust and add tests
+	return selector.replaceAll('{', '').replaceAll('}', '');
 }
 
 const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sender: MessageSender) => {
@@ -46,30 +64,20 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 		if (site != null) {
 			console.log('Site found', site)
 
-			let styles: string[] = site.styles
-				.map(style => {
-					const selector = style.selectors.join(',');
+			let regions = site.regions.map((region): DesiredRegionState => {
+				if (region.paths !== '*' && !isEnabledPath(site, msg.path)) {
+					return { config: region, css: null, enabled: false };
+				}
 
-					const effect = style.type === 'remove' ?
-						'display: none !important;':
-						'opacity: 0.1 !important; filter: blur(32px) !important; pointer-events: none !important;';
-					// TODO: Sanitize selector!
-					// return `${selector} { opacity: 0 !important; pointer-events: none !important; }`
-					return `${selector} { ${effect} }`
-					// return `${selector} { filter: sepia(100%) !important; }`
-				})
+				const selector = region.selectors.map(sanitizeSelector).join(',');
+				return { config: region, css: `${selector} { ${cssForType(region.type)} }`, enabled: true } ;
+			});
 
-			if (site.feed != null && isEnabledFeedPath(site.feed, msg.path)) {
-				styles = styles.concat(...site.feed.selectors.map(selector => `${selector} { opacity: 0.1 !important; filter: grayscale(100%) blur(32px) !important; pointer-events: none !important; }`))
-			}
-
-			const css = styles.join('\n')
-			console.log('sending site details', css);
+			console.log('sending site details', regions);
 
 			sendMessage(sender.tab.id, {
 				type: 'nfe#siteDetails',
-				css,
-				feed: site.feed ?? null,
+				regions,
 				token: msg.token,
 				snoozeUntil: settings.snoozeUntil ?? null,
 			})

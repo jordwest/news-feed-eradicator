@@ -1,4 +1,4 @@
-import type { Feed, SiteId } from "../types/sitelist";
+import type { Region, SiteId } from "../types/sitelist";
 
 export type ServiceWorkerMessage = SetTabCss | OptionsUpdated;
 
@@ -8,9 +8,14 @@ export type ServiceWorkerMessage = SetTabCss | OptionsUpdated;
 type SetTabCss = {
 	type: 'nfe#siteDetails',
 	token: number,
-	css: string | null,
-	feed: Feed | null,
+	regions: DesiredRegionState[],
 	snoozeUntil: number | null,
+}
+
+export type DesiredRegionState = {
+	config: Region,
+	css: string | null,
+	enabled: boolean,
 }
 
 /**

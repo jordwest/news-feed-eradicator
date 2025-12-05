@@ -100,14 +100,6 @@ async function buildIntercept(): Promise<void> {
 			minify: false,
 		}
 	});
-
-	// await Bun.build({
-	// 	root: PROJECT_ROOT,
-	//   entrypoints: [`./src/entrypoints/intercept/intercept.ts`],
-	//   outdir: `./build/intercept`,
-	// 		naming: '[name].[ext]',
-	//   minify: false, // Never minify - for web store review
-	// });
 }
 
 async function buildManifest(): Promise<void> {
