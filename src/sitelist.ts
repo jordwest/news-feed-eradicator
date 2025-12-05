@@ -35,7 +35,7 @@ const sitelist: SiteList = {
 			id: siteId('youtube'),
 			title: 'YouTube',
 			hosts: ['www.youtube.com', 'youtube.com'],
-			paths: ['/'],
+			paths: ['/', '/gaming', '/podcasts'],
 			regions: [
 				{
 					id: regionId('feed'),
@@ -55,31 +55,35 @@ const sitelist: SiteList = {
 					paths: '*',
 					selectors: ['ytd-guide-entry-renderer:has(a[title="Shorts"])'],
 				},
-				// {
-				// 	id: 'sidebar',
-				// 	title: 'Related videos sidebar',
-				// 	type: 'hide',
-				// 	selectors: ['ytd-watch-next-secondary-results-renderer'],
-				// },
-				// //{
-				// //	id: 'comments',
-				// //	title: 'Video comments',
-				// //	type: 'hide',
-				// //	selectors: ['ytd-comments'],
-				// //},
-				// {
-				// 	id: 'live-chat',
-				// 	title: 'Live chat',
-				// 	type: 'hide',
-				// 	default: false,
-				// 	selectors: ['ytd-live-chat-frame'],
-				// },
-				// {
-				// 	id: 'explore-nav',
-				// 	title: 'Explore navigation menu',
-				// 	type: 'remove',
-				// 	selectors: ['ytd-guide-section-renderer:nth-child(4)']
-				// }
+				{
+					id: regionId('explore-nav'),
+					title: 'Explore navigation menu',
+					type: 'remove',
+					paths: '*',
+					selectors: ['ytd-guide-section-renderer:nth-child(4)']
+				},
+				{
+					id: regionId('sidebar'),
+					title: 'Related videos sidebar',
+					type: 'hide',
+					paths: '*',
+					selectors: ['ytd-watch-next-secondary-results-renderer'],
+				},
+				//{
+				//	id: 'comments',
+				//	title: 'Video comments',
+				//	type: 'hide',
+				//	paths: '*',
+				//	selectors: ['ytd-comments'],
+				//},
+				{
+					id: regionId('live-chat'),
+					title: 'Live chat',
+					type: 'hide',
+					default: false,
+					paths: '*',
+					selectors: ['ytd-live-chat-frame'],
+				},
 			],
 		},
 		// {
