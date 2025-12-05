@@ -17,9 +17,7 @@ export function eradicate(store: Store) {
 		}
 
 		// Don't do anything if the UI hasn't loaded yet
-		const feed = document.querySelector(
-			"main[aria-label='Main Feed'] .scaffold-finite-scroll"
-		);
+		const feed = document.querySelector(FEED_SELECTORS.join(', '));
 		if (feed == null) {
 			return;
 		}
@@ -36,3 +34,8 @@ export function eradicate(store: Store) {
 	// scripts before we attempt to replace them
 	setInterval(eradicateRetry, 1000);
 }
+
+const FEED_SELECTORS = [
+    "main[aria-label='Main Feed'] .scaffold-finite-scroll",
+    "div[data-testid='mainFeed']"
+];
