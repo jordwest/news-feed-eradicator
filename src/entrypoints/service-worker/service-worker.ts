@@ -57,15 +57,17 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 	if (msg.type === 'requestSiteDetails') {
 		const siteList = await siteListPromise;
 		const settings = await browser.storage.sync.get(null).then(upgradeStorage);
+		const isSnoozing = settings.snoozeUntil != null && settings.snoozeUntil > Date.now();
 
 		const url = new URL(sender.url);
 		console.log(url);
 		const site = siteList.sites.find(site => site.hosts.includes(url.host));
+
 		if (site != null) {
 			console.log('Site found', site)
 
 			let regions = site.regions.map((region): DesiredRegionState => {
-				if (region.paths !== '*' && !isEnabledPath(site, msg.path)) {
+				if (isSnoozing || (region.paths !== '*' && !isEnabledPath(site, msg.path))) {
 					return { config: region, css: null, enabled: false };
 				}
 

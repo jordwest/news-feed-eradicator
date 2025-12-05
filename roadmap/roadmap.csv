@@ -5,19 +5,21 @@ done,feature,v3.0.0,Disable sites completely (and remove injected CSS)
 done,feature,v3.0.0,Reload sitelist and reinject CSS after fetching new
 done,feature,v3.0.0,Disable temporarily
 done,improve,v3.0.0,Enable feed eradication only on particular pages
+done,internl,v3.0.0,Migrate user data from old schema
 done,internl,v3.0.0,Migrate to Vite builds for Solid JSX
-actv,internl,v3.0.0,"Combine feeds and styles into ""sections"" in sitelist"
-plan,improve,v3.0.0,Hide feed element on other pages
+done,improve,v3.0.0,Hide feed element on other pages
+done,internl,v3.0.0,"Combine feeds and styles into ""sections"" in sitelist"
 plan,feature,v3.0.0,Add button hold mechanic for snoozing
 plan,feature,v3.0.0,Switch for light/dark mode
+plan,improve,v3.0.0,Reposition overlay on resize or nav or maybe timer
 plan,improve,v3.0.0,Fade out when feed disappears
 plan,feature,v3.0.0,Get quote island working again
 plan,feature,v3.0.0,Add (bulk) quote editing back in
 plan,improve,v3.0.0,Polish and style quote island
 plan,improve,v3.0.0,Polish and style options page
 plan,internl,v3.0.0,Serve sitelist locally in dev mode
-plan,internl,v3.0.0,Test updating selectors in sitelist without reloading extension
 plan,internl,v3.0.0,Fetch sitelist dynamically
+plan,internl,v3.0.0,Test updating selectors in sitelist without reloading extension
 plan,internl,v3.0.0,Host sitelist on separate repo
-plan,internl,v3.0.0,Migrate user data from old schema
+plan,internl,v3.0.0,Test old extension data migration
 plan,internl,v3.0.0,Migrate all sites to sitelist
