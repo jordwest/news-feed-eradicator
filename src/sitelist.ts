@@ -53,7 +53,7 @@ const sitelist: SiteList = {
 					title: 'Shorts button',
 					type: 'remove',
 					paths: '*',
-					selectors: ['ytd-guide-entry-renderer:has(a[title="Shorts"])'],
+					selectors: ['ytd-guide-entry-renderer:has(a[title="Shorts"])', 'ytd-mini-guide-entry-renderer:has(a[title="Shorts"])'],
 				},
 				{
 					id: regionId('explore-nav'),
@@ -86,17 +86,24 @@ const sitelist: SiteList = {
 				},
 			],
 		},
-		// {
-		// 	id: 'twitter-x',
-		// 	title: 'Twitter/X',
-		// 	hosts: ['x.com'],
-		// 	feed: {
-		// 		paths: ['/home', '/'],
-		// 		selectors: ['div[aria-label="Home timeline"] > div > section[role="region"]'],
-		// 		insertAt: 'overlay',
-		// 	},
-		// 	styles: []
-		// }
+		{
+			id: siteId('twitter-x'),
+			title: 'Twitter/X',
+			hosts: ['x.com'],
+			paths: ['/home', '/'],
+			regions: [
+				{
+					id: regionId('home-timeline'),
+					title: 'Main feed',
+					type: 'hide',
+					paths: 'inherit',
+					selectors: ['div[aria-label="Home timeline"] > div > section[role="region"]'],
+					inject: {
+						mode: 'overlay',
+					}
+				},
+			]
+		}
 	]
 }
 
