@@ -1,7 +1,7 @@
 import injectUI, { isAlreadyInjected } from '../lib/inject-ui';
 import { isEnabled } from '../lib/is-enabled';
 import { Store } from '../store';
-import {injectCSS} from "./shared";
+import { injectCSS } from "./shared";
 
 export function checkSite(): boolean {
 	return window.location.host.includes('instagram.com');

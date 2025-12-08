@@ -3,7 +3,9 @@
 	"version": "2.2.7",
 	"description": "Eradicate social media noise by replacing your entire news feed with an inspiring quote",
 	"manifest_version": 2,
-	"permissions": ["storage"],
+	"permissions": [
+		"storage"
+	],
 	"optional_permissions": [
 		"http://www.facebook.com/*",
 		"https://www.facebook.com/*",
@@ -24,7 +26,8 @@
 		"https://www.github.com/*",
 		"https://github.com/*",
 		"http://www.instagram.com/*",
-		"https://www.instagram.com/*"
+		"https://www.instagram.com/*",
+		"https://substack.com/*"
 	],
 	"browser_action": {
 		"default_icon": {
