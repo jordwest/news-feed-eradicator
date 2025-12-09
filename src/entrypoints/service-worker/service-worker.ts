@@ -1,7 +1,8 @@
 import { getBrowser, type MessageSender, type SendResponse, type TabId } from '../../lib/webextension';
-import type { Feed, Region, Site, SiteList } from '../../types/sitelist';
+import type { Region, Site, SiteId, SiteList } from '../../types/sitelist';
 import type { ContentScriptMessage, DesiredRegionState, OptionsPageMessage, ServiceWorkerMessage } from '../../messaging/messages';
-import { upgradeStorage } from '../../types/storage';
+import { saveSiteEnabled, upgradeSyncStorage } from '../../storage/storage';
+import { originsForSite } from '../../lib/util';
 
 const browser = getBrowser();
 browser.action.onClicked.addListener(() => {
@@ -12,6 +13,14 @@ const siteListUrl = browser.runtime.getURL('sitelist.json');
 const siteListPromise: Promise<SiteList> = fetch(siteListUrl).then(siteList => siteList.json());
 
 const sendMessage = (tabId: TabId, message: ServiceWorkerMessage) => browser.tabs.sendMessage(tabId, message);
+
+browser.runtime.onInstalled.addListener(async () => {
+	const settings = await browser.storage.sync.get(null).then(upgradeSyncStorage);
+	console.log('Installed extension, enabled sites are', settings.enabledSites);
+	for (const siteId of settings.enabledSites ?? []) {
+		await enableSite(siteId);
+	}
+});
 
 const notifyTabsOptionsUpdated = async () => {
 	// This will only return tabs which we have permission to access, so we can message
@@ -53,10 +62,31 @@ const sanitizeSelector = (selector: string): string => {
 	return selector.replaceAll('{', '').replaceAll('}', '');
 }
 
+const enableSite = async (siteId: SiteId) => {
+	const siteList = await siteListPromise;
+	const site = siteList.sites.find(site => site.id === siteId);
+	if (site == null) {
+		return false;
+	}
+
+	saveSiteEnabled(site.id, true);
+
+	const origins = originsForSite(site);
+
+	await browser.scripting.registerContentScripts([{
+		id: site.id,
+		js: ['/entrypoints/intercept/intercept.js'],
+		runAt: "document_start",
+		matches: origins,
+		allFrames: false,
+		// world: "MAIN"
+	}]);
+}
+
 const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sender: MessageSender) => {
 	if (msg.type === 'requestSiteDetails') {
 		const siteList = await siteListPromise;
-		const settings = await browser.storage.sync.get(null).then(upgradeStorage);
+		const settings = await browser.storage.sync.get(null).then(upgradeSyncStorage);
 		const isSnoozing = settings.snoozeUntil != null && settings.snoozeUntil > Date.now();
 
 		const url = new URL(sender.url);
@@ -86,18 +116,24 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 		}
 	}
 
+	if (msg.type === 'enableSite') {
+		return enableSite(msg.siteId);
+	}
+
 	if (msg.type === 'disableSite') {
+		await browser.scripting.unregisterContentScripts({ ids: [msg.siteId]});
+
 		const siteList = await siteListPromise;
 		const site = siteList.sites.find(site => site.id === msg.siteId);
-		if (site == null) {
-			return;
-		}
+		if (site == null) return;
+
+		saveSiteEnabled(site.id, false);
 
 		notifyTabsOptionsUpdated();
 	}
 
 	if (msg.type === 'snooze') {
-		const settings = await browser.storage.sync.get(null).then(upgradeStorage);
+		const settings = await browser.storage.sync.get(null).then(upgradeSyncStorage);
 		settings.snoozeUntil = msg.until;
 		browser.storage.sync.set(settings);
 		console.log('settings', settings);
@@ -106,7 +142,7 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 	}
 
 	if (msg.type === 'readSnooze') {
-		const settings = await browser.storage.sync.get(null).then(upgradeStorage);
+		const settings = await browser.storage.sync.get(null).then(upgradeSyncStorage);
 		return settings.snoozeUntil ?? null;
 	}
 

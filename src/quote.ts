@@ -367,11 +367,6 @@ export const BuiltinQuotes: Array<Quote> = [
 		source: 'Martin Luther King Jr.',
 	},
 	{
-		id: 74,
-		text: 'Good manners will often take people where neither money nor education will take them.',
-		source: 'Fanny Jackson Coppin',
-	},
-	{
 		id: 75,
 		text: 'No matter how big a nation is, it is no stronger than its weakest people, and as long as you keep a person down, some part of you has to be down there to hold him down, so it means you cannot soar as you might otherwise.',
 		source: 'Marian Anderson',
@@ -432,18 +427,56 @@ export const BuiltinQuotes: Array<Quote> = [
 		source: 'Martin Luther King Jr.',
 	},
 	{
-		id: '91a63ddb-2b38-4767-ba09-65db9c851d0e',
+		id: 251201,
 		text: "The gardener does not make a plant grow. The job of a gardener is to create optimal conditions.",
 		source: "Sir Ken Robinson",
 	},
 	{
-		id: '51bf930c-b725-45c4-ade4-686446bdced3',
+		id: 251202,
 		text: "I think everybody should get rich and famous and do everything they ever dreamed of so they can see that it's not the answer.",
 		source: "Jim Carrey",
 	},
 	{
-		id: "33b4d811-2869-4acc-b5c8-f842fb564272",
+		id: 251203,
 		text: "It is difficult to get a man to understand something, when his salary depends on his not understanding it",
 		source: "Upton Sinclair",
-	}
+	},
+	{
+		id: 251204,
+		text: "Don't give yourselves to these unnatural men — machine men, with machine minds and machine hearts. You are not machines, you are not cattle, you are men. You have the love of humanity in your hearts.",
+		source: "Charlie Chaplain"
+	},
+	{
+		id: 251205,
+		text: "Machinery that gives abundance has left us in want. Our knowledge has made us cynical. Our cleverness, hard and unkind. We think too much and feel too little. More than machinery we need humanity. More than cleverness we need kindness and gentleness.",
+		source: "Charlie Chaplain"
+	},
+	{
+		id: 251206,
+		text: "Our very idea of productivity is premised on the idea of producing something new, whereas we do not tend to see maintenance and care as productive in the same way.",
+		source: "Jenny Odell",
+	},
+	{
+		id: 251207,
+		text: "To do nothing is to hold yourself still so that you can perceive what is actually there.",
+		source: "Jenny Odell",
+	},
+	{
+		id: 251208,
+		text: 'Our idea of progress is so bound up with the idea of putting something new in the world that it can feel counterintuitive to equate progress with destruction, removal, and remediation.',
+		source: "Jenny Odell",
+	},
+	{
+		id: 251209,
+		text: "If you are unable to find the truth right where you are, where else do you expect to find it?",
+		source: "Dogen",
+	},
+	{
+		id: 251210,
+		text: "A fool sees himself as another, but a wise man sees others as himself.",
+		source: "Dogen",
+	},
 ];
+
+// New quote IDs should start with the year/month it gets added (in the
+// format YYMM00 where 00 is an incrementing sequence number - 01, 02 etc)

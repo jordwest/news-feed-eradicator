@@ -11,6 +11,7 @@ type WebExtensionAPI = {
 		getURL: (resource: string) => string;
 		onConnect: WebExtensionEvent<Port>;
 		onMessage: WebExtensionEvent3<any, MessageSender, SendResponse>;
+		onInstalled: WebExtensionEvent<OnInstalledDetails>;
 	};
 	action: {
 		onClicked: WebExtensionEvent<void>;
@@ -43,6 +44,11 @@ type WebExtensionAPI = {
 
 export type TabId = number & { __tabId: never };
 
+type OnInstalledDetails = {
+	previousVersion?: string,
+	reason: 'install' | 'update' | 'browser_update' | 'shared_module_update',
+	temporary: boolean,
+};
 type ContentScriptFilter = {
 	ids: string[],
 };
