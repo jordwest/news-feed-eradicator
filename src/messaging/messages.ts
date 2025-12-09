@@ -45,7 +45,12 @@ type RemoveCss = {
 	css: string,
 }
 
-export type OptionsPageMessage = DisableSite | Snooze;
+export type OptionsPageMessage = EnableSite | DisableSite | Snooze;
+
+type EnableSite = {
+	type: 'enableSite',
+	siteId: SiteId,
+}
 
 type DisableSite = {
 	type: 'disableSite',

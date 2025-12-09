@@ -5,6 +5,7 @@ import h from "solid-js/h";
 import { createSignal, For, createResource, createMemo, Show } from "solid-js";
 
 import { type SiteList, type Site, type SiteId } from "../../types/sitelist";
+import { originsForSite } from "../../lib/util";
 
 const browser = getBrowser();
 
@@ -33,54 +34,48 @@ const [enabledSiteIds, { refetch: refreshEnabledSites }] = createResource(async 
 });
 const isSiteEnabled = (site: Site) => enabledSiteIds()?.includes(site.id)
 
-function originsForSite(site: Site) {
-	return site.hosts.map(host => [`http://${host}/*`, `https://${host}/*`]).flat();
-}
-
-async function requestSite(site: Site) {
-	const browser = getBrowser();
+async function enableSite(site: Site) {
 	const origins = originsForSite(site);
-	const result = await browser.permissions.request({ origins, permissions: [] });
 
-	console.log('requesting permission for', origins);
+	const permissionAccepted = await browser.permissions.request({ origins, permissions: [] });
+
+	if (!permissionAccepted) {
+		return disableSite(site);
+	}
 
 	reloadPermissions();
 
-	// const port = browser.runtime.connect();
-	await browser.scripting.registerContentScripts([{
-		id: site.id,
-		js: ['/entrypoints/intercept/intercept.js'],
-		runAt: "document_start",
-		matches: origins,
-		allFrames: false,
-		// world: "MAIN"
-	}]);
+	await browser.runtime.sendMessage({
+		type: 'enableSite',
+		siteId: site.id
+	});
 
 	refreshEnabledSites();
 };
 
 const disableSite = async (site: Site) => {
-	await browser.scripting.unregisterContentScripts({ ids: [site.id] });
-	refreshEnabledSites();
+	const origins = originsForSite(site);
+	const permissionAccepted = await browser.permissions.remove({ origins, permissions: [] });
 
-	browser.runtime.sendMessage({
+	await browser.runtime.sendMessage({
 		type: 'disableSite',
 		siteId: site.id
-	})
+	});
+
+	refreshEnabledSites();
 }
 
 const Site = ({ site }: { site: Site }) => {
 	return <div class="p-2">
 		<span>{isSiteEnabled(site) ? 'ENABLED' : 'X'}</span>
 		<span>{site.title}</span>
-		<button onClick={ () => isSiteEnabled(site) ? disableSite(site) : requestSite(site) }>
+		<button onClick={ () => isSiteEnabled(site) ? disableSite(site) : enableSite(site) }>
 			{isSiteEnabled(site) ? 'Disable' : 'Request permissions'}
 		</button>
 	</div>
 }
 
 const SiteList = () => {
-	console.log('blag')
 	return <For each={siteList()?.sites}>
 		{site => <Site site={site} />}
 	</For>

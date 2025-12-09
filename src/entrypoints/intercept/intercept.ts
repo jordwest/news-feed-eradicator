@@ -122,7 +122,7 @@ function tryInject() {
 
 			render(QuoteWidget, container);
 
-			nfeElement.style.display = isSnoozing() ? 'none' : 'block';
+			nfeElement.style.display = isRegionBlockActive(region) ? 'block' : 'none';
 
 			region.injectedElement = nfeElement;
 		}
@@ -237,12 +237,7 @@ const patchState = (regions: DesiredRegionState[]) => {
 		} else if (activeRegion.injectedElement != null) {
 			const el = activeRegion.injectedElement;
 
-			// Hide or show NFE element depending on snooze state
-			if (isSnoozing() || !activeRegion.enabled) {
-				el.style.display = 'none';
-			} else {
-				el.style.display = 'block';
-			}
+			el.style.display = isRegionBlockActive(activeRegion) ? 'block' : 'none';
 		}
 
 		if (activeRegion.css != null) {
@@ -253,6 +248,8 @@ const patchState = (regions: DesiredRegionState[]) => {
 	setCss(css);
 }
 
+const isRegionBlockActive = (region: RegionState) => region.enabled && !isSnoozing()
+
 browser.runtime.onMessage.addListener(async (msg: ServiceWorkerMessage) => {
 	console.log("Got message", msg);
 	if (msg.type == 'nfe#siteDetails' && msg.token === token) {
@@ -261,13 +258,6 @@ browser.runtime.onMessage.addListener(async (msg: ServiceWorkerMessage) => {
 		} else {
 			setSnoozeTimer(null);
 		}
-		// if (msg.snoozeUntil != null && msg.snoozeUntil > Date.now()) {
-		// 	setSnoozeTimer(msg.snoozeUntil);
-		// 	await setCss(null);
-		// } else {
-		// 	setSnoozeTimer(null);
-		// 	await setCss(msg.css);
-		// }
 
 		state.ready = true;
 		patchState(msg.regions);

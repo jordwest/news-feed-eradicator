@@ -16,7 +16,7 @@ const sitelist: SiteList = {
 					id: regionId('feed'),
 					title: 'Feed',
 					selectors: ['#siteTable'],
-					type: 'hide',
+					type: 'remove',
 					paths: 'inherit',
 					inject: {
 						mode: 'before',
@@ -63,6 +63,13 @@ const sitelist: SiteList = {
 					selectors: ['ytd-guide-section-renderer:nth-child(4)']
 				},
 				{
+					id: regionId(''),
+					title: 'End screen suggested videos',
+					paths: '*',
+					type: 'remove',
+					selectors: ['.ytp-fullscreen-grid'],
+				},
+				{
 					id: regionId('sidebar'),
 					title: 'Related videos sidebar',
 					type: 'hide',
@@ -100,6 +107,24 @@ const sitelist: SiteList = {
 					selectors: ['div[aria-label="Home timeline"] > div > section[role="region"]'],
 					inject: {
 						mode: 'overlay',
+					}
+				},
+			]
+		},
+		{
+			id: siteId('hacker-news'),
+			title: 'Hacker News',
+			hosts: ['news.ycombinator.com'],
+			paths: ['/', '/news', '/front', '/newest', '/newcomments', '/ask', '/show'],
+			regions: [
+				{
+					id: regionId('main'),
+					title: 'Main feed',
+					type: 'remove',
+					paths: 'inherit',
+					selectors: ['tr#bigbox td table'],
+					inject: {
+						mode: 'before',
 					}
 				},
 			]
