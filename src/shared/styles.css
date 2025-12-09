@@ -1,4 +1,5 @@
 .p-2 { padding: 8px; }
+.pl-3 { padding-left: 12px; }
 .p-4 { padding: 16px; }
 
 .font-md {
@@ -8,3 +9,14 @@
 .font-lg {
 	font-size: 1.5rem;
 }
+
+.quote-border-left {
+	border-left: 4px solid #44c;
+}
+
+.text-secondary {
+	color: #aaa;
+}
+
+.space-y-1 > :not(:first-child) { margin-top: 4px; }
+.space-y-2 > :not(:first-child) { margin-top: 8px; }

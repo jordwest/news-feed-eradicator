@@ -11,7 +11,7 @@ done,improve,v3.0.0,Hide feed element on other pages
 done,internl,v3.0.0,"Combine feeds and styles into ""sections"" in sitelist"
 done,feature,v3.0.0,Add button hold mechanic for snoozing
 done,feature,v3.0.0,Restore enabled sites from storage when extension starts
-plan,feature,v3.0.0,Get quote island displaying quotes again
+done,feature,v3.0.0,Get quote island displaying quotes again
 plan,improve,v3.0.0,Fade out when feed disappears
 plan,improve,v3.0.0,Delay showing feed (or fade in) when path changes
 plan,feature,v3.0.0,Skip or hide a quote

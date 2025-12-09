@@ -27,16 +27,6 @@ export const BuiltinQuotes: Array<Quote> = [
 		source: 'Henry Wadsworth Longfellow',
 	},
 	{
-		id: 4,
-		text: "If we don't discipline ourselves, the world will do it for us.",
-		source: 'William Feather',
-	},
-	{
-		id: 5,
-		text: 'Rule your mind or it will rule you.',
-		source: 'Horace',
-	},
-	{
 		id: 6,
 		text: 'All that we are is the result of what we have thought.',
 		source: 'Buddha',
@@ -475,6 +465,16 @@ export const BuiltinQuotes: Array<Quote> = [
 		id: 251210,
 		text: "A fool sees himself as another, but a wise man sees others as himself.",
 		source: "Dogen",
+	},
+	{
+		id: 251211,
+		text: "We come spinning out of nothingness, scattering stars like dust.",
+		source: "Rumi",
+	},
+	{
+		id: 251212,
+		text: "Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray.",
+		source: "Rumi",
 	},
 ];
 
