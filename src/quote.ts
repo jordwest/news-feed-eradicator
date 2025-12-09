@@ -32,24 +32,9 @@ export const BuiltinQuotes: Array<Quote> = [
 		source: 'Buddha',
 	},
 	{
-		id: 7,
-		text: 'Doing just a little bit during the time we have available puts you that much further ahead than if you took no action at all.',
-		source: "Pulsifer, Take Action; Don't Procrastinate",
-	},
-	{
 		id: 8,
 		text: 'Never leave that till tomorrow which you can do today.',
 		source: 'Benjamin Franklin',
-	},
-	{
-		id: 9,
-		text: "Procrastination is like a credit card: it's a lot of fun until you get the bill.",
-		source: 'Christopher Parker',
-	},
-	{
-		id: 10,
-		text: 'Someday is not a day of the week.',
-		source: 'Author Unknown',
 	},
 	{
 		id: 11,
@@ -122,29 +107,9 @@ export const BuiltinQuotes: Array<Quote> = [
 		source: 'Farley Mowat',
 	},
 	{
-		id: 26,
-		text: 'True freedom is impossible without a mind made free by discipline.',
-		source: 'Mortimer J. Adler',
-	},
-	{
-		id: 27,
-		text: 'The most powerful control we can ever attain, is to be in control of ourselves.',
-		source: 'Chris Page',
-	},
-	{
-		id: 28,
-		text: 'Idleness is only the refuge of weak minds, and the holiday of fools.',
-		source: 'Philip Dormer Stanhope',
-	},
-	{
 		id: 29,
 		text: "This is your life and it's ending one minute at a time.",
 		source: 'Tyler Durden, Fight Club',
-	},
-	{
-		id: 30,
-		text: 'You create opportunities by performing, not complaining.',
-		source: 'Muriel Siebert',
 	},
 	{
 		id: 31,
@@ -163,7 +128,7 @@ export const BuiltinQuotes: Array<Quote> = [
 	},
 	{
 		id: 35,
-		text: 'The flame that burns Twice as bright burns half as long.',
+		text: 'The flame that burns twice as bright burns half as long.',
 		source: 'Lao Tzu',
 	},
 	{
