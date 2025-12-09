@@ -118,8 +118,8 @@ export const BuiltinQuotes: Array<Quote> = [
 	},
 	{
 		id: 35,
-		text: 'The flame that burns twice as bright burns half as long.',
-		source: 'Lao Tzu',
+		text: 'The light that burns twice as bright burns half as long.',
+		source: 'Dr. Tyrell, Blade Runner',
 	},
 	{
 		id: 36,
