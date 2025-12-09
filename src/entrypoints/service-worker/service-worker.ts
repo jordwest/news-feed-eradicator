@@ -1,8 +1,9 @@
 import { getBrowser, type MessageSender, type SendResponse, type TabId } from '../../lib/webextension';
 import type { Region, Site, SiteId, SiteList } from '../../types/sitelist';
-import type { ContentScriptMessage, DesiredRegionState, OptionsPageMessage, ServiceWorkerMessage } from '../../messaging/messages';
+import type { ContentScriptMessage, DesiredRegionState, OptionsPageMessage, RequestQuoteResponse, ServiceWorkerMessage } from '../../messaging/messages';
 import { saveSiteEnabled, upgradeSyncStorage } from '../../storage/storage';
 import { originsForSite } from '../../lib/util';
+import { BuiltinQuotes } from '../../quote';
 
 const browser = getBrowser();
 browser.action.onClicked.addListener(() => {
@@ -83,6 +84,13 @@ const enableSite = async (siteId: SiteId) => {
 	}]);
 }
 
+const requestQuote = async () => {
+	const idx = Math.floor(Math.random() * BuiltinQuotes.length);
+	const quote = BuiltinQuotes[idx]!;
+	const response: RequestQuoteResponse = quote;
+	return response;
+}
+
 const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sender: MessageSender) => {
 	if (msg.type === 'requestSiteDetails') {
 		const siteList = await siteListPromise;
@@ -114,6 +122,10 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 				snoozeUntil: settings.snoozeUntil ?? null,
 			})
 		}
+	}
+
+	if (msg.type === 'requestQuote') {
+		return requestQuote();
 	}
 
 	if (msg.type === 'enableSite') {

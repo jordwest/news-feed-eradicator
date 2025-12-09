@@ -55,7 +55,7 @@ async function enableSite(site: Site) {
 
 const disableSite = async (site: Site) => {
 	const origins = originsForSite(site);
-	const permissionAccepted = await browser.permissions.remove({ origins, permissions: [] });
+	await browser.permissions.remove({ origins, permissions: [] });
 
 	await browser.runtime.sendMessage({
 		type: 'disableSite',

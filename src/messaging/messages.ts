@@ -1,4 +1,10 @@
+import { getBrowser } from "../lib/webextension";
 import type { Region, SiteId } from "../types/sitelist";
+
+export const sendToServiceWorker = async <T = any>(msg: ContentScriptMessage | OptionsPageMessage): Promise<T> => {
+	const browser = getBrowser();
+	return browser.runtime.sendMessage(msg);
+}
 
 export type ServiceWorkerMessage = SetTabCss | OptionsUpdated;
 
@@ -25,7 +31,7 @@ type OptionsUpdated = {
 	type: 'nfe#optionsUpdated',
 }
 
-export type ContentScriptMessage = RequestSiteDetails | InjectCss | RemoveCss | ReadSnooze;
+export type ContentScriptMessage = RequestSiteDetails | RequestQuote | InjectCss | RemoveCss | ReadSnooze;
 
 // Request site details from service worker.
 type RequestSiteDetails = {
@@ -44,6 +50,16 @@ type RemoveCss = {
 	type: 'removeCss',
 	css: string,
 }
+
+export type RequestQuote = {
+	type: 'requestQuote',
+}
+
+export type RequestQuoteResponse = {
+	id: string | number,
+	text: string,
+	source: string,
+};
 
 export type OptionsPageMessage = EnableSite | DisableSite | Snooze;
 
