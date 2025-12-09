@@ -87,16 +87,6 @@ export const BuiltinQuotes: Array<Quote> = [
 		source: 'Aristotle',
 	},
 	{
-		id: 22,
-		text: 'By constant self-discipline and self-control, you can develop greatness of character.',
-		source: 'Grenville Kleiser',
-	},
-	{
-		id: 23,
-		text: 'The difference between a successful person and others is not a lack of strength, not a lack of knowledge, but rather a lack in will.',
-		source: 'Vince Lombardi Jr.',
-	},
-	{
 		id: 24,
 		text: 'At the end of the day, let there be no excuses, no explanations, no regrets.',
 		source: 'Steve Maraboli',
