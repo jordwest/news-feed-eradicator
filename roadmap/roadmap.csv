@@ -12,12 +12,15 @@ done,internl,v3.0.0,"Combine feeds and styles into ""sections"" in sitelist"
 done,feature,v3.0.0,Add button hold mechanic for snoozing
 done,feature,v3.0.0,Restore enabled sites from storage when extension starts
 done,feature,v3.0.0,Get quote island displaying quotes again
+plan,feature,v3.0.0,Add CSV bulk import
+plan,feature,v3.0.0,Add CSV export
+plan,feature,v3.0.0,Site specific options - turn regions on/off
+plan,feature,v3.0.0,Add quote editing back in
+plan,feature,v3.0.0,Switch for light/dark mode
+plan,feature,v3.0.0,Skip or hide a quote
 plan,improve,v3.0.0,Fade out when feed disappears
 plan,improve,v3.0.0,Delay showing feed (or fade in) when path changes
-plan,feature,v3.0.0,Skip or hide a quote
-plan,feature,v3.0.0,Add (bulk) quote editing back in
 plan,improve,v3.0.0,Reposition overlay on resize or nav or maybe timer
-plan,feature,v3.0.0,Switch for light/dark mode
 plan,improve,v3.0.0,Polish and style quote island
 plan,improve,v3.0.0,Polish and style options page
 plan,internl,v3.0.0,Serve sitelist locally in dev mode
