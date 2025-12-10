@@ -6,6 +6,7 @@ import { createSignal, For, createResource, createMemo, Show } from "solid-js";
 
 import { type SiteList, type Site, type SiteId } from "../../types/sitelist";
 import { originsForSite } from "../../lib/util";
+import { HiddenQuotes } from "./hidden-quotes";
 
 const browser = getBrowser();
 
@@ -67,10 +68,9 @@ const disableSite = async (site: Site) => {
 
 const Site = ({ site }: { site: Site }) => {
 	return <div class="p-2">
-		<span>{isSiteEnabled(site) ? 'ENABLED' : 'X'}</span>
-		<span>{site.title}</span>
-		<button onClick={ () => isSiteEnabled(site) ? disableSite(site) : enableSite(site) }>
-			{isSiteEnabled(site) ? 'Disable' : 'Request permissions'}
+		<button class="font-lg" onClick={ () => isSiteEnabled(site) ? disableSite(site) : enableSite(site) }>
+			{isSiteEnabled(site) ? '✅' : '🔘'}
+			<span>{site.title}</span>
 		</button>
 	</div>
 }
@@ -171,6 +171,7 @@ const OptionsPage = () => {
 		<h1>Options</h1>
 		<Snooze />
 		<SiteList />
+		<HiddenQuotes />
 	</div>
 }
 

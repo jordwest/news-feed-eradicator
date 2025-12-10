@@ -31,7 +31,7 @@ type OptionsUpdated = {
 	type: 'nfe#optionsUpdated',
 }
 
-export type ContentScriptMessage = RequestSiteDetails | RequestQuote | InjectCss | RemoveCss | ReadSnooze;
+export type ContentScriptMessage = RequestSiteDetails | RequestQuote | RemoveQuote | ReenableBuiltinQuote | InjectCss | RemoveCss | ReadSnooze;
 
 // Request site details from service worker.
 type RequestSiteDetails = {
@@ -55,11 +55,21 @@ export type RequestQuote = {
 	type: 'requestQuote',
 }
 
+export type RemoveQuote = {
+	type: 'removeQuote',
+	id: string | number,
+}
+
+export type ReenableBuiltinQuote = {
+	type: 'reenableBuiltinQuote',
+	id: number,
+}
+
 export type RequestQuoteResponse = {
 	id: string | number,
 	text: string,
 	source: string,
-};
+} | null;
 
 export type OptionsPageMessage = EnableSite | DisableSite | Snooze;
 

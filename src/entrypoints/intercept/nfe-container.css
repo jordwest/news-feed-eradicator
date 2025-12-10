@@ -4,6 +4,6 @@
 }
 
 #nfe-container.dark {
-	background: #000;
+	background: rgba(0, 0, 0, 0.5);
 	color: #fff;
 }

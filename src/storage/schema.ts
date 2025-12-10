@@ -1,6 +1,8 @@
 import type { SiteId } from "../types/sitelist";
 import type { CustomQuote } from "../quote";
 
+export const CURRENT_STORAGE_SCHEMA_VERSION = 2;
+
 /**
  * Data synced across devices
  */

@@ -1,7 +1,7 @@
 import { getBrowser, type MessageSender, type SendResponse, type TabId } from '../../lib/webextension';
 import type { Region, Site, SiteId, SiteList } from '../../types/sitelist';
 import type { ContentScriptMessage, DesiredRegionState, OptionsPageMessage, RequestQuoteResponse, ServiceWorkerMessage } from '../../messaging/messages';
-import { saveSiteEnabled, upgradeSyncStorage } from '../../storage/storage';
+import { load, loadHiddenBuiltinQuotes, saveHiddenBuiltinQuote, saveSiteEnabled, upgradeSyncStorage } from '../../storage/storage';
 import { originsForSite } from '../../lib/util';
 import { BuiltinQuotes } from '../../quote';
 
@@ -16,8 +16,10 @@ const siteListPromise: Promise<SiteList> = fetch(siteListUrl).then(siteList => s
 const sendMessage = (tabId: TabId, message: ServiceWorkerMessage) => browser.tabs.sendMessage(tabId, message);
 
 browser.runtime.onInstalled.addListener(async () => {
-	const settings = await browser.storage.sync.get(null).then(upgradeSyncStorage);
-	console.log('Installed extension, enabled sites are', settings.enabledSites);
+	const settings = await load();
+
+	console.log('Extension installed. Storage:', settings);
+
 	for (const siteId of settings.enabledSites ?? []) {
 		await enableSite(siteId);
 	}
@@ -85,10 +87,26 @@ const enableSite = async (siteId: SiteId) => {
 }
 
 const requestQuote = async () => {
-	const idx = Math.floor(Math.random() * BuiltinQuotes.length);
-	const quote = BuiltinQuotes[idx]!;
+	const hiddenQuotes = await loadHiddenBuiltinQuotes();
+
+	const activeQuotes = BuiltinQuotes.filter(quote => !hiddenQuotes.includes(quote.id));
+
+	const idx = Math.floor(Math.random() * activeQuotes.length);
+	const quote = activeQuotes[idx]!;
 	const response: RequestQuoteResponse = quote;
 	return response;
+}
+
+const removeQuote = async (id: string | number) => {
+	if (typeof id === 'number') {
+		await saveHiddenBuiltinQuote(id, true);
+	} else {
+		// TODO ... delete from custom quotes
+	}
+}
+
+const reenableQuote = async (id: number) => {
+	return saveHiddenBuiltinQuote(id, false);
 }
 
 const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sender: MessageSender) => {
@@ -128,8 +146,16 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 		return requestQuote();
 	}
 
+	if (msg.type === 'removeQuote') {
+		return removeQuote(msg.id);
+	}
+
 	if (msg.type === 'enableSite') {
 		return enableSite(msg.siteId);
+	}
+
+	if (msg.type === 'reenableBuiltinQuote') {
+		return reenableQuote(msg.id);
 	}
 
 	if (msg.type === 'disableSite') {

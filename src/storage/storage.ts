@@ -1,15 +1,14 @@
 import { getBrowser } from "../lib/webextension";
 import type { SiteId } from "../types/sitelist";
-import { type StorageAnyVersion, SiteStateTagV1, type StorageSync } from "./schema";
+import { type StorageAnyVersion, SiteStateTagV1, type StorageSync, CURRENT_STORAGE_SCHEMA_VERSION } from "./schema";
 
 /**
  * Migrates storage from older versions (or empty) to the current version
  */
 export const upgradeSyncStorage = (storage: Partial<StorageAnyVersion>): StorageSync => {
-	if (storage.version === 2) return { version: 2, ...storage };
+	if (storage.version === CURRENT_STORAGE_SCHEMA_VERSION) return { ...storage, version: CURRENT_STORAGE_SCHEMA_VERSION };
 
 	if (storage.version === 1) {
-
 		let enabledSites: SiteId[] = []
 
 		if (storage.sites != null) {
@@ -63,5 +62,26 @@ export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<
 	}
 
 	settings.enabledSites = sites;
+	save(settings);
+}
+
+export const loadHiddenBuiltinQuotes = async (): Promise<number[]> => {
+	const settings = await load();
+	return settings.hiddenBuiltinQuotes ?? [];
+}
+
+export const saveHiddenBuiltinQuote = async (quoteId: number, hidden: boolean): Promise<void> => {
+	const settings = await load();
+	let hiddenQuotes = settings.hiddenBuiltinQuotes ?? [];
+
+	if (hidden) {
+		if (!hiddenQuotes.includes(quoteId)) {
+			hiddenQuotes.push(quoteId)
+		}
+	} else {
+		hiddenQuotes = hiddenQuotes.filter(id => id !== quoteId);
+	}
+
+	settings.hiddenBuiltinQuotes = hiddenQuotes;
 	save(settings);
 }

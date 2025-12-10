@@ -10,7 +10,7 @@ export type BuiltinQuote = {
 };
 export type Quote = CustomQuote | BuiltinQuote;
 
-export const BuiltinQuotes: Array<Quote> = [
+export const BuiltinQuotes: Array<BuiltinQuote> = [
 	{
 		id: 1,
 		text: 'I have just three things to teach: simplicity, patience, compassion. These three are your greatest treasures.',
@@ -187,11 +187,6 @@ export const BuiltinQuotes: Array<Quote> = [
 		source: 'Maya Angelou',
 	},
 	{
-		id: 49,
-		text: 'We need to start work with the idea that we’re going to learn every day. I learn, even at my position, every single day.',
-		source: 'Chanda Kochhar',
-	},
-	{
 		id: 50,
 		text: 'There are two kinds of people, those who do the work and those who take the credit. Try to be in the first group; there is less competition there.',
 		source: 'Indira Gandhi',
@@ -330,11 +325,6 @@ export const BuiltinQuotes: Array<Quote> = [
 		id: 78,
 		text: 'If you do not have courage, you may not have the opportunity to use any of your other virtues.',
 		source: 'Samuel L. Jackson',
-	},
-	{
-		id: 79,
-		text: "Our humanity is worth a little discomfort, it's actually worth a lot of discomfort.",
-		source: 'Ijeoma Oluo',
 	},
 	{
 		id: 80,
