@@ -421,6 +421,11 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 		text: "Let yourself be silently drawn by the strange pull of what you really love. It will not lead you astray.",
 		source: "Rumi",
 	},
+	{
+		id: 251213,
+		text: "The most difficult subjects can be explained to the most slow-witted man if he has not formed any idea of them already; but the simplest thing cannot be made clear to the most intelligent man if he is firmly persuaded that he knows already, without a shadow of a doubt, what is laid before him.",
+		source: "Leo Tolstoy"
+	}
 ];
 
 // New quote IDs should start with the year/month it gets added (in the

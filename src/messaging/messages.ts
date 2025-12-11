@@ -1,12 +1,12 @@
 import { getBrowser } from "../lib/webextension";
 import type { Region, SiteId } from "../types/sitelist";
 
-export const sendToServiceWorker = async <T = any>(msg: ContentScriptMessage | OptionsPageMessage): Promise<T> => {
+export const sendToServiceWorker = async <T = any>(msg: ToServiceWorkerMessage): Promise<T> => {
 	const browser = getBrowser();
 	return browser.runtime.sendMessage(msg);
 }
 
-export type ServiceWorkerMessage = SetTabCss | OptionsUpdated;
+export type FromServiceWorkerMessage = SetTabCss | OptionsUpdated;
 
 /**
  * Respond to a content script with site details
@@ -31,7 +31,7 @@ type OptionsUpdated = {
 	type: 'nfe#optionsUpdated',
 }
 
-export type ContentScriptMessage = RequestSiteDetails | RequestQuote | RemoveQuote | ReenableBuiltinQuote | InjectCss | RemoveCss | ReadSnooze;
+export type ToServiceWorkerMessage = RequestSiteDetails | NotifyOptionsUpdated | EnableSite | DisableSite | Snooze | RequestQuote | RemoveQuote | ReenableBuiltinQuote | InjectCss | RemoveCss | ReadSnooze;
 
 // Request site details from service worker.
 type RequestSiteDetails = {
@@ -39,6 +39,10 @@ type RequestSiteDetails = {
 	path: string,
 	token: number
 };
+
+type NotifyOptionsUpdated = {
+	type: 'notifyOptionsUpdated',
+}
 
 // Content script asking for css to be injected into the page. This can only be done on the service worker.
 type InjectCss = {
@@ -70,8 +74,6 @@ export type RequestQuoteResponse = {
 	text: string,
 	source: string,
 } | null;
-
-export type OptionsPageMessage = EnableSite | DisableSite | Snooze;
 
 type EnableSite = {
 	type: 'enableSite',

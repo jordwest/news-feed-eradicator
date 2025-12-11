@@ -35,14 +35,17 @@ type WebExtensionAPI = {
 		unregisterContentScripts: (filter?: ContentScriptFilter) => Promise<void>;
 	};
 	storage: {
-		sync: {
-			get(keys: string | string[] | null): Promise<any>;
-			set(keys: object): void;
-		};
+		local: Storage,
+		sync: Storage,
 	};
 };
 
 export type TabId = number & { __tabId: never };
+
+type Storage = {
+	get(keys: string | string[] | null): Promise<any>;
+	set(keys: object): Promise<void>;
+};
 
 type OnInstalledDetails = {
 	previousVersion?: string,

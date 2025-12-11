@@ -1,87 +1,120 @@
 import { getBrowser } from "../lib/webextension";
-import type { SiteId } from "../types/sitelist";
-import { type StorageAnyVersion, SiteStateTagV1, type StorageSync, CURRENT_STORAGE_SCHEMA_VERSION } from "./schema";
+import type { RegionId, SiteId, SiteList } from "../types/sitelist";
+import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig } from "./schema";
 
-/**
- * Migrates storage from older versions (or empty) to the current version
- */
-export const upgradeSyncStorage = (storage: Partial<StorageAnyVersion>): StorageSync => {
-	if (storage.version === CURRENT_STORAGE_SCHEMA_VERSION) return { ...storage, version: CURRENT_STORAGE_SCHEMA_VERSION };
+const ensureMigrated = async (): Promise<void> => {
+	const browser = getBrowser();
 
-	if (storage.version === 1) {
-		let enabledSites: SiteId[] = []
+	const storageSync = await browser.storage.sync.get(null) as StorageSyncV1 | undefined;
+	const storageLocal = await browser.storage.local.get(null) as StorageLocalV2 | undefined;
 
-		if (storage.sites != null) {
-			enabledSites = Object.entries(storage.sites)
-				.filter(([, state]) => state?.type !== SiteStateTagV1.DISABLED)
-				.map(([siteId,]) => siteId as SiteId);
-		}
-
-		return {
-			version: 2,
-			hideQuotes: storage.showQuotes === false,
-			disableBuiltinQuotes: storage.builtinQuotesEnabled === false,
-			hiddenBuiltinQuotes: storage.hiddenBuiltinQuotes,
-			customQuotes: storage.customQuotes,
-			enabledSites,
-		}
+	if (storageSync?.version == null) {
+		// Nothing stored in sync storage, nothing to migrate
+		await browser.storage.local.set({ 'version': CURRENT_STORAGE_SCHEMA_VERSION });
+		return;
 	}
 
-	// New version makes all properties optional
-	return {
+	if (storageSync.version != null && storageLocal?.version === 2) {
+		// Leave sync storage in place in case older versions are running elsewhere
+		return;
+	}
+
+	// Do migration
+	let enabledSites: SiteId[] = []
+
+	if (storageSync.sites != null) {
+		enabledSites = Object.entries(storageSync.sites)
+			.filter(([, state]) => state?.type !== SiteStateTagV1.DISABLED)
+			.map(([siteId,]) => siteId as SiteId);
+	}
+
+	const migratedData = {
 		version: 2,
+		hideQuotes: storageSync.showQuotes === false,
+		disableBuiltinQuotes: storageSync.builtinQuotesEnabled === false,
+		hiddenBuiltinQuotes: storageSync.hiddenBuiltinQuotes,
+		customQuotes: storageSync.customQuotes,
+		enabledSites,
 	}
-}
 
-export const load = async (): Promise<StorageSync> => {
+	await browser.storage.local.set(migratedData);
+};
+
+export const migrationPromise = ensureMigrated();
+
+const getKey = async <Key extends keyof StorageLocal>(k: Key): Promise<StorageLocal[Key] | undefined> => {
 	const browser = getBrowser();
-	const settings = await browser.storage.sync.get(null).then(upgradeSyncStorage);
-	return settings;
+	await migrationPromise;
+	const result = await browser.storage.local.get(k);
+	if (result == null) return undefined;
+	return (result[k]) as StorageLocal[Key];
 }
 
-export const save = async (storage: StorageSync) => {
+const setKey = async <Key extends keyof StorageLocal>(k: Key, val: StorageLocal[Key]): Promise<void> => {
 	const browser = getBrowser();
-	return browser.storage.sync.set(storage);
-}
-
-export const loadEnabledSites = async (): Promise<SiteId[]> => {
-	const settings = await load();
-	return (settings.enabledSites ?? []) as SiteId[];
+	await migrationPromise;
+	return await browser.storage.local.set({ [k]: val });
 }
 
 export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<void> => {
-	const settings = await load();
-	let sites = settings.enabledSites ?? [];
+	const s = await getKey('enabledSites');
+	let sites = new Set(s ?? []);
 
-	if (enable) {
-		if (!sites.includes(siteId)) {
-			sites.push(siteId)
-		}
-	} else {
-		sites = sites.filter(site => site !== siteId);
-	}
+	enable ? sites.add(siteId) : sites.delete(siteId);
 
-	settings.enabledSites = sites;
-	save(settings);
+	return setKey('enabledSites', Array.from(sites));
 }
 
 export const loadHiddenBuiltinQuotes = async (): Promise<number[]> => {
-	const settings = await load();
-	return settings.hiddenBuiltinQuotes ?? [];
+	return await getKey('hiddenBuiltinQuotes') ?? [];
 }
 
 export const saveHiddenBuiltinQuote = async (quoteId: number, hidden: boolean): Promise<void> => {
-	const settings = await load();
-	let hiddenQuotes = settings.hiddenBuiltinQuotes ?? [];
+	let hiddenQuotes = new Set(await getKey('hiddenBuiltinQuotes'));
 
-	if (hidden) {
-		if (!hiddenQuotes.includes(quoteId)) {
-			hiddenQuotes.push(quoteId)
-		}
-	} else {
-		hiddenQuotes = hiddenQuotes.filter(id => id !== quoteId);
+	hidden ? hiddenQuotes.add(quoteId) : hiddenQuotes.delete(quoteId);
+
+	return setKey('hiddenBuiltinQuotes', Array.from(hiddenQuotes));
+}
+
+export const loadRegionsForSite = async (siteId: SiteId): Promise<SiteConfig> => {
+	return (await getKey('siteConfig') ?? {})[siteId] ?? {
+		regionEnabledOverride: {}
+	};
+}
+
+export const loadSnoozeUntil = () => getKey('snoozeUntil');
+export const saveSnoozeUntil = (snoozeUntil: number | undefined) => setKey('snoozeUntil', snoozeUntil);
+
+export const clearRegionsForSite = async (siteId: SiteId): Promise<void> => {
+	const siteConfig = (await getKey('siteConfig') ?? {});
+
+	if (siteConfig[siteId] == null) {
+		// Site config doesn't exist, nothing to clear
+		return;
 	}
 
-	settings.hiddenBuiltinQuotes = hiddenQuotes;
-	save(settings);
+	siteConfig[siteId].regionEnabledOverride = {};
+	return setKey('siteConfig', siteConfig);
+}
+
+export const setRegionEnabledForSite = async (siteId: SiteId, regionId: RegionId, enabled: boolean) => {
+	const siteConfig = (await getKey('siteConfig') ?? {});
+
+	const site = siteConfig[siteId] ?? {
+		regionEnabledOverride: {},
+	};
+
+	site.regionEnabledOverride[regionId] = enabled;
+
+	siteConfig[siteId] = site;
+	return setKey('siteConfig', siteConfig);
+}
+
+const browser = getBrowser();
+const siteListUrl = browser.runtime.getURL('sitelist.json');
+const siteListPromise: Promise<SiteList> = fetch(siteListUrl).then(siteList => siteList.json());
+
+export const loadSitelist = async (): Promise<SiteList> => {
+	return siteListPromise
 }

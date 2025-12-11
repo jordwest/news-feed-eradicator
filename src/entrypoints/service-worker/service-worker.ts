@@ -1,7 +1,7 @@
 import { getBrowser, type MessageSender, type SendResponse, type TabId } from '../../lib/webextension';
 import type { Region, Site, SiteId, SiteList } from '../../types/sitelist';
-import type { ContentScriptMessage, DesiredRegionState, OptionsPageMessage, RequestQuoteResponse, ServiceWorkerMessage } from '../../messaging/messages';
-import { load, loadHiddenBuiltinQuotes, saveHiddenBuiltinQuote, saveSiteEnabled, upgradeSyncStorage } from '../../storage/storage';
+import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '../../messaging/messages';
+import { loadHiddenBuiltinQuotes, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveHiddenBuiltinQuote, saveSiteEnabled, saveSnoozeUntil } from '../../storage/storage';
 import { originsForSite } from '../../lib/util';
 import { BuiltinQuotes } from '../../quote';
 
@@ -10,17 +10,16 @@ browser.action.onClicked.addListener(() => {
 	browser.runtime.openOptionsPage();
 });
 
-const siteListUrl = browser.runtime.getURL('sitelist.json');
-const siteListPromise: Promise<SiteList> = fetch(siteListUrl).then(siteList => siteList.json());
-
-const sendMessage = (tabId: TabId, message: ServiceWorkerMessage) => browser.tabs.sendMessage(tabId, message);
+const sendMessage = (tabId: TabId, message: FromServiceWorkerMessage) => browser.tabs.sendMessage(tabId, message);
 
 browser.runtime.onInstalled.addListener(async () => {
-	const settings = await load();
+	await migrationPromise;
+	const sync = await browser.storage.sync.get(null);
+	const local = await browser.storage.local.get(null);
 
-	console.log('Extension installed. Storage:', settings);
+	console.log('Extension installed. Storage sync:', sync, 'local', local);
 
-	for (const siteId of settings.enabledSites ?? []) {
+	for (const siteId of local.enabledSites ?? []) {
 		await enableSite(siteId);
 	}
 });
@@ -66,7 +65,7 @@ const sanitizeSelector = (selector: string): string => {
 }
 
 const enableSite = async (siteId: SiteId) => {
-	const siteList = await siteListPromise;
+	const siteList = await loadSitelist();
 	const site = siteList.sites.find(site => site.id === siteId);
 	if (site == null) {
 		return false;
@@ -109,27 +108,32 @@ const reenableQuote = async (id: number) => {
 	return saveHiddenBuiltinQuote(id, false);
 }
 
-const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sender: MessageSender) => {
+const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender) => {
 	if (msg.type === 'requestSiteDetails') {
-		const siteList = await siteListPromise;
-		const settings = await browser.storage.sync.get(null).then(upgradeSyncStorage);
-		const isSnoozing = settings.snoozeUntil != null && settings.snoozeUntil > Date.now();
+		const siteList = await loadSitelist();
+		const snoozeUntil = await loadSnoozeUntil();
+		const isSnoozing = snoozeUntil != null && snoozeUntil > Date.now();
 
 		const url = new URL(sender.url);
 		console.log(url);
 		const site = siteList.sites.find(site => site.hosts.includes(url.host));
 
 		if (site != null) {
-			console.log('Site found', site)
+			const siteOptions = await loadRegionsForSite(site.id);
 
-			let regions = site.regions.map((region): DesiredRegionState => {
-				if (isSnoozing || (region.paths !== '*' && !isEnabledPath(site, msg.path))) {
-					return { config: region, css: null, enabled: false };
-				}
+			console.log('Site found', site, siteOptions)
 
-				const selector = region.selectors.map(sanitizeSelector).join(',');
-				return { config: region, css: `${selector} { ${cssForType(region.type)} }`, enabled: true } ;
-			});
+			let regions = site.regions
+				.map((region): DesiredRegionState => {
+					if (isSnoozing || (region.paths !== '*' && !isEnabledPath(site, msg.path))) {
+						return { config: region, css: null, enabled: false };
+					}
+
+					const enabled = siteOptions.regionEnabledOverride[region.id] ?? region.default ?? true;
+
+					const selector = region.selectors.map(sanitizeSelector).join(',');
+					return { config: region, css: `${selector} { ${cssForType(region.type)} }`, enabled } ;
+				});
 
 			console.log('sending site details', regions);
 
@@ -137,7 +141,7 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 				type: 'nfe#siteDetails',
 				regions,
 				token: msg.token,
-				snoozeUntil: settings.snoozeUntil ?? null,
+				snoozeUntil: snoozeUntil ?? null,
 			})
 		}
 	}
@@ -151,17 +155,23 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 	}
 
 	if (msg.type === 'enableSite') {
-		return enableSite(msg.siteId);
+		const result = await enableSite(msg.siteId);
+		notifyTabsOptionsUpdated();
+		return result;
 	}
 
 	if (msg.type === 'reenableBuiltinQuote') {
 		return reenableQuote(msg.id);
 	}
 
+	if (msg.type === 'notifyOptionsUpdated') {
+		notifyTabsOptionsUpdated();
+	}
+
 	if (msg.type === 'disableSite') {
 		await browser.scripting.unregisterContentScripts({ ids: [msg.siteId]});
 
-		const siteList = await siteListPromise;
+		const siteList = await loadSitelist();
 		const site = siteList.sites.find(site => site.id === msg.siteId);
 		if (site == null) return;
 
@@ -171,17 +181,13 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 	}
 
 	if (msg.type === 'snooze') {
-		const settings = await browser.storage.sync.get(null).then(upgradeSyncStorage);
-		settings.snoozeUntil = msg.until;
-		browser.storage.sync.set(settings);
-		console.log('settings', settings);
+		await saveSnoozeUntil(msg.until)
 
 		notifyTabsOptionsUpdated();
 	}
 
 	if (msg.type === 'readSnooze') {
-		const settings = await browser.storage.sync.get(null).then(upgradeSyncStorage);
-		return settings.snoozeUntil ?? null;
+		return await loadSnoozeUntil() ?? null;
 	}
 
 	if (msg.type === 'injectCss') {
@@ -205,7 +211,7 @@ const handleMessage = async (msg: ContentScriptMessage | OptionsPageMessage, sen
 	}
 }
 
-browser.runtime.onMessage.addListener((msg: ContentScriptMessage | OptionsPageMessage, sender, sendResponse) => {
+browser.runtime.onMessage.addListener((msg: ToServiceWorkerMessage, sender, sendResponse) => {
 	handleMessage(msg, sender).then(sendResponse);
 	return true;
 });

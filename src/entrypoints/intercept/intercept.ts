@@ -1,6 +1,6 @@
 // Injected into the relevant site
 import { getBrowser } from '../../lib/webextension';
-import type { ContentScriptMessage, ServiceWorkerMessage, DesiredRegionState } from '../../messaging/messages';
+import type { FromServiceWorkerMessage, DesiredRegionState, ToServiceWorkerMessage } from '../../messaging/messages';
 import { QuoteWidget } from '../../shared/quote-widget';
 import type { Region, RegionId } from '../../types/sitelist';
 import { render } from 'solid-js/web';
@@ -15,7 +15,7 @@ const token = Math.floor(Math.random() * 1000000);
 
 console.log('runtime', browser.runtime);
 // const port = browser.runtime.connect();
-const sendMessage = (message: ContentScriptMessage) => browser.runtime.sendMessage(message);
+const sendMessage = (message: ToServiceWorkerMessage) => browser.runtime.sendMessage(message);
 
 type RegionState = {
 	config: Region;
@@ -240,7 +240,7 @@ const patchState = (regions: DesiredRegionState[]) => {
 			el.style.display = isRegionBlockActive(activeRegion) ? 'block' : 'none';
 		}
 
-		if (activeRegion.css != null) {
+		if (activeRegion.css != null && activeRegion.enabled) {
 			css += activeRegion.css + '\n';
 		}
 	}
@@ -250,7 +250,7 @@ const patchState = (regions: DesiredRegionState[]) => {
 
 const isRegionBlockActive = (region: RegionState) => region.enabled && !isSnoozing()
 
-browser.runtime.onMessage.addListener(async (msg: ServiceWorkerMessage) => {
+browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 	console.log("Got message", msg);
 	if (msg.type == 'nfe#siteDetails' && msg.token === token) {
 		if (msg.snoozeUntil != null && msg.snoozeUntil > Date.now()) {

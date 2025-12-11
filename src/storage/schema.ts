@@ -1,36 +1,25 @@
-import type { SiteId } from "../types/sitelist";
+import type { Region, RegionId, SiteId } from "../types/sitelist";
 import type { CustomQuote } from "../quote";
 
 export const CURRENT_STORAGE_SCHEMA_VERSION = 2;
 
-/**
- * Data synced across devices
- */
-export type StorageSyncV2 = {
+export type StorageLocalV2 = {
 	version: 2;
 	hideQuotes?: boolean;
 	disableBuiltinQuotes?: boolean;
 	hiddenBuiltinQuotes?: number[];
 	customQuotes?: CustomQuote[];
 	enabledSites?: SiteId[];
+	siteConfig?: Record<SiteId, SiteConfig>;
 	snoozeUntil?: number;
 };
 
-/**
- * Data stored only locally.
- * TODO v3.1 or later: Migrate custom quotes and site settings to local storage to support larger
- * storage.
- */
-type StorageLocalV2 = {
-	version: 2;
+export type SiteConfig = {
+	// Overrides the enabled state from the sitelist if set
+	regionEnabledOverride: Record<RegionId, boolean>;
 };
 
-export type StorageAnyVersion = StorageSyncV1 | StorageSyncV2;
-
-/**
- * Current version
- */
-export type StorageSync = StorageSyncV2
+export type StorageLocal = StorageLocalV2;
 
 ///////// OLDER VERSIONS /////////
 

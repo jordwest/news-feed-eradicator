@@ -7,6 +7,7 @@ import { createSignal, For, createResource, createMemo, Show } from "solid-js";
 import { type SiteList, type Site, type SiteId } from "../../types/sitelist";
 import { originsForSite } from "../../lib/util";
 import { HiddenQuotes } from "./hidden-quotes";
+import { SiteConfigPanel } from "./site-configuration";
 
 const browser = getBrowser();
 
@@ -72,6 +73,7 @@ const Site = ({ site }: { site: Site }) => {
 			{isSiteEnabled(site) ? '✅' : '🔘'}
 			<span>{site.title}</span>
 		</button>
+		<SiteConfigPanel site={site} />
 	</div>
 }
 
