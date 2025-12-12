@@ -36,7 +36,7 @@ export default {
 	},
 	"web_accessible_resources": [
 		{
-			"resources": ["sitelist.json", "intercept/intercept.js"],
+			"resources": ["sitelist.json", "entrypoints/intercept/intercept.js"],
 			"extension_ids": [],
 		}
 	],

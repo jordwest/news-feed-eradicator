@@ -1,9 +1,10 @@
 import { getBrowser, type MessageSender, type SendResponse, type TabId } from '../../lib/webextension';
 import type { Region, Site, SiteId, SiteList } from '../../types/sitelist';
 import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '../../messaging/messages';
-import { loadHiddenBuiltinQuotes, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveHiddenBuiltinQuote, saveSiteEnabled, saveSnoozeUntil } from '../../storage/storage';
+import { loadHiddenBuiltinQuotes, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveHiddenBuiltinQuote, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '../../storage/storage';
 import { originsForSite } from '../../lib/util';
 import { BuiltinQuotes } from '../../quote';
+import type { Theme } from '../../storage/schema';
 
 const browser = getBrowser();
 browser.action.onClicked.addListener(() => {
@@ -108,6 +109,11 @@ const reenableQuote = async (id: number) => {
 	return saveHiddenBuiltinQuote(id, false);
 }
 
+const setSiteTheme = async (siteId: SiteId, theme: Theme | null) => {
+	await saveThemeForSite(siteId, theme ?? undefined);
+	notifyTabsOptionsUpdated();
+}
+
 const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender) => {
 	if (msg.type === 'requestSiteDetails') {
 		const siteList = await loadSitelist();
@@ -142,6 +148,8 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 				regions,
 				token: msg.token,
 				snoozeUntil: snoozeUntil ?? null,
+				siteId: site.id,
+				theme: siteOptions.theme ?? 'light',
 			})
 		}
 	}
@@ -188,6 +196,10 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 
 	if (msg.type === 'readSnooze') {
 		return await loadSnoozeUntil() ?? null;
+	}
+
+	if (msg.type === 'setSiteTheme') {
+		return setSiteTheme(msg.siteId, msg.theme);
 	}
 
 	if (msg.type === 'injectCss') {

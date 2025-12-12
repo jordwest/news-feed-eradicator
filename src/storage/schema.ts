@@ -15,9 +15,12 @@ export type StorageLocalV2 = {
 };
 
 export type SiteConfig = {
+	theme?: Theme;
 	// Overrides the enabled state from the sitelist if set
 	regionEnabledOverride: Record<RegionId, boolean>;
 };
+
+export type Theme = 'light' | 'dark';
 
 export type StorageLocal = StorageLocalV2;
 

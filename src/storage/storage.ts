@@ -1,6 +1,6 @@
 import { getBrowser } from "../lib/webextension";
 import type { RegionId, SiteId, SiteList } from "../types/sitelist";
-import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig } from "./schema";
+import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme } from "./schema";
 
 const ensureMigrated = async (): Promise<void> => {
 	const browser = getBrowser();
@@ -77,14 +77,31 @@ export const saveHiddenBuiltinQuote = async (quoteId: number, hidden: boolean): 
 	return setKey('hiddenBuiltinQuotes', Array.from(hiddenQuotes));
 }
 
+export const loadSnoozeUntil = () => getKey('snoozeUntil');
+export const saveSnoozeUntil = (snoozeUntil: number | undefined) => setKey('snoozeUntil', snoozeUntil);
+
+export const loadThemeForSite = async (siteId: SiteId): Promise<Theme | undefined> => {
+	return (await getKey('siteConfig') ?? {})[siteId]?.theme;
+}
+
+export const saveThemeForSite = async (siteId: SiteId, theme: Theme | undefined) => {
+	const siteConfig = (await getKey('siteConfig') ?? {});
+
+	const site = siteConfig[siteId] ?? {
+		regionEnabledOverride: {},
+	};
+
+	site.theme = theme;
+
+	siteConfig[siteId] = site;
+	return setKey('siteConfig', siteConfig);
+}
+
 export const loadRegionsForSite = async (siteId: SiteId): Promise<SiteConfig> => {
 	return (await getKey('siteConfig') ?? {})[siteId] ?? {
 		regionEnabledOverride: {}
 	};
 }
-
-export const loadSnoozeUntil = () => getKey('snoozeUntil');
-export const saveSnoozeUntil = (snoozeUntil: number | undefined) => setKey('snoozeUntil', snoozeUntil);
 
 export const clearRegionsForSite = async (siteId: SiteId): Promise<void> => {
 	const siteConfig = (await getKey('siteConfig') ?? {});

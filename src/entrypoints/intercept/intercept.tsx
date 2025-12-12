@@ -2,19 +2,17 @@
 import { getBrowser } from '../../lib/webextension';
 import type { FromServiceWorkerMessage, DesiredRegionState, ToServiceWorkerMessage } from '../../messaging/messages';
 import { QuoteWidget } from '../../shared/quote-widget';
-import type { Region, RegionId } from '../../types/sitelist';
+import type { Region, RegionId, Site, SiteId } from '../../types/sitelist';
 import { render } from 'solid-js/web';
 import nfeStyles from './nfe-container.css?raw';
 import sharedStyles from '../../shared/styles.css?raw';
+import type { Theme } from '../../storage/schema';
+import { type Signal, createSignal } from 'solid-js';
 
 const browser = getBrowser();
 
-console.log('Injecting NFE 3')
-
 const token = Math.floor(Math.random() * 1000000);
 
-console.log('runtime', browser.runtime);
-// const port = browser.runtime.connect();
 const sendMessage = (message: ToServiceWorkerMessage) => browser.runtime.sendMessage(message);
 
 type RegionState = {
@@ -28,12 +26,15 @@ type ContentScriptState = {
 	snoozeUntil?: number;
 	snoozeTimer?: Timer;
 	injectedCss?: string | null;
+	siteId?: SiteId;
 	ready?: boolean;
+	theme: Signal<Theme | null>;
 	regions: Map<RegionId, RegionState>;
 };
 
 let state: ContentScriptState = {
 	regions: new Map(),
+	theme: createSignal<Theme | null>(null),
 };
 
 function createOverlay(el: Element, bounds: DOMRect, position: string, zIndex: number) {
@@ -120,7 +121,7 @@ function tryInject() {
 			container.className = 'dark';
 			shadow.appendChild(container);
 
-			render(QuoteWidget, container);
+			render(() => <QuoteWidget siteId={state.siteId ?? null} theme={state.theme[0]} />, container);
 
 			nfeElement.style.display = isRegionBlockActive(region) ? 'block' : 'none';
 
@@ -260,6 +261,8 @@ browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 		}
 
 		state.ready = true;
+		state.siteId = msg.siteId;
+		state.theme[1](msg.theme);
 		patchState(msg.regions);
 	}
 

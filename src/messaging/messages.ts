@@ -1,20 +1,23 @@
 import { getBrowser } from "../lib/webextension";
-import type { Region, SiteId } from "../types/sitelist";
+import type { Theme } from "../storage/schema";
+import type { Region, Site, SiteId } from "../types/sitelist";
 
 export const sendToServiceWorker = async <T = any>(msg: ToServiceWorkerMessage): Promise<T> => {
 	const browser = getBrowser();
 	return browser.runtime.sendMessage(msg);
 }
 
-export type FromServiceWorkerMessage = SetTabCss | OptionsUpdated;
+export type FromServiceWorkerMessage = SiteDetails | OptionsUpdated;
 
 /**
  * Respond to a content script with site details
  */
-type SetTabCss = {
+type SiteDetails = {
 	type: 'nfe#siteDetails',
 	token: number,
+	siteId: SiteId,
 	regions: DesiredRegionState[],
+	theme: Theme,
 	snoozeUntil: number | null,
 }
 
@@ -31,7 +34,7 @@ type OptionsUpdated = {
 	type: 'nfe#optionsUpdated',
 }
 
-export type ToServiceWorkerMessage = RequestSiteDetails | NotifyOptionsUpdated | EnableSite | DisableSite | Snooze | RequestQuote | RemoveQuote | ReenableBuiltinQuote | InjectCss | RemoveCss | ReadSnooze;
+export type ToServiceWorkerMessage = RequestSiteDetails | NotifyOptionsUpdated | SetSiteTheme | EnableSite | DisableSite | Snooze | RequestQuote | RemoveQuote | ReenableBuiltinQuote | InjectCss | RemoveCss | ReadSnooze;
 
 // Request site details from service worker.
 type RequestSiteDetails = {
@@ -78,6 +81,12 @@ export type RequestQuoteResponse = {
 type EnableSite = {
 	type: 'enableSite',
 	siteId: SiteId,
+}
+
+type SetSiteTheme = {
+	type: 'setSiteTheme',
+	siteId: SiteId,
+	theme: Theme | null,
 }
 
 type DisableSite = {

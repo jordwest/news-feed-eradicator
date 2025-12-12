@@ -91,7 +91,7 @@ async function buildIntercept(): Promise<void> {
 		build: {
 			outDir: `${PROJECT_ROOT}/build`,
 			rollupOptions: {
-				input: '/entrypoints/intercept/intercept.ts',
+				input: '/entrypoints/intercept/intercept.tsx',
 				output: {
 					assetFileNames: 'entrypoints/intercept/[name].[ext]',
 					entryFileNames: 'entrypoints/intercept/[name].js'
