@@ -17,7 +17,10 @@ type SiteDetails = {
 	token: number,
 	siteId: SiteId,
 	regions: DesiredRegionState[],
-	theme: Theme,
+	theme: {
+		id: Theme,
+		css: string,
+	}
 	snoozeUntil: number | null,
 }
 

@@ -1,4 +1,4 @@
-import { createEffect, createResource, Show, type Accessor } from "solid-js"
+import { createResource, Show, type Accessor } from "solid-js"
 import { type RequestQuoteResponse, sendToServiceWorker } from "../messaging/messages"
 import type { Theme } from "../storage/schema";
 import type { SiteId } from "../types/sitelist";
@@ -26,24 +26,19 @@ const toggleTheme = async (siteId: SiteId, theme: Theme) => {
 		siteId,
 		theme: theme === 'light' ? 'dark' : 'light',
 	})
-	// const currentTheme = await loadThemeForSite(site.id) ?? 'dark';
-
-	// if (currentTheme === 'dark') {
-	// 	saveThemeForSite(site.id, 'light');
-	// } else {
-	// 	saveThemeForSite(site.id, 'dark');
-	// }
 }
 
 export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: Accessor<Theme | null> }) => {
-	return <div class="p-4 space-y-2">
+	return <div class="p-4 space-y-2 bg-ground-100 b-1">
 		<Show when={quote()}>
-			<button onClick={nextQuote}>&gt;</button>
-			<button onClick={disableQuote}>Disable this quote</button>
-			<Show when={siteId != null}>
-				<button onClick={() => toggleTheme(siteId!, theme() ?? 'light')}>Theme {theme()}</button>
-			</Show>
-			<div class="quote-border-left p-2">{quote()?.text}</div>
+			<div class="space-x-2">
+				<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={nextQuote}>&gt;</button>
+				<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={disableQuote}>Disable this quote</button>
+				<Show when={siteId != null}>
+					<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={() => toggleTheme(siteId!, theme() ?? 'light')}>Theme {theme()}</button>
+				</Show>
+			</div>
+			<div class="quote-border-left p-2 text-primary">{quote()?.text}</div>
 			<div class="text-secondary">{quote()?.source}</div>
 		</Show>
 	</div>

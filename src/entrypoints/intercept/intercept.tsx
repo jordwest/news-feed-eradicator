@@ -28,13 +28,19 @@ type ContentScriptState = {
 	injectedCss?: string | null;
 	siteId?: SiteId;
 	ready?: boolean;
-	theme: Signal<Theme | null>;
+	theme: {
+		css: string | null;
+		id: Signal<Theme | null>;
+	}
 	regions: Map<RegionId, RegionState>;
 };
 
 let state: ContentScriptState = {
 	regions: new Map(),
-	theme: createSignal<Theme | null>(null),
+	theme: {
+		css: null,
+		id: createSignal<Theme | null>(null),
+	}
 };
 
 function createOverlay(el: Element, bounds: DOMRect, position: string, zIndex: number) {
@@ -121,7 +127,7 @@ function tryInject() {
 			container.className = 'dark';
 			shadow.appendChild(container);
 
-			render(() => <QuoteWidget siteId={state.siteId ?? null} theme={state.theme[0]} />, container);
+			render(() => <QuoteWidget siteId={state.siteId ?? null} theme={state.theme.id[0]} />, container);
 
 			nfeElement.style.display = isRegionBlockActive(region) ? 'block' : 'none';
 
@@ -155,19 +161,22 @@ const setCss = async (css: string | null) => {
 		return;
 	}
 
-	// Remove any existing css first
-	if (state.injectedCss != null) {
-		const removed = await sendMessage({ type: 'removeCss', css: state.injectedCss });
-		console.log('got response remove', removed)
-		state.injectedCss = null;
-	}
+	let oldCss = state.injectedCss;
 
-	// Inject new css
+	// Inject new css to avoid flashing content
 	if (css != null) {
 		state.injectedCss = css;
 
 		const injected = await sendMessage({ type: 'injectCss', css });
 		console.log('got response injected', injected)
+	} else {
+		state.injectedCss = null;
+	}
+
+	// Remove any existing css
+	if (oldCss != null) {
+		const removed = await sendMessage({ type: 'removeCss', css: oldCss });
+		console.log('got response remove', removed)
 	}
 }
 
@@ -220,6 +229,8 @@ const patchState = (regions: DesiredRegionState[]) => {
 
 	let css = "";
 
+	css += state.theme.css ?? '';
+
 	// Scan all active regions and delete or update them
 	for (const [id, activeRegion] of state.regions.entries()) {
 		// Delete regions that no longer exist
@@ -246,6 +257,7 @@ const patchState = (regions: DesiredRegionState[]) => {
 		}
 	}
 
+	console.log('css', css);
 	setCss(css);
 }
 
@@ -262,7 +274,8 @@ browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 
 		state.ready = true;
 		state.siteId = msg.siteId;
-		state.theme[1](msg.theme);
+		state.theme.css = msg.theme.css;
+		state.theme.id[1](msg.theme.id);
 		patchState(msg.regions);
 	}
 

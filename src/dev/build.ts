@@ -68,12 +68,19 @@ async function watchAll(): Promise<void> {
 watchAll();
 
 async function buildServiceWorker(): Promise<void> {
-	await Bun.build({
-		root: PROJECT_ROOT,
-	  entrypoints: [`./src/entrypoints/service-worker/service-worker.ts`],
-	  outdir: `./build/service-worker`,
-			naming: '[name].[ext]',
-	  minify: false, // Never minify - for web store review
+	await build({
+		root: `${PROJECT_ROOT}/src`,
+		build: {
+			outDir: `${PROJECT_ROOT}/build`,
+			rollupOptions: {
+				input: '/entrypoints/service-worker/service-worker.ts',
+				output: {
+					assetFileNames: 'entrypoints/service-worker/[name].[ext]',
+					entryFileNames: 'entrypoints/service-worker/[name].js'
+				},
+			},
+			minify: false, // Never minify - for web store review
+		}
 	});
 }
 

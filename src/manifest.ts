@@ -18,8 +18,8 @@ export default {
 		"default_title": "News Feed Eradicator"
 	},
 	"background": {
-		"service_worker": "service-worker/service-worker.js",
-		"scripts": ["service-worker/service-worker.js"],
+		"service_worker": "entrypoints/service-worker/service-worker.js",
+		"scripts": ["entrypoints/service-worker/service-worker.js"],
 		"type": "module"
 	},
 	"options_ui": {

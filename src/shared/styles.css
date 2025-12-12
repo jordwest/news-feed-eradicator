@@ -2,21 +2,27 @@
 .pl-3 { padding-left: 12px; }
 .p-4 { padding: 16px; }
 
-.font-md {
-	font-size: 1rem;
-}
+.bg-ground-100 { background-color: var(--theme-ground-100); }
 
-.font-lg {
-	font-size: 1.5rem;
-}
+.bg-transparent { background-color: transparent; }
+.bg-figure-100 { background-color: var(--theme-figure-100); }
+.hover\:bg-figure-100:hover { background-color: var(--theme-figure-100); }
 
-.quote-border-left {
-	border-left: 4px solid #44c;
-}
+.font-md { font-size: 1rem; }
+.font-lg { font-size: 1.5rem; }
 
-.text-secondary {
-	color: #aaa;
-}
+.quote-border-left { border-left: 4px solid var(--theme-accent); }
+
+.b-0 { border: 0; }
+.b-1 { border: 1px solid var(--theme-border); }
+.b-3 { border: 3px solid var(--theme-border); }
+
+.text-primary { color: var(--theme-text-primary); }
+.text-secondary { color: var(--theme-text-secondary); }
 
 .space-y-1 > :not(:first-child) { margin-top: 4px; }
 .space-y-2 > :not(:first-child) { margin-top: 8px; }
+.space-x-1 > :not(:first-child) { margin-left: 4px; }
+.space-x-2 > :not(:first-child) { margin-left: 8px; }
+
+.cursor-pointer { cursor: pointer; }

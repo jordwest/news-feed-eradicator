@@ -5,6 +5,8 @@ import { loadHiddenBuiltinQuotes, loadRegionsForSite, loadSitelist, loadSnoozeUn
 import { originsForSite } from '../../lib/util';
 import { BuiltinQuotes } from '../../quote';
 import type { Theme } from '../../storage/schema';
+import themeDark from '../../themes/dark.css?raw';
+import themeLight from '../../themes/light.css?raw';
 
 const browser = getBrowser();
 browser.action.onClicked.addListener(() => {
@@ -143,13 +145,18 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 
 			console.log('sending site details', regions);
 
+			const theme = siteOptions.theme ?? 'light';
+
 			sendMessage(sender.tab.id, {
 				type: 'nfe#siteDetails',
 				regions,
 				token: msg.token,
 				snoozeUntil: snoozeUntil ?? null,
 				siteId: site.id,
-				theme: siteOptions.theme ?? 'light',
+				theme: {
+					css: theme === 'light' ? themeLight : themeDark,
+					id: theme,
+				}
 			})
 		}
 	}

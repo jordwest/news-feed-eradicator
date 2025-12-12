@@ -1,0 +1,8 @@
+:root {
+	--theme-text-primary: black;
+	--theme-text-secondary: #888;
+	--theme-ground-100: rgba(255, 255, 255, 0.8);
+	--theme-figure-100: rgba(0, 0, 0, 0.05);
+	--theme-border: rgba(0, 0, 0, 0.1);
+	--theme-accent: #66c;
+}
