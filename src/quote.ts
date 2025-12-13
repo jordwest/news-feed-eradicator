@@ -307,11 +307,6 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 		source: 'Martin Luther King Jr.',
 	},
 	{
-		id: 75,
-		text: 'No matter how big a nation is, it is no stronger than its weakest people, and as long as you keep a person down, some part of you has to be down there to hold him down, so it means you cannot soar as you might otherwise.',
-		source: 'Marian Anderson',
-	},
-	{
 		id: 76,
 		text: 'The minute a person whose word means a great deal to others dare to take the open-hearted and courageous way, many others follow.',
 		source: 'Marian Anderson',
@@ -394,11 +389,6 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 	{
 		id: 251207,
 		text: "To do nothing is to hold yourself still so that you can perceive what is actually there.",
-		source: "Jenny Odell",
-	},
-	{
-		id: 251208,
-		text: 'Our idea of progress is so bound up with the idea of putting something new in the world that it can feel counterintuitive to equate progress with destruction, removal, and remediation.',
 		source: "Jenny Odell",
 	},
 	{

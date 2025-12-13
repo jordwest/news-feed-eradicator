@@ -1,6 +1,7 @@
 .p-2 { padding: 8px; }
 .pl-3 { padding-left: 12px; }
 .p-4 { padding: 16px; }
+.pr-8 { padding-right: 32px; }
 
 .bg-ground-100 { background-color: var(--theme-ground-100); }
 
@@ -12,6 +13,15 @@
 .font-lg { font-size: 1.5rem; }
 
 .quote-border-left { border-left: 4px solid var(--theme-accent); }
+
+.position-absolute { position: absolute; }
+.position-relative { position: relative; }
+
+.flex { display: flex; }
+.flex-1 { flex: 1; }
+
+.w-full { width: 100%; }
+.lr-0 { left: 0; right: 0; }
 
 .b-0 { border: 0; }
 .b-1 { border: 1px solid var(--theme-border); }
@@ -26,3 +36,5 @@
 .space-x-2 > :not(:first-child) { margin-left: 8px; }
 
 .cursor-pointer { cursor: pointer; }
+.pointer-events-none { pointer-events: none; }
+.pointer-events-all { pointer-events: all; }

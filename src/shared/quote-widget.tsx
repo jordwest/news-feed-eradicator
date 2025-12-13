@@ -2,6 +2,7 @@ import { createResource, Show, type Accessor } from "solid-js"
 import { type RequestQuoteResponse, sendToServiceWorker } from "../messaging/messages"
 import type { Theme } from "../storage/schema";
 import type { SiteId } from "../types/sitelist";
+import { createSignal } from "solid-js";
 
 const [quote, { refetch: nextQuote }] = createResource(async () => {
 	return sendToServiceWorker<RequestQuoteResponse>({
@@ -29,17 +30,27 @@ const toggleTheme = async (siteId: SiteId, theme: Theme) => {
 }
 
 export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: Accessor<Theme | null> }) => {
-	return <div class="p-4 space-y-2 bg-ground-100 b-1">
+	const [collapsed, setCollapsed] = createSignal(false);
+
+	return <div class="p-4 bg-ground-100 b-1">
 		<Show when={quote()}>
-			<div class="space-x-2">
-				<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={nextQuote}>&gt;</button>
-				<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={disableQuote}>Disable this quote</button>
-				<Show when={siteId != null}>
-					<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={() => toggleTheme(siteId!, theme() ?? 'light')}>Theme {theme()}</button>
-				</Show>
+			<div class="w-full position-relative">
+				<div class={`space-x-2 flex ${collapsed() ? 'position-absolute lr-0 pointer-events-none' : 'w-full'}`}>
+					<Show when={!collapsed()}>
+						<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={nextQuote}>&gt;</button>
+						<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={disableQuote}>Disable this quote</button>
+						<Show when={siteId != null}>
+							<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={() => toggleTheme(siteId!, theme() ?? 'light')}>Theme {theme()}</button>
+						</Show>
+					</Show>
+					<div class="flex-1" />
+					<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer pointer-events-all" onClick={() => setCollapsed(!collapsed())}>{collapsed() ? '<<' : 'Hide toolbar'}</button>
+				</div>
 			</div>
-			<div class="quote-border-left p-2 text-primary">{quote()?.text}</div>
-			<div class="text-secondary">{quote()?.source}</div>
+			<div class={`space-y-2 ${collapsed() ? 'pr-8' : ''}`}>
+				<div class="quote-border-left p-2 text-primary">{quote()?.text}</div>
+				<div class="text-secondary">{quote()?.source}</div>
+			</div>
 		</Show>
 	</div>
 }

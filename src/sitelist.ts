@@ -23,6 +23,13 @@ const sitelist: SiteList = {
 					}
 				},
 				{
+					id: regionId('nav'),
+					title: 'Navigation tabs',
+					selectors: ['ul.tabmenu', '#sr-header-area'],
+					type: 'remove',
+					paths: '*',
+				},
+				{
 					id: regionId('sidebar'),
 					title: 'Sidebar',
 					selectors: ['div.side'],
