@@ -57,11 +57,6 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 		source: 'Christopher Morley',
 	},
 	{
-		id: 16,
-		text: 'Success is the good fortune that comes from aspiration, desperation, perspiration and inspiration.',
-		source: 'Evan Esar',
-	},
-	{
 		id: 17,
 		text: 'We are still masters of our fate. We are still captains of our souls.',
 		source: 'Winston Churchill',
@@ -85,16 +80,6 @@ export const BuiltinQuotes: Array<BuiltinQuote> = [
 		id: 21,
 		text: 'Happiness does not consist in pastimes and amusements but in virtuous activities.',
 		source: 'Aristotle',
-	},
-	{
-		id: 24,
-		text: 'At the end of the day, let there be no excuses, no explanations, no regrets.',
-		source: 'Steve Maraboli',
-	},
-	{
-		id: 25,
-		text: 'Inaction will cause a man to sink into the slough of despond and vanish without a trace.',
-		source: 'Farley Mowat',
 	},
 	{
 		id: 29,
