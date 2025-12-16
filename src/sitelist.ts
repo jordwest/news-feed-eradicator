@@ -7,7 +7,7 @@ const sitelist: SiteList = {
 	schemaVersion: 1,
 	sites: [
 		{
-			id: siteId('reddit-old'),
+			id: siteId('reddit'),
 			title: "Reddit",
 			hosts: ['www.reddit.com', 'old.reddit.com'],
 			paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', '/r/popular/', '/r/all/'],
@@ -15,7 +15,7 @@ const sitelist: SiteList = {
 				{
 					id: regionId('feed'),
 					title: 'Feed',
-					selectors: ['#siteTable'],
+					selectors: ['#siteTable', 'shreddit-feed'],
 					type: 'remove',
 					paths: 'inherit',
 					inject: {
@@ -24,7 +24,7 @@ const sitelist: SiteList = {
 				},
 				{
 					id: regionId('nav'),
-					title: 'Navigation tabs',
+					title: 'Navigation tabs (Old reddit)',
 					selectors: ['ul.tabmenu', '#sr-header-area'],
 					type: 'remove',
 					paths: '*',
@@ -32,7 +32,7 @@ const sitelist: SiteList = {
 				{
 					id: regionId('sidebar'),
 					title: 'Sidebar',
-					selectors: ['div.side'],
+					selectors: ['div.side', 'reddit-sidebar-nav'],
 					type: 'hide',
 					paths: '*',
 				}
@@ -84,7 +84,7 @@ const sitelist: SiteList = {
 					selectors: ['ytd-watch-next-secondary-results-renderer'],
 				},
 				{
-					id: 'comments',
+					id: regionId('comments'),
 					title: 'Video comments',
 					type: 'hide',
 					paths: '*',
