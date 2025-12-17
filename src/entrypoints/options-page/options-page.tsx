@@ -8,6 +8,7 @@ import { type SiteList, type Site, type SiteId } from "../../types/sitelist";
 import { originsForSite } from "../../lib/util";
 import { HiddenQuotes } from "./hidden-quotes";
 import { SiteConfigPanel } from "./site-configuration";
+import { ImportExport } from "./import-export";
 
 const browser = getBrowser();
 
@@ -173,6 +174,7 @@ const OptionsPage = () => {
 		<h1>Options</h1>
 		<Snooze />
 		<SiteList />
+		<ImportExport />
 		<HiddenQuotes />
 	</div>
 }

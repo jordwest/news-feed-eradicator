@@ -26,6 +26,7 @@ function startServer() {
 		port: 4080,
 		routes: {
 			'/sitelist.json': async () => {
+				// This is run in a unique process each time so that it reimports sitelist.ts on change
 				const output = await $`bun run ${__dirname}/build-sitelist.ts`.json();
 				console.info(output);
 

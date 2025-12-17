@@ -1,4 +1,5 @@
 import { getBrowser } from "../lib/webextension";
+import type { CustomQuote } from "../quote";
 import type { RegionId, SiteId, SiteList } from "../types/sitelist";
 import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme } from "./schema";
 
@@ -101,6 +102,16 @@ export const loadRegionsForSite = async (siteId: SiteId): Promise<SiteConfig> =>
 	return (await getKey('siteConfig') ?? {})[siteId] ?? {
 		regionEnabledOverride: {}
 	};
+}
+
+export const loadCustomQuotes = async () => {
+	return (await getKey('customQuotes')) ?? [];
+}
+
+export const appendCustomQuotes = async (newQuotes: CustomQuote[]) => {
+	const existingQuotes = await loadCustomQuotes();
+	const quotes = existingQuotes.concat(newQuotes);
+	setKey('customQuotes', quotes);
 }
 
 export const clearRegionsForSite = async (siteId: SiteId): Promise<void> => {
