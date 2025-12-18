@@ -1,6 +1,6 @@
 import { generateId } from "../lib/generate-id";
 import { getBrowser } from "../lib/webextension";
-import type { CustomQuote } from "../quote";
+import type { Quote } from "../quote";
 import type { RegionId, SiteId, SiteList } from "../types/sitelist";
 import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme, DEFAULT_QUOTE_LISTS, type QuoteListId, type QuoteList } from "./schema";
 
@@ -30,12 +30,27 @@ const ensureMigrated = async (): Promise<void> => {
 			.map(([siteId,]) => siteId as SiteId);
 	}
 
+	const quoteLists = ([] as QuoteList[]).concat(DEFAULT_QUOTE_LISTS);
+
+	if (storageSync.customQuotes.length > 0) {
+		quoteLists.push({
+			id: generateId() as QuoteListId,
+			title: 'Quote migrated from old version',
+			disabledQuoteIds: [],
+			disabled: false,
+			imported: false,
+			quotes: storageSync.customQuotes.map(q => ({
+				id: q.id,
+				text: q.text,
+				author: q.source, // Renamed source to author
+			})),
+		});
+	}
+
 	const migratedData: StorageLocalV2 = {
 		version: 2,
 		hideQuotes: storageSync.showQuotes === false,
-		disableBuiltinQuotes: storageSync.builtinQuotesEnabled === false,
-		hiddenBuiltinQuotes: storageSync.hiddenBuiltinQuotes,
-		customQuotes: storageSync.customQuotes,
+		quoteLists,
 		enabledSites,
 	}
 
@@ -65,18 +80,6 @@ export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<
 	enable ? sites.add(siteId) : sites.delete(siteId);
 
 	return setKey('enabledSites', Array.from(sites));
-}
-
-export const loadHiddenBuiltinQuotes = async (): Promise<number[]> => {
-	return await getKey('hiddenBuiltinQuotes') ?? [];
-}
-
-export const saveHiddenBuiltinQuote = async (quoteId: number, hidden: boolean): Promise<void> => {
-	let hiddenQuotes = new Set(await getKey('hiddenBuiltinQuotes'));
-
-	hidden ? hiddenQuotes.add(quoteId) : hiddenQuotes.delete(quoteId);
-
-	return setKey('hiddenBuiltinQuotes', Array.from(hiddenQuotes));
 }
 
 export const loadSnoozeUntil = () => getKey('snoozeUntil');
@@ -113,7 +116,33 @@ export const loadQuoteList = async (id: QuoteListId) => {
 	return ((await getKey('quoteLists')) ?? DEFAULT_QUOTE_LISTS).find(ql => ql.id === id);
 }
 
-export const saveNewQuoteList = async (title: string, quotes: CustomQuote[], imported: boolean) => {
+const editQuoteList = async (quoteListId: QuoteListId, fn: (quoteList: QuoteList) => void) => {
+	const lists = await loadQuoteLists();
+
+	const list = lists.find(ql => ql.id === quoteListId);
+	if (list == null) {
+		throw new Error(`editQuoteList failed: Quote list not found ${quoteListId}`)
+	}
+
+	fn(list);
+
+	await setKey('quoteLists', lists);
+}
+
+export const saveQuoteEnabled = async (quoteListId: QuoteListId, id: string, enabled: boolean) => {
+	await editQuoteList(quoteListId, list => {
+		list.disabledQuoteIds = list.disabledQuoteIds.filter(qid => qid !== id);
+		if (!enabled) {
+			list.disabledQuoteIds.push(id);
+		}
+	});
+}
+
+export const saveQuoteListEnabled = async (quoteListId: QuoteListId, enabled: boolean) => {
+	await editQuoteList(quoteListId, list => list.disabled = !enabled);
+}
+
+export const saveNewQuoteList = async (title: string, quotes: Quote[], imported: boolean) => {
 	const lists = await loadQuoteLists();
 
 	const id = generateId() as QuoteListId;
@@ -123,16 +152,10 @@ export const saveNewQuoteList = async (title: string, quotes: CustomQuote[], imp
 		title,
 		quotes,
 		imported,
-		ignoredQuoteIds: [],
+		disabledQuoteIds: [],
 	});
 
 	await setKey('quoteLists', lists);
-}
-
-export const appendCustomQuotes = async (newQuotes: CustomQuote[]) => {
-	const existingQuotes = await loadCustomQuotes();
-	const quotes = existingQuotes.concat(newQuotes);
-	setKey('customQuotes', quotes);
 }
 
 export const clearRegionsForSite = async (siteId: SiteId): Promise<void> => {

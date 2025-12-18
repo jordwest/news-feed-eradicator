@@ -1,13 +1,13 @@
 import { createResource, For } from "solid-js";
 import { generateId } from "../../lib/generate-id";
-import { BuiltinQuotes, type CustomQuote } from "../../quote";
+import { BuiltinQuotes, type Quote } from "../../quote";
 import type { QuoteListId } from "../../storage/schema";
-import { loadQuoteList, loadQuoteLists, saveNewQuoteList } from "../../storage/storage";
+import { loadQuoteList, loadQuoteLists, saveNewQuoteList, saveQuoteListEnabled } from "../../storage/storage";
 import Papa from 'papaparse';
 
 const [quoteLists, { refetch: refetchQuoteLists }] = createResource(loadQuoteLists);
 
-export const ImportExport = () => {
+export const ImportExport = ({ onEdit }: { onEdit: (quoteListId: QuoteListId) => void }) => {
 	const doExport = async (quoteListId: QuoteListId) => {
 		const quoteList = await loadQuoteList(quoteListId);
 		if (quoteList == null) return;
@@ -16,7 +16,7 @@ export const ImportExport = () => {
 
 		let file = `id,quote,author\n`;
 		for (const quote of quotes) {
-			file += [JSON.stringify(quote.id), JSON.stringify(quote.text), JSON.stringify(quote.source)].join(',') + '\n';
+			file += [JSON.stringify(quote.id), JSON.stringify(quote.text), JSON.stringify(quote.author)].join(',') + '\n';
 		}
 
 		console.info(file);
@@ -76,7 +76,7 @@ export const ImportExport = () => {
 
 			console.log('id column', idColumn);
 
-			let importedQuotes: CustomQuote[] = [];
+			let importedQuotes: Quote[] = [];
 			for (let row = 1; row < result.data.length; row += 1) {
 				let id: string = idColumn != null ? cell(row, idColumn) : generateId();
 				console.log('id', id);
@@ -87,9 +87,9 @@ export const ImportExport = () => {
 				const text = ((result.data[row] as string[])[quoteColumn] ?? '').trim();
 				if (text === '') continue;
 
-				const source = ((result.data[row] as string[])[authorColumn] ?? '').trim();
+				const author = ((result.data[row] as string[])[authorColumn] ?? '').trim();
 
-				const quote = { id, text, source };
+				const quote = { id, text, author };
 
 				importedQuotes.push(quote);
 			}
@@ -100,14 +100,19 @@ export const ImportExport = () => {
 		refetchQuoteLists();
 	}
 
+	const setQuoteListEnabled = (id: QuoteListId, enabled: boolean) => {
+		saveQuoteListEnabled(id, enabled);
+	}
+
 	return <div>
 		<div>
 			<For each={quoteLists()}>
 				{(ql) => <div class="font-lg flex">
 					<label class="cursor-pointer space-x-2 flex flex-1" for={`quotelist-${ql.id}`}>
-						<input type="checkbox" class="toggle" id={`quotelist-${ql.id}`} />
+						<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => setQuoteListEnabled(ql.id, e.currentTarget.checked)} />
 						<span>{ql.id === 'builtin' ? 'Built-in Quotes' : ql.title}</span>
 					</label>
+					<button onClick={() => onEdit(ql.id)}>Edit</button>
 					<button onClick={() => doExport(ql.id)}>Export</button>
 				</div>}
 			</For>

@@ -1,5 +1,5 @@
 import { getBrowser } from "../lib/webextension";
-import type { Theme } from "../storage/schema";
+import type { QuoteListId, Theme } from "../storage/schema";
 import type { Region, Site, SiteId } from "../types/sitelist";
 
 export const sendToServiceWorker = async <T = any>(msg: ToServiceWorkerMessage): Promise<T> => {
@@ -37,7 +37,7 @@ type OptionsUpdated = {
 	type: 'nfe#optionsUpdated',
 }
 
-export type ToServiceWorkerMessage = RequestSiteDetails | NotifyOptionsUpdated | SetSiteTheme | EnableSite | DisableSite | Snooze | RequestQuote | RemoveQuote | ReenableBuiltinQuote | InjectCss | RemoveCss | ReadSnooze;
+export type ToServiceWorkerMessage = RequestSiteDetails | NotifyOptionsUpdated | SetSiteTheme | EnableSite | DisableSite | Snooze | RequestQuote | SetQuoteEnabled | InjectCss | RemoveCss | ReadSnooze;
 
 // Request site details from service worker.
 type RequestSiteDetails = {
@@ -65,20 +65,18 @@ export type RequestQuote = {
 	type: 'requestQuote',
 }
 
-export type RemoveQuote = {
-	type: 'removeQuote',
-	id: string | number,
-}
-
-export type ReenableBuiltinQuote = {
-	type: 'reenableBuiltinQuote',
-	id: number,
+export type SetQuoteEnabled = {
+	type: 'setQuoteEnabled',
+	quoteListId: QuoteListId,
+	id: string,
+	enabled: boolean,
 }
 
 export type RequestQuoteResponse = {
-	id: string | number,
+	quoteListId: QuoteListId,
+	id: string,
 	text: string,
-	source: string,
+	author: string,
 } | null;
 
 type EnableSite = {

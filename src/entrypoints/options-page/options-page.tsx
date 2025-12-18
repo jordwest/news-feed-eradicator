@@ -6,9 +6,10 @@ import { createSignal, For, createResource, createMemo, Show } from "solid-js";
 
 import { type SiteList, type Site, type SiteId } from "../../types/sitelist";
 import { originsForSite } from "../../lib/util";
-import { HiddenQuotes } from "./hidden-quotes";
 import { SiteConfigPanel } from "./site-configuration";
 import { ImportExport } from "./import-export";
+import { QuoteListEditor } from "./quote-list";
+import { BUILTIN_QUOTE_LIST_ID, DEFAULT_QUOTE_LISTS, type QuoteListId } from "../../storage/schema";
 
 const browser = getBrowser();
 
@@ -170,12 +171,16 @@ const Snooze = () => {
 }
 
 const OptionsPage = () => {
+	const [editingQuoteListId, setEditingQuoteListId] = createSignal<QuoteListId | null>(null);
+
 	return <div class="font-lg">
 		<h1>Options</h1>
 		<Snooze />
 		<SiteList />
-		<ImportExport />
-		<HiddenQuotes />
+		<ImportExport onEdit={(quoteListId) => setEditingQuoteListId(quoteListId)} />
+		<Show when={editingQuoteListId() != null}>
+			<QuoteListEditor quoteListId={editingQuoteListId} />
+		</Show>
 	</div>
 }
 

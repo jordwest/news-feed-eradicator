@@ -1,10 +1,10 @@
 import { getBrowser, type MessageSender, type SendResponse, type TabId } from '../../lib/webextension';
 import type { Region, Site, SiteId, SiteList } from '../../types/sitelist';
 import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '../../messaging/messages';
-import { loadHiddenBuiltinQuotes, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveHiddenBuiltinQuote, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '../../storage/storage';
+import { loadQuoteLists, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '../../storage/storage';
 import { originsForSite } from '../../lib/util';
-import { BuiltinQuotes } from '../../quote';
-import type { Theme } from '../../storage/schema';
+import { BuiltinQuotes, type Quote } from '../../quote';
+import type { QuoteListId, Theme } from '../../storage/schema';
 import themeDark from '../../themes/dark.css?raw';
 import themeLight from '../../themes/light.css?raw';
 
@@ -89,26 +89,21 @@ const enableSite = async (siteId: SiteId) => {
 }
 
 const requestQuote = async () => {
-	const hiddenQuotes = await loadHiddenBuiltinQuotes();
+	const quoteLists = await loadQuoteLists();
 
-	const activeQuotes = BuiltinQuotes.filter(quote => !hiddenQuotes.includes(quote.id));
+	const activeQuotes: { quoteListId: QuoteListId, quote: Quote }[] = quoteLists
+		.filter(list => !list.disabled)
+		.map(list => {
+			const listQuotes = list.quotes === 'builtin' ? BuiltinQuotes : list.quotes;
+			return listQuotes
+				.filter(q => !list.disabledQuoteIds.includes(q.id.toString()))
+				.map(q => ({ quoteListId: list.id, quote: q }))
+		}).flat();
 
 	const idx = Math.floor(Math.random() * activeQuotes.length);
 	const quote = activeQuotes[idx]!;
-	const response: RequestQuoteResponse = quote;
+	const response: RequestQuoteResponse = { quoteListId: quote.quoteListId, ...quote.quote };
 	return response;
-}
-
-const removeQuote = async (id: string | number) => {
-	if (typeof id === 'number') {
-		await saveHiddenBuiltinQuote(id, true);
-	} else {
-		// TODO ... delete from custom quotes
-	}
-}
-
-const reenableQuote = async (id: number) => {
-	return saveHiddenBuiltinQuote(id, false);
 }
 
 const setSiteTheme = async (siteId: SiteId, theme: Theme | null) => {
@@ -165,18 +160,14 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 		return requestQuote();
 	}
 
-	if (msg.type === 'removeQuote') {
-		return removeQuote(msg.id);
-	}
-
 	if (msg.type === 'enableSite') {
 		const result = await enableSite(msg.siteId);
 		notifyTabsOptionsUpdated();
 		return result;
 	}
 
-	if (msg.type === 'reenableBuiltinQuote') {
-		return reenableQuote(msg.id);
+	if (msg.type === 'setQuoteEnabled') {
+		return await saveQuoteEnabled(msg.quoteListId, msg.id, msg.enabled);
 	}
 
 	if (msg.type === 'notifyOptionsUpdated') {

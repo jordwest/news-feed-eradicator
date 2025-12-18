@@ -1,5 +1,5 @@
-import type { Region, RegionId, SiteId } from "../types/sitelist";
-import type { CustomQuote } from "../quote";
+import type { RegionId, SiteId } from "../types/sitelist";
+import type { Quote, QuoteV1 } from "../quote";
 
 export const CURRENT_STORAGE_SCHEMA_VERSION = 2;
 
@@ -17,10 +17,10 @@ export type StorageLocalV2 = {
 export type QuoteList = {
 	id: QuoteListId;
 	disabled: boolean;
-	ignoredQuoteIds: string[];
+	disabledQuoteIds: string[];
 	title: string;
 	imported: boolean;
-	quotes: 'builtin' | CustomQuote[];
+	quotes: 'builtin' | Quote[];
 };
 
 export type SiteConfig = {
@@ -34,7 +34,7 @@ export const DEFAULT_QUOTE_LISTS: QuoteList[] = [
 	{
 		id: BUILTIN_QUOTE_LIST_ID,
 		disabled: false,
-		ignoredQuoteIds: [],
+		disabledQuoteIds: [],
 		title: '',
 		imported: false,
 		quotes: 'builtin',
@@ -56,7 +56,7 @@ export type StorageSyncV1 = {
 	builtinQuotesEnabled: boolean;
 	featureIncrement: number;
 	hiddenBuiltinQuotes: number[];
-	customQuotes: CustomQuote[];
+	customQuotes: QuoteV1[];
 	sites: Partial<SitesStateV1>;
 };
 

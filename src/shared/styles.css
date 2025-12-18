@@ -9,9 +9,10 @@
 .bg-figure-100 { background-color: var(--theme-figure-100); }
 .hover\:bg-figure-100:hover { background-color: var(--theme-figure-100); }
 
+.font-sm { font-size: 0.875rem; }
 .font-md { font-size: 1rem; }
-.font-lg { font-size: 1.5rem; }
-.font-xl { font-size: 2rem; }
+.font-lg { font-size: 1.125rem; }
+.font-xl { font-size: 1.25rem; }
 
 .quote-border-left { border-left: 4px solid var(--theme-accent); }
 
@@ -44,6 +45,25 @@
 .pointer-events-none { pointer-events: none; }
 .pointer-events-all { pointer-events: all; }
 
+.checkbox {
+	cursor: pointer;
+	font-size: 1em;
+	width: 1em;
+	height: 1em;
+	appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 0.1em solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.25em;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.checkbox:checked {
+	border-color: rgb(50, 100, 50);
+	color: white;
+	background-color: #5a5;
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yNCA2Nkw1MC41IDkyLjVMMTA3IDM2IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMTgiLz4KPC9zdmc+Cg==');
+	background-size: contain;
+}
 
 .toggle {
 	font-size: 1em;
