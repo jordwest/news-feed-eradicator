@@ -1,7 +1,8 @@
+import { generateId } from "../lib/generate-id";
 import { getBrowser } from "../lib/webextension";
 import type { CustomQuote } from "../quote";
 import type { RegionId, SiteId, SiteList } from "../types/sitelist";
-import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme } from "./schema";
+import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme, DEFAULT_QUOTE_LISTS, type QuoteListId, type QuoteList } from "./schema";
 
 const ensureMigrated = async (): Promise<void> => {
 	const browser = getBrowser();
@@ -29,7 +30,7 @@ const ensureMigrated = async (): Promise<void> => {
 			.map(([siteId,]) => siteId as SiteId);
 	}
 
-	const migratedData = {
+	const migratedData: StorageLocalV2 = {
 		version: 2,
 		hideQuotes: storageSync.showQuotes === false,
 		disableBuiltinQuotes: storageSync.builtinQuotesEnabled === false,
@@ -104,8 +105,28 @@ export const loadRegionsForSite = async (siteId: SiteId): Promise<SiteConfig> =>
 	};
 }
 
-export const loadCustomQuotes = async () => {
-	return (await getKey('customQuotes')) ?? [];
+export const loadQuoteLists = async () => {
+	return (await getKey('quoteLists')) ?? DEFAULT_QUOTE_LISTS;
+}
+
+export const loadQuoteList = async (id: QuoteListId) => {
+	return ((await getKey('quoteLists')) ?? DEFAULT_QUOTE_LISTS).find(ql => ql.id === id);
+}
+
+export const saveNewQuoteList = async (title: string, quotes: CustomQuote[], imported: boolean) => {
+	const lists = await loadQuoteLists();
+
+	const id = generateId() as QuoteListId;
+	lists.push({
+		id,
+		disabled: false,
+		title,
+		quotes,
+		imported,
+		ignoredQuoteIds: [],
+	});
+
+	await setKey('quoteLists', lists);
 }
 
 export const appendCustomQuotes = async (newQuotes: CustomQuote[]) => {

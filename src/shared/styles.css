@@ -11,11 +11,16 @@
 
 .font-md { font-size: 1rem; }
 .font-lg { font-size: 1.5rem; }
+.font-xl { font-size: 2rem; }
 
 .quote-border-left { border-left: 4px solid var(--theme-accent); }
 
+.user-select-none { user-select: none; }
+
 .position-absolute { position: absolute; }
 .position-relative { position: relative; }
+
+.opacity-0 { opacity: 0; }
 
 .flex { display: flex; }
 .flex-1 { flex: 1; }
@@ -38,3 +43,44 @@
 .cursor-pointer { cursor: pointer; }
 .pointer-events-none { pointer-events: none; }
 .pointer-events-all { pointer-events: all; }
+
+
+.toggle {
+	font-size: 1em;
+    border: 0.1em solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.75em;
+    width: 2.2em;
+    height: 1.2em;
+    appearance: none;
+    padding: 0.1em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: transform 0.07s;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.toggle::after {
+    content: "";
+    display: block;
+    margin: 0;
+    border-radius: 50%;
+    width: 0.8em;
+    height: 0.8em;
+    background: #fff;
+    transition: transform 0.07s linear;
+}
+
+.toggle:checked {
+    background-color: #5a5;
+    border-color: rgb(50, 100, 50)
+}
+
+.toggle:checked::after {
+    transform: translateX(1em);
+}
+
+.toggle:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2em rgba(255,255,255,0.4);
+}

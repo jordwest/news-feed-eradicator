@@ -3,15 +3,24 @@ import type { CustomQuote } from "../quote";
 
 export const CURRENT_STORAGE_SCHEMA_VERSION = 2;
 
+export type QuoteListId = ('builtin' | string) & { __quoteListId: never };
+
 export type StorageLocalV2 = {
 	version: 2;
 	hideQuotes?: boolean;
-	disableBuiltinQuotes?: boolean;
-	hiddenBuiltinQuotes?: number[];
-	customQuotes?: CustomQuote[];
 	enabledSites?: SiteId[];
 	siteConfig?: Record<SiteId, SiteConfig>;
 	snoozeUntil?: number;
+	quoteLists?: QuoteList[];
+};
+
+export type QuoteList = {
+	id: QuoteListId;
+	disabled: boolean;
+	ignoredQuoteIds: string[];
+	title: string;
+	imported: boolean;
+	quotes: 'builtin' | CustomQuote[];
 };
 
 export type SiteConfig = {
@@ -19,6 +28,18 @@ export type SiteConfig = {
 	// Overrides the enabled state from the sitelist if set
 	regionEnabledOverride: Record<RegionId, boolean>;
 };
+
+export const BUILTIN_QUOTE_LIST_ID = 'builtin' as QuoteListId;
+export const DEFAULT_QUOTE_LISTS: QuoteList[] = [
+	{
+		id: BUILTIN_QUOTE_LIST_ID,
+		disabled: false,
+		ignoredQuoteIds: [],
+		title: '',
+		imported: false,
+		quotes: 'builtin',
+	}
+];
 
 export type Theme = 'light' | 'dark';
 

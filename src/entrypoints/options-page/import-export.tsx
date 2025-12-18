@@ -1,11 +1,19 @@
+import { createResource, For } from "solid-js";
 import { generateId } from "../../lib/generate-id";
-import type { CustomQuote } from "../../quote";
-import { appendCustomQuotes, loadCustomQuotes } from "../../storage/storage";
+import { BuiltinQuotes, type CustomQuote } from "../../quote";
+import type { QuoteListId } from "../../storage/schema";
+import { loadQuoteList, loadQuoteLists, saveNewQuoteList } from "../../storage/storage";
 import Papa from 'papaparse';
 
+const [quoteLists, { refetch: refetchQuoteLists }] = createResource(loadQuoteLists);
+
 export const ImportExport = () => {
-	const doExport = async () => {
-		const quotes = await loadCustomQuotes();
+	const doExport = async (quoteListId: QuoteListId) => {
+		const quoteList = await loadQuoteList(quoteListId);
+		if (quoteList == null) return;
+
+		const quotes = quoteList.quotes === 'builtin' ? BuiltinQuotes : quoteList.quotes;
+
 		let file = `id,quote,author\n`;
 		for (const quote of quotes) {
 			file += [JSON.stringify(quote.id), JSON.stringify(quote.text), JSON.stringify(quote.source)].join(',') + '\n';
@@ -19,7 +27,6 @@ export const ImportExport = () => {
 			return;
 		}
 
-		const reader = new FileReader();
 		for (const file of files) {
 			const text = await file.text();
 
@@ -87,14 +94,27 @@ export const ImportExport = () => {
 				importedQuotes.push(quote);
 			}
 
-			appendCustomQuotes(importedQuotes);
+			await saveNewQuoteList(file.name, importedQuotes, true);
 		}
+
+		refetchQuoteLists();
 	}
 
 	return <div>
-		<div><button onClick={doExport}>Export to CSV</button></div>
 		<div>
-			<input type="file" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
+			<For each={quoteLists()}>
+				{(ql) => <div class="font-lg flex">
+					<label class="cursor-pointer space-x-2 flex flex-1" for={`quotelist-${ql.id}`}>
+						<input type="checkbox" class="toggle" id={`quotelist-${ql.id}`} />
+						<span>{ql.id === 'builtin' ? 'Built-in Quotes' : ql.title}</span>
+					</label>
+					<button onClick={() => doExport(ql.id)}>Export</button>
+				</div>}
+			</For>
+		</div>
+		<div>
+			<label for="file-import-field" class="cursor-pointer b-1 user-select-none hover:bg-figure-100">Import CSV</label>
+			<input id="file-import-field" type="file" class="opacity-0" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
 		</div>
 	</div>
 }
