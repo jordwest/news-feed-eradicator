@@ -34,8 +34,8 @@ const ensureMigrated = async (): Promise<void> => {
 
 	if (storageSync.customQuotes.length > 0) {
 		quoteLists.push({
-			id: generateId() as QuoteListId,
-			title: 'Quote migrated from old version',
+			id: 'migrated' as QuoteListId,
+			title: 'Migrated from previous version',
 			disabledQuoteIds: [],
 			disabled: false,
 			imported: false,
@@ -114,6 +114,27 @@ export const loadQuoteLists = async () => {
 
 export const loadQuoteList = async (id: QuoteListId) => {
 	return ((await getKey('quoteLists')) ?? DEFAULT_QUOTE_LISTS).find(ql => ql.id === id);
+}
+
+export const saveQuote = async (qlId: QuoteListId, id: string, text: string, author: string) => {
+	await editQuoteList(qlId, list => {
+		if (list.quotes === 'builtin') {
+			throw new Error('Cannot save to builtin quotes list');
+		}
+
+		const quote = list.quotes.find(q => q.id === id);
+
+		if (quote == null) {
+			list.quotes.push({
+				id,
+				text,
+				author,
+			})
+		} else {
+			quote.text = text;
+			quote.author = author;
+		}
+	});
 }
 
 const editQuoteList = async (quoteListId: QuoteListId, fn: (quoteList: QuoteList) => void) => {

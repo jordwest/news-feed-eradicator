@@ -1,13 +1,16 @@
-import { createResource, For } from "solid-js";
+import { createResource, For, useContext } from "solid-js";
 import { generateId } from "../../lib/generate-id";
 import { BuiltinQuotes, type Quote } from "../../quote";
 import type { QuoteListId } from "../../storage/schema";
 import { loadQuoteList, loadQuoteLists, saveNewQuoteList, saveQuoteListEnabled } from "../../storage/storage";
 import Papa from 'papaparse';
+import { useOptionsPageState } from "./state";
 
 const [quoteLists, { refetch: refetchQuoteLists }] = createResource(loadQuoteLists);
 
-export const ImportExport = ({ onEdit }: { onEdit: (quoteListId: QuoteListId) => void }) => {
+export const ImportExport = () => {
+	const state = useOptionsPageState();
+
 	const doExport = async (quoteListId: QuoteListId) => {
 		const quoteList = await loadQuoteList(quoteListId);
 		if (quoteList == null) return;
@@ -104,15 +107,16 @@ export const ImportExport = ({ onEdit }: { onEdit: (quoteListId: QuoteListId) =>
 		saveQuoteListEnabled(id, enabled);
 	}
 
+
 	return <div>
 		<div>
 			<For each={quoteLists()}>
 				{(ql) => <div class="font-lg flex">
 					<label class="cursor-pointer space-x-2 flex flex-1" for={`quotelist-${ql.id}`}>
 						<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => setQuoteListEnabled(ql.id, e.currentTarget.checked)} />
-						<span>{ql.id === 'builtin' ? 'Built-in Quotes' : ql.title}</span>
+						<span>{ql.id === 'builtin' ? 'Built-in quotes' : ql.title} ({ ql.quotes === 'builtin' ? BuiltinQuotes.length : ql.quotes.length })</span>
 					</label>
-					<button onClick={() => onEdit(ql.id)}>Edit</button>
+					<button onClick={() => state.selectedQuoteListId.set(ql.id)}>Edit</button>
 					<button onClick={() => doExport(ql.id)}>Export</button>
 				</div>}
 			</For>

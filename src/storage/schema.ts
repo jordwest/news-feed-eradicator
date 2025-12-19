@@ -1,5 +1,6 @@
 import type { RegionId, SiteId } from "../types/sitelist";
 import type { Quote, QuoteV1 } from "../quote";
+import { generateId } from "../lib/generate-id";
 
 export const CURRENT_STORAGE_SCHEMA_VERSION = 2;
 
@@ -38,6 +39,14 @@ export const DEFAULT_QUOTE_LISTS: QuoteList[] = [
 		title: '',
 		imported: false,
 		quotes: 'builtin',
+	},
+	{
+		id: 'custom' as QuoteListId,
+		disabled: false,
+		disabledQuoteIds: [],
+		title: 'Custom quotes',
+		imported: false,
+		quotes: [],
 	}
 ];
 

@@ -9,7 +9,8 @@ import { originsForSite } from "../../lib/util";
 import { SiteConfigPanel } from "./site-configuration";
 import { ImportExport } from "./import-export";
 import { QuoteListEditor } from "./quote-list";
-import { BUILTIN_QUOTE_LIST_ID, DEFAULT_QUOTE_LISTS, type QuoteListId } from "../../storage/schema";
+import { type QuoteListId } from "../../storage/schema";
+import { OptionsPageState, OptionsPageStateContext } from "./state";
 
 const browser = getBrowser();
 
@@ -171,16 +172,19 @@ const Snooze = () => {
 }
 
 const OptionsPage = () => {
-	const [editingQuoteListId, setEditingQuoteListId] = createSignal<QuoteListId | null>(null);
+	const state = new OptionsPageState();
 
 	return <div class="font-lg">
 		<h1>Options</h1>
-		<Snooze />
-		<SiteList />
-		<ImportExport onEdit={(quoteListId) => setEditingQuoteListId(quoteListId)} />
-		<Show when={editingQuoteListId() != null}>
-			<QuoteListEditor quoteListId={editingQuoteListId} />
-		</Show>
+		<OptionsPageStateContext.Provider value={state}>
+			<Snooze />
+			<SiteList />
+			<ImportExport />
+
+			<Show when={state.selectedQuoteListId.get() != null}>
+				<QuoteListEditor />
+			</Show>
+		</OptionsPageStateContext.Provider>
 	</div>
 }
 

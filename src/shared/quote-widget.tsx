@@ -15,8 +15,10 @@ const disableQuote = async () => {
 	if (q == null) return;
 
 	await sendToServiceWorker({
-		type: 'removeQuote',
+		type: 'setQuoteEnabled',
+		quoteListId: q.quoteListId,
 		id: q.id,
+		enabled: false,
 	});
 	nextQuote();
 }
@@ -49,7 +51,7 @@ export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: A
 			</div>
 			<div class={`space-y-2 ${collapsed() ? 'pr-8' : ''}`}>
 				<div class="quote-border-left p-2 text-primary">{quote()?.text}</div>
-				<div class="text-secondary">{quote()?.source}</div>
+				<div class="text-secondary">{quote()?.author}</div>
 			</div>
 		</Show>
 	</div>
