@@ -28,6 +28,7 @@ type ContentScriptState = {
 	injectedCss?: string | null;
 	siteId?: SiteId;
 	ready?: boolean;
+	hideQuotes?: boolean;
 	theme: {
 		css: string | null;
 		id: Signal<Theme | null>;
@@ -244,12 +245,12 @@ const patchState = (regions: DesiredRegionState[]) => {
 			}
 		}
 
-		if (activeRegion.injectedElement == null && activeRegion.config.inject != null) {
+		if (activeRegion.injectedElement == null && activeRegion.config.inject != null && !state.hideQuotes) {
 			setTimeout(tryInject, 1);
 		} else if (activeRegion.injectedElement != null) {
 			const el = activeRegion.injectedElement;
 
-			el.style.display = isRegionBlockActive(activeRegion) ? 'block' : 'none';
+			el.style.display = isRegionBlockActive(activeRegion) && !state.hideQuotes ? 'block' : 'none';
 		}
 
 		if (activeRegion.css != null && activeRegion.enabled) {
@@ -275,6 +276,7 @@ browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 		state.ready = true;
 		state.siteId = msg.siteId;
 		state.theme.css = msg.theme.css;
+		state.hideQuotes = msg.hideQuotes;
 		state.theme.id[1](msg.theme.id);
 		patchState(msg.regions);
 	}

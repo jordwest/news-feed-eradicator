@@ -73,6 +73,14 @@ const setKey = async <Key extends keyof StorageLocal>(k: Key, val: StorageLocal[
 	return await browser.storage.local.set({ [k]: val });
 }
 
+export const loadHideQuotes = async (): Promise<boolean> => {
+	return await getKey('hideQuotes') ?? true;
+};
+
+export const saveHideQuotes = async (hideQuotes: boolean): Promise<void> => {
+	await setKey('hideQuotes', hideQuotes);
+};
+
 export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<void> => {
 	const s = await getKey('enabledSites');
 	let sites = new Set(s ?? []);

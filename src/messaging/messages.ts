@@ -22,6 +22,7 @@ type SiteDetails = {
 		css: string,
 	}
 	snoozeUntil: number | null,
+	hideQuotes: boolean,
 }
 
 export type DesiredRegionState = {

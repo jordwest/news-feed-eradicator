@@ -14,6 +14,11 @@ h1, h2, h3, h4, h5, h6 {
 	font-weight: normal;
 }
 
+hr {
+	border: none;
+	border-top: 1px solid var(--theme-border);
+}
+
 .p-1 { padding: 4px }
 .p-2 { padding: 8px; }
 .p-4 { padding: 16px; }

@@ -10,6 +10,7 @@ import { OptionsPageState, OptionsPageStateContext, useOptionsPageState, type Pa
 import { Snooze } from "./snooze";
 import { SiteList } from "./sites";
 import { Undo } from "./undo";
+import { QuotesToggle } from "./quotes-toggle";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -49,9 +50,13 @@ const OptionsPage = () => {
 					</Show>
 
 					<Show when={state.page.get() === 'quotes'}>
-						<ImportExport />
-						<Show when={state.selectedQuoteListId.get() != null}>
-							<QuoteListEditor />
+						<QuotesToggle />
+						<Show when={!state.hideQuotes.get()}>
+							<hr />
+							<ImportExport />
+							<Show when={state.selectedQuoteListId.get() != null}>
+								<QuoteListEditor />
+							</Show>
 						</Show>
 					</Show>
 				</div>

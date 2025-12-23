@@ -2,8 +2,9 @@ import { createSignal, createEffect, type Accessor, type Setter, type Signal, cr
 import type { QuoteList, QuoteListId } from "../../storage/schema";
 import { assertDefined } from "../../lib/util";
 import type { SiteId } from "../../types/sitelist";
-import { loadQuoteList, loadQuoteLists } from "../../storage/storage";
+import { loadHideQuotes, loadQuoteList, loadQuoteLists, saveHideQuotes } from "../../storage/storage";
 import type { Quote } from "../../quote";
+import { sendToServiceWorker } from "../../messaging/messages";
 
 type SignalObj<T> = {
 	set: Setter<T>,
@@ -52,6 +53,8 @@ export class OptionsPageState {
 	page = signalObj<PageId>('sites');
 	undo = signalObj<UndoState | null>(null);
 
+	hideQuotes = resourceObj(createResource(loadHideQuotes));
+
 	quoteLists = resourceObj(createResource(loadQuoteLists));
 	selectedQuoteList = resourceObj(createResource(this.selectedQuoteListId.get, async (qlId) => {
 		if (qlId == null) return null;
@@ -63,6 +66,14 @@ export class OptionsPageState {
 		if (editingState == null) return null;
 		if (editingState.type !== type) return null;
 		return editingState as Extract<NonNullable<EditingState>, { type: T }>;
+	}
+
+	async setHideQuotes(hideQuotes: boolean) {
+		await saveHideQuotes(hideQuotes);
+		this.hideQuotes.refetch();
+		sendToServiceWorker({
+			type: 'notifyOptionsUpdated',
+		})
 	}
 }
 

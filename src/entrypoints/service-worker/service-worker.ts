@@ -1,7 +1,7 @@
 import { getBrowser, type MessageSender, type SendResponse, type TabId } from '../../lib/webextension';
 import type { Region, Site, SiteId, SiteList } from '../../types/sitelist';
 import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '../../messaging/messages';
-import { loadQuoteLists, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '../../storage/storage';
+import { loadHideQuotes, loadQuoteLists, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '../../storage/storage';
 import { originsForSite } from '../../lib/util';
 import { BuiltinQuotes, type Quote } from '../../quote';
 import type { QuoteListId, Theme } from '../../storage/schema';
@@ -113,8 +113,11 @@ const setSiteTheme = async (siteId: SiteId, theme: Theme | null) => {
 
 const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender) => {
 	if (msg.type === 'requestSiteDetails') {
+		// TODO: Cache these?
 		const siteList = await loadSitelist();
 		const snoozeUntil = await loadSnoozeUntil();
+		const hideQuotes = await loadHideQuotes();
+
 		const isSnoozing = snoozeUntil != null && snoozeUntil > Date.now();
 
 		const url = new URL(sender.url);
@@ -148,6 +151,7 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 				token: msg.token,
 				snoozeUntil: snoozeUntil ?? null,
 				siteId: site.id,
+				hideQuotes,
 				theme: {
 					css: theme === 'light' ? themeLight : themeDark,
 					id: theme,
