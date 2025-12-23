@@ -5,6 +5,7 @@ import type { QuoteListId } from "../../storage/schema";
 import { loadQuoteList, loadQuoteLists, saveNewQuoteList, saveQuoteListEnabled } from "../../storage/storage";
 import Papa from 'papaparse';
 import { useOptionsPageState } from "./state";
+import { downloadFile } from "../../lib/util";
 
 const [quoteLists, { refetch: refetchQuoteLists }] = createResource(loadQuoteLists);
 
@@ -22,7 +23,12 @@ export const ImportExport = () => {
 			file += [JSON.stringify(quote.id), JSON.stringify(quote.text), JSON.stringify(quote.author)].join(',') + '\n';
 		}
 
-		console.info(file);
+		const blob = new Blob([file], { type: 'text/csv' });
+		let filename = quoteList.title.trim().replace(' ', '-').toLocaleLowerCase();
+		if (filename === '') filename = 'quotes';
+		if (!filename.endsWith('.csv')) filename += '.csv';
+
+		downloadFile(blob, filename);
 	};
 
 	const doImport = async (files: FileList | null) => {
