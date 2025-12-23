@@ -118,9 +118,9 @@ export const ImportExport = () => {
 		<div>
 			<For each={quoteLists()}>
 				{(ql) => <div class="font-lg flex">
-					<label class="cursor-pointer space-x-2 flex flex-1" for={`quotelist-${ql.id}`}>
+					<label class="cursor-pointer flex flex-1" for={`quotelist-${ql.id}`}>
 						<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => setQuoteListEnabled(ql.id, e.currentTarget.checked)} />
-						<span>{ql.id === 'builtin' ? 'Built-in quotes' : ql.title} ({ ql.quotes === 'builtin' ? BuiltinQuotes.length : ql.quotes.length })</span>
+						<span class="p-1">{ql.id === 'builtin' ? 'Built-in quotes' : ql.title} ({ ql.quotes === 'builtin' ? BuiltinQuotes.length : ql.quotes.length })</span>
 					</label>
 					<button onClick={() => state.selectedQuoteListId.set(ql.id)}>Edit</button>
 					<button onClick={() => doExport(ql.id)}>Export</button>

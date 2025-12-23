@@ -1,8 +1,30 @@
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+a         { text-decoration: none; color: var(--theme-accent); }
+a:visited { text-decoration: none; color: var(--theme-accent); }
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: 1rem;
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+}
+
+.p-1 { padding: 4px }
 .p-2 { padding: 8px; }
-.pl-3 { padding-left: 12px; }
 .p-4 { padding: 16px; }
+.p-8 { padding: 32px; }
+
+.px-2 { padding-left: 8px; padding-right: 8px; }
+.py-1 { padding-top: 4px; padding-bottom: 4px; }
+.pl-3 { padding-left: 12px; }
 .pr-8 { padding-right: 32px; }
 
+.bg-ground { background-color: var(--theme-ground); }
 .bg-ground-100 { background-color: var(--theme-ground-100); }
 
 .bg-transparent { background-color: transparent; }
@@ -14,7 +36,12 @@
 .font-lg { font-size: 1.125rem; }
 .font-xl { font-size: 1.25rem; }
 
+.text-center { text-align: center; }
+.text-accent { color: var(--theme-accent); }
+
 .quote-border-left { border-left: 4px solid var(--theme-accent); }
+
+.decoration-underline { text-decoration: underline; }
 
 .user-select-none { user-select: none; }
 
@@ -25,6 +52,15 @@
 
 .flex { display: flex; }
 .flex-1 { flex: 1; }
+.flex-col { flex-direction: column; }
+.cross-center { align-items: center; }
+.axis-center { justify-content: center; }
+
+.mw-lg {
+	max-width: 960px;
+}
+
+.shadow { box-shadow: 0 0px 8px rgba(0, 0, 0, 0.08); }
 
 .w-full { width: 100%; }
 .lr-0 { left: 0; right: 0; }
@@ -32,9 +68,12 @@
 .b-0 { border: 0; }
 .b-1 { border: 1px solid var(--theme-border); }
 .b-3 { border: 3px solid var(--theme-border); }
+.bl-1 { border-left: 1px solid var(--theme-border); }
 
 .text-primary { color: var(--theme-text-primary); }
 .text-secondary { color: var(--theme-text-secondary); }
+
+.text-figure { color: var(--theme-figure); }
 
 .space-y-1 > :not(:first-child) { margin-top: 4px; }
 .space-y-2 > :not(:first-child) { margin-top: 8px; }
@@ -60,7 +99,7 @@
 .checkbox:checked {
 	border-color: rgb(50, 100, 50);
 	color: white;
-	background-color: #5a5;
+	background-color: var(--theme-accent);
 	background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgdmlld0JveD0iMCAwIDEyOCAxMjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0yNCA2Nkw1MC41IDkyLjVMMTA3IDM2IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMTgiLz4KPC9zdmc+Cg==');
 	background-size: contain;
 }
@@ -92,7 +131,8 @@
 }
 
 .toggle:checked {
-    background-color: #5a5;
+    /*background-color: #5a5;*/
+    background-color: var(--theme-accent);
     border-color: rgb(50, 100, 50)
 }
 

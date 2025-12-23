@@ -34,7 +34,7 @@ const toggleTheme = async (siteId: SiteId, theme: Theme) => {
 export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: Accessor<Theme | null> }) => {
 	const [collapsed, setCollapsed] = createSignal(false);
 
-	return <div class="p-4 bg-ground-100 b-1">
+	return <div class="p-4 bg-ground-100 b-1 shadow">
 		<Show when={quote()}>
 			<div class="w-full position-relative">
 				<div class={`space-x-2 flex ${collapsed() ? 'position-absolute lr-0 pointer-events-none' : 'w-full'}`}>

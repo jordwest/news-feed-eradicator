@@ -1,8 +1,10 @@
 :root {
 	--theme-text-primary: white;
 	--theme-text-secondary: #aaa;
+	--theme-ground: rgba(0, 0, 0, 1);
 	--theme-ground-100: rgba(0, 0, 0, 0.8);
 	--theme-figure-100: rgba(255, 255, 255, 0.1);
+	--theme-figure: rgba(255, 255, 255);
 	--theme-border: rgba(255, 255, 255, 0.15);
 	--theme-accent: #77e;
 }

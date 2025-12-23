@@ -21,3 +21,13 @@ export const downloadFile = (blob: Blob, filename: string) => {
 	document.body.removeChild(a);
 	URL.revokeObjectURL(url);
 }
+
+export const displayDuration = (duration: number): string => {
+	if (duration < 60) {
+		return `${Math.floor(duration)}s`;
+	}
+
+	const minutes = Math.floor(duration / 60);
+	const seconds = Math.floor(duration - (minutes * 60));
+	return `${minutes}m ${seconds}s`;
+}
