@@ -116,6 +116,12 @@ export const loadQuoteList = async (id: QuoteListId) => {
 	return ((await getKey('quoteLists')) ?? DEFAULT_QUOTE_LISTS).find(ql => ql.id === id);
 }
 
+export const saveQuoteListTitle = async (id: QuoteListId, title: string) => {
+	await editQuoteList(id, list => {
+		list.title = title;
+	});
+}
+
 export const saveQuote = async (qlId: QuoteListId, id: string, text: string, author: string) => {
 	await editQuoteList(qlId, list => {
 		if (list.quotes === 'builtin') {

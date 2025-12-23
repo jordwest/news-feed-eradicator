@@ -1,13 +1,11 @@
-import { createResource, For, useContext } from "solid-js";
+import { For } from "solid-js";
 import { generateId } from "../../lib/generate-id";
 import { BuiltinQuotes, type Quote } from "../../quote";
 import type { QuoteListId } from "../../storage/schema";
-import { loadQuoteList, loadQuoteLists, saveNewQuoteList, saveQuoteListEnabled } from "../../storage/storage";
+import { loadQuoteList, saveNewQuoteList, saveQuoteListEnabled } from "../../storage/storage";
 import Papa from 'papaparse';
 import { useOptionsPageState } from "./state";
 import { downloadFile } from "../../lib/util";
-
-const [quoteLists, { refetch: refetchQuoteLists }] = createResource(loadQuoteLists);
 
 export const ImportExport = () => {
 	const state = useOptionsPageState();
@@ -18,10 +16,10 @@ export const ImportExport = () => {
 
 		const quotes = quoteList.quotes === 'builtin' ? BuiltinQuotes : quoteList.quotes;
 
-		let file = `id,quote,author\n`;
-		for (const quote of quotes) {
-			file += [JSON.stringify(quote.id), JSON.stringify(quote.text), JSON.stringify(quote.author)].join(',') + '\n';
-		}
+		const file = Papa.unparse([
+			['id', 'quote', 'author'],
+			...quotes.map(quote => [quote.id, quote.text, quote.author])
+		])
 
 		const blob = new Blob([file], { type: 'text/csv' });
 		let filename = quoteList.title.trim().replace(' ', '-').toLocaleLowerCase();
@@ -106,17 +104,16 @@ export const ImportExport = () => {
 			await saveNewQuoteList(file.name, importedQuotes, true);
 		}
 
-		refetchQuoteLists();
+		state.quoteLists.refetch();
 	}
 
 	const setQuoteListEnabled = (id: QuoteListId, enabled: boolean) => {
 		saveQuoteListEnabled(id, enabled);
 	}
 
-
 	return <div>
 		<div>
-			<For each={quoteLists()}>
+			<For each={state.quoteLists.get()}>
 				{(ql) => <div class="font-lg flex">
 					<label class="cursor-pointer flex flex-1" for={`quotelist-${ql.id}`}>
 						<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => setQuoteListEnabled(ql.id, e.currentTarget.checked)} />

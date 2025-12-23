@@ -1,6 +1,6 @@
-import { createResource, For, Show, type Accessor } from "solid-js";
+import { createResource, For, type Accessor } from "solid-js";
 import type { RegionId, Site, SiteId } from "../../types/sitelist";
-import { loadRegionsForSite, loadSitelist, setRegionEnabledForSite } from "../../storage/storage";
+import { loadRegionsForSite, setRegionEnabledForSite } from "../../storage/storage";
 import { sendToServiceWorker } from "../../messaging/messages";
 
 export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {

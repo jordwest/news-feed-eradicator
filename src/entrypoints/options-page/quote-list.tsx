@@ -1,26 +1,14 @@
-import { createEffect, createMemo, createResource, createSignal, For, Show, type Accessor, type Setter } from "solid-js"
-import { loadQuoteList, loadQuoteLists, saveQuote, saveQuoteEnabled } from "../../storage/storage";
+import { createEffect, createMemo, createResource, createSignal, For, Show } from "solid-js"
+import { loadQuoteList, saveQuote, saveQuoteListTitle } from "../../storage/storage";
 import { BuiltinQuotes, type Quote } from "../../quote";
 import { sendToServiceWorker } from "../../messaging/messages";
-import { useOptionsPageState, type OptionsPageState } from "./state";
+import { signalObj, useOptionsPageState } from "./state";
 import { generateId } from "../../lib/generate-id";
-
-const compareByAuthor = (a: Quote, b: Quote) => {
-	if (a.author < b.author) return -1;
-	if (a.author > b.author) return 1;
-
-	if (a.text < b.text) return -1;
-	if (a.text > b.text) return 1;
-
-	return 0;
-}
+import { quotesByAuthor } from "../../lib/util";
+import { BUILTIN_QUOTE_LIST_ID } from "../../storage/schema";
 
 export const QuoteListEditor = () => {
 	const state = useOptionsPageState();
-
-	createEffect(() => {
-		console.log('quote list id is ', state.selectedQuoteListId.get());
-	});
 
 	const [quoteList, { refetch }] = createResource(state.selectedQuoteListId.get, async (qlId) => {
 		console.log('reevaluating resource', qlId)
@@ -32,7 +20,7 @@ export const QuoteListEditor = () => {
 		const ql = quoteList();
 		if (ql == null) return [];
 		return (ql?.quotes === 'builtin' ? BuiltinQuotes : ql.quotes)
-			.sort(compareByAuthor);
+			.sort(quotesByAuthor);
 	});
 
 	const disabledQuoteIds = createMemo(() => {
@@ -68,8 +56,36 @@ export const QuoteListEditor = () => {
 		return es.existingQuoteId;
 	}
 
+	const editListTitle = () => {
+		state.editing.set({
+			type: 'quoteListTitle',
+			editValue: signalObj(quoteList()?.title ?? ''),
+			quoteListId: quoteList()!.id,
+		});
+	};
+
 	return  <div>
-		<h2>Quotes</h2>
+		<Show when={state.withEditingType('quoteListTitle')} keyed>
+			{editState =>
+				<div>
+					<input type="text" value={editState.editValue.get()} onInput={e => editState.editValue.set(e.currentTarget.value)} />
+					<button onClick={async () => {
+						await saveQuoteListTitle(editState.quoteListId, editState.editValue.get())
+						state.editing.set(null);
+						refetch();
+						state.quoteLists.refetch();
+					}}>Save</button>
+				</div>
+			}
+		</Show>
+		<Show when={state.withEditingType('quoteListTitle') == null}>
+			<Show when={state.selectedQuoteListId.get() === BUILTIN_QUOTE_LIST_ID}>
+				<h3 class="font-xl">Built-in quotes</h3>
+			</Show>
+			<Show when={state.selectedQuoteListId.get() !== BUILTIN_QUOTE_LIST_ID}>
+				<h3 class="font-xl">{ quoteList()?.title } <button onClick={editListTitle}>Edit</button></h3>
+			</Show>
+		</Show>
 
 		<button onClick={() => state.editing.set({type: 'newQuote'})}>Add Quote</button>
 

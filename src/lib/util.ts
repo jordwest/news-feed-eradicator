@@ -1,3 +1,4 @@
+import type { Quote } from "../quote";
 import type { Site } from "../types/sitelist";
 
 export function originsForSite(site: Site) {
@@ -30,4 +31,14 @@ export const displayDuration = (duration: number): string => {
 	const minutes = Math.floor(duration / 60);
 	const seconds = Math.floor(duration - (minutes * 60));
 	return `${minutes}m ${seconds}s`;
+}
+
+export const quotesByAuthor = (a: Quote, b: Quote) => {
+	if (a.author < b.author) return -1;
+	if (a.author > b.author) return 1;
+
+	if (a.text < b.text) return -1;
+	if (a.text > b.text) return 1;
+
+	return 0;
 }

@@ -1,26 +1,36 @@
-import { createSignal, createEffect, type Accessor, type Setter, type Signal, createContext, useContext } from "solid-js";
+import { createSignal, createEffect, type Accessor, type Setter, type Signal, createContext, useContext, createResource } from "solid-js";
 import type { QuoteListId } from "../../storage/schema";
 import { assertDefined } from "../../lib/util";
 import type { SiteId } from "../../types/sitelist";
+import { loadQuoteLists } from "../../storage/storage";
 
 type SignalObj<T> = {
 	set: Setter<T>,
 	get: Accessor<T>,
 };
 
-type EditingState = {
+export type EditingState = {
 	type: 'existingQuote'
 	existingQuoteId: string
 } | {
 	type: 'newQuote'
+} | {
+	type: 'quoteListTitle',
+	editValue: SignalObj<string>,
+	quoteListId: QuoteListId,
 };
 
 /**
  * Destructuring is inconvenient inside objects, so this is to make it more explicit what's going on
  */
-const signalObj = <T>(defaultVal: T): SignalObj<T> => {
+export const signalObj = <T>(defaultVal: T): SignalObj<T> => {
 	const [get, set] = createSignal(defaultVal);
 	return {set, get}
+};
+
+export const resourceObj = <T>(load: () => Promise<T>) => {
+	const [get, { refetch }] = createResource(load);
+	return {get, refetch};
 };
 
 export type PageId = 'sites' | 'quotes' | 'about';
@@ -30,6 +40,15 @@ export class OptionsPageState {
 	selectedQuoteListId = signalObj<QuoteListId | null>(null);
 	editing = signalObj<EditingState | null>(null);
 	page = signalObj<PageId>('sites');
+
+	quoteLists = resourceObj(loadQuoteLists);
+
+	withEditingType<T extends NonNullable<EditingState>['type']>(type: T) {
+		const editingState = this.editing.get();
+		if (editingState == null) return null;
+		if (editingState.type !== type) return null;
+		return editingState as Extract<NonNullable<EditingState>, { type: T }>;
+	}
 }
 
 export const OptionsPageStateContext = createContext<OptionsPageState>();
