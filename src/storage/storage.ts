@@ -74,7 +74,7 @@ const setKey = async <Key extends keyof StorageLocal>(k: Key, val: StorageLocal[
 }
 
 export const loadHideQuotes = async (): Promise<boolean> => {
-	return await getKey('hideQuotes') ?? true;
+	return await getKey('hideQuotes') ?? false;
 };
 
 export const saveHideQuotes = async (hideQuotes: boolean): Promise<void> => {
