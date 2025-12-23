@@ -400,7 +400,27 @@ export const BuiltinQuotes: Array<Quote> = [
 		id: "251213",
 		text: "The most difficult subjects can be explained to the most slow-witted man if he has not formed any idea of them already; but the simplest thing cannot be made clear to the most intelligent man if he is firmly persuaded that he knows already, without a shadow of a doubt, what is laid before him.",
 		author: "Leo Tolstoy"
-	}
+	},
+	{
+		id: "251214",
+		text: "Being deeply loved by someone gives you strength, while loving someone deeply gives you courage.",
+		author: "Not Lao Tzu",
+	},
+	{
+		id: "251215",
+		text: "People sometimes fail to live because they are always preparing to live.",
+		author: "Alan Watts",
+	},
+	{
+		id: "251216",
+		text: "The privilege of a lifetime is to become who you really are.",
+		author: "Carl Jung",
+	},
+	{
+		id: "251217",
+		text: "Truth has to be discovered, not invented.",
+		author: "Osho",
+	},
 ];
 
 // New quote IDs should start with the year/month it gets added (in the
