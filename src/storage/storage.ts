@@ -2,7 +2,7 @@ import { generateId } from "../lib/generate-id";
 import { getBrowser } from "../lib/webextension";
 import type { Quote } from "../quote";
 import type { RegionId, SiteId, SiteList } from "../types/sitelist";
-import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme, DEFAULT_QUOTE_LISTS, type QuoteListId, type QuoteList } from "./schema";
+import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme, DEFAULT_QUOTE_LISTS, type QuoteListId, type QuoteList, BUILTIN_QUOTE_LIST_ID } from "./schema";
 
 const ensureMigrated = async (): Promise<void> => {
 	const browser = getBrowser();
@@ -116,9 +116,41 @@ export const loadQuoteList = async (id: QuoteListId) => {
 	return ((await getKey('quoteLists')) ?? DEFAULT_QUOTE_LISTS).find(ql => ql.id === id);
 }
 
+export const deleteQuoteList = async (id: QuoteListId) => {
+	if (id === BUILTIN_QUOTE_LIST_ID) {
+		throw new Error('Cannot delete builtin quotes list');
+	}
+
+	let quoteLists = await loadQuoteLists();
+	quoteLists = quoteLists.filter(ql => ql.id !== id);
+	await setKey('quoteLists', quoteLists);
+}
+
 export const saveQuoteListTitle = async (id: QuoteListId, title: string) => {
 	await editQuoteList(id, list => {
 		list.title = title;
+	});
+}
+
+export const deleteQuote = async (qlId: QuoteListId, id: string) => {
+	await editQuoteList(qlId, list => {
+		if (list.quotes === 'builtin') {
+			return list;
+		}
+
+		list.quotes = list.quotes.filter(q => q.id !== id);
+		return list;
+	});
+}
+
+export const undoDeleteQuote = async (qlId: QuoteListId, quote: Quote) => {
+	await editQuoteList(qlId, list => {
+		if (list.quotes === 'builtin') {
+			return list;
+		}
+
+		list.quotes.push(quote);
+		return list;
 	});
 }
 
@@ -182,6 +214,12 @@ export const saveNewQuoteList = async (title: string, quotes: Quote[], imported:
 		disabledQuoteIds: [],
 	});
 
+	await setKey('quoteLists', lists);
+}
+
+export const undoDeleteQuoteList = async (quoteList: QuoteList) => {
+	const lists = await loadQuoteLists();
+	lists.push(quoteList);
 	await setKey('quoteLists', lists);
 }
 

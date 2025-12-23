@@ -9,6 +9,7 @@ import { QuoteListEditor } from "./quote-list";
 import { OptionsPageState, OptionsPageStateContext, useOptionsPageState, type PageId } from "./state";
 import { Snooze } from "./snooze";
 import { SiteList } from "./sites";
+import { Undo } from "./undo";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -37,6 +38,8 @@ const OptionsPage = () => {
 
 			<OptionsPageStateContext.Provider value={state}>
 				<Snooze />
+
+				<Undo />
 
 				<PageTabs />
 

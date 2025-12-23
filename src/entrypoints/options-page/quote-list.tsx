@@ -1,5 +1,5 @@
-import { createEffect, createMemo, createResource, createSignal, For, Show } from "solid-js"
-import { loadQuoteList, saveQuote, saveQuoteListTitle } from "../../storage/storage";
+import { createMemo, createSignal, For, Show } from "solid-js"
+import { deleteQuoteList, saveQuote, saveQuoteListTitle, deleteQuote as storageDeleteQuote } from "../../storage/storage";
 import { BuiltinQuotes, type Quote } from "../../quote";
 import { sendToServiceWorker } from "../../messaging/messages";
 import { signalObj, useOptionsPageState } from "./state";
@@ -10,26 +10,20 @@ import { BUILTIN_QUOTE_LIST_ID } from "../../storage/schema";
 export const QuoteListEditor = () => {
 	const state = useOptionsPageState();
 
-	const [quoteList, { refetch }] = createResource(state.selectedQuoteListId.get, async (qlId) => {
-		console.log('reevaluating resource', qlId)
-		if (qlId == null) return null;
-		return await loadQuoteList(qlId!);
-	});
-
 	const quotes = createMemo(() => {
-		const ql = quoteList();
+		const ql = state.selectedQuoteList.get();
 		if (ql == null) return [];
 		return (ql?.quotes === 'builtin' ? BuiltinQuotes : ql.quotes)
 			.sort(quotesByAuthor);
 	});
 
 	const disabledQuoteIds = createMemo(() => {
-		const ql = quoteList();
+		const ql = state.selectedQuoteList.get();
 		return new Set(ql == null ? [] : ql.disabledQuoteIds);
 	});
 
 	const setQuoteEnabled = async (id: string, enabled: boolean) => {
-		const ql = quoteList();
+		const ql = state.selectedQuoteList.get();
 		if (ql == null) return;
 
 		await sendToServiceWorker({
@@ -39,7 +33,7 @@ export const QuoteListEditor = () => {
 			enabled,
 		});
 
-		refetch();
+		state.selectedQuoteList.refetch();
 	};
 
 	const editQuote = (id: string) => {
@@ -59,12 +53,44 @@ export const QuoteListEditor = () => {
 	const editListTitle = () => {
 		state.editing.set({
 			type: 'quoteListTitle',
-			editValue: signalObj(quoteList()?.title ?? ''),
-			quoteListId: quoteList()!.id,
+			editValue: signalObj(state.selectedQuoteList.get()?.title ?? ''),
+			quoteListId: state.selectedQuoteList.get()!.id,
 		});
 	};
 
-	return  <div>
+	const deleteList = async () => {
+		const ql = state.selectedQuoteList.get();
+		if (ql == null || ql.quotes == 'builtin') return;
+
+		await deleteQuoteList(state.selectedQuoteList.get()!.id);
+
+		state.undo.set({
+			type: 'deleteQuoteList',
+			quoteList: ql,
+		});
+
+		state.selectedQuoteListId.set(null);
+		state.quoteLists.refetch();
+	}
+
+	const deleteQuote = async (id: string) => {
+		const ql = state.selectedQuoteList.get();
+		if (ql == null || ql.quotes == 'builtin') return;
+		const quote = ql.quotes.find(q => q.id === id);
+		if (quote == null) return;
+
+		await storageDeleteQuote(ql.id, id);
+		state.editing.set(null);
+
+		state.undo.set({
+			type: 'deleteQuote',
+			quoteListId: ql.id,
+			quote,
+		});
+		state.selectedQuoteList.refetch();
+	}
+
+	return <div>
 		<Show when={state.withEditingType('quoteListTitle')} keyed>
 			{editState =>
 				<div>
@@ -72,7 +98,7 @@ export const QuoteListEditor = () => {
 					<button onClick={async () => {
 						await saveQuoteListTitle(editState.quoteListId, editState.editValue.get())
 						state.editing.set(null);
-						refetch();
+						state.selectedQuoteList.refetch();
 						state.quoteLists.refetch();
 					}}>Save</button>
 				</div>
@@ -83,7 +109,7 @@ export const QuoteListEditor = () => {
 				<h3 class="font-xl">Built-in quotes</h3>
 			</Show>
 			<Show when={state.selectedQuoteListId.get() !== BUILTIN_QUOTE_LIST_ID}>
-				<h3 class="font-xl">{ quoteList()?.title } <button onClick={editListTitle}>Edit</button></h3>
+				<h3 class="font-xl">{ state.selectedQuoteList.get()?.title } <button onClick={editListTitle}>Edit</button><button onClick={deleteList}>Delete list</button></h3>
 			</Show>
 		</Show>
 
@@ -91,13 +117,13 @@ export const QuoteListEditor = () => {
 
 		<table>
 			<Show when={state.editing.get()?.type == 'newQuote'}>
-				<QuoteEditor quote={null} afterSave={refetch} />
+				<QuoteEditor quote={null} afterSave={state.selectedQuoteList.refetch} />
 			</Show>
 
 			<For each={quotes()}>
 				{quote => <>
 					<Show when={editingQuoteId() === quote.id}>
-						<QuoteEditor quote={quote} afterSave={refetch} />
+						<QuoteEditor quote={quote} afterSave={state.selectedQuoteList.refetch} />
 					</Show>
 
 					<Show when={editingQuoteId() !== quote.id}>
@@ -105,7 +131,10 @@ export const QuoteListEditor = () => {
 							<td>
 								<input type="checkbox" class="checkbox" id={`quote-${quote.id}`} checked={!disabledQuoteIds().has(quote.id)} onChange={e => setQuoteEnabled(quote.id, e.currentTarget.checked)} />
 							</td>
-							<td><label class="cursor-pointer" for={`quote-${quote.id}`}>{quote.text}</label><button onClick={() => editQuote(quote.id)}>Edit</button></td>
+							<td><label class="cursor-pointer" for={`quote-${quote.id}`}>{quote.text}</label>
+								<button onClick={() => editQuote(quote.id)}>Edit</button>
+								<button onClick={() => deleteQuote(quote.id)}>Delete</button>
+							</td>
 							<td>{quote.author}</td>
 						</tr>
 					</Show>

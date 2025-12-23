@@ -81,8 +81,6 @@ export const ImportExport = () => {
 				break;
 			}
 
-			console.log('id column', idColumn);
-
 			let importedQuotes: Quote[] = [];
 			for (let row = 1; row < result.data.length; row += 1) {
 				let id: string = idColumn != null ? cell(row, idColumn) : generateId();
