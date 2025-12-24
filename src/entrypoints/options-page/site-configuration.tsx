@@ -2,10 +2,11 @@ import { createResource, For, type Accessor } from "solid-js";
 import type { RegionId, Site, SiteId } from "../../types/sitelist";
 import { loadRegionsForSite, setRegionEnabledForSite } from "../../storage/storage";
 import { sendToServiceWorker } from "../../messaging/messages";
+import { expect } from "../../lib/util";
 
 export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
 	const [siteRegions, { refetch }] = createResource(async () => {
-		return loadRegionsForSite(site()!.id);
+		return loadRegionsForSite(expect(site()).id);
 	});
 
 	const isRegionActive = (regionId: RegionId) => {
@@ -18,11 +19,11 @@ export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
 	}
 
 	return <div class="p-2">
-		<h3>{ site()!.title }</h3>
+		<h3>{ expect(site()).title }</h3>
 		<ul>
-			<For each={site()!.regions}>
+			<For each={expect(site()).regions}>
 				{region => <li>
-					<RegionToggleButton siteId={site()!.id} regionId={region.id} refetch={refetch} value={() => isRegionActive(region.id)} />
+					<RegionToggleButton siteId={expect(site()).id} regionId={region.id} refetch={refetch} value={() => isRegionActive(region.id)} />
 					{ region.title }
 				</li>}
 			</For>

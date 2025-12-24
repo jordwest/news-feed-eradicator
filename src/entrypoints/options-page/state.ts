@@ -1,6 +1,6 @@
 import { createSignal, createEffect, type Accessor, type Setter, type Signal, createContext, useContext, createResource, type ResourceReturn, createMemo } from "solid-js";
 import type { QuoteList, QuoteListId } from "../../storage/schema";
-import { assertDefined, originsForSite } from "../../lib/util";
+import { expect, originsForSite } from "../../lib/util";
 import type { SiteId, SiteList } from "../../types/sitelist";
 import { loadEnabledSites, loadHideQuotes, loadQuoteList, loadQuoteLists, saveHideQuotes } from "../../storage/storage";
 import type { Quote } from "../../quote";
@@ -165,4 +165,4 @@ export class OptionsPageState {
 }
 
 export const OptionsPageStateContext = createContext<OptionsPageState>();
-export const useOptionsPageState = () => assertDefined(useContext(OptionsPageStateContext));
+export const useOptionsPageState = () => expect(useContext(OptionsPageStateContext));

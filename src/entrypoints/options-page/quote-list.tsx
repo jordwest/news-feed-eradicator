@@ -4,7 +4,7 @@ import { BuiltinQuotes, type Quote } from "../../quote";
 import { sendToServiceWorker } from "../../messaging/messages";
 import { signalObj, useOptionsPageState } from "./state";
 import { generateId } from "../../lib/generate-id";
-import { quotesByAuthor } from "../../lib/util";
+import { expect, quotesByAuthor } from "../../lib/util";
 import { BUILTIN_QUOTE_LIST_ID } from "../../storage/schema";
 
 export const QuoteListEditor = () => {
@@ -54,7 +54,7 @@ export const QuoteListEditor = () => {
 		state.editing.set({
 			type: 'quoteListTitle',
 			editValue: signalObj(state.selectedQuoteList.get()?.title ?? ''),
-			quoteListId: state.selectedQuoteList.get()!.id,
+			quoteListId: expect(state.selectedQuoteList.get()).id,
 		});
 	};
 
@@ -62,7 +62,7 @@ export const QuoteListEditor = () => {
 		const ql = state.selectedQuoteList.get();
 		if (ql == null || ql.quotes == 'builtin') return;
 
-		await deleteQuoteList(state.selectedQuoteList.get()!.id);
+		await deleteQuoteList(expect(state.selectedQuoteList.get()).id);
 
 		state.undo.set({
 			type: 'deleteQuoteList',
@@ -162,8 +162,9 @@ const QuoteEditor = ({ quote, afterSave }: { quote: Quote | null, afterSave: () 
 		}
 
 		const quoteId = quote == null ? generateId() : quote.id;
+		const quoteListId = expect(state.selectedQuoteListId.get());
 
-		await saveQuote(state.selectedQuoteListId.get()!, quoteId, editingQuoteText(), editingQuoteAuthor());
+		await saveQuote(quoteListId, quoteId, editingQuoteText(), editingQuoteAuthor());
 
 		if (addAnother) {
 			setEditingQuoteText('');
