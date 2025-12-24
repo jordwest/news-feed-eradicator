@@ -7,7 +7,7 @@ ul {
 a         { text-decoration: none; color: var(--theme-accent); }
 a:visited { text-decoration: none; color: var(--theme-accent); }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, p {
 	font-size: 1rem;
 	margin: 0;
 	padding: 0;

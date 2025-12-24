@@ -81,6 +81,10 @@ export const saveHideQuotes = async (hideQuotes: boolean): Promise<void> => {
 	await setKey('hideQuotes', hideQuotes);
 };
 
+export const loadEnabledSites = async (): Promise<SiteId[]> => {
+	return await getKey('enabledSites') ?? [];
+};
+
 export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<void> => {
 	const s = await getKey('enabledSites');
 	let sites = new Set(s ?? []);

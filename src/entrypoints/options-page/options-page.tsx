@@ -44,6 +44,13 @@ const OptionsPage = () => {
 
 				<PageTabs />
 
+				<Show when={!state.allSitePermissionsValid()}>
+					<div class="flex">
+						<p class="flex-1">Some enabled sites need more permissions to work correctly.</p>
+						<button onClick={() => state.fixPermissions()}>Fix permissions</button>
+					</div>
+				</Show>
+
 				<div class="shadow">
 					<Show when={state.page.get() === 'sites'}>
 						<SiteList />
