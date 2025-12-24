@@ -1,6 +1,7 @@
 import type { SiteList } from "../types/sitelist"
 import { hackernews } from "./hackernews";
 import { reddit } from "./reddit";
+import { substack } from "./substack";
 import { twitter } from "./twitter";
 import { youtube } from "./youtube";
 
@@ -11,6 +12,7 @@ const sitelist: SiteList = {
 		youtube,
 		twitter,
 		hackernews,
+		substack,
 	]
 }
 
