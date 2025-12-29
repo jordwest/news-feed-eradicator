@@ -71,7 +71,10 @@ const Site = ({ site }: { site: Site }) => {
 				<Show when={state.sitesWithInvalidPermissions().includes(site.id)}>
 					<span class="">!</span>
 				</Show>
-				<span>{site.title}</span>
+				<div class="flex flex-col">
+					<div>{site.title}</div>
+					<div class="font-sm text-figure-500">{site.hosts.join(', ')}</div>
+				</div>
 			</label>
 		</div>
 	</>

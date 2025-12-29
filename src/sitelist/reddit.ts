@@ -33,7 +33,7 @@ export const reddit: Site = {
 		},
 		{
 			id: regionId('recently-viewed-links'),
-			title: 'Recently viewed links',
+			title: 'Recently viewed',
 			selectors: ['div.spacer:has(div.sidecontentbox)', 'recent-posts'],
 			type: 'remove',
 			default: true,
@@ -41,7 +41,7 @@ export const reddit: Site = {
 		},
 		{
 			id: regionId('games-on-reddit'),
-			title: 'Games on Reddit links',
+			title: 'Games on Reddit',
 			selectors: ['faceplate-tracker[noun="games_drawer"]', 'faceplate-tracker[noun="games_drawer"] + hr'],
 			type: 'remove',
 			default: true,

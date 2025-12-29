@@ -1,3 +1,7 @@
+:root {
+	font-family: sans-serif;
+}
+
 ul, li {
 	list-style: none;
 	margin: 0;
@@ -68,7 +72,8 @@ button {
 
 .quote-border-left { border-left: 4px solid var(--theme-accent); }
 
-.decoration-underline { text-decoration: underline; }
+.underline { text-decoration: underline; }
+.hover\:underline:hover { text-decoration: underline; }
 
 .user-select-none { user-select: none; }
 
@@ -81,6 +86,7 @@ button {
 .flex-1 { flex: 1; }
 .flex-col { flex-direction: column; }
 .cross-center { align-items: center; }
+.cross-end { align-items: flex-end; }
 .axis-center { justify-content: center; }
 
 .mw-lg {
@@ -101,6 +107,7 @@ button {
 .text-secondary { color: var(--theme-text-secondary); }
 
 .text-figure { color: var(--theme-figure); }
+.text-figure-500 { color: var(--theme-figure-500); }
 
 .space-y-1 > :not(:first-child) { margin-top: 4px; }
 .space-y-2 > :not(:first-child) { margin-top: 8px; }

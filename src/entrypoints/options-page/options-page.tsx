@@ -16,8 +16,8 @@ const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
 
 	const classname = () => {
-		const active = state.page.get() === to ? 'decoration-underline bg-lighten-100' : 'bg-darken-100 hover:bg-darken-50'
-		return `block py-2 px-4 ${active}`
+		const active = state.page.get() === to ? 'underline bg-lighten-100' : 'bg-darken-100 hover:bg-darken-50'
+		return `block font-xl py-2 px-4 ${active}`
 	};
 
 	return <li><button class={classname()} onClick={() => state.page.set(to)}>{children}</button></li>;
