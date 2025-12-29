@@ -1,10 +1,16 @@
 :root {
 	--theme-text-primary: white;
 	--theme-text-secondary: #aaa;
-	--theme-ground: rgba(0, 0, 0, 1);
-	--theme-ground-100: rgba(0, 0, 0, 0.8);
+	--theme-ground: rgba(20, 19, 15, 1);
+	--theme-widget-ground: rgba(0, 0, 0, 0.8);
 	--theme-figure-100: rgba(255, 255, 255, 0.1);
 	--theme-figure: rgba(255, 255, 255);
 	--theme-border: rgba(255, 255, 255, 0.15);
-	--theme-accent: #77e;
+	--theme-accent: rgb(204, 119, 68);
+	--theme-accent-a200: rgba(204, 119, 68, 0.2);
+	--theme-accent-a500: rgba(204, 119, 68, 0.5);
+
+	--theme-lighten-100: rgba(255, 255, 255, 0.05);
+	--theme-darken-100: rgba(0, 0, 0, 0.1);
+	--theme-darken-50: rgba(0, 0, 0, 0.01);
 }

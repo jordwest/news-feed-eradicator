@@ -24,47 +24,54 @@ const Site = ({ site }: { site: Site }) => {
 			siteId: site.id
 		});
 
-		state.enabledSites.refetch();
-		state.enabledScripts.refetch();
+		await state.enabledSites.refetch();
+		await state.enabledScripts.refetch();
 	};
 
 	const disableSite = async (site: Site) => {
-			const origins = originsForSite(site);
-			await state.removePermissions({ origins, permissions: [] });
+		const origins = originsForSite(site);
 
-			await browser.runtime.sendMessage({
-				type: 'disableSite',
-				siteId: site.id
-			});
+		await browser.runtime.sendMessage({
+			type: 'disableSite',
+			siteId: site.id
+		});
 
-			state.enabledSites.refetch();
-			state.enabledScripts.refetch();
+		await Promise.allSettled([
+			state.removePermissions({ origins, permissions: [] }),
+			state.enabledSites.refetch(),
+			state.enabledScripts.refetch(),
+		]);
+		state.selectedSiteId.set(null);
 	}
 
 	const id = `site-toggle-${site.id}`;
 
+	const bg = () => {
+		return state.selectedSiteId.get() === site.id ? 'bg-accent-a200' : 'hover:bg-lighten-100';
+	}
+
 	return <>
-		<div class="flex cross-center">
-			<input id={id} type="checkbox" class="toggle" onClick={(e) => {
-					if (state.siteState(site.id).enabled) {
-						if (state.selectedSiteId.get() === site.id) {
-							disableSite(site);
+		<div class="">
+			<label for={id} class={`cursor-pointer px-4 py-2 space-x-2 flex cross-center ${bg()}`}>
+				<input id={id} type="checkbox" class="toggle" onClick={(e) => {
+						e.preventDefault();
+						if (state.siteState(site.id).enabled) {
+							if (state.selectedSiteId.get() === site.id) {
+								disableSite(site);
+							} else {
+								state.selectedSiteId.set(site.id);
+								return false;
+							}
 						} else {
 							state.selectedSiteId.set(site.id);
-							e.preventDefault();
-							return false;
+							enableSite(site);
 						}
-					} else {
-						state.selectedSiteId.set(site.id);
-						enableSite(site);
-					}
-				} }
-				checked={state.siteState(site.id).enabled} />
-			<label for={id} class="cursor-pointer p-1 flex-1">
+					} }
+					checked={state.siteState(site.id).enabled} />
 				<Show when={state.sitesWithInvalidPermissions().includes(site.id)}>
-					<span class="p-2">!</span>
+					<span class="">!</span>
 				</Show>
-				{site.title}
+				<span>{site.title}</span>
 			</label>
 		</div>
 	</>
@@ -79,8 +86,8 @@ export const SiteList = () => {
 		return state.siteList.get()?.sites.find(s => s.id === siteId) ?? null;
 	});
 
-	return  <div class="flex">
-		<div class="flex flex-col">
+	return  <div class="flex py-4">
+		<div class={`flex flex-col ${selectedSite() == null ? 'flex-1' : ''}`}>
 			<For each={state.siteList.get()?.sites}>
 				{site => <Site site={site} />}
 			</For>

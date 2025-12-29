@@ -74,18 +74,20 @@ const enableSite = async (siteId: SiteId) => {
 		return false;
 	}
 
-	saveSiteEnabled(site.id, true);
-
 	const origins = originsForSite(site);
 
-	await browser.scripting.registerContentScripts([{
-		id: site.id,
-		js: ['/entrypoints/intercept/intercept.js'],
-		runAt: "document_start",
-		matches: origins,
-		allFrames: false,
-		// world: "MAIN"
-	}]);
+	await Promise.allSettled([
+		saveSiteEnabled(site.id, true),
+
+		browser.scripting.registerContentScripts([{
+			id: site.id,
+			js: ['/entrypoints/intercept/intercept.js'],
+			runAt: "document_start",
+			matches: origins,
+			allFrames: false,
+			// world: "MAIN"
+		}]),
+	]);
 }
 
 const requestQuote = async () => {
@@ -185,7 +187,7 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 		const site = siteList.sites.find(site => site.id === msg.siteId);
 		if (site == null) return;
 
-		saveSiteEnabled(site.id, false);
+		await saveSiteEnabled(site.id, false);
 
 		notifyTabsOptionsUpdated();
 	}

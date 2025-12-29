@@ -37,8 +37,8 @@ export const Undo = () => {
 	}
 
 	return <Show when={state.undo.get() != null}>
-		<div class="flex space-x-2">
-			<div class="flex-1">{undoMessage()}</div>
+		<div class="flex space-x-2 p-4 bg-lighten-100">
+			<p class="flex-1">{undoMessage()}</p>
 			<button onClick={undo}>Undo</button>
 			<button onClick={clear}>x</button>
 		</div>

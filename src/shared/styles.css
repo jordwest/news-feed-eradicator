@@ -1,4 +1,4 @@
-ul {
+ul, li {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -19,22 +19,44 @@ hr {
 	border-top: 1px solid var(--theme-border);
 }
 
+button {
+	color: var(--theme-figure);
+	background-color: transparent;
+	border: 0;
+	font-size: 1rem;
+	font-family: sans-serif;
+	cursor: pointer;
+}
+
+.block { display: block; }
+
 .p-1 { padding: 4px }
 .p-2 { padding: 8px; }
 .p-4 { padding: 16px; }
 .p-8 { padding: 32px; }
 
 .px-2 { padding-left: 8px; padding-right: 8px; }
+.px-4 { padding-left: 16px; padding-right: 16px; }
+
 .py-1 { padding-top: 4px; padding-bottom: 4px; }
+.py-2 { padding-top: 8px; padding-bottom: 8px; }
+.py-4 { padding-top: 16px; padding-bottom: 16px; }
+
 .pl-3 { padding-left: 12px; }
 .pr-8 { padding-right: 32px; }
 
 .bg-ground { background-color: var(--theme-ground); }
-.bg-ground-100 { background-color: var(--theme-ground-100); }
+.bg-widget-ground { background-color: var(--theme-widget-ground); }
 
+.bg-accent-a200	{ background-color: var(--theme-accent-a200); }
 .bg-transparent { background-color: transparent; }
 .bg-figure-100 { background-color: var(--theme-figure-100); }
 .hover\:bg-figure-100:hover { background-color: var(--theme-figure-100); }
+
+.hover\:bg-lighten-100:hover { background-color: var(--theme-lighten-100); }
+.hover\:bg-darken-50:hover { background-color: var(--theme-darken-50); }
+.bg-lighten-100 { background-color: var(--theme-lighten-100); }
+.bg-darken-100 { background-color: var(--theme-darken-100); }
 
 .font-sm { font-size: 0.875rem; }
 .font-md { font-size: 1rem; }
@@ -82,6 +104,8 @@ hr {
 
 .space-y-1 > :not(:first-child) { margin-top: 4px; }
 .space-y-2 > :not(:first-child) { margin-top: 8px; }
+.space-y-4 > :not(:first-child) { margin-top: 16px; }
+
 .space-x-1 > :not(:first-child) { margin-left: 4px; }
 .space-x-2 > :not(:first-child) { margin-left: 8px; }
 
@@ -111,7 +135,8 @@ hr {
 
 .toggle {
 	font-size: 1em;
-    border: 0.1em solid rgba(0, 0, 0, 0.2);
+    /*border: 0.1em solid rgba(0, 0, 0, 0.2);*/
+    border: 0.1em solid var(--theme-border);
     border-radius: 0.75em;
     width: 2.2em;
     height: 1.2em;
@@ -147,5 +172,5 @@ hr {
 
 .toggle:focus {
     outline: none;
-    box-shadow: 0 0 0 0.2em rgba(255,255,255,0.4);
+    box-shadow: 0 0 0 0.2em var(--theme-accent-a500);
 }

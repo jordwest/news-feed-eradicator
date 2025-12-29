@@ -421,6 +421,16 @@ export const BuiltinQuotes: Array<Quote> = [
 		text: "Truth has to be discovered, not invented.",
 		author: "Osho",
 	},
+	{
+		id: "251218",
+		text: "Slow is smooth, smooth is fast",
+		author: "Navy SEALs",
+	},
+	{
+		id: "251219",
+		text: "Doing things you don’t want to do is incredibly bad for you [...] You just end up teaching yourself that you don’t value your intrinsic motivations, and over time those vanish, leaving you empty.",
+		author: "ftlsid",
+	},
 ];
 
 // New quote IDs should start with the year/month it gets added (in the
