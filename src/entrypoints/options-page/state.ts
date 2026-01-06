@@ -141,10 +141,9 @@ export class OptionsPageState {
 		const scriptRegistered = this.enabledScripts.get()?.includes(siteId) ?? false;
 		const site = this.siteList.get()?.sites.find(site => site.id === siteId);
 
-		let permissionsEnabled = false;
+		let permissionsEnabled = true;
 		if (site != null) {
 			const origins = originsForSite(site);
-			permissionsEnabled = true;
 			for (const origin of origins) {
 				if (!this.permissions.get()?.origins.includes(origin)) {
 					permissionsEnabled = false;
