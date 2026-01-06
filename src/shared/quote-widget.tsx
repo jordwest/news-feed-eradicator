@@ -47,7 +47,7 @@ export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: A
 					</Show>
 					<Show when={!collapsed()}>
 						<div class="space-x-2 flex w-full">
-								<button class="primary text-primary font-sm" onClick={nextQuote}>Next quote &gt;</button>
+								<button class="tertiary text-primary font-sm" onClick={nextQuote}>Next quote &gt;</button>
 								<button class="secondary text-primary font-sm" onClick={disableQuote}>Disable this quote</button>
 								<div class="flex-1" />
 								<Show when={siteId != null}>
