@@ -38,13 +38,17 @@ type OptionsUpdated = {
 	type: 'nfe#optionsUpdated',
 }
 
-export type ToServiceWorkerMessage = RequestSiteDetails | NotifyOptionsUpdated | SetSiteTheme | EnableSite | DisableSite | Snooze | RequestQuote | SetQuoteEnabled | InjectCss | RemoveCss | ReadSnooze;
+export type ToServiceWorkerMessage = RequestSiteDetails | OpenOptionsPage | NotifyOptionsUpdated | SetSiteTheme | EnableSite | DisableSite | Snooze | RequestQuote | SetQuoteEnabled | InjectCss | RemoveCss | ReadSnooze;
 
 // Request site details from service worker.
 type RequestSiteDetails = {
 	type: 'requestSiteDetails',
 	path: string,
 	token: number
+};
+
+type OpenOptionsPage = {
+	type: 'openOptionsPage',
 };
 
 type NotifyOptionsUpdated = {

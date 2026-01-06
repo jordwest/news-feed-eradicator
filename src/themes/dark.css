@@ -16,8 +16,7 @@
 	--theme-darken-100: rgba(0, 0, 0, 0.1);
 	--theme-darken-50: rgba(0, 0, 0, 0.01);
 
-	--theme-active-tab-bg: rgb(225, 225, 215);
-	--theme-inset-bg: rgb(220, 220, 210);
+	--theme-active-tab-bg: rgb(25, 24, 20);
 
 	--theme-shadow: 0 0 8px rgba(255, 255, 200, 0.025);
 
@@ -25,4 +24,7 @@
 	--theme-default-selected-bg: var(--theme-accent-a200);
 	--theme-tertiary-button-bg: rgba(255, 255, 200, 0.1);
 	--theme-tertiary-button-hover-bg: rgba(255, 255, 200, 0.05);
+
+	--theme-text-subtle: rgba(255, 255, 255, 0.1);
+	--theme-text-shadow: rgba(0, 0, 0, 0.15);
 }

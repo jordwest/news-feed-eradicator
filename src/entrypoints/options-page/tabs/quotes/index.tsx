@@ -7,7 +7,7 @@ import { useOptionsPageState } from "/entrypoints/options-page/state"
 export const QuotesTabPanel = () => {
 	const state = useOptionsPageState();
 
-	return <div class="py-2 space-y-2">
+	return <div class="">
 		<QuotesToggle />
 		<Show when={!state.hideQuotes.get()}>
 			<hr />

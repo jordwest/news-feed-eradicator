@@ -5,7 +5,7 @@ export const QuotesToggle = () => {
 
 	return (
 		<div>
-			<label for="show-quotes-toggle" class="flex cross-center cursor-pointer px-4 py-2 hoverable">
+			<label for="show-quotes-toggle" class="flex cross-center cursor-pointer p-4 hoverable">
 				<input type="checkbox" class="toggle" id="show-quotes-toggle" checked={!state.hideQuotes.get()} onChange={() => state.setHideQuotes(!state.hideQuotes.get())} />
 				<span class="px-2 py-1">Enable quotes</span>
 			</label>

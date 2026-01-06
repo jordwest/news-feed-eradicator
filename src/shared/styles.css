@@ -67,13 +67,16 @@ button.secondary, .buttonlike.secondary {
 button.secondary:hover, .buttonlike.secondary:hover {
 	background-color: var(--theme-accent-a200);
 }
-button.tertiary, buttonlike.tertiary {
+button.tertiary, .buttonlike.tertiary {
 	background-color: var(--theme-tertiary-button-bg);
 	border-radius: 4px;
 }
-button.tertiary:hover, buttonlike.tertiary:hover {
+button.tertiary:hover, .buttonlike.tertiary:hover {
 	background-color: var(--theme-tertiary-button-hover-bg);
 }
+
+button.tertiary.bg-transparent { background-color: transparent; }
+button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-button-hover-bg); }
 
 .block { display: block; }
 
@@ -154,13 +157,8 @@ button.tertiary:hover, buttonlike.tertiary:hover {
 .card.primary { background-color: var(--theme-accent-a500); }
 .card.outlined { border: 1px solid var(--theme-accent); }
 
-.inset {
-	background: var(--theme-inset-bg);
-	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2) inset;
-}
-
 .viewport-scroller {
-	max-height: max(250px, calc(100vh - 450px));
+	max-height: max(250px, calc(100vh - 400px));
 	overflow-y: auto;
 }
 
@@ -171,9 +169,12 @@ button.tertiary:hover, buttonlike.tertiary:hover {
 .b-1 { border: 1px solid var(--theme-border); }
 .b-3 { border: 3px solid var(--theme-border); }
 .bl-1 { border-left: 1px solid var(--theme-border); }
+.br-1 { border-right: 1px solid var(--theme-border); }
 
 .text-primary { color: var(--theme-text-primary); }
 .text-secondary { color: var(--theme-text-secondary); }
+.text-subtle { color: var(--theme-text-subtle); }
+.text-shadow { text-shadow: 1px 1px 0px var(--theme-text-shadow); }
 
 .text-figure { color: var(--theme-figure); }
 .text-figure-500 { color: var(--theme-figure-500); }
@@ -186,6 +187,7 @@ button.tertiary:hover, buttonlike.tertiary:hover {
 .space-x-2 > :not(:first-child) { margin-left: 8px; }
 .gap-1 { gap: 4px; }
 .gap-2 { gap: 8px; }
+.gap-4 { gap: 16px; }
 
 .cursor-pointer { cursor: pointer; }
 .pointer-events-none { pointer-events: none; }

@@ -227,6 +227,8 @@ export const saveNewQuoteList = async (title: string, quotes: Quote[], imported:
 	});
 
 	await setKey('quoteLists', lists);
+
+	return id;
 }
 
 export const undoDeleteQuoteList = async (quoteList: QuoteList) => {

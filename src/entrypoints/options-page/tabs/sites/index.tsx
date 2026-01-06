@@ -86,13 +86,13 @@ export const SiteList = () => {
 	});
 
 	return  <div class="flex py-2">
-		<ul class={`flex flex-col ${selectedSite() == null ? 'flex-1' : ''}`}>
+		<ul class={`flex flex-col ${selectedSite() == null ? 'flex-1' : 'br-1'}`}>
 			<For each={state.siteList.get()?.sites}>
 				{site => <Site site={site} />}
 			</For>
 		</ul>
 		<Show when={selectedSite() != null}>
-			<div class="flex-1 bl-1">
+			<div class="flex-1">
 				<SiteConfigPanel site={selectedSite} />
 			</div>
 		</Show>

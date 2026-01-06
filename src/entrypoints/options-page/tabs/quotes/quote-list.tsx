@@ -123,10 +123,10 @@ export const QuoteListEditor = () => {
 			<Show when={isEditable()}>
 				<div class="flex cross-center gap-2">
 					<h3 class="font-xl">{ state.selectedQuoteList()?.title }</h3>
-					<button class="tertiary bg-transparent" onClick={editListTitle} aria-label="Edit list title">✏️</button>
-					<button class="secondary" onClick={deleteList}>Delete list</button>
+					<button class="tertiary bg-transparent font-sm" onClick={editListTitle} aria-label="Edit list title">✏️</button>
+					<button class="tertiary font-sm" onClick={deleteList}>Delete list</button>
 					<div class="flex-1" />
-					<button class="primary" onClick={() => state.editing.set({type: 'newQuote'})}>Add Quote</button>
+					<button class="primary font-sm" onClick={() => state.editing.set({type: 'newQuote'})}>Add Quote</button>
 				</div>
 			</Show>
 		</Show>
@@ -154,8 +154,8 @@ export const QuoteListEditor = () => {
 							</label>
 								<Show when={isEditable()}>
 									<div class="p-2 space-x-2">
-										<button class="tertiary" onClick={() => editQuote(quote.id)}>✏️</button>
-										<button class="tertiary" onClick={() => deleteQuote(quote.id)}>❌</button>
+										<button class="tertiary font-sm" onClick={() => editQuote(quote.id)}>✏️</button>
+										<button class="tertiary font-sm" onClick={() => deleteQuote(quote.id)}>❌</button>
 									</div>
 								</Show>
 						</li>
@@ -202,7 +202,7 @@ const QuoteEditor = ({ quote, afterSave }: { quote: Quote | null, afterSave: () 
 				e.preventDefault();
 				save(false);
 			}}>
-				<div class="space-y-4 inset p-4">
+				<div class="space-y-4 card outlined shadow p-4">
 					<div class="space-y-2">
 						<div>
 							<label class="block">Quote text</label>

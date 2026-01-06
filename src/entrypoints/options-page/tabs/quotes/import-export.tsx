@@ -106,12 +106,14 @@ export const ImportExport = () => {
 		state.quoteLists.refetch();
 	}
 
-	return <div class="space-y-2">
-			<div class="px-4 flex cross-center">
+	return <div class="flex">
+		<div class={`space-y-2 py-2 ${state.selectedQuoteList() == null ? 'flex-1' : 'br-1'}`}>
+			<div class="px-4 flex cross-center gap-4">
 				<h2 class="font-lg font-bold flex-1">Lists</h2>
-				<div>
-					<input id="file-import-field" type="file" class="opacity-0 pointer-events-none" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
-					<label for="file-import-field" class="buttonlike font-sm primary cursor-pointer user-select-none hover:bg-figure-100">Import CSV</label>
+				<div class="flex gap-2 cross-center">
+					<button class="secondary font-sm" onClick={() => state.newQuoteList()}>+ New</button>
+					<label for="file-import-field" class="buttonlike font-sm tertiary cursor-pointer user-select-none hover:bg-figure-100">Import CSV</label>
+					<input id="file-import-field" type="file" class="opacity-0 position-absolute pointer-events-none" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
 				</div>
 			</div>
 			<ul>
@@ -119,16 +121,17 @@ export const ImportExport = () => {
 					{(ql) =>
 						<>
 							<QuoteListToggle quoteList={ql} />
-							<Show when={ql.id === state.selectedQuoteListId.get()}>
-								<div class="inset p-4 viewport-scroller">
-									<QuoteListEditor />
-								</div>
-							</Show>
 						</>
 					}
 				</For>
 			</ul>
 		</div>
+		<Show when={state.selectedQuoteList() != null}>
+			<div class="viewport-scroller py-2 px-4 flex-1">
+				<QuoteListEditor />
+			</div>
+		</Show>
+	</div>
 }
 
 const QuoteListToggle = ({ quoteList: ql }: { quoteList: QuoteList }) => {

@@ -2,7 +2,7 @@ import { createSignal, createEffect, type Accessor, type Setter, createContext, 
 import type { QuoteList, QuoteListId } from "../../storage/schema";
 import { expect, originsForSite } from "../../lib/util";
 import type { SiteId, SiteList } from "../../types/sitelist";
-import { loadEnabledSites, loadHideQuotes, loadQuoteList, loadQuoteLists, saveHideQuotes } from "../../storage/storage";
+import { loadEnabledSites, loadHideQuotes, loadQuoteList, loadQuoteLists, saveHideQuotes, saveNewQuoteList } from "../../storage/storage";
 import type { Quote } from "../../quote";
 import { sendToServiceWorker } from "../../messaging/messages";
 import { getBrowser, type Permissions } from "../../lib/webextension";
@@ -117,6 +117,12 @@ export class OptionsPageState {
 		sendToServiceWorker({
 			type: 'notifyOptionsUpdated',
 		})
+	}
+
+	async newQuoteList() {
+		const id = await saveNewQuoteList('New List', [], false);
+		await this.quoteLists.refetch();
+		this.selectedQuoteListId.set(id);
 	}
 
 	async requestPermissions(permissions: Permissions): Promise<boolean> {

@@ -172,6 +172,10 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 		return result;
 	}
 
+	if (msg.type === 'openOptionsPage') {
+		browser.runtime.openOptionsPage();
+	}
+
 	if (msg.type === 'setQuoteEnabled') {
 		return await saveQuoteEnabled(msg.quoteListId, msg.id, msg.enabled);
 	}
