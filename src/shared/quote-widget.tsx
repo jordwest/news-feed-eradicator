@@ -23,7 +23,8 @@ const disableQuote = async () => {
 	nextQuote();
 }
 
-const toggleTheme = async (siteId: SiteId, theme: Theme) => {
+const toggleTheme = async (e: { preventDefault: () => void }, siteId: SiteId, theme: Theme) => {
+	e.preventDefault();
 	await sendToServiceWorker({
 		type: 'setSiteTheme',
 		siteId,
@@ -34,20 +35,29 @@ const toggleTheme = async (siteId: SiteId, theme: Theme) => {
 export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: Accessor<Theme | null> }) => {
 	const [collapsed, setCollapsed] = createSignal(false);
 
-	return <div class="p-4 bg-widget-ground b-1 shadow">
+	return <div class="p-4 bg-widget-ground b-1 shadow space-y-2">
 		<Show when={quote()}>
 			<div class="w-full position-relative">
-				<div class={`space-x-2 flex ${collapsed() ? 'position-absolute lr-0 pointer-events-none' : 'w-full'}`}>
-					<Show when={!collapsed()}>
-						<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={nextQuote}>&gt;</button>
-						<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={disableQuote}>Disable this quote</button>
-						<Show when={siteId != null}>
-							<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer" onClick={() => toggleTheme(siteId!, theme() ?? 'light')}>Theme {theme()}</button>
-						</Show>
-					</Show>
-					<div class="flex-1" />
-					<button class="bg-transparent hover:bg-figure-100 text-primary p-2 b-0 cursor-pointer pointer-events-all" onClick={() => setCollapsed(!collapsed())}>{collapsed() ? '<<' : 'Hide toolbar'}</button>
-				</div>
+				<Show when={collapsed()}>
+					<div class="flex w-full axis-end position-absolute lr-0 pointer-events-none">
+						<button class="tertiary px-2 pointer-events-all" onClick={() => setCollapsed(false)}>︙</button>
+					</div>
+				</Show>
+				<Show when={!collapsed()}>
+					<div class="space-x-2 flex w-full">
+							<button class="primary text-primary p-2 b-0 cursor-pointer" onClick={nextQuote}>Next quote &gt;</button>
+							<button class="secondary text-primary p-2 b-0 cursor-pointer" onClick={disableQuote}>Disable this quote</button>
+							<div class="flex-1" />
+							<Show when={siteId != null}>
+								<label for="theme-toggle" class="cursor-pointer text-primary gap-1 flex cross-center">
+									<span aria-label="Light mode">☀️</span>
+									<input id="theme-toggle" type="checkbox" checked={theme() === 'dark'} class="toggle" onInput={e => toggleTheme(e, siteId!, theme() ?? 'light')} />
+									<span aria-label="Dark mode">🌙</span>
+								</label>
+							</Show>
+						<button class="primary px-2 pointer-events-all" onClick={() => setCollapsed(true)}>Hide toolbar</button>
+					</div>
+				</Show>
 			</div>
 			<div class={`space-y-2 ${collapsed() ? 'pr-8' : ''}`}>
 				<div class="quote-border-left p-2 text-primary">{quote()?.text}</div>

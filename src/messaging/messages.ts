@@ -2,7 +2,7 @@ import { getBrowser } from "/lib/webextension";
 import type { QuoteListId, Theme } from "/storage/schema";
 import type { Region, SiteId } from "/types/sitelist";
 
-export const sendToServiceWorker = async <Response extends FromServiceWorkerMessage = any>(msg: ToServiceWorkerMessage): Promise<Response> => {
+export const sendToServiceWorker = async <Response = any>(msg: ToServiceWorkerMessage): Promise<Response> => {
 	const browser = getBrowser();
 	return browser.runtime.sendMessage(msg);
 }

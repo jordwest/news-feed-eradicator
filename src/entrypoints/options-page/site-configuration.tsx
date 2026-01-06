@@ -45,7 +45,7 @@ const RegionToggleButton = ({siteId, regionId, label, value, refetch}: { siteId:
 	const id = () => `region-toggle-${regionId}`;
 
 	return <Show when={value() !== null}>
-		<label for={id()} class="flex cross-center cursor-pointer hover:bg-lighten-100 px-4">
+		<label for={id()} class="flex cross-center cursor-pointer hoverable px-4">
 			<input id={id()} type="checkbox" class="toggle" onClick={toggle} checked={expect(value())} />
 			<span class="flex-1 px-2 py-1">{ label }</span>
 		</label>

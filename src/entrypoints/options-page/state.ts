@@ -1,4 +1,4 @@
-import { createSignal, createEffect, type Accessor, type Setter, type Signal, createContext, useContext, createResource, type ResourceReturn, createMemo } from "solid-js";
+import { createSignal, createEffect, type Accessor, type Setter, createContext, useContext, createResource, type ResourceReturn, createMemo } from "solid-js";
 import type { QuoteList, QuoteListId } from "../../storage/schema";
 import { expect, originsForSite } from "../../lib/util";
 import type { SiteId, SiteList } from "../../types/sitelist";
@@ -6,6 +6,7 @@ import { loadEnabledSites, loadHideQuotes, loadQuoteList, loadQuoteLists, saveHi
 import type { Quote } from "../../quote";
 import { sendToServiceWorker } from "../../messaging/messages";
 import { getBrowser, type Permissions } from "../../lib/webextension";
+import { createStore, reconcile } from "solid-js/store";
 
 type SignalObj<T> = {
 	set: Setter<T>,
@@ -51,6 +52,23 @@ export const resourceObj = <T, R>(v: ResourceReturn<T, R>) => {
 	return {get, refetch};
 };
 
+export const resourceObjReconciled = <T>(fn: () => Promise<T[]>) => {
+	const [getInternal, setInternal] = createStore <{ items: T[] | null }>({ items: null });
+
+	const get = () => getInternal.items;
+
+	const refetch = async () => {
+		console.log('refetching');
+		const newStore: { items: T[] } = { items: await fn() };
+		console.log(newStore.items);
+		setInternal(reconcile(newStore, { key: 'id', merge: true }));
+	};
+
+	refetch();
+
+	return {get, refetch};
+};
+
 export type PageId = 'sites' | 'quotes' | 'about';
 
 const browser = getBrowser();
@@ -75,11 +93,16 @@ export class OptionsPageState {
 			return await fetch(siteListUrl).then(siteList => siteList.json());
 	}));
 
-	quoteLists = resourceObj(createResource(loadQuoteLists));
-	selectedQuoteList = resourceObj(createResource(this.selectedQuoteListId.get, async (qlId) => {
+	quoteLists = resourceObjReconciled(loadQuoteLists);
+	selectedQuoteList = () => {
+		const qlId = this.selectedQuoteListId.get();
 		if (qlId == null) return null;
-		return await loadQuoteList(qlId!);
-	}));
+
+		const lists = this.quoteLists.get()
+		if (lists == null) return null;
+
+		return lists.find(ql => ql.id === qlId);
+	};
 
 	withEditingType<T extends NonNullable<EditingState>['type']>(type: T) {
 		const editingState = this.editing.get();

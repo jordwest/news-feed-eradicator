@@ -3,6 +3,14 @@
 	font-size: 18px;
 }
 
+* {
+	box-sizing: border-box;
+}
+
+hr {
+	margin: 0;
+}
+
 ul, li {
 	list-style: none;
 	margin: 0;
@@ -24,31 +32,40 @@ hr {
 	border-top: 1px solid var(--theme-border);
 }
 
-button {
+button, .buttonlike {
+	display: inline-block;
 	color: var(--theme-figure);
-	padding: 8px 16px;
+	padding: 0.5em 1em;
 	border: 0;
 	background-color: transparent;
 	font-size: 1rem;
 	font-family: sans-serif;
 	cursor: pointer;
 }
-button.primary {
+
+button.primary, .buttonlike.primary {
 	border-radius: 4px;
 	color: var(--theme-accent-figure);
 	background-color: var(--theme-accent);
 	border: 0;
 }
-button.primary:hover {
+button.primary:hover, .buttonlike.primary:hover {
 	background-color: var(--theme-accent-a500);
 }
 
-button.secondary {
+button.secondary, .buttonlike.secondary {
 	border-radius: 4px;
 	border: 1px solid var(--theme-accent);
 }
-button.secondary:hover {
+button.secondary:hover, .buttonlike.secondary:hover {
 	background-color: var(--theme-accent-a200);
+}
+button.tertiary, buttonlike.tertiary {
+	background-color: var(--theme-tertiary-button-bg);
+	border-radius: 4px;
+}
+button.tertiary:hover, buttonlike.tertiary:hover {
+	background-color: var(--theme-tertiary-button-hover-bg);
 }
 
 .block { display: block; }
@@ -81,6 +98,14 @@ button.secondary:hover {
 .bg-lighten-100 { background-color: var(--theme-lighten-100); }
 .bg-darken-100 { background-color: var(--theme-darken-100); }
 
+[aria-selected="true"] {
+	background-color: var(--theme-default-selected-bg);
+}
+.hoverable:not([aria-selected="true"]):hover {
+	background-color: var(--theme-default-hover-bg);
+}
+
+.font-xs { font-size: 0.75rem; }
 .font-sm { font-size: 0.875rem; }
 .font-md { font-size: 1rem; }
 .font-lg { font-size: 1.125rem; }
@@ -109,6 +134,7 @@ button.secondary:hover {
 .cross-center { align-items: center; }
 .cross-end { align-items: flex-end; }
 .axis-center { justify-content: center; }
+.axis-end { justify-content: flex-end; }
 
 .mw-lg {
 	max-width: 960px;
@@ -120,6 +146,16 @@ button.secondary:hover {
 .card.secondary { background-color: var(--theme-accent-a200); }
 .card.primary { background-color: var(--theme-accent-a500); }
 .card.outlined { border: 1px solid var(--theme-accent); }
+
+.inset {
+	background: var(--theme-inset-bg);
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.2) inset;
+}
+
+.viewport-scroller {
+	max-height: max(250px, calc(100vh - 600px));
+	overflow-y: auto;
+}
 
 .w-full { width: 100%; }
 .lr-0 { left: 0; right: 0; }
@@ -141,6 +177,7 @@ button.secondary:hover {
 
 .space-x-1 > :not(:first-child) { margin-left: 4px; }
 .space-x-2 > :not(:first-child) { margin-left: 8px; }
+.gap-1 { gap: 4px; }
 .gap-2 { gap: 8px; }
 
 .cursor-pointer { cursor: pointer; }

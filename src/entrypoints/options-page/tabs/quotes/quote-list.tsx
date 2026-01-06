@@ -6,24 +6,25 @@ import { signalObj, useOptionsPageState } from "/entrypoints/options-page/state"
 import { generateId } from "/lib/generate-id";
 import { expect, quotesByAuthor } from "/lib/util";
 import { BUILTIN_QUOTE_LIST_ID } from "/storage/schema";
+import { unwrap } from "solid-js/store";
 
 export const QuoteListEditor = () => {
 	const state = useOptionsPageState();
 
 	const quotes = createMemo(() => {
-		const ql = state.selectedQuoteList.get();
+		const ql = state.selectedQuoteList();
 		if (ql == null) return [];
 		return (ql?.quotes === 'builtin' ? BuiltinQuotes : ql.quotes)
 			.sort(quotesByAuthor);
 	});
 
 	const disabledQuoteIds = createMemo(() => {
-		const ql = state.selectedQuoteList.get();
+		const ql = state.selectedQuoteList();
 		return new Set(ql == null ? [] : ql.disabledQuoteIds);
 	});
 
 	const setQuoteEnabled = async (id: string, enabled: boolean) => {
-		const ql = state.selectedQuoteList.get();
+		const ql = state.selectedQuoteList();
 		if (ql == null) return;
 
 		await sendToServiceWorker({
@@ -33,7 +34,7 @@ export const QuoteListEditor = () => {
 			enabled,
 		});
 
-		state.selectedQuoteList.refetch();
+		state.quoteLists.refetch();
 	};
 
 	const editQuote = (id: string) => {
@@ -53,20 +54,20 @@ export const QuoteListEditor = () => {
 	const editListTitle = () => {
 		state.editing.set({
 			type: 'quoteListTitle',
-			editValue: signalObj(state.selectedQuoteList.get()?.title ?? ''),
-			quoteListId: expect(state.selectedQuoteList.get()).id,
+			editValue: signalObj(state.selectedQuoteList()?.title ?? ''),
+			quoteListId: expect(state.selectedQuoteList()).id,
 		});
 	};
 
 	const deleteList = async () => {
-		const ql = state.selectedQuoteList.get();
+		const ql = state.selectedQuoteList();
 		if (ql == null || ql.quotes == 'builtin') return;
 
-		await deleteQuoteList(expect(state.selectedQuoteList.get()).id);
+		await deleteQuoteList(expect(state.selectedQuoteList()).id);
 
 		state.undo.set({
 			type: 'deleteQuoteList',
-			quoteList: ql,
+			quoteList: unwrap(ql),
 		});
 
 		state.selectedQuoteListId.set(null);
@@ -74,7 +75,7 @@ export const QuoteListEditor = () => {
 	}
 
 	const deleteQuote = async (id: string) => {
-		const ql = state.selectedQuoteList.get();
+		const ql = state.selectedQuoteList();
 		if (ql == null || ql.quotes == 'builtin') return;
 		const quote = ql.quotes.find(q => q.id === id);
 		if (quote == null) return;
@@ -85,9 +86,9 @@ export const QuoteListEditor = () => {
 		state.undo.set({
 			type: 'deleteQuote',
 			quoteListId: ql.id,
-			quote,
+			quote: unwrap(quote),
 		});
-		state.selectedQuoteList.refetch();
+		state.quoteLists.refetch();
 	}
 
 	return <div>
@@ -98,7 +99,6 @@ export const QuoteListEditor = () => {
 					<button onClick={async () => {
 						await saveQuoteListTitle(editState.quoteListId, editState.editValue.get())
 						state.editing.set(null);
-						state.selectedQuoteList.refetch();
 						state.quoteLists.refetch();
 					}}>Save</button>
 				</div>
@@ -109,7 +109,7 @@ export const QuoteListEditor = () => {
 				<h3 class="font-xl">Built-in quotes</h3>
 			</Show>
 			<Show when={state.selectedQuoteListId.get() !== BUILTIN_QUOTE_LIST_ID}>
-				<h3 class="font-xl">{ state.selectedQuoteList.get()?.title } <button onClick={editListTitle}>Edit</button><button onClick={deleteList}>Delete list</button></h3>
+				<h3 class="font-xl">{ state.selectedQuoteList()?.title } <button onClick={editListTitle}>Edit</button><button onClick={deleteList}>Delete list</button></h3>
 			</Show>
 		</Show>
 
@@ -117,13 +117,13 @@ export const QuoteListEditor = () => {
 
 		<table>
 			<Show when={state.editing.get()?.type == 'newQuote'}>
-				<QuoteEditor quote={null} afterSave={state.selectedQuoteList.refetch} />
+				<QuoteEditor quote={null} afterSave={state.quoteLists.refetch} />
 			</Show>
 
 			<For each={quotes()}>
 				{quote => <>
 					<Show when={editingQuoteId() === quote.id}>
-						<QuoteEditor quote={quote} afterSave={state.selectedQuoteList.refetch} />
+						<QuoteEditor quote={quote} afterSave={state.quoteLists.refetch} />
 					</Show>
 
 					<Show when={editingQuoteId() !== quote.id}>

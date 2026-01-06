@@ -1,11 +1,12 @@
-import { For } from "solid-js";
+import { createEffect, For, Show } from "solid-js";
 import { generateId } from "/lib/generate-id";
 import { BuiltinQuotes, type Quote } from "/quote";
-import type { QuoteListId } from "/storage/schema";
+import type { QuoteList, QuoteListId } from "/storage/schema";
 import { loadQuoteList, saveNewQuoteList, saveQuoteListEnabled } from "/storage/storage";
 import Papa from 'papaparse';
 import { useOptionsPageState } from "/entrypoints/options-page/state";
 import { downloadFile } from "/lib/util";
+import { QuoteListEditor } from "./quote-list";
 
 export const ImportExport = () => {
 	const state = useOptionsPageState();
@@ -105,26 +106,63 @@ export const ImportExport = () => {
 		state.quoteLists.refetch();
 	}
 
-	const setQuoteListEnabled = (id: QuoteListId, enabled: boolean) => {
-		saveQuoteListEnabled(id, enabled);
+	return <div class="space-y-2">
+			<div class="px-4 flex cross-center">
+				<h2 class="font-lg font-bold flex-1">Quote lists</h2>
+				<div>
+					<input id="file-import-field" type="file" class="opacity-0 pointer-events-none" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
+					<label for="file-import-field" class="buttonlike font-sm primary cursor-pointer user-select-none hover:bg-figure-100">Import CSV</label>
+				</div>
+			</div>
+			<ul>
+				<For each={state.quoteLists.get()}>
+					{(ql) =>
+						<>
+							<QuoteListToggle quoteList={ql} />
+							<Show when={ql.id === state.selectedQuoteListId.get()}>
+								<div class="inset p-4 viewport-scroller">
+									<QuoteListEditor />
+								</div>
+							</Show>
+						</>
+					}
+				</For>
+			</ul>
+		</div>
+}
+
+const QuoteListToggle = ({ quoteList: ql }: { quoteList: QuoteList }) => {
+	const state = useOptionsPageState();
+
+	const onQuoteListToggle = async (e: { preventDefault: () => void }, id: QuoteListId, currentlyEnabled: boolean) => {
+		if (!currentlyEnabled) {
+			state.selectedQuoteListId.set(id);
+			await saveQuoteListEnabled(id, true);
+			state.quoteLists.refetch();
+			return;
+		}
+
+		console.log(state.selectedQuoteListId.get(), id)
+
+		if (state.selectedQuoteListId.get() !== id) {
+			e.preventDefault();
+			state.selectedQuoteListId.set(id);
+		} else {
+			state.selectedQuoteListId.set(null);
+			await saveQuoteListEnabled(id, false);
+			state.quoteLists.refetch();
+		}
 	}
 
-	return <div>
-		<div>
-			<For each={state.quoteLists.get()}>
-				{(ql) => <div class="font-lg flex">
-					<label class="cursor-pointer flex flex-1" for={`quotelist-${ql.id}`}>
-						<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => setQuoteListEnabled(ql.id, e.currentTarget.checked)} />
-						<span class="p-1">{ql.id === 'builtin' ? 'Built-in quotes' : ql.title} ({ ql.quotes === 'builtin' ? BuiltinQuotes.length : ql.quotes.length })</span>
-					</label>
-					<button onClick={() => state.selectedQuoteListId.set(ql.id)}>Edit</button>
-					<button onClick={() => doExport(ql.id)}>Export</button>
-				</div>}
-			</For>
-		</div>
-		<div>
-			<label for="file-import-field" class="cursor-pointer b-1 user-select-none hover:bg-figure-100">Import CSV</label>
-			<input id="file-import-field" type="file" class="opacity-0" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
-		</div>
-	</div>
+	// const bg = () => state.selectedQuoteListId.get() === ql.id ? 'bg-accent-a200' : 'hover:bg-lighten-100';
+
+	return <li class={`flex px-4 hoverable`} aria-selected={state.selectedQuoteListId.get() === ql.id}>
+		<label class="cursor-pointer flex flex-1 cross-center py-2" for={`quotelist-${ql.id}`}>
+			<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => onQuoteListToggle(e, ql.id, !ql.disabled)} />
+			<span class="px-2">{ql.id === 'builtin' ? 'Built-in quotes' : ql.title} ({ ql.quotes === 'builtin' ? BuiltinQuotes.length : ql.quotes.length })</span>
+		</label>
+	</li>
 }
+
+// <button onClick={() => state.selectedQuoteListId.set(ql.id)}>Edit</button>
+// <button onClick={() => doExport(ql.id)}>Export</button>

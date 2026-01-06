@@ -11,7 +11,7 @@ export const Undo = () => {
 		switch (undoState.type) {
 			case 'deleteQuote':
 				await undoDeleteQuote(undoState.quoteListId, undoState.quote)
-				state.selectedQuoteList.refetch();
+				state.quoteLists.refetch();
 				break;
 			case 'deleteQuoteList':
 				await undoDeleteQuoteList(undoState.quoteList);

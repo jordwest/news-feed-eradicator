@@ -46,13 +46,9 @@ const Site = ({ site }: { site: Site }) => {
 
 	const id = `site-toggle-${site.id}`;
 
-	const bg = () => {
-		return state.selectedSiteId.get() === site.id ? 'bg-accent-a200' : 'hover:bg-lighten-100';
-	}
-
 	return <>
-		<div class="">
-			<label for={id} class={`cursor-pointer px-4 py-2 gap-2 flex cross-center ${bg()}`}>
+		<li class="hoverable" aria-selected={state.selectedSiteId.get() === site.id}>
+			<label for={id} class={`cursor-pointer px-4 py-2 gap-2 flex cross-center`}>
 				<input id={id} type="checkbox" class="toggle" onClick={(e) => {
 						e.preventDefault();
 						if (state.siteState(site.id).enabled) {
@@ -76,7 +72,7 @@ const Site = ({ site }: { site: Site }) => {
 					<div class="font-sm text-figure-500">{site.hosts.join(', ')}</div>
 				</div>
 			</label>
-		</div>
+		</li>
 	</>
 }
 
@@ -89,12 +85,12 @@ export const SiteList = () => {
 		return state.siteList.get()?.sites.find(s => s.id === siteId) ?? null;
 	});
 
-	return  <div class="flex py-4">
-		<div class={`flex flex-col ${selectedSite() == null ? 'flex-1' : ''}`}>
+	return  <div class="flex py-2">
+		<ul class={`flex flex-col ${selectedSite() == null ? 'flex-1' : ''}`}>
 			<For each={state.siteList.get()?.sites}>
 				{site => <Site site={site} />}
 			</For>
-		</div>
+		</ul>
 		<Show when={selectedSite() != null}>
 			<div class="flex-1 bl-1">
 				<SiteConfigPanel site={selectedSite} />
