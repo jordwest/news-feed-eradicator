@@ -1,12 +1,12 @@
-import { getBrowser, type MessageSender, type SendResponse, type TabId } from '../../lib/webextension';
-import type { Region, Site, SiteId, SiteList } from '../../types/sitelist';
-import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '../../messaging/messages';
-import { loadHideQuotes, loadQuoteLists, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '../../storage/storage';
-import { originsForSite } from '../../lib/util';
-import { BuiltinQuotes, type Quote } from '../../quote';
-import type { QuoteListId, Theme } from '../../storage/schema';
-import themeDark from '../../themes/dark.css?raw';
-import themeLight from '../../themes/light.css?raw';
+import { getBrowser, type MessageSender, type TabId } from '/lib/webextension';
+import type { Region, Site, SiteId } from '/types/sitelist';
+import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '/messaging/messages';
+import { loadHideQuotes, loadQuoteLists, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '/storage/storage';
+import { originsForSite } from '/lib/util';
+import { BuiltinQuotes, type Quote } from '/quote';
+import type { QuoteListId, Theme } from '/storage/schema';
+import themeDark from '/themes/dark.css?raw';
+import themeLight from '/themes/light.css?raw';
 
 const browser = getBrowser();
 browser.action.onClicked.addListener(() => {

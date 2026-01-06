@@ -1,11 +1,11 @@
 import { createMemo, createSignal, For, Show } from "solid-js"
-import { deleteQuoteList, saveQuote, saveQuoteListTitle, deleteQuote as storageDeleteQuote } from "../../storage/storage";
-import { BuiltinQuotes, type Quote } from "../../quote";
-import { sendToServiceWorker } from "../../messaging/messages";
-import { signalObj, useOptionsPageState } from "./state";
-import { generateId } from "../../lib/generate-id";
-import { expect, quotesByAuthor } from "../../lib/util";
-import { BUILTIN_QUOTE_LIST_ID } from "../../storage/schema";
+import { deleteQuoteList, saveQuote, saveQuoteListTitle, deleteQuote as storageDeleteQuote } from "/storage/storage";
+import { BuiltinQuotes, type Quote } from "/quote";
+import { sendToServiceWorker } from "/messaging/messages";
+import { signalObj, useOptionsPageState } from "/entrypoints/options-page/state";
+import { generateId } from "/lib/generate-id";
+import { expect, quotesByAuthor } from "/lib/util";
+import { BUILTIN_QUOTE_LIST_ID } from "/storage/schema";
 
 export const QuoteListEditor = () => {
 	const state = useOptionsPageState();

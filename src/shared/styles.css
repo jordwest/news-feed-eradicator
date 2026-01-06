@@ -157,6 +157,7 @@ nfe-tabs [role="tabpanel"] {
 nfe-tabs [role="tablist"] {
 	display: flex;
 	justify-content: center;
+	gap: 8px;
 }
 nfe-tabs [role="tab"] {
 	border-radius: 4px 4px 0 0;
@@ -164,7 +165,6 @@ nfe-tabs [role="tab"] {
 	border-color: var(--theme-border);
 	border-style: solid;
 }
-nfe-tabs [role="tab"]:not(:last-child) { margin-right: 8px; }
 nfe-tabs [role="tab"][aria-selected="true"] { z-index: 2; background-color: var(--theme-active-tab-bg); }
 nfe-tabs [role="tab"][aria-selected="false"] { z-index: 0; }
 

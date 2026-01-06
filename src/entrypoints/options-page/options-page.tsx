@@ -1,16 +1,12 @@
-import { getBrowser, type Permissions } from "../../lib/webextension";
-
 import { render } from "solid-js/web";
 import h from "solid-js/h";
 import { Show, type ParentComponent } from "solid-js";
 
-import { ImportExport } from "./import-export";
-import { QuoteListEditor } from "./quote-list";
 import { OptionsPageState, OptionsPageStateContext, useOptionsPageState, type PageId } from "./state";
 import { Snooze } from "./snooze";
-import { SiteList } from "./sites";
+import { SiteList } from "./tabs/sites";
 import { Undo } from "./undo";
-import { QuotesToggle } from "./quotes-toggle";
+import { QuotesTabPanel } from "./tabs/quotes";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -60,14 +56,7 @@ const OptionsPage = () => {
 						</Show>
 
 						<Show when={state.page.get() === 'quotes'}>
-							<QuotesToggle />
-							<Show when={!state.hideQuotes.get()}>
-								<hr />
-								<ImportExport />
-								<Show when={state.selectedQuoteListId.get() != null}>
-									<QuoteListEditor />
-								</Show>
-							</Show>
+							<QuotesTabPanel />
 						</Show>
 					</div>
 				</nfe-tabs>

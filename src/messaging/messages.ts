@@ -1,8 +1,8 @@
-import { getBrowser } from "../lib/webextension";
-import type { QuoteListId, Theme } from "../storage/schema";
-import type { Region, Site, SiteId } from "../types/sitelist";
+import { getBrowser } from "/lib/webextension";
+import type { QuoteListId, Theme } from "/storage/schema";
+import type { Region, SiteId } from "/types/sitelist";
 
-export const sendToServiceWorker = async <T = any>(msg: ToServiceWorkerMessage): Promise<T> => {
+export const sendToServiceWorker = async <Response extends FromServiceWorkerMessage = any>(msg: ToServiceWorkerMessage): Promise<Response> => {
 	const browser = getBrowser();
 	return browser.runtime.sendMessage(msg);
 }

@@ -1,11 +1,11 @@
 import { For } from "solid-js";
-import { generateId } from "../../lib/generate-id";
-import { BuiltinQuotes, type Quote } from "../../quote";
-import type { QuoteListId } from "../../storage/schema";
-import { loadQuoteList, saveNewQuoteList, saveQuoteListEnabled } from "../../storage/storage";
+import { generateId } from "/lib/generate-id";
+import { BuiltinQuotes, type Quote } from "/quote";
+import type { QuoteListId } from "/storage/schema";
+import { loadQuoteList, saveNewQuoteList, saveQuoteListEnabled } from "/storage/storage";
 import Papa from 'papaparse';
-import { useOptionsPageState } from "./state";
-import { downloadFile } from "../../lib/util";
+import { useOptionsPageState } from "/entrypoints/options-page/state";
+import { downloadFile } from "/lib/util";
 
 export const ImportExport = () => {
 	const state = useOptionsPageState();

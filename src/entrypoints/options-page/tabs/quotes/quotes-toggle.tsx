@@ -1,4 +1,4 @@
-import { useOptionsPageState } from "./state";
+import { useOptionsPageState } from "/entrypoints/options-page/state";
 
 export const QuotesToggle = () => {
 	const state = useOptionsPageState();

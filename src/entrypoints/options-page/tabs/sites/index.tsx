@@ -1,9 +1,9 @@
 import { createMemo, For, Show } from "solid-js";
-import { getBrowser } from "../../lib/webextension";
-import type { Site } from "../../types/sitelist";
-import { originsForSite } from "../../lib/util";
-import { SiteConfigPanel } from "./site-configuration";
-import { useOptionsPageState } from "./state";
+import { getBrowser } from "../../../../lib/webextension";
+import type { Site } from "../../../../types/sitelist";
+import { originsForSite } from "../../../../lib/util";
+import { SiteConfigPanel } from "../../site-configuration";
+import { useOptionsPageState } from "../../state";
 
 const browser = getBrowser();
 

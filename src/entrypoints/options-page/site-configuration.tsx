@@ -1,8 +1,8 @@
 import { createResource, For, Show, type Accessor } from "solid-js";
-import type { RegionId, Site, SiteId } from "../../types/sitelist";
-import { loadRegionsForSite, setRegionEnabledForSite } from "../../storage/storage";
-import { sendToServiceWorker } from "../../messaging/messages";
-import { expect } from "../../lib/util";
+import type { RegionId, Site, SiteId } from "/types/sitelist";
+import { loadRegionsForSite, setRegionEnabledForSite } from "/storage/storage";
+import { sendToServiceWorker } from "/messaging/messages";
+import { expect } from "/lib/util";
 
 export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
 	const [siteRegions, { refetch }] = createResource(async () => {
