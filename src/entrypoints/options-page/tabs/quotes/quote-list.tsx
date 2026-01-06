@@ -8,6 +8,15 @@ import { expect, quotesByAuthor } from "/lib/util";
 import { BUILTIN_QUOTE_LIST_ID } from "/storage/schema";
 import { unwrap } from "solid-js/store";
 
+const autoFocus = ({ autoSelect }: { autoSelect?: boolean } = {}) => (el: HTMLElement) => {
+	setTimeout(() => {
+		el.focus();
+		if (autoSelect && (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)) {
+			el.select();
+		}
+	}, 1)
+}
+
 export const QuoteListEditor = () => {
 	const state = useOptionsPageState();
 
@@ -94,13 +103,14 @@ export const QuoteListEditor = () => {
 	return <div>
 		<Show when={state.withEditingType('quoteListTitle')} keyed>
 			{editState =>
-				<div>
-					<input type="text" value={editState.editValue.get()} onInput={e => editState.editValue.set(e.currentTarget.value)} />
-					<button onClick={async () => {
+				<div class="flex cross-center gap-2">
+					<input class="p-2 w-full" ref={autoFocus({autoSelect: true})} type="text" value={editState.editValue.get()} onInput={e => editState.editValue.set(e.currentTarget.value)} />
+					<button class="primary" onClick={async () => {
 						await saveQuoteListTitle(editState.quoteListId, editState.editValue.get())
 						state.editing.set(null);
 						state.quoteLists.refetch();
 					}}>Save</button>
+					<button class="tertiary" onClick={() => state.editing.set(null)}>Cancel</button>
 				</div>
 			}
 		</Show>
@@ -109,11 +119,16 @@ export const QuoteListEditor = () => {
 				<h3 class="font-xl">Built-in quotes</h3>
 			</Show>
 			<Show when={state.selectedQuoteListId.get() !== BUILTIN_QUOTE_LIST_ID}>
-				<h3 class="font-xl">{ state.selectedQuoteList()?.title } <button onClick={editListTitle}>Edit</button><button onClick={deleteList}>Delete list</button></h3>
+				<div class="flex cross-center gap-2">
+					<h3 class="font-xl">{ state.selectedQuoteList()?.title }</h3>
+					<button class="tertiary bg-transparent" onClick={editListTitle} aria-label="Edit list title">✏️</button>
+					<button class="secondary" onClick={deleteList}>Delete list</button>
+					<div class="flex-1" />
+					<button class="primary" onClick={() => state.editing.set({type: 'newQuote'})}>Add Quote</button>
+				</div>
 			</Show>
 		</Show>
 
-		<button onClick={() => state.editing.set({type: 'newQuote'})}>Add Quote</button>
 
 		<table>
 			<Show when={state.editing.get()?.type == 'newQuote'}>
@@ -181,25 +196,33 @@ const QuoteEditor = ({ quote, afterSave }: { quote: Quote | null, afterSave: () 
 				e.preventDefault();
 				save(false);
 			}}>
-				<div>
-					<label>Quote text</label>
-					<input type="text" value={editingQuoteText()} onInput={e => setEditingQuoteText(e.currentTarget.value)} />
-				</div>
+				<div class="space-y-4 inset p-4">
+					<div class="space-y-2">
+						<div>
+							<label class="block">Quote text</label>
+							<textarea ref={autoFocus()} rows={5} class="w-full p-2" onInput={e => setEditingQuoteText(e.currentTarget.value)} value={editingQuoteText()} />
+						</div>
 
-				<div>
-					<label>Author</label>
-					<input type="text" value={editingQuoteAuthor()} onInput={e => setEditingQuoteAuthor(e.currentTarget.value)} />
-				</div>
+						<div>
+							<label class="block">Author</label>
+							<input type="text" class="w-full p-2" value={editingQuoteAuthor()} onInput={e => setEditingQuoteAuthor(e.currentTarget.value)} />
+						</div>
+					</div>
 
-				<button type="button" onClick={cancel}>
-					Cancel
-				</button>
-				<button type="submit">
-					Save
-				</button>
-				<button type="button" onClick={e => save(true)}>
-					Save and add another
-				</button>
+					<div class="space-x-2">
+						<button class="primary" type="submit">
+							Save
+						</button>
+						<Show when={quote == null}>
+							<button class="secondary" type="button" onClick={e => save(true)}>
+								Save and add another
+							</button>
+						</Show>
+						<button class="tertiary" type="button" onClick={cancel}>
+							Cancel
+						</button>
+					</div>
+				</div>
 			</form>
 		</td>
 	</tr>

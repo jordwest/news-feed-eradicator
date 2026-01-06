@@ -21,7 +21,7 @@ a         { text-decoration: none; color: var(--theme-accent); }
 a:visited { text-decoration: none; color: var(--theme-accent); }
 
 h1, h2, h3, h4, h5, h6, p {
-	font-size: 1rem;
+	font-size: 18px;
 	margin: 0;
 	padding: 0;
 	font-weight: normal;
@@ -32,14 +32,16 @@ hr {
 	border-top: 1px solid var(--theme-border);
 }
 
+input, button, textarea, select {
+  font: inherit;
+}
+
 button, .buttonlike {
 	display: inline-block;
 	color: var(--theme-figure);
 	padding: 0.5em 1em;
 	border: 0;
 	background-color: transparent;
-	font-size: 1rem;
-	font-family: sans-serif;
 	cursor: pointer;
 }
 
@@ -105,11 +107,11 @@ button.tertiary:hover, buttonlike.tertiary:hover {
 	background-color: var(--theme-default-hover-bg);
 }
 
-.font-xs { font-size: 0.75rem; }
-.font-sm { font-size: 0.875rem; }
-.font-md { font-size: 1rem; }
-.font-lg { font-size: 1.125rem; }
-.font-xl { font-size: 1.25rem; }
+.font-xs { font-size: 14px; }
+.font-sm { font-size: 16px; }
+.font-md { font-size: 18px; }
+.font-lg { font-size: 20px; }
+.font-xl { font-size: 22px; }
 
 .font-bold { font-weight: bold; }
 
@@ -140,7 +142,7 @@ button.tertiary:hover, buttonlike.tertiary:hover {
 	max-width: 960px;
 }
 
-.shadow { box-shadow: 0 0 8px rgba(0, 0, 0, 0.15); }
+.shadow { box-shadow: var(--theme-shadow); }
 
 .card { background-color: var(--theme-lighten-100); }
 .card.secondary { background-color: var(--theme-accent-a200); }

@@ -17,7 +17,10 @@
 	--theme-darken-50: rgba(0, 0, 0, 0.025);
 
 	--theme-active-tab-bg: rgb(225, 225, 215);
-	--theme-inset-bg: rgb(220, 220, 210);
+	/*--theme-inset-bg: rgb(220, 220, 210);*/
+	--theme-inset-bg: rgba(0, 0, 0, 0.02);
+
+	--theme-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 
 	--theme-default-hover-bg: var(--theme-lighten-100);
 	--theme-default-selected-bg: var(--theme-accent-a200);

@@ -35,18 +35,18 @@ const toggleTheme = async (e: { preventDefault: () => void }, siteId: SiteId, th
 export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: Accessor<Theme | null> }) => {
 	const [collapsed, setCollapsed] = createSignal(false);
 
-	return <div class="p-4 bg-widget-ground b-1 shadow space-y-2">
+	return <div class="p-4 bg-widget-ground b-1 shadow space-y-2 font-md">
 		<Show when={quote()}>
 			<div class="w-full position-relative">
 				<Show when={collapsed()}>
 					<div class="flex w-full axis-end position-absolute lr-0 pointer-events-none">
-						<button class="tertiary px-2 pointer-events-all" onClick={() => setCollapsed(false)}>︙</button>
+						<button class="tertiary px-2 pointer-events-all" aria-label="Show News Feed Eradicator toolbar" onClick={() => setCollapsed(false)}>︙</button>
 					</div>
 				</Show>
 				<Show when={!collapsed()}>
 					<div class="space-x-2 flex w-full">
-							<button class="primary text-primary p-2 b-0 cursor-pointer" onClick={nextQuote}>Next quote &gt;</button>
-							<button class="secondary text-primary p-2 b-0 cursor-pointer" onClick={disableQuote}>Disable this quote</button>
+							<button class="primary text-primary font-sm" onClick={nextQuote}>Next quote &gt;</button>
+							<button class="secondary text-primary font-sm" onClick={disableQuote}>Disable this quote</button>
 							<div class="flex-1" />
 							<Show when={siteId != null}>
 								<label for="theme-toggle" class="cursor-pointer text-primary gap-1 flex cross-center">
@@ -55,11 +55,11 @@ export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: A
 									<span aria-label="Dark mode">🌙</span>
 								</label>
 							</Show>
-						<button class="primary px-2 pointer-events-all" onClick={() => setCollapsed(true)}>Hide toolbar</button>
+						<button class="primary px-2 pointer-events-all font-sm" onClick={() => setCollapsed(true)}>Hide toolbar</button>
 					</div>
 				</Show>
 			</div>
-			<div class={`space-y-2 ${collapsed() ? 'pr-8' : ''}`}>
+			<div class={`space-y-2 font-lg ${collapsed() ? 'pr-8' : ''}`}>
 				<div class="quote-border-left p-2 text-primary">{quote()?.text}</div>
 				<div class="text-secondary">{quote()?.author}</div>
 			</div>
