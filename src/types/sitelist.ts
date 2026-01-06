@@ -14,6 +14,7 @@ export type Site = {
 	title: string,
 	hosts: string[],
 	paths: Path[],
+	popular?: boolean,
 	regions: Region[]
 };
 

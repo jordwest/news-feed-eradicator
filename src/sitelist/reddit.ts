@@ -5,6 +5,7 @@ export const reddit: Site = {
 	title: "Reddit",
 	hosts: ['www.reddit.com', 'old.reddit.com'],
 	paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', '/r/popular/', '/r/all/'],
+	popular: true,
 	regions: [
 		{
 			id: regionId('feed'),

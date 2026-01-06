@@ -15,29 +15,28 @@ import { QuotesToggle } from "./quotes-toggle";
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
 
+	const isActive = () => state.page.get() === to;
 	const classname = () => {
-		const active = state.page.get() === to ? 'underline bg-lighten-100' : 'bg-darken-100 hover:bg-darken-50'
+		const active = state.page.get() === to ? '' : 'bg-darken-100 hover:bg-darken-50'
 		return `block font-xl py-2 px-4 ${active}`
 	};
 
-	return <li><button class={classname()} onClick={() => state.page.set(to)}>{children}</button></li>;
+	return <li role="tab" aria-selected={isActive() ? 'true' : 'false'}><button class={classname()} onClick={() => state.page.set(to)}>{children}</button></li>;
 }
 
 const PageTabs = () => {
-	return <nav>
-		<ul class="flex font-xl axis-center">
-			<PageTab to="sites">Sites</PageTab>
-			<PageTab to="quotes">Quotes</PageTab>
-			<PageTab to="about">About</PageTab>
-		</ul>
-	</nav>
+	return <ul role="tablist" class="">
+		<PageTab to="sites">Sites</PageTab>
+		<PageTab to="quotes">Quotes</PageTab>
+		<PageTab to="about">About</PageTab>
+	</ul>;
 }
 
 const OptionsPage = () => {
 	const state = new OptionsPageState();
 
 	return <div class="flex axis-center text-figure">
-		<div class="font-lg w-full mw-lg space-y-4">
+		<div class="w-full mw-lg space-y-4">
 			<h1 class="text-center font-xl">News Feed Eradicator</h1>
 
 			<OptionsPageStateContext.Provider value={state}>
@@ -46,15 +45,16 @@ const OptionsPage = () => {
 				<Undo />
 
 				<Show when={!state.allSitePermissionsValid()}>
-					<div class="flex p-4 shadow bg-lighten-100">
-						<p class="flex-1">Some enabled sites need more permissions to work correctly.</p>
-						<button onClick={() => state.fixPermissions()}>Fix permissions</button>
+					<div class="flex p-4 card shadow primary outlined gap-2 cross-center">
+						<div>⚠️</div>
+						<p class="flex-1 flex cross-center">Some enabled sites need more permissions to work correctly.</p>
+						<button class="primary" onClick={() => state.fixPermissions()}>Fix permissions</button>
 					</div>
 				</Show>
 
-				<div>
+				<nfe-tabs>
 					<PageTabs />
-					<div class="bg-lighten-100">
+					<div role="tabpanel" class="shadow">
 						<Show when={state.page.get() === 'sites'}>
 							<SiteList />
 						</Show>
@@ -70,7 +70,7 @@ const OptionsPage = () => {
 							</Show>
 						</Show>
 					</div>
-				</div>
+				</nfe-tabs>
 			</OptionsPageStateContext.Provider>
 		</div>
 	</div>

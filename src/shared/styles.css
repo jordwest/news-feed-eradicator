@@ -1,5 +1,6 @@
 :root {
 	font-family: sans-serif;
+	font-size: 18px;
 }
 
 ul, li {
@@ -25,11 +26,29 @@ hr {
 
 button {
 	color: var(--theme-figure);
-	background-color: transparent;
+	padding: 8px 16px;
 	border: 0;
+	background-color: transparent;
 	font-size: 1rem;
 	font-family: sans-serif;
 	cursor: pointer;
+}
+button.primary {
+	border-radius: 4px;
+	color: var(--theme-accent-figure);
+	background-color: var(--theme-accent);
+	border: 0;
+}
+button.primary:hover {
+	background-color: var(--theme-accent-a500);
+}
+
+button.secondary {
+	border-radius: 4px;
+	border: 1px solid var(--theme-accent);
+}
+button.secondary:hover {
+	background-color: var(--theme-accent-a200);
 }
 
 .block { display: block; }
@@ -67,6 +86,8 @@ button {
 .font-lg { font-size: 1.125rem; }
 .font-xl { font-size: 1.25rem; }
 
+.font-bold { font-weight: bold; }
+
 .text-center { text-align: center; }
 .text-accent { color: var(--theme-accent); }
 
@@ -93,7 +114,12 @@ button {
 	max-width: 960px;
 }
 
-.shadow { box-shadow: 0 0px 8px rgba(0, 0, 0, 0.08); }
+.shadow { box-shadow: 0 0 8px rgba(0, 0, 0, 0.15); }
+
+.card { background-color: var(--theme-lighten-100); }
+.card.secondary { background-color: var(--theme-accent-a200); }
+.card.primary { background-color: var(--theme-accent-a500); }
+.card.outlined { border: 1px solid var(--theme-accent); }
 
 .w-full { width: 100%; }
 .lr-0 { left: 0; right: 0; }
@@ -115,10 +141,32 @@ button {
 
 .space-x-1 > :not(:first-child) { margin-left: 4px; }
 .space-x-2 > :not(:first-child) { margin-left: 8px; }
+.gap-2 { gap: 8px; }
 
 .cursor-pointer { cursor: pointer; }
 .pointer-events-none { pointer-events: none; }
 .pointer-events-all { pointer-events: all; }
+
+nfe-tabs { isolation: isolate; display: block; }
+nfe-tabs [role="tabpanel"] {
+	position: relative;
+	z-index: 1;
+	border-radius: 4px;
+	background-color: var(--theme-active-tab-bg);
+}
+nfe-tabs [role="tablist"] {
+	display: flex;
+	justify-content: center;
+}
+nfe-tabs [role="tab"] {
+	border-radius: 4px 4px 0 0;
+	border-width: 1px 1px 0 1px;
+	border-color: var(--theme-border);
+	border-style: solid;
+}
+nfe-tabs [role="tab"]:not(:last-child) { margin-right: 8px; }
+nfe-tabs [role="tab"][aria-selected="true"] { z-index: 2; background-color: var(--theme-active-tab-bg); }
+nfe-tabs [role="tab"][aria-selected="false"] { z-index: 0; }
 
 .checkbox {
 	cursor: pointer;

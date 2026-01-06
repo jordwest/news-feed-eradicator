@@ -52,7 +52,7 @@ const Site = ({ site }: { site: Site }) => {
 
 	return <>
 		<div class="">
-			<label for={id} class={`cursor-pointer px-4 py-2 space-x-2 flex cross-center ${bg()}`}>
+			<label for={id} class={`cursor-pointer px-4 py-2 gap-2 flex cross-center ${bg()}`}>
 				<input id={id} type="checkbox" class="toggle" onClick={(e) => {
 						e.preventDefault();
 						if (state.siteState(site.id).enabled) {
@@ -69,7 +69,7 @@ const Site = ({ site }: { site: Site }) => {
 					} }
 					checked={state.siteState(site.id).enabled} />
 				<Show when={state.sitesWithInvalidPermissions().includes(site.id)}>
-					<span class="">!</span>
+					<span class="">⚠️</span>
 				</Show>
 				<div class="flex flex-col">
 					<div>{site.title}</div>

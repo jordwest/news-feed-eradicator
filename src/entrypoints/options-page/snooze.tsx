@@ -69,18 +69,23 @@ export const Snooze = () => {
 		return state != null && state > now();
 	}
 
-	return <div class="text-center">
-		<div>{snoozeState() == null || snoozeState()! <= now() ? 'Hold button below to snooze' : `Snoozing for ${displayDuration((snoozeState()! - now()) / 1000)}`}</div>
-
+	return <div>
 		<Show when={!isSnoozing()}>
-			<button class="font-lg p-8" onMouseDown={buttonDown} onMouseUp={buttonUp} onMouseLeave={buttonUp}>
-				{snoozeTime() == null ? 'Hold to Snooze' : `Snooze for ${displayDuration(snoozeTime()!)}s` }
-			</button>
+			<div class="flex axis-center">
+				<button class="primary font-lg p-8" onMouseDown={buttonDown} onMouseUp={buttonUp} onMouseLeave={buttonUp}>
+					{snoozeTime() == null ? 'Hold to Snooze' : `Snooze for ${displayDuration(snoozeTime()!)}` }
+				</button>
+			</div>
 		</Show>
 		<Show when={isSnoozing()}>
-			<button class="font-lg" onClick={cancelSnooze}>
-				Cancel snooze
-			</button>
+			<div class="flex cross-center p-4 card secondary outlined shadow">
+				<div class="flex-1">
+					💤 Snoozing for {displayDuration((snoozeState()! - now()) / 1000)}
+				</div>
+				<button class="secondary" onClick={cancelSnooze}>
+					Cancel snooze
+				</button>
+			</div>
 		</Show>
 	</div>
 }

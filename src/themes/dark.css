@@ -10,6 +10,7 @@
 	--theme-accent: rgb(204, 119, 68);
 	--theme-accent-a200: rgba(204, 119, 68, 0.2);
 	--theme-accent-a500: rgba(204, 119, 68, 0.5);
+	--theme-accent-figure: rgb(255, 255, 255);
 
 	--theme-lighten-100: rgba(255, 255, 255, 0.05);
 	--theme-darken-100: rgba(0, 0, 0, 0.1);
