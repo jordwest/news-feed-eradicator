@@ -108,7 +108,7 @@ export const ImportExport = () => {
 
 	return <div class="space-y-2">
 			<div class="px-4 flex cross-center">
-				<h2 class="font-lg font-bold flex-1">Quote lists</h2>
+				<h2 class="font-lg font-bold flex-1">Lists</h2>
 				<div>
 					<input id="file-import-field" type="file" class="opacity-0 pointer-events-none" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
 					<label for="file-import-field" class="buttonlike font-sm primary cursor-pointer user-select-none hover:bg-figure-100">Import CSV</label>

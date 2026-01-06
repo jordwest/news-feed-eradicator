@@ -7,6 +7,11 @@
 	box-sizing: border-box;
 }
 
+blockquote, figure, figcaption {
+	margin: 0;
+	padding: 0;
+}
+
 hr {
 	margin: 0;
 }
@@ -155,7 +160,7 @@ button.tertiary:hover, buttonlike.tertiary:hover {
 }
 
 .viewport-scroller {
-	max-height: max(250px, calc(100vh - 600px));
+	max-height: max(250px, calc(100vh - 450px));
 	overflow-y: auto;
 }
 
@@ -212,6 +217,7 @@ nfe-tabs [role="tab"][aria-selected="false"] { z-index: 0; }
 	font-size: 1em;
 	width: 1em;
 	height: 1em;
+	flex-shrink: 0;
 	appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;

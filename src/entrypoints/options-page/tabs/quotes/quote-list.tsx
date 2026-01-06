@@ -100,7 +100,9 @@ export const QuoteListEditor = () => {
 		state.quoteLists.refetch();
 	}
 
-	return <div>
+	const isEditable = () => state.selectedQuoteList()?.quotes !== 'builtin';
+
+	return <div class="space-y-4">
 		<Show when={state.withEditingType('quoteListTitle')} keyed>
 			{editState =>
 				<div class="flex cross-center gap-2">
@@ -118,7 +120,7 @@ export const QuoteListEditor = () => {
 			<Show when={state.selectedQuoteListId.get() === BUILTIN_QUOTE_LIST_ID}>
 				<h3 class="font-xl">Built-in quotes</h3>
 			</Show>
-			<Show when={state.selectedQuoteListId.get() !== BUILTIN_QUOTE_LIST_ID}>
+			<Show when={isEditable()}>
 				<div class="flex cross-center gap-2">
 					<h3 class="font-xl">{ state.selectedQuoteList()?.title }</h3>
 					<button class="tertiary bg-transparent" onClick={editListTitle} aria-label="Edit list title">✏️</button>
@@ -130,7 +132,7 @@ export const QuoteListEditor = () => {
 		</Show>
 
 
-		<table>
+		<ul class="space-y-2">
 			<Show when={state.editing.get()?.type == 'newQuote'}>
 				<QuoteEditor quote={null} afterSave={state.quoteLists.refetch} />
 			</Show>
@@ -142,21 +144,26 @@ export const QuoteListEditor = () => {
 					</Show>
 
 					<Show when={editingQuoteId() !== quote.id}>
-						<tr>
-							<td>
+						<li class="flex gap-2 card cross-center">
+							<label class="flex-1 hoverable block cursor-pointer p-2 flex gap-2 cross-center" for={`quote-${quote.id}`}>
 								<input type="checkbox" class="checkbox" id={`quote-${quote.id}`} checked={!disabledQuoteIds().has(quote.id)} onChange={e => setQuoteEnabled(quote.id, e.currentTarget.checked)} />
-							</td>
-							<td><label class="cursor-pointer" for={`quote-${quote.id}`}>{quote.text}</label>
-								<button onClick={() => editQuote(quote.id)}>Edit</button>
-								<button onClick={() => deleteQuote(quote.id)}>Delete</button>
-							</td>
-							<td>{quote.author}</td>
-						</tr>
+								<figure>
+									<blockquote>{quote.text}</blockquote>
+									<figcaption>{quote.author}</figcaption>
+								</figure>
+							</label>
+								<Show when={isEditable()}>
+									<div class="p-2 space-x-2">
+										<button class="tertiary" onClick={() => editQuote(quote.id)}>✏️</button>
+										<button class="tertiary" onClick={() => deleteQuote(quote.id)}>❌</button>
+									</div>
+								</Show>
+						</li>
 					</Show>
 				</>
 				}
 			</For>
-		</table>
+		</ul>
 	</div>
 }
 
@@ -190,8 +197,7 @@ const QuoteEditor = ({ quote, afterSave }: { quote: Quote | null, afterSave: () 
 		afterSave();
 	}
 
-	return <tr>
-		<td colspan="3">
+	return <li>
 			<form onSubmit={e => {
 				e.preventDefault();
 				save(false);
@@ -224,6 +230,5 @@ const QuoteEditor = ({ quote, afterSave }: { quote: Quote | null, afterSave: () 
 					</div>
 				</div>
 			</form>
-		</td>
-	</tr>
+	</li>
 }
