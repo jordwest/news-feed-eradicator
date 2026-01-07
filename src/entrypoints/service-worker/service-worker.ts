@@ -15,7 +15,7 @@ browser.action.onClicked.addListener(() => {
 
 const sendMessage = (tabId: TabId, message: FromServiceWorkerMessage) => browser.tabs.sendMessage(tabId, message);
 
-browser.runtime.onInstalled.addListener(async () => {
+browser.runtime.onInstalled.addListener(async (details) => {
 	await migrationPromise;
 	const sync = await browser.storage.sync.get(null);
 	const local = await browser.storage.local.get(null);
@@ -24,6 +24,10 @@ browser.runtime.onInstalled.addListener(async () => {
 
 	for (const siteId of local.enabledSites ?? []) {
 		await enableSite(siteId);
+	}
+
+	if (details.reason === 'install') {
+		browser.runtime.openOptionsPage();
 	}
 });
 

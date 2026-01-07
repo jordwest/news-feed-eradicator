@@ -138,6 +138,8 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 
 .opacity-0 { opacity: 0; }
 
+.rounded { border-radius: 4px; }
+
 .flex { display: flex; }
 .flex-1 { flex: 1; }
 .flex-col { flex-direction: column; }
