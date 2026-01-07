@@ -1,21 +1,35 @@
 import { createMemo, createSignal, For, Show } from "solid-js"
-import { deleteQuoteList, saveQuote, saveQuoteListTitle, deleteQuote as storageDeleteQuote } from "/storage/storage";
+import { deleteQuoteList, loadQuoteList, saveQuote, saveQuoteListTitle, deleteQuote as storageDeleteQuote } from "/storage/storage";
 import { BuiltinQuotes, type Quote } from "/quote";
 import { sendToServiceWorker } from "/messaging/messages";
 import { signalObj, useOptionsPageState } from "/entrypoints/options-page/state";
 import { generateId } from "/lib/generate-id";
-import { expect, quotesByAuthor } from "/lib/util";
-import { BUILTIN_QUOTE_LIST_ID } from "/storage/schema";
+import Papa from 'papaparse';
+import { autoFocus, downloadFile, expect, quotesByAuthor } from "/lib/util";
+import { BUILTIN_QUOTE_LIST_ID, type QuoteListId } from "/storage/schema";
 import { unwrap } from "solid-js/store";
 
-const autoFocus = ({ autoSelect }: { autoSelect?: boolean } = {}) => (el: HTMLElement) => {
-	setTimeout(() => {
-		el.focus();
-		if (autoSelect && (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)) {
-			el.select();
-		}
-	}, 1)
-}
+const doExport = async (quoteListId: QuoteListId) => {
+	const quoteList = await loadQuoteList(quoteListId);
+	if (quoteList == null) return;
+
+	const quotes = quoteList.quotes === 'builtin' ? BuiltinQuotes : quoteList.quotes;
+
+	const file = Papa.unparse([
+		['quote', 'author', 'hide'],
+		...quotes.map(quote => {
+			const hide = quoteList.disabledQuoteIds.includes(quote.id);
+			return [quote.text, quote.author, hide || null];
+		})
+	])
+
+	const blob = new Blob([file], { type: 'text/csv' });
+	let filename = quoteList.title.trim().replace(' ', '-').toLocaleLowerCase();
+	if (filename === '') filename = 'quotes';
+	if (!filename.endsWith('.csv')) filename += '.csv';
+
+	downloadFile(blob, filename);
+};
 
 export const QuoteListEditor = () => {
 	const state = useOptionsPageState();
@@ -23,7 +37,7 @@ export const QuoteListEditor = () => {
 	const quotes = createMemo(() => {
 		const ql = state.selectedQuoteList();
 		if (ql == null) return [];
-		return (ql?.quotes === 'builtin' ? BuiltinQuotes : ql.quotes)
+		return (ql.quotes === 'builtin' ? BuiltinQuotes : ql.quotes)
 			.sort(quotesByAuthor);
 	});
 
@@ -124,9 +138,9 @@ export const QuoteListEditor = () => {
 				<div class="flex cross-center gap-2">
 					<h3 class="font-xl">{ state.selectedQuoteList()?.title }</h3>
 					<button class="tertiary bg-transparent font-sm" onClick={editListTitle} aria-label="Edit list title">✏️</button>
-					<button class="tertiary font-sm" onClick={deleteList}>Delete list</button>
 					<div class="flex-1" />
-					<button class="primary font-sm" onClick={() => state.editing.set({type: 'newQuote'})}>Add Quote</button>
+					<button class="tertiary font-sm" onClick={deleteList}>Delete list</button>
+					<button class="font-sm tertiary" onClick={() => doExport(state.selectedQuoteListId.get()!)}>Export CSV</button>
 				</div>
 			</Show>
 		</Show>
@@ -135,6 +149,9 @@ export const QuoteListEditor = () => {
 		<ul class="space-y-2">
 			<Show when={state.editing.get()?.type == 'newQuote'}>
 				<QuoteEditor quote={null} afterSave={state.quoteLists.refetch} />
+			</Show>
+			<Show when={state.editing.get() == null && isEditable()}>
+				<button class="secondary font-sm w-full py-4" onClick={() => state.editing.set({type: 'newQuote'})}>+ Add Quote</button>
 			</Show>
 
 			<For each={quotes()}>
@@ -147,9 +164,9 @@ export const QuoteListEditor = () => {
 						<li class="flex gap-2 card cross-center">
 							<label class="flex-1 hoverable block cursor-pointer p-2 flex gap-2 cross-center" for={`quote-${quote.id}`}>
 								<input type="checkbox" class="checkbox" id={`quote-${quote.id}`} checked={!disabledQuoteIds().has(quote.id)} onChange={e => setQuoteEnabled(quote.id, e.currentTarget.checked)} />
-								<figure>
+								<figure class="space-y-1">
 									<blockquote>{quote.text}</blockquote>
-									<figcaption>{quote.author}</figcaption>
+									<figcaption class="text-secondary">~ {quote.author}</figcaption>
 								</figure>
 							</label>
 								<Show when={isEditable()}>

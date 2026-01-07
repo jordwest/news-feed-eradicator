@@ -120,7 +120,7 @@ export class OptionsPageState {
 	}
 
 	async newQuoteList() {
-		const id = await saveNewQuoteList('New List', [], false);
+		const id = await saveNewQuoteList({ title: 'New List', quotes: [], imported: false, disabledQuoteIds: [] });
 		await this.quoteLists.refetch();
 		this.selectedQuoteListId.set(id);
 	}

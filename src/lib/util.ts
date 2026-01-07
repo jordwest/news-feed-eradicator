@@ -42,3 +42,12 @@ export const quotesByAuthor = (a: Quote, b: Quote) => {
 
 	return 0;
 }
+
+export const autoFocus = ({ autoSelect }: { autoSelect?: boolean } = {}) => (el: HTMLElement) => {
+	setTimeout(() => {
+		el.focus();
+		if (autoSelect && (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement)) {
+			el.select();
+		}
+	}, 1)
+}

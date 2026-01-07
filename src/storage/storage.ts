@@ -204,7 +204,7 @@ export const saveQuoteListEnabled = async (quoteListId: QuoteListId, enabled: bo
 	await editQuoteList(quoteListId, list => list.disabled = !enabled);
 }
 
-export const saveNewQuoteList = async (title: string, quotes: Quote[], imported: boolean) => {
+export const saveNewQuoteList = async ({ title, quotes, imported, disabledQuoteIds }: { title: string, quotes: Quote[], imported: boolean, disabledQuoteIds: string[] }) => {
 	const lists = await loadQuoteLists();
 
 	const id = generateId() as QuoteListId;
@@ -214,7 +214,7 @@ export const saveNewQuoteList = async (title: string, quotes: Quote[], imported:
 		title,
 		quotes,
 		imported,
-		disabledQuoteIds: [],
+		disabledQuoteIds,
 	});
 
 	await setKey('quoteLists', lists);

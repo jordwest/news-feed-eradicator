@@ -11,25 +11,6 @@ import { QuoteListEditor } from "./quote-list";
 export const ImportExport = () => {
 	const state = useOptionsPageState();
 
-	const doExport = async (quoteListId: QuoteListId) => {
-		const quoteList = await loadQuoteList(quoteListId);
-		if (quoteList == null) return;
-
-		const quotes = quoteList.quotes === 'builtin' ? BuiltinQuotes : quoteList.quotes;
-
-		const file = Papa.unparse([
-			['id', 'quote', 'author'],
-			...quotes.map(quote => [quote.id, quote.text, quote.author])
-		])
-
-		const blob = new Blob([file], { type: 'text/csv' });
-		let filename = quoteList.title.trim().replace(' ', '-').toLocaleLowerCase();
-		if (filename === '') filename = 'quotes';
-		if (!filename.endsWith('.csv')) filename += '.csv';
-
-		downloadFile(blob, filename);
-	};
-
 	const doImport = async (files: FileList | null) => {
 		if (files == null || files.length === 0) {
 			return;
@@ -44,9 +25,9 @@ export const ImportExport = () => {
 				dynamicTyping: false,     // Always parse as strings
 			});
 
-			let idColumn: number | null = null
 			let quoteColumn: number | null = null
 			let authorColumn: number | null = null
+			let hideColumn: number | null = null
 
 			if (result.data.length < 1) {
 				return;
@@ -60,16 +41,16 @@ export const ImportExport = () => {
 			for (let col = 0; col < headerRow.length; col += 1) {
 				const column = headerRow[col].trim().toLowerCase();
 
-				if (column === 'id') {
-					idColumn = col;
-				}
-
 				if (column === 'quote' || column === 'text' || column === 'content') {
 					quoteColumn = col;
 				}
 
 				if (column === 'author' || column === 'source') {
 					authorColumn = col;
+				}
+
+				if (column === 'hide') {
+					hideColumn = col;
 				}
 			}
 
@@ -83,24 +64,28 @@ export const ImportExport = () => {
 			}
 
 			let importedQuotes: Quote[] = [];
+			let disabledQuoteIds: string[] = [];
 			for (let row = 1; row < result.data.length; row += 1) {
-				let id: string = idColumn != null ? cell(row, idColumn) : generateId();
-				console.log('id', id);
-				if (id.trim() === '') {
-					id = generateId();
-				}
+				const id: string = generateId();
 
 				const text = ((result.data[row] as string[])[quoteColumn] ?? '').trim();
 				if (text === '') continue;
 
 				const author = ((result.data[row] as string[])[authorColumn] ?? '').trim();
 
+				if (hideColumn != null) {
+					const hide = ((result.data[row] as string[])[hideColumn] ?? '').trim();
+					if (hide === 'true') {
+						disabledQuoteIds.push(id);
+					}
+				}
+
 				const quote = { id, text, author };
 
 				importedQuotes.push(quote);
 			}
 
-			await saveNewQuoteList(file.name, importedQuotes, true);
+			await saveNewQuoteList({ title: file.name, quotes: importedQuotes, imported: true, disabledQuoteIds });
 		}
 
 		state.quoteLists.refetch();
@@ -111,9 +96,9 @@ export const ImportExport = () => {
 			<div class="px-4 flex cross-center gap-4">
 				<h2 class="font-lg font-bold flex-1">Lists</h2>
 				<div class="flex gap-2 cross-center">
-					<button class="secondary font-sm" onClick={() => state.newQuoteList()}>+ New</button>
-					<label for="file-import-field" class="buttonlike font-sm tertiary cursor-pointer user-select-none hover:bg-figure-100">Import CSV</label>
+					<label for="file-import-field" class="buttonlike font-sm tertiary user-select-none">Import CSV</label>
 					<input id="file-import-field" type="file" class="opacity-0 position-absolute pointer-events-none" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
+					<button class={`${state.selectedQuoteListId.get() == null ? 'primary' : 'secondary'} font-sm`} onClick={() => state.newQuoteList()}>+ New</button>
 				</div>
 			</div>
 			<ul>
