@@ -185,6 +185,7 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 
 .space-x-1 > :not(:first-child) { margin-left: 4px; }
 .space-x-2 > :not(:first-child) { margin-left: 8px; }
+.space-x-4 > :not(:first-child) { margin-left: 16px; }
 .gap-1 { gap: 4px; }
 .gap-2 { gap: 8px; }
 .gap-4 { gap: 16px; }

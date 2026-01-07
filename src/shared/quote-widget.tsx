@@ -4,6 +4,7 @@ import type { Theme } from "../storage/schema";
 import type { SiteId } from "../types/sitelist";
 import { createSignal } from "solid-js";
 import { getBrowser } from "/lib/webextension";
+import { loadHideWidgetToolbar, saveHideWidgetToolbar } from "/storage/storage";
 
 const [quote, { refetch: nextQuote }] = createResource(async () => {
 	return sendToServiceWorker<RequestQuoteResponse>({
@@ -34,7 +35,14 @@ const toggleTheme = async (e: { preventDefault: () => void }, siteId: SiteId, th
 }
 
 export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: Accessor<Theme | null> }) => {
-	const [collapsed, setCollapsed] = createSignal(false);
+	const [collapsed, setCollapsedLocal] = createSignal(true);
+
+	loadHideWidgetToolbar().then(hidden => setCollapsedLocal(hidden));
+
+	const setCollapsed = (collapsed: boolean) => {
+			saveHideWidgetToolbar(collapsed);
+			setCollapsedLocal(collapsed);
+	}
 
 	return <aside class="space-y-2">
 		<div class="p-4 bg-widget-ground b-1 shadow space-y-2 font-md">
@@ -46,7 +54,8 @@ export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: A
 						</div>
 					</Show>
 					<Show when={!collapsed()}>
-						<div class="space-x-2 flex w-full">
+						<div class="space-x-4 flex w-full">
+							<div class="space-x-2 flex-1 flex">
 								<button class="tertiary text-primary font-sm" onClick={nextQuote}>Next quote &gt;</button>
 								<button class="secondary text-primary font-sm" onClick={disableQuote}>Disable this quote</button>
 								<div class="flex-1" />
@@ -57,6 +66,7 @@ export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: A
 										<span aria-label="Dark mode">🌙</span>
 									</label>
 								</Show>
+							</div>
 							<button class="primary px-2 pointer-events-all font-sm" onClick={() => setCollapsed(true)}>Hide toolbar</button>
 						</div>
 					</Show>

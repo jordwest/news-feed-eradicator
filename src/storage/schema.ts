@@ -9,6 +9,7 @@ export type QuoteListId = ('builtin' | string) & { __quoteListId: never };
 export type StorageLocalV2 = {
 	version: 2;
 	hideQuotes?: boolean;
+	hideWidgetToolbar?: boolean;
 	enabledSites?: SiteId[];
 	siteConfig?: Record<SiteId, SiteConfig>;
 	snoozeUntil?: number;

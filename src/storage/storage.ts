@@ -59,12 +59,15 @@ const ensureMigrated = async (): Promise<void> => {
 
 export const migrationPromise = ensureMigrated();
 
-const getKey = async <Key extends keyof StorageLocal>(k: Key): Promise<StorageLocal[Key] | undefined> => {
+async function getKey<Key extends keyof StorageLocal>(k: Key, defaultValue?: undefined): Promise<NonNullable<StorageLocalV2[Key]> | undefined>;
+async function getKey<Key extends keyof StorageLocal>(k: Key, defaultValue?: NonNullable<StorageLocalV2[Key]>): Promise<NonNullable<StorageLocalV2[Key]>>;
+async function getKey<Key extends keyof StorageLocal>(k: Key, defaultValue: NonNullable<StorageLocalV2[Key]> | undefined): Promise<NonNullable<StorageLocalV2[Key]> | undefined> {
 	const browser = getBrowser();
 	await migrationPromise;
 	const result = await browser.storage.local.get(k);
-	if (result == null) return undefined;
-	return (result[k]) as StorageLocal[Key];
+	if (result == null) return defaultValue;
+	if (result[k] == null) return defaultValue;
+	return (result[k]) as NonNullable<StorageLocal[Key]>;
 }
 
 const setKey = async <Key extends keyof StorageLocal>(k: Key, val: StorageLocal[Key]): Promise<void> => {
@@ -73,20 +76,15 @@ const setKey = async <Key extends keyof StorageLocal>(k: Key, val: StorageLocal[
 	return await browser.storage.local.set({ [k]: val });
 }
 
-export const loadHideQuotes = async (): Promise<boolean> => {
-	return await getKey('hideQuotes') ?? false;
-};
+export const loadHideQuotes = () => getKey('hideQuotes', false);
+export const saveHideQuotes = (hideQuotes: boolean) => setKey('hideQuotes', hideQuotes);
+export const loadEnabledSites = () => getKey('enabledSites', []);
 
-export const saveHideQuotes = async (hideQuotes: boolean): Promise<void> => {
-	await setKey('hideQuotes', hideQuotes);
-};
-
-export const loadEnabledSites = async (): Promise<SiteId[]> => {
-	return await getKey('enabledSites') ?? [];
-};
+export const loadHideWidgetToolbar = () => getKey('hideWidgetToolbar', false);
+export const saveHideWidgetToolbar = (hideWidgetToolbar: boolean) => setKey('hideWidgetToolbar', hideWidgetToolbar);
 
 export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<void> => {
-	const s = await getKey('enabledSites');
+	const s = await getKey('enabledSites', []);
 	let sites = new Set(s ?? []);
 
 	enable ? sites.add(siteId) : sites.delete(siteId);
@@ -94,13 +92,15 @@ export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<
 	return setKey('enabledSites', Array.from(sites));
 }
 
-export const loadSnoozeUntil = () => getKey('snoozeUntil');
+export const loadSnoozeUntil = () => getKey('snoozeUntil', undefined);
 export const saveSnoozeUntil = (snoozeUntil: number | undefined) => setKey('snoozeUntil', snoozeUntil);
 
-export const loadThemeForSite = async (siteId: SiteId): Promise<Theme | undefined> => {
-	return (await getKey('siteConfig') ?? {})[siteId]?.theme;
-}
+export const loadSiteConfig = async (siteId: SiteId): Promise<SiteConfig | undefined> => {
+	const sites = await getKey('siteConfig', {});
+	return sites[siteId];
+};
 
+export const loadThemeForSite = async (siteId: SiteId): Promise<Theme | undefined> => loadSiteConfig(siteId).then(site => site?.theme);
 export const saveThemeForSite = async (siteId: SiteId, theme: Theme | undefined) => {
 	const siteConfig = (await getKey('siteConfig') ?? {});
 
@@ -114,19 +114,10 @@ export const saveThemeForSite = async (siteId: SiteId, theme: Theme | undefined)
 	return setKey('siteConfig', siteConfig);
 }
 
-export const loadRegionsForSite = async (siteId: SiteId): Promise<SiteConfig> => {
-	return (await getKey('siteConfig') ?? {})[siteId] ?? {
-		regionEnabledOverride: {}
-	};
-}
+export const loadRegionsForSite = async (siteId: SiteId): Promise<SiteConfig> => loadSiteConfig(siteId).then(site => site ?? { regionEnabledOverride: {} });
 
-export const loadQuoteLists = async () => {
-	return (await getKey('quoteLists')) ?? DEFAULT_QUOTE_LISTS;
-}
-
-export const loadQuoteList = async (id: QuoteListId) => {
-	return ((await getKey('quoteLists')) ?? DEFAULT_QUOTE_LISTS).find(ql => ql.id === id);
-}
+export const loadQuoteLists = async () => getKey('quoteLists', DEFAULT_QUOTE_LISTS);
+export const loadQuoteList = async (id: QuoteListId) => loadQuoteLists().then(quoteLists => quoteLists.find(ql => ql.id === id));
 
 export const deleteQuoteList = async (id: QuoteListId) => {
 	if (id === BUILTIN_QUOTE_LIST_ID) {
