@@ -10,6 +10,7 @@ export type StorageLocalV2 = {
 	version: 2;
 	hideQuotes?: boolean;
 	hideWidgetToolbar?: boolean;
+	settingsLocked?: boolean;
 	enabledSites?: SiteId[];
 	siteConfig?: Record<SiteId, SiteConfig>;
 	snoozeUntil?: number;

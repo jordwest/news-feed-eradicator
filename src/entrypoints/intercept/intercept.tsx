@@ -78,16 +78,12 @@ function tryInject() {
 		}
 
 		for (const selector of region.config.selectors) {
-			console.log('Trying selector', selector);
-
 			const el = document.querySelector(selector);
 			if (el == null) {
 				// Element not found
 				isMissingElements = true;
 				continue;
 			}
-			console.log('Found', el);
-
 			const nfeElement = document.createElement('div');
 			nfeElement.id = 'nfe-root'
 			switch (injectConfig.mode) {
@@ -147,8 +143,6 @@ setInterval(() => {
 	if (path != window.location.pathname) {
 		path = window.location.pathname;
 
-		console.log('path changed', path);
-
 		sendMessage({
 			type: 'requestSiteDetails',
 			path: window.location.pathname,
@@ -169,7 +163,6 @@ const setCss = async (css: string | null) => {
 		state.injectedCss = css;
 
 		const injected = await sendMessage({ type: 'injectCss', css });
-		console.log('got response injected', injected)
 	} else {
 		state.injectedCss = null;
 	}
@@ -177,7 +170,6 @@ const setCss = async (css: string | null) => {
 	// Remove any existing css
 	if (oldCss != null) {
 		const removed = await sendMessage({ type: 'removeCss', css: oldCss });
-		console.log('got response remove', removed)
 	}
 }
 
@@ -258,14 +250,12 @@ const patchState = (regions: DesiredRegionState[]) => {
 		}
 	}
 
-	console.log('css', css);
 	setCss(css);
 }
 
 const isRegionBlockActive = (region: RegionState) => region.enabled && !isSnoozing()
 
 browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
-	console.log("Got message", msg);
 	if (msg.type == 'nfe#siteDetails' && msg.token === token) {
 		if (msg.snoozeUntil != null && msg.snoozeUntil > Date.now()) {
 			setSnoozeTimer(msg.snoozeUntil);

@@ -4,9 +4,9 @@ import { Show, type ParentComponent } from "solid-js";
 
 import { OptionsPageState, OptionsPageStateContext, useOptionsPageState, type PageId } from "./state";
 import { Snooze } from "./snooze";
-import { SiteList } from "./tabs/sites";
+import { SitesTabContent } from "./tabs/sites";
 import { Undo } from "./undo";
-import { QuotesTabPanel } from "./tabs/quotes";
+import { QuotesTabContent } from "./tabs/quotes";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -52,11 +52,11 @@ const OptionsPage = () => {
 					<PageTabs />
 					<div role="tabpanel" class="shadow">
 						<Show when={state.page.get() === 'sites'}>
-							<SiteList />
+							<SitesTabContent />
 						</Show>
 
 						<Show when={state.page.get() === 'quotes'}>
-							<QuotesTabPanel />
+							<QuotesTabContent />
 						</Show>
 					</div>
 				</nfe-tabs>

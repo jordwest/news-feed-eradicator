@@ -1,10 +1,9 @@
 import { Show } from "solid-js"
 import { QuotesToggle } from "./quotes-toggle"
 import { ImportExport } from "./import-export"
-import { QuoteListEditor } from "./quote-list"
 import { useOptionsPageState } from "/entrypoints/options-page/state"
 
-export const QuotesTabPanel = () => {
+export const QuotesTabContent = () => {
 	const state = useOptionsPageState();
 
 	return <div class="">

@@ -1,27 +1,20 @@
-import { createMemo, createResource, createSignal, Show } from "solid-js";
-import { getBrowser } from "../../lib/webextension";
+import { createMemo, createSignal, Show } from "solid-js";
 import { displayDuration } from "../../lib/util";
-
-const browser = getBrowser();
-
-const [snoozeState, { refetch: refreshSnoozeState }] = createResource<number | null>(async () => {
-	return browser.runtime.sendMessage({
-		type: 'readSnooze',
-	})
-});
+import { useOptionsPageState } from "./state";
 
 export const Snooze = () => {
-	const [now, setNow] = createSignal(Date.now());
+	const state = useOptionsPageState();
+
 	const [buttonHeldSince, setButtonHeldSince] = createSignal<number | null>(null);
 
 	const timeHeld = createMemo(() => {
 		const since = buttonHeldSince();
 		if (since == null) return null;
 
-		return Math.round((now() - since) / 100) / 10;
+		return Math.round((state.clock.get() - since) / 100) / 10;
 	});
 
-	const snoozeTime = createMemo(() => {
+	const snoozeSecondsPending = createMemo(() => {
 		const holdTime = timeHeld();
 		if (holdTime == null) return null;
 
@@ -36,53 +29,37 @@ export const Snooze = () => {
 		return 30 + (55 * 5) + Math.round((holdTime - 60) * 20);
 	});
 
-	setInterval(() => {
-		setNow(Date.now());
-	}, 100)
-
 	const buttonDown = () => {
-		setButtonHeldSince(now());
+		setButtonHeldSince(state.clock.get());
 	};
 
 	const buttonUp = async () => {
-		const duration = snoozeTime();
-		if (duration != null && duration > 0) {
-			await browser.runtime.sendMessage({
-				type: 'snooze',
-				until: Date.now() + 1000 * duration,
-			})
-			refreshSnoozeState();
+		const seconds = snoozeSecondsPending();
+		if (seconds != null && seconds > 0) {
+			await state.startSnooze(1000 * seconds);
 		}
 		setButtonHeldSince(null);
 	};
 
-	const cancelSnooze = async () => {
-		await browser.runtime.sendMessage({
-			type: 'snooze',
-			until: Date.now(),
-		})
-		refreshSnoozeState();
-	};
-
 	const isSnoozing = () => {
-		const state = snoozeState();
-		return state != null && state > now();
+		const snoozeState = state.snoozeState.get();
+		return snoozeState != null && snoozeState > state.clock.get();
 	}
 
 	return <div>
 		<Show when={!isSnoozing()}>
 			<div class="flex axis-center">
 				<button class="primary font-lg p-8" onMouseDown={buttonDown} onMouseUp={buttonUp} onMouseLeave={buttonUp}>
-					{snoozeTime() == null ? 'Hold to Snooze' : `Snooze for ${displayDuration(snoozeTime()!)}` }
+					{snoozeSecondsPending() == null ? 'Hold to Snooze' : `Snooze for ${displayDuration(snoozeSecondsPending()!)}` }
 				</button>
 			</div>
 		</Show>
 		<Show when={isSnoozing()}>
 			<div class="flex cross-center p-4 card secondary outlined shadow">
 				<div class="flex-1">
-					💤 Snoozing for {displayDuration((snoozeState()! - now()) / 1000)}
+					💤 Snoozing for {displayDuration((state.snoozeState.get()! - state.clock.get()) / 1000)}. Scroll your life away!
 				</div>
-				<button class="secondary" onClick={cancelSnooze}>
+				<button class="secondary" onClick={() => state.cancelSnooze()}>
 					Cancel snooze
 				</button>
 			</div>

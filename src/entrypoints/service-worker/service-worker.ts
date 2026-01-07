@@ -39,7 +39,6 @@ const notifyTabsOptionsUpdated = async () => {
 	try {
 		await Promise.allSettled(
 			tabs.map(tab => {
-				console.log('notify tab', tab)
 				return sendMessage(tab.id, { type: 'nfe#optionsUpdated' })
 			})
 		);
@@ -49,7 +48,6 @@ const notifyTabsOptionsUpdated = async () => {
 }
 
 const isEnabledPath = (site: Site, path: string): boolean | undefined => {
-	console.log('checking path', path, 'against', site.paths);
 	return site.paths.includes(path);
 }
 
@@ -127,13 +125,10 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 		const isSnoozing = snoozeUntil != null && snoozeUntil > Date.now();
 
 		const url = new URL(sender.url);
-		console.log(url);
 		const site = siteList.sites.find(site => site.hosts.includes(url.host));
 
 		if (site != null) {
 			const siteOptions = await loadRegionsForSite(site.id);
-
-			console.log('Site found', site, siteOptions)
 
 			let regions = site.regions
 				.map((region): DesiredRegionState => {
@@ -146,8 +141,6 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 					const selector = region.selectors.map(sanitizeSelector).join(',');
 					return { config: region, css: `${selector} { ${cssForType(region.type)} }`, enabled } ;
 				});
-
-			console.log('sending site details', regions);
 
 			const theme = siteOptions.theme ?? 'light';
 
@@ -215,7 +208,6 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 	}
 
 	if (msg.type === 'injectCss') {
-		console.log('inserting css', msg.css);
 		await browser.scripting.insertCSS({
 			target: { tabId: sender.tab.id },
 			css: msg.css,
@@ -225,7 +217,6 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 	}
 
 	if (msg.type === 'removeCss') {
-		console.log('removing css', msg.css);
 		await browser.scripting.removeCSS({
 			target: { tabId: sender.tab.id },
 			css: msg.css,

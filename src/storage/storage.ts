@@ -76,6 +76,9 @@ const setKey = async <Key extends keyof StorageLocal>(k: Key, val: StorageLocal[
 	return await browser.storage.local.set({ [k]: val });
 }
 
+export const loadSettingsLocked = () => getKey('settingsLocked', false);
+export const saveSettingsLocked = (settingsLocked: boolean) => setKey('settingsLocked', settingsLocked);
+
 export const loadHideQuotes = () => getKey('hideQuotes', false);
 export const saveHideQuotes = (hideQuotes: boolean) => setKey('hideQuotes', hideQuotes);
 export const loadEnabledSites = () => getKey('enabledSites', []);

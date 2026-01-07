@@ -36,8 +36,6 @@ export const ImportExport = () => {
 			const headerRow = result.data[0] as any[];
 			const cell = (row: number, col: number): string => (result.data[row] as any[])[col];
 
-			console.log(result.data);
-
 			for (let col = 0; col < headerRow.length; col += 1) {
 				const column = headerRow[col].trim().toLowerCase();
 
@@ -97,7 +95,7 @@ export const ImportExport = () => {
 				<h2 class="font-lg font-bold flex-1">Lists</h2>
 				<div class="flex gap-2 cross-center">
 					<label for="file-import-field" class="buttonlike font-sm tertiary user-select-none">Import CSV</label>
-					<input id="file-import-field" type="file" class="opacity-0 position-absolute pointer-events-none" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
+					<input id="file-import-field" type="file" class="none" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
 					<button class={`${state.selectedQuoteListId.get() == null ? 'primary' : 'secondary'} font-sm`} onClick={() => state.newQuoteList()}>+ New</button>
 				</div>
 			</div>
@@ -129,8 +127,6 @@ const QuoteListToggle = ({ quoteList: ql }: { quoteList: QuoteList }) => {
 			state.quoteLists.refetch();
 			return;
 		}
-
-		console.log(state.selectedQuoteListId.get(), id)
 
 		if (state.selectedQuoteListId.get() !== id) {
 			e.preventDefault();

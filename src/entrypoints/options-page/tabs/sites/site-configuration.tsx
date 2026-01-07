@@ -3,6 +3,7 @@ import type { RegionId, Site, SiteId } from "/types/sitelist";
 import { loadRegionsForSite, setRegionEnabledForSite } from "/storage/storage";
 import { sendToServiceWorker } from "/messaging/messages";
 import { expect } from "/lib/util";
+import { useOptionsPageState } from "../../state";
 
 export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
 	const [siteRegions, { refetch }] = createResource(async () => {
@@ -14,7 +15,6 @@ export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
 		if (r == null) return null; // Region settings not yet loaded
 
 		const defaultValue = site()!.regions.find(region => region.id === regionId)?.default ?? true;
-		console.log(regionId, defaultValue);
 		return r.regionEnabledOverride[regionId] ?? defaultValue;
 	}
 
@@ -34,8 +34,11 @@ export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
 }
 
 const RegionToggleButton = ({siteId, regionId, label, value, refetch}: { siteId: SiteId, regionId: RegionId, label: string, value: Accessor<boolean | null>, refetch: () => void }) => {
-	const toggle = async () => {
+	const state = useOptionsPageState();
+
+	const toggle = async (e: { preventDefault: () => void }) => {
 		await setRegionEnabledForSite(siteId, regionId, !value());
+
 		refetch();
 		await sendToServiceWorker({
 			type: 'notifyOptionsUpdated',
@@ -46,7 +49,7 @@ const RegionToggleButton = ({siteId, regionId, label, value, refetch}: { siteId:
 
 	return <Show when={value() !== null}>
 		<label for={id()} class="flex cross-center cursor-pointer hoverable px-4">
-			<input id={id()} type="checkbox" class="toggle" onClick={toggle} checked={expect(value())} />
+			<input id={id()} type="checkbox" class="toggle" disabled={state.settingsLockedDown()} onClick={toggle} checked={expect(value())} />
 			<span class="flex-1 px-2 py-1">{ label }</span>
 		</label>
 	</Show>

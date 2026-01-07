@@ -2,7 +2,7 @@ import { createSignal, createEffect, type Accessor, type Setter, createContext, 
 import type { QuoteList, QuoteListId } from "../../storage/schema";
 import { expect, originsForSite } from "../../lib/util";
 import type { SiteId, SiteList } from "../../types/sitelist";
-import { loadEnabledSites, loadHideQuotes, loadQuoteList, loadQuoteLists, saveHideQuotes, saveNewQuoteList } from "../../storage/storage";
+import { loadEnabledSites, loadHideQuotes, loadQuoteList, loadQuoteLists, loadSettingsLocked, saveHideQuotes, saveNewQuoteList, saveSettingsLocked } from "../../storage/storage";
 import type { Quote } from "../../quote";
 import { sendToServiceWorker } from "../../messaging/messages";
 import { getBrowser, type Permissions } from "../../lib/webextension";
@@ -58,9 +58,7 @@ export const resourceObjReconciled = <T>(fn: () => Promise<T[]>) => {
 	const get = () => getInternal.items;
 
 	const refetch = async () => {
-		console.log('refetching');
 		const newStore: { items: T[] } = { items: await fn() };
-		console.log(newStore.items);
 		setInternal(reconcile(newStore, { key: 'id', merge: true }));
 	};
 
@@ -73,13 +71,17 @@ export type PageId = 'sites' | 'quotes' | 'about';
 
 const browser = getBrowser();
 
+
 export class OptionsPageState {
 	selectedSiteId = signalObj<SiteId | null>(null);
 	selectedQuoteListId = signalObj<QuoteListId | null>(null);
 	editing = signalObj<EditingState | null>(null);
 	page = signalObj<PageId>('sites');
 	undo = signalObj<UndoState | null>(null);
+	clock = signalObj<number>(Date.now());
 
+	settingsLocked = resourceObj(createResource(loadSettingsLocked));
+	snoozeState = resourceObj(createResource<number | null>(async () => browser.runtime.sendMessage({ type: 'readSnooze' })));
 	enabledSites = resourceObj(createResource(loadEnabledSites));
 	hideQuotes = resourceObj(createResource(loadHideQuotes));
 	permissions = resourceObj(createResource(() => browser.permissions.getAll()));
@@ -94,6 +96,11 @@ export class OptionsPageState {
 	}));
 
 	quoteLists = resourceObjReconciled(loadQuoteLists);
+
+	constructor() {
+		setInterval(() => { this.clock.set(Date.now()) }, 250);
+	}
+
 	selectedQuoteList = () => {
 		const qlId = this.selectedQuoteListId.get();
 		if (qlId == null) return null;
@@ -189,6 +196,48 @@ export class OptionsPageState {
 		}
 
 		this.requestPermissions({ origins, permissions: [] });
+	}
+
+	async startSnooze(durationMs: number) {
+		await browser.runtime.sendMessage({
+			type: 'snooze',
+			until: this.clock.get() + durationMs,
+		})
+
+		this.snoozeState.refetch();
+	}
+
+	async cancelSnooze() {
+		await browser.runtime.sendMessage({
+			type: 'snooze',
+			until: this.clock.get(),
+		})
+		this.snoozeState.refetch();
+	}
+
+	snoozeRemaining() {
+		const snooze = this.snoozeState.get();
+		if (snooze == null) return 0;
+		return Math.max(0, snooze - this.clock.get());
+	}
+
+	async setSettingsLocked(locked: boolean) {
+		if (locked) {
+			this.selectedSiteId.set(null);
+		}
+		await saveSettingsLocked(locked);
+		await this.settingsLocked.refetch();
+	}
+
+	/**
+ * Returns true if the user is not currently allowed to change settings (eg not currently snoozing)
+ */
+	settingsLockedDown() {
+		return this.settingsLocked.get() ?? false;
+	}
+
+	canUnlockSettings() {
+		return this.snoozeRemaining() > 0;
 	}
 }
 
