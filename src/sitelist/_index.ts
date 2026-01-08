@@ -9,14 +9,15 @@ import { youtube } from "./youtube";
 const sitelist: SiteList = {
 	schemaVersion: 1,
 	sites: [
-		(await import('./reddit')).default,
+		(await import('./facebook')).default,
+		(await import('./instagram')).default,
 		youtube,
+		(await import('./reddit')).default,
 		twitter,
-		hackernews,
 		substack,
 		abcNewsAu,
+		hackernews,
 		github,
-		(await import('./facebook')).default,
 	]
 }
 
