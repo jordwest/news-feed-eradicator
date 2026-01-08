@@ -1,6 +1,6 @@
 import { regionId, siteId, type Site } from "../types/sitelist";
 
-export const github: Site = {
+const site: Site = {
 			id: siteId('github'),
 			title: 'GitHub',
 			hosts: ['github.com'],
@@ -25,3 +25,5 @@ export const github: Site = {
 				}
 			]
 		}
+
+export default site;

@@ -1,6 +1,6 @@
 import { regionId, siteId, type Site } from "../types/sitelist";
 
-export const hackernews: Site = {
+const site: Site = {
 	id: siteId('hackernews'),
 	title: 'Hacker News',
 	hosts: ['news.ycombinator.com'],
@@ -18,3 +18,5 @@ export const hackernews: Site = {
 		},
 	]
 }
+
+export default site;

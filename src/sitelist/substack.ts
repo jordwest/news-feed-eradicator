@@ -1,6 +1,6 @@
 import { regionId, siteId, type Site } from "../types/sitelist";
 
-export const substack: Site = {
+export const site: Site = {
 			id: siteId('substack'),
 			title: 'Substack',
 			hosts: ['substack.com'],
@@ -20,3 +20,5 @@ export const substack: Site = {
 				},
 			]
 		}
+
+export default site;

@@ -16,13 +16,23 @@ export const site: Site = {
 				mode: 'before',
 			}
 		},
-
 		{
 			id: regionId('home-stories'),
 			title: 'Stories',
 			type: 'remove',
 			paths: 'inherit',
 			selectors: ['div.x193iq5w.xgmub6v.x1ceravr.x1v0nzow']
+		},
+		{
+			id: regionId('groups-feed'),
+			title: 'Groups feed',
+			type: 'remove',
+			default: false,
+			paths: ['/groups/feed/'],
+			selectors: ['div[role="feed"]'],
+			inject: {
+				mode: 'before',
+			}
 		}
 	]
 }

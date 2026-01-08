@@ -47,8 +47,16 @@ const notifyTabsOptionsUpdated = async () => {
 	}
 }
 
-const isEnabledPath = (site: Site, path: string): boolean | undefined => {
-	return site.paths.includes(path);
+const isEnabledPath = (site: Site, region: Region, path: string): boolean | undefined => {
+	if (region.paths === '*') {
+		return true;
+	}
+
+	if (region.paths === 'inherit') {
+		return site.paths.includes(path);
+	}
+
+	return region.paths.includes(path);
 }
 
 const cssForType = (type: Region['type']): string => {
@@ -132,7 +140,7 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 
 			let regions = site.regions
 				.map((region): DesiredRegionState => {
-					if (isSnoozing || (region.paths !== '*' && !isEnabledPath(site, msg.path))) {
+					if (isSnoozing || !isEnabledPath(site, region, msg.path)) {
 						return { config: region, css: null, enabled: false };
 					}
 

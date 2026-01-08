@@ -1,6 +1,6 @@
 import { type Site, siteId, regionId } from "../types/sitelist";
 
-export const youtube: Site = {
+export const site: Site = {
 			id: siteId('youtube'),
 			title: 'YouTube',
 			hosts: ['www.youtube.com', 'youtube.com'],
@@ -63,3 +63,5 @@ export const youtube: Site = {
 				},
 			],
 		}
+
+export default site;

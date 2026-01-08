@@ -1,6 +1,6 @@
 import { regionId, siteId, type Site } from "../types/sitelist";
 
-export const abcNewsAu: Site = {
+const site: Site = {
 	id: siteId('abc-news-au'),
 	title: "ABC News Australia",
 	hosts: ['abc.net.au', 'www.abc.net.au'],
@@ -46,3 +46,5 @@ export const abcNewsAu: Site = {
 		},
 	],
 };
+
+export default site;

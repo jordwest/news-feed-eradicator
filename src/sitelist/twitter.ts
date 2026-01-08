@@ -1,6 +1,6 @@
 import { regionId, siteId, type Site } from "../types/sitelist";
 
-export const twitter: Site = {
+export const site: Site = {
 			id: siteId('twitter'),
 			title: 'Twitter/X',
 			hosts: ['x.com'],
@@ -18,3 +18,5 @@ export const twitter: Site = {
 				},
 			]
 		}
+
+export default site;

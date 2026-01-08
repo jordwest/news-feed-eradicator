@@ -1,6 +1,6 @@
 import { regionId, siteId, type Site } from "../types/sitelist";
 
-const siteConfig: Site = {
+const site: Site = {
 	id: siteId('reddit'),
 	title: "Reddt",
 	hosts: ['www.reddit.com', 'old.reddit.com'],
@@ -51,4 +51,4 @@ const siteConfig: Site = {
 	],
 };
 
-export default siteConfig;
+export default site;
