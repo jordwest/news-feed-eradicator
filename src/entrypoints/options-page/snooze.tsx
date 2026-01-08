@@ -57,7 +57,7 @@ export const Snooze = () => {
 
 	const snoozeButtonLabel = () => {
 		const { secondsEarned } = snoozePendingInfo() ?? {};
-		if (secondsEarned == null) return 'Click and hold to snooze';
+		if (secondsEarned == null) return 'Press and hold to snooze';
 		if (secondsEarned === 0) return 'Keep holding...';
 
 		return `Snooze for ${displayDuration(secondsEarned)}`;
