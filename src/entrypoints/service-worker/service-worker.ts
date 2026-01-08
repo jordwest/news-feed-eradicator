@@ -65,8 +65,8 @@ const cssForType = (type: Region['type']): string => {
 }
 
 const sanitizeSelector = (selector: string): string => {
-	// TODO - make this more robust and add tests
-	return selector.replaceAll('{', '').replaceAll('}', '');
+	// TODO - make this more robust and add tests before releasing v3.1
+	return selector.replaceAll('{', '').replaceAll('}', '').replaceAll(',', '').replaceAll('@', '');
 }
 
 const enableSite = async (siteId: SiteId) => {

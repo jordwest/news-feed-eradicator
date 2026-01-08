@@ -4,14 +4,14 @@ export const github: Site = {
 			id: siteId('github'),
 			title: 'GitHub',
 			hosts: ['github.com'],
-			paths: ['/'],
+			paths: ['/', '/feed'],
 			regions: [
 				{
 					id: regionId('dashboard'),
 					title: 'Dashboard',
 					type: 'remove',
 					paths: 'inherit',
-					selectors: ['#dashboard'],
+					selectors: ['#dashboard', '#feed'],
 					inject: {
 						mode: 'before',
 					}

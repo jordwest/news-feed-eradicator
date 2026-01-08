@@ -1,8 +1,8 @@
 import { regionId, siteId, type Site } from "../types/sitelist";
 
-export const reddit: Site = {
+const siteConfig: Site = {
 	id: siteId('reddit'),
-	title: "Reddit",
+	title: "Reddt",
 	hosts: ['www.reddit.com', 'old.reddit.com'],
 	paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', '/r/popular/', '/r/all/'],
 	popular: true,
@@ -50,3 +50,5 @@ export const reddit: Site = {
 		}
 	],
 };
+
+export default siteConfig;
