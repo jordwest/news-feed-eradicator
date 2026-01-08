@@ -98,7 +98,7 @@ export class OptionsPageState {
 	quoteLists = resourceObjReconciled(loadQuoteLists);
 
 	constructor() {
-		setInterval(() => { this.clock.set(Date.now()) }, 250);
+		setInterval(() => { this.clock.set(Date.now()) }, 100);
 	}
 
 	selectedQuoteList = () => {

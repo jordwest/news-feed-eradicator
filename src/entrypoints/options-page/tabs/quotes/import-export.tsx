@@ -110,7 +110,7 @@ export const ImportExport = () => {
 			</ul>
 		</div>
 		<Show when={state.selectedQuoteList() != null}>
-			<div class="viewport-scroller py-2 px-4 flex-1">
+			<div class="viewport-scroller p-4 flex-1">
 				<QuoteListEditor />
 			</div>
 		</Show>

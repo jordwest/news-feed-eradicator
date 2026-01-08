@@ -102,7 +102,7 @@ export const SiteList = () => {
 			<div class="overlay flex cross-center axis-center">
 				<div class="card shadow rounded p-4 text-center flex flex-col gap-2">
 					<h3 class="font-xl">
-						Site settings locked down
+						🔒 Site settings locked down
 					</h3>
 					<p class="text-secondary">
 						To unlock, start snoozing then click the button below
@@ -121,7 +121,7 @@ export const SitesTabContent = () => {
 		<SiteList />
 		<div class="p-2 bg-darken-100 flex gap-4 cross-center axis-end">
 			<Show when={!state.settingsLockedDown()}>
-				<label class="text-secondary font-xs">Done choosing sites for now? Lock it down.</label>
+				<label class="text-secondary font-xs">Done choosing sites for now? Lock them in.</label>
 				<button class="primary font-sm" onClick={() => state.setSettingsLocked(true)}>Lock site settings</button>
 			</Show>
 			<Show when={state.settingsLockedDown()}>

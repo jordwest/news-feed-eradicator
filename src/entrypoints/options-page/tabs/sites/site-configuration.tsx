@@ -19,7 +19,7 @@ export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
 	}
 
 	return <div class="space-y-2">
-		<div class="px-4 py-2 flex space-x-2 cross-end">
+		<div class="p-4 flex space-x-2 cross-end">
 			<h3 class="font-lg flex-1 text-figure-500 font-bold">{expect(site()).title}</h3>
 			<a class="font-sm hover:underline" target="_blank" href={`https://${expect(site()?.hosts[0])}`}>Visit site</a>
 		</div>
