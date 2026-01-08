@@ -98,7 +98,12 @@ export class OptionsPageState {
 	quoteLists = resourceObjReconciled(loadQuoteLists);
 
 	constructor() {
-		setInterval(() => { this.clock.set(Date.now()) }, 100);
+		// Clock is only used for animating and updating displayed times
+		const updateClock = () => {
+			this.clock.set(Date.now());
+			requestAnimationFrame(updateClock);
+		};
+		requestAnimationFrame(updateClock);
 	}
 
 	selectedQuoteList = () => {

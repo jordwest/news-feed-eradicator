@@ -32,7 +32,7 @@ const OptionsPage = () => {
 	const state = new OptionsPageState();
 
 	return <div class="flex axis-center text-figure">
-		<div class="w-full mw-lg space-y-4">
+		<div class="w-full mw-lg space-y-8">
 			<h1 class="text-center font-xl">News Feed Eradicator</h1>
 
 			<OptionsPageStateContext.Provider value={state}>

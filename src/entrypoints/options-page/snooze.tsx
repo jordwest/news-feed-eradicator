@@ -2,6 +2,11 @@ import { createMemo, createSignal, Show } from "solid-js";
 import { displayDuration } from "../../lib/util";
 import { useOptionsPageState } from "./state";
 
+type SnoozePendingInfo = {
+	secondsEarned: number;
+	pendingProgress: number;
+}
+
 export const Snooze = () => {
 	const state = useOptionsPageState();
 
@@ -11,22 +16,22 @@ export const Snooze = () => {
 		const since = buttonHeldSince();
 		if (since == null) return null;
 
-		return Math.round((state.clock.get() - since) / 100) / 10;
+		return (state.clock.get() - since) / 1000;
 	});
 
-	const snoozeSecondsPending = createMemo(() => {
+	const snoozePendingInfo = createMemo((): SnoozePendingInfo | null => {
 		const holdTime = timeHeld();
 		if (holdTime == null) return null;
 
 		if (holdTime < 5) {
-			return 0;
+			return { secondsEarned: 0, pendingProgress: holdTime / 5 };
 		}
 
 		if (holdTime < 60) {
-			return 30 + Math.round((holdTime - 5) * 5);
+			return { secondsEarned: 30 + Math.round((holdTime - 5) * 5), pendingProgress: 1 };
 		}
 
-		return 30 + (55 * 5) + Math.round((holdTime - 60) * 20);
+		return { secondsEarned: 30 + (55 * 5) + Math.round((holdTime - 60) * 20), pendingProgress: 1 };
 	});
 
 	const buttonDown = () => {
@@ -34,9 +39,9 @@ export const Snooze = () => {
 	};
 
 	const buttonUp = async () => {
-		const seconds = snoozeSecondsPending();
-		if (seconds != null && seconds > 0) {
-			await state.startSnooze(1000 * seconds);
+		const { secondsEarned } = snoozePendingInfo() ?? {};
+		if (secondsEarned != null && secondsEarned > 0) {
+			await state.startSnooze(1000 * secondsEarned);
 		}
 		setButtonHeldSince(null);
 	};
@@ -46,11 +51,32 @@ export const Snooze = () => {
 		return snoozeState != null && snoozeState > state.clock.get();
 	}
 
+	const snoozeProgress = () => {
+
+	}
+
+	const snoozeButtonLabel = () => {
+		const { secondsEarned } = snoozePendingInfo() ?? {};
+		if (secondsEarned == null) return 'Click and hold to snooze';
+		if (secondsEarned === 0) return 'Keep holding...';
+
+		return `Snooze for ${displayDuration(secondsEarned)}`;
+	}
+
+	const snoozeButtonTransform = () => {
+		const { pendingProgress } = snoozePendingInfo() ?? {};
+		if (pendingProgress == null) return 'scaleX(0)';
+		return `scaleX(${pendingProgress})`;
+	}
+
 	return <div>
 		<Show when={!isSnoozing()}>
 			<div class="flex axis-center">
-				<button class="primary font-lg p-8" onMouseDown={buttonDown} onMouseUp={buttonUp} onMouseLeave={buttonUp}>
-					{snoozeSecondsPending() == null ? 'Hold to Snooze' : `Snooze for ${displayDuration(snoozeSecondsPending()!)}` }
+				<button class="primary font-lg p-8 overlay-container isolate" style="width: 300px" onMouseDown={buttonDown} onMouseUp={buttonUp} onMouseLeave={buttonUp}>
+					<div class="z1 overlay bg-accent transform-origin-left" style={`transform: ${snoozeButtonTransform()}`} />
+					<div class="z2 position-relative">
+						{snoozeButtonLabel()}
+					</div>
 				</button>
 			</div>
 		</Show>
