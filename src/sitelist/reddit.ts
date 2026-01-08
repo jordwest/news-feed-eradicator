@@ -2,9 +2,9 @@ import { regionId, siteId, type Site } from "../types/sitelist";
 
 const site: Site = {
 	id: siteId('reddit'),
-	title: "Reddt",
+	title: "Reddit",
 	hosts: ['www.reddit.com', 'old.reddit.com'],
-	paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', '/r/popular/', '/r/all/'],
+	paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', { regexp: '/r/[a-zA-Z0-9_-]+/' }],
 	popular: true,
 	regions: [
 		{

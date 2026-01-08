@@ -1,5 +1,5 @@
 import { getBrowser, type MessageSender, type TabId } from '/lib/webextension';
-import type { Region, Site, SiteId } from '/types/sitelist';
+import type { Path, PathList, Region, Site, SiteId } from '/types/sitelist';
 import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '/messaging/messages';
 import { loadHideQuotes, loadQuoteLists, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '/storage/storage';
 import { originsForSite } from '/lib/util';
@@ -47,16 +47,29 @@ const notifyTabsOptionsUpdated = async () => {
 	}
 }
 
+const pathPatternMatches = (path: string, pattern: Path): boolean => {
+	if (typeof pattern === 'string') {
+		return pattern === path;
+	} else if ('regexp' in pattern) {
+		return new RegExp(pattern.regexp).test(path);
+	}
+	return false;
+}
+
+const pathInPathList = (path: string, pathlist: PathList): boolean => {
+	return pathlist.find(pattern => pathPatternMatches(path, pattern)) != null;
+}
+
 const isEnabledPath = (site: Site, region: Region, path: string): boolean | undefined => {
 	if (region.paths === '*') {
 		return true;
 	}
 
 	if (region.paths === 'inherit') {
-		return site.paths.includes(path);
+		return pathInPathList(path, site.paths);
 	}
 
-	return region.paths.includes(path);
+	return pathInPathList(path, region.paths);
 }
 
 const cssForType = (type: Region['type']): string => {

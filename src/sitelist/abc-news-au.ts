@@ -4,7 +4,7 @@ const site: Site = {
 	id: siteId('abc-news-au'),
 	title: "ABC News Australia",
 	hosts: ['abc.net.au', 'www.abc.net.au'],
-	paths: ['/', '/news', '/news/*'],
+	paths: ['/', '/news', { regexp: '\/news\/[a-zA-Z]+' } ],
 	regions: [
 		{
 			id: regionId('news-home-feed'),
