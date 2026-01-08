@@ -18,8 +18,8 @@ export const site: Site = {
 		},
 
 		{
-			id: regionId('home-reels'),
-			title: 'Reels',
+			id: regionId('home-stories'),
+			title: 'Stories',
 			type: 'remove',
 			paths: 'inherit',
 			selectors: ['div.x193iq5w.xgmub6v.x1ceravr.x1v0nzow']

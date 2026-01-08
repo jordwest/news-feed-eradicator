@@ -14,6 +14,7 @@ const sitelist: SiteList = {
 		youtube,
 		(await import('./reddit')).default,
 		twitter,
+		(await import('./linkedin')).default,
 		substack,
 		abcNewsAu,
 		hackernews,
