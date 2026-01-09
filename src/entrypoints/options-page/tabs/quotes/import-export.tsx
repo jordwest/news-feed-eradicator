@@ -52,10 +52,12 @@ export const ImportExport = () => {
 			}
 
 			if (quoteColumn == null) {
+				alert("Could not find a 'quote' column in the CSV. Also acceptable is 'text' or 'content'.")
 				console.error('Missing column header "quote"');
 				break;
 			}
 			if (authorColumn == null) {
+				alert("Could not find an 'author' column in the CSV. Also acceptable is 'source'.")
 				console.error('Missing column header "author"');
 				break;
 			}
