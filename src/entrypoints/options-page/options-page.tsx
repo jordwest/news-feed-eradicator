@@ -7,6 +7,8 @@ import { Snooze } from "./snooze";
 import { SitesTabContent } from "./tabs/sites";
 import { Undo } from "./undo";
 import { QuotesTabContent } from "./tabs/quotes";
+import { AboutTabContent } from "./tabs/about";
+import { SnoozeTabContent } from "./tabs/snooze";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -23,6 +25,7 @@ const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 const PageTabs = () => {
 	return <ul role="tablist" class="">
 		<PageTab to="sites">Sites</PageTab>
+		<PageTab to="snooze">Snooze</PageTab>
 		<PageTab to="quotes">Quotes</PageTab>
 		<PageTab to="about">About</PageTab>
 	</ul>;
@@ -55,8 +58,16 @@ const OptionsPage = () => {
 							<SitesTabContent />
 						</Show>
 
+						<Show when={state.page.get() === 'snooze'}>
+							<SnoozeTabContent />
+						</Show>
+
 						<Show when={state.page.get() === 'quotes'}>
 							<QuotesTabContent />
+						</Show>
+
+						<Show when={state.page.get() === 'about'}>
+							<AboutTabContent />
 						</Show>
 					</div>
 				</nfe-tabs>

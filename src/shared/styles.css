@@ -242,6 +242,34 @@ nfe-tabs [role="tab"] {
 nfe-tabs [role="tab"][aria-selected="true"] { z-index: 2; background-color: var(--theme-active-tab-bg); }
 nfe-tabs [role="tab"][aria-selected="false"] { z-index: 0; }
 
+.radio {
+	cursor: pointer;
+	font-size: 1em;
+	width: 1em;
+	height: 1em;
+	flex-shrink: 0;
+	appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 0.1em solid rgba(0, 0, 0, 0.2);
+    border-radius: 1em;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.radio:checked {
+	border-color: rgb(50, 100, 50);
+	color: white;
+	background-color: var(--theme-accent);
+}
+.radio:checked::after {
+	content: "";
+    display: block;
+    margin: 0.12em;
+    border-radius: 50%;
+    width: 0.6em;
+    height: 0.6em;
+    background: #fff;
+}
+
 .checkbox {
 	cursor: pointer;
 	font-size: 1em;

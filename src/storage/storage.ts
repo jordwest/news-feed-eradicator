@@ -2,13 +2,15 @@ import { generateId } from "../lib/generate-id";
 import { getBrowser } from "../lib/webextension";
 import type { Quote } from "../quote";
 import type { RegionId, SiteId, SiteList } from "../types/sitelist";
-import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme, DEFAULT_QUOTE_LISTS, type QuoteListId, type QuoteList, BUILTIN_QUOTE_LIST_ID } from "./schema";
+import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme, DEFAULT_QUOTE_LISTS, type QuoteListId, type QuoteList, BUILTIN_QUOTE_LIST_ID, type SnoozeMode } from "./schema";
 
 const ensureMigrated = async (): Promise<void> => {
 	const browser = getBrowser();
 
-	const storageSync = await browser.storage.sync.get(null) as StorageSyncV1 | undefined;
-	const storageLocal = await browser.storage.local.get(null) as StorageLocalV2 | undefined;
+	const [storageSync, storageLocal] = await Promise.all([
+		browser.storage.sync.get(null) as Promise<StorageSyncV1 | undefined>,
+		browser.storage.local.get(null) as Promise<StorageLocalV2 | undefined>,
+	]);
 
 	if (storageSync?.version == null) {
 		// Nothing stored in sync storage, nothing to migrate
@@ -50,6 +52,7 @@ const ensureMigrated = async (): Promise<void> => {
 	const migratedData: StorageLocalV2 = {
 		version: 2,
 		hideQuotes: storageSync.showQuotes === false,
+		snoozeMode: 'instant', // Preserve original snooze behaviour for existing users
 		quoteLists,
 		enabledSites,
 	}
@@ -97,6 +100,9 @@ export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<
 
 export const loadSnoozeUntil = () => getKey('snoozeUntil', undefined);
 export const saveSnoozeUntil = (snoozeUntil: number | undefined) => setKey('snoozeUntil', snoozeUntil);
+
+export const loadSnoozeMode = () => getKey('snoozeMode', 'hold');
+export const saveSnoozeMode = (snoozeMode: SnoozeMode) => setKey('snoozeMode', snoozeMode);
 
 export const loadSiteConfig = async (siteId: SiteId): Promise<SiteConfig | undefined> => {
 	const sites = await getKey('siteConfig', {});

@@ -69,7 +69,7 @@ const Site = ({ site }: { site: Site }) => {
 				</Show>
 				<div class="flex flex-col">
 					<div>{site.title}</div>
-					<div class="font-sm text-figure-500">{site.hosts.join(', ')}</div>
+					<div class="font-xs text-figure-500">{site.hosts.join(', ')}</div>
 				</div>
 			</label>
 		</li>

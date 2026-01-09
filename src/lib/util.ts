@@ -23,16 +23,6 @@ export const downloadFile = (blob: Blob, filename: string) => {
 	URL.revokeObjectURL(url);
 }
 
-export const displayDuration = (duration: number): string => {
-	if (duration < 60) {
-		return `${Math.floor(duration)}s`;
-	}
-
-	const minutes = Math.floor(duration / 60);
-	const seconds = Math.floor(duration - (minutes * 60));
-	return `${minutes}m ${seconds}s`;
-}
-
 export const quotesByAuthor = (a: Quote, b: Quote) => {
 	if (a.author < b.author) return -1;
 	if (a.author > b.author) return 1;

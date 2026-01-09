@@ -1,15 +1,17 @@
 import type { RegionId, SiteId } from "../types/sitelist";
 import type { Quote, QuoteV1 } from "../quote";
-import { generateId } from "../lib/generate-id";
 
 export const CURRENT_STORAGE_SCHEMA_VERSION = 2;
 
 export type QuoteListId = ('builtin' | string) & { __quoteListId: never };
 
+export type SnoozeMode = 'instant' | 'hold';
+
 export type StorageLocalV2 = {
 	version: 2;
 	hideQuotes?: boolean;
 	hideWidgetToolbar?: boolean;
+	snoozeMode?: SnoozeMode;
 	settingsLocked?: boolean;
 	enabledSites?: SiteId[];
 	siteConfig?: Record<SiteId, SiteConfig>;

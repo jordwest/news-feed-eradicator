@@ -2,7 +2,7 @@ import { createSignal, createEffect, type Accessor, type Setter, createContext, 
 import type { QuoteList, QuoteListId } from "../../storage/schema";
 import { expect, originsForSite } from "../../lib/util";
 import type { SiteId, SiteList } from "../../types/sitelist";
-import { loadEnabledSites, loadHideQuotes, loadQuoteList, loadQuoteLists, loadSettingsLocked, saveHideQuotes, saveNewQuoteList, saveSettingsLocked } from "../../storage/storage";
+import { loadEnabledSites, loadHideQuotes, loadQuoteList, loadQuoteLists, loadSettingsLocked, loadSnoozeMode, saveHideQuotes, saveNewQuoteList, saveSettingsLocked } from "../../storage/storage";
 import type { Quote } from "../../quote";
 import { sendToServiceWorker } from "../../messaging/messages";
 import { getBrowser, type Permissions } from "../../lib/webextension";
@@ -67,7 +67,7 @@ export const resourceObjReconciled = <T>(fn: () => Promise<T[]>) => {
 	return {get, refetch};
 };
 
-export type PageId = 'sites' | 'quotes' | 'about';
+export type PageId = 'sites' | 'snooze' | 'quotes' | 'about';
 
 const browser = getBrowser();
 
@@ -82,6 +82,7 @@ export class OptionsPageState {
 
 	settingsLocked = resourceObj(createResource(loadSettingsLocked));
 	snoozeState = resourceObj(createResource<number | null>(async () => browser.runtime.sendMessage({ type: 'readSnooze' })));
+	snoozeMode = resourceObj(createResource(loadSnoozeMode));
 	enabledSites = resourceObj(createResource(loadEnabledSites));
 	hideQuotes = resourceObj(createResource(loadHideQuotes));
 	permissions = resourceObj(createResource(() => browser.permissions.getAll()));
