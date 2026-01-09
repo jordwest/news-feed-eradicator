@@ -169,9 +169,8 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 .axis-center { justify-content: center; }
 .axis-end { justify-content: flex-end; }
 
-.mw-lg {
-	max-width: 960px;
-}
+.mw-lg { max-width: 960px; }
+.mw-xs { max-width: 320px; }
 
 .shadow { box-shadow: var(--theme-shadow); }
 
@@ -184,6 +183,8 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 	max-height: max(250px, calc(100vh - 400px));
 	overflow-y: auto;
 }
+
+.overflow-x-hidden { overflow-x: hidden; }
 
 .w-full { width: 100%; }
 .lr-0 { left: 0; right: 0; }
@@ -300,6 +301,7 @@ nfe-tabs [role="tab"][aria-selected="false"] { z-index: 0; }
     height: 1.2em;
     appearance: none;
     padding: 0.1em;
+    flex-shrink: 0;
     -webkit-appearance: none;
     -moz-appearance: none;
     transition: transform 0.07s;

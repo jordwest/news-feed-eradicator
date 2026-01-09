@@ -37,7 +37,7 @@ const ensureMigrated = async (): Promise<void> => {
 	if (storageSync.customQuotes.length > 0) {
 		quoteLists.push({
 			id: 'migrated' as QuoteListId,
-			title: 'Migrated from previous version',
+			title: 'Custom quotes from previous version',
 			disabledQuoteIds: [],
 			disabled: false,
 			imported: false,

@@ -1,11 +1,10 @@
-import { createEffect, For, Show } from "solid-js";
+import { For, Show } from "solid-js";
 import { generateId } from "/lib/generate-id";
 import { BuiltinQuotes, type Quote } from "/quote";
 import type { QuoteList, QuoteListId } from "/storage/schema";
-import { loadQuoteList, saveNewQuoteList, saveQuoteListEnabled } from "/storage/storage";
+import { saveNewQuoteList, saveQuoteListEnabled } from "/storage/storage";
 import Papa from 'papaparse';
 import { useOptionsPageState } from "/entrypoints/options-page/state";
-import { downloadFile } from "/lib/util";
 import { QuoteListEditor } from "./quote-list";
 
 export const ImportExport = () => {
@@ -90,7 +89,7 @@ export const ImportExport = () => {
 	}
 
 	return <div class="flex">
-		<div class={`space-y-2 py-2 ${state.selectedQuoteList() == null ? 'flex-1' : 'br-1'}`}>
+		<div class={`space-y-2 py-2 ${state.selectedQuoteList() == null ? 'flex-1' : 'br-1 mw-xs'}`}>
 			<div class="px-4 flex cross-center gap-4">
 				<h2 class="font-lg font-bold flex-1">Lists</h2>
 				<div class="flex gap-2 cross-center">

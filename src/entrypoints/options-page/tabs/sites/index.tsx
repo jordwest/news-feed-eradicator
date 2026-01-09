@@ -88,7 +88,7 @@ export const SiteList = () => {
 
 	return  <div class="overlay-container">
 		<div class="flex blur-disabled" aria-disabled={state.settingsLockedDown()}>
-			<ul class={`flex flex-col py-2 ${selectedSite() == null ? 'flex-1' : 'br-1'}`}>
+			<ul class={`flex flex-col py-2 ${selectedSite() == null ? 'flex-1' : 'br-1 mw-xs'}`}>
 				<For each={state.siteList.get()?.sites}>
 					{site => <Site site={site} />}
 				</For>
