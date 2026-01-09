@@ -35,7 +35,9 @@ export type SiteConfig = {
 };
 
 export const BUILTIN_QUOTE_LIST_ID = 'builtin' as QuoteListId;
-export const DEFAULT_QUOTE_LISTS: QuoteList[] = [
+
+// Needs to be a function so a new reference is returned each time, otherwise Solid JS mutates the object in a store
+export const defaultQuoteLists = (): QuoteList[] => [
 	{
 		id: BUILTIN_QUOTE_LIST_ID,
 		disabled: false,

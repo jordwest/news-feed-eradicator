@@ -67,7 +67,7 @@ export const resourceObjReconciled = <T>(fn: () => Promise<T[]>) => {
 	return {get, refetch};
 };
 
-export type PageId = 'sites' | 'snooze' | 'quotes' | 'about';
+export type PageId = 'sites' | 'snooze' | 'quotes' | 'about' | 'debug';
 
 const browser = getBrowser();
 
@@ -107,7 +107,7 @@ export class OptionsPageState {
 		requestAnimationFrame(updateClock);
 	}
 
-	selectedQuoteList = () => {
+	selectedQuoteList = createMemo(() => {
 		const qlId = this.selectedQuoteListId.get();
 		if (qlId == null) return null;
 
@@ -115,7 +115,7 @@ export class OptionsPageState {
 		if (lists == null) return null;
 
 		return lists.find(ql => ql.id === qlId);
-	};
+	});
 
 	withEditingType<T extends NonNullable<EditingState>['type']>(type: T) {
 		const editingState = this.editing.get();

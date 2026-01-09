@@ -2,7 +2,7 @@ import { generateId } from "../lib/generate-id";
 import { getBrowser } from "../lib/webextension";
 import type { Quote } from "../quote";
 import type { RegionId, SiteId, SiteList } from "../types/sitelist";
-import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme, DEFAULT_QUOTE_LISTS, type QuoteListId, type QuoteList, BUILTIN_QUOTE_LIST_ID, type SnoozeMode } from "./schema";
+import { type StorageSyncV1, SiteStateTagV1, type StorageLocal, type StorageLocalV2, CURRENT_STORAGE_SCHEMA_VERSION, type SiteConfig, type Theme, defaultQuoteLists, type QuoteListId, type QuoteList, BUILTIN_QUOTE_LIST_ID, type SnoozeMode } from "./schema";
 
 const ensureMigrated = async (): Promise<void> => {
 	const browser = getBrowser();
@@ -32,7 +32,7 @@ const ensureMigrated = async (): Promise<void> => {
 			.map(([siteId,]) => siteId as SiteId);
 	}
 
-	const quoteLists = ([] as QuoteList[]).concat(DEFAULT_QUOTE_LISTS);
+	const quoteLists = ([] as QuoteList[]).concat(defaultQuoteLists());
 
 	if (storageSync.customQuotes.length > 0) {
 		quoteLists.push({
@@ -125,7 +125,7 @@ export const saveThemeForSite = async (siteId: SiteId, theme: Theme | undefined)
 
 export const loadRegionsForSite = async (siteId: SiteId): Promise<SiteConfig> => loadSiteConfig(siteId).then(site => site ?? { regionEnabledOverride: {} });
 
-export const loadQuoteLists = async () => getKey('quoteLists', DEFAULT_QUOTE_LISTS);
+export const loadQuoteLists = async () => getKey('quoteLists', defaultQuoteLists());
 export const loadQuoteList = async (id: QuoteListId) => loadQuoteLists().then(quoteLists => quoteLists.find(ql => ql.id === id));
 
 export const deleteQuoteList = async (id: QuoteListId) => {

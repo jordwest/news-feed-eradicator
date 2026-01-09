@@ -178,7 +178,7 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 .card { background-color: var(--theme-lighten-100); }
 .card.secondary { background-color: var(--theme-accent-a200); }
 .card.primary { background-color: var(--theme-accent-a500); }
-.card.outlined { border: 1px solid var(--theme-accent); }
+.outlined { border: 1px solid var(--theme-accent); }
 
 .viewport-scroller {
 	max-height: max(250px, calc(100vh - 400px));

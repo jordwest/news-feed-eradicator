@@ -12,7 +12,7 @@ const SnoozeModeOption: ParentComponent<{ mode: SnoozeMode, title: string }> = (
 	}
 
 	return <li class="bg-darken-100 rounded">
-		<label class="hoverable block p-4 space-y-2 cursor-pointer">
+		<label class={`block p-4 space-y-2 cursor-pointer ${state.snoozeMode.get() === mode ? 'outlined' : 'hoverable'}`}>
 			<div class="flex gap-1">
 				<input type="radio" class="radio" name="snooze-mode" checked={state.snoozeMode.get() === mode} onClick={onClick} />
 				<div class="space-y-1">
@@ -29,7 +29,7 @@ const SnoozeModeOption: ParentComponent<{ mode: SnoozeMode, title: string }> = (
 export const SnoozeTabContent = () => {
 	return (
 		<div class="p-4 space-y-4">
-			<ul class="space-y-1">
+			<ul class="space-y-2">
 				<SnoozeModeOption mode="hold" title="Hold to snooze">
 					Requires you to hold the snooze button down for a while to start snoozing. The longer you hold, the longer the snooze.
 				</SnoozeModeOption>

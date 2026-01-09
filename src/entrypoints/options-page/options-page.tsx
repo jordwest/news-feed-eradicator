@@ -9,6 +9,7 @@ import { Undo } from "./undo";
 import { QuotesTabContent } from "./tabs/quotes";
 import { AboutTabContent } from "./tabs/about";
 import { SnoozeTabContent } from "./tabs/snooze";
+import { DebugTabContent } from "./tabs/debug";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -28,6 +29,7 @@ const PageTabs = () => {
 		<PageTab to="snooze">Snooze</PageTab>
 		<PageTab to="quotes">Quotes</PageTab>
 		<PageTab to="about">About</PageTab>
+		<PageTab to="debug">Debug</PageTab>
 	</ul>;
 }
 
@@ -68,6 +70,10 @@ const OptionsPage = () => {
 
 						<Show when={state.page.get() === 'about'}>
 							<AboutTabContent />
+						</Show>
+
+						<Show when={state.page.get() === 'debug'}>
+							<DebugTabContent />
 						</Show>
 					</div>
 				</nfe-tabs>
