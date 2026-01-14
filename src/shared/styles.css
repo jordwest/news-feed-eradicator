@@ -216,11 +216,20 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 .gap-2 { gap: 8px; }
 .gap-4 { gap: 16px; }
 
+.divide-y > :not(:first-child) { border-top: 1px solid var(--theme-border); }
+
 .cursor-pointer { cursor: pointer; }
 .pointer-events-none { pointer-events: none; }
 .pointer-events-all { pointer-events: all; }
 
 .transform-origin-left { transform-origin: left; }
+
+.open-rotate {
+	transition: transform 0.5s ease-out;
+}
+details[open] .open-rotate {
+	transform: rotate(180deg);
+}
 
 nfe-tabs { isolation: isolate; display: block; }
 nfe-tabs [role="tabpanel"] {
