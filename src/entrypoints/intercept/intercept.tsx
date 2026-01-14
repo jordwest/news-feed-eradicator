@@ -80,11 +80,17 @@ function updateOverlay(overlay: OverlayState) {
 	}
 }
 
-setInterval(() => {
+/**
+ * Check the DOM ongoing to see if any injected elements need to be updated
+ */
+function checkDom() {
 	for (const overlay of state.overlays) {
 		updateOverlay(overlay);
 	}
-}, 500);
+}
+
+window.addEventListener("resize", checkDom)
+setInterval(checkDom, 1000);
 
 /**
  * Continuously tries to inject NFE into any regions that it is not yet injected into
