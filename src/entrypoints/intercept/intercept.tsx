@@ -22,6 +22,11 @@ type RegionState = {
 	enabled?: boolean;
 };
 
+type OverlayState = {
+	referenceElement: Element;
+	overlayContainer: HTMLDivElement;
+};
+
 type ContentScriptState = {
 	snoozeUntil?: number;
 	snoozeTimer?: Timer;
@@ -29,6 +34,7 @@ type ContentScriptState = {
 	siteId?: SiteId;
 	ready?: boolean;
 	hideQuotes?: boolean;
+	overlays: OverlayState[];
 	theme: {
 		css: string | null;
 		id: Signal<Theme | null>;
@@ -38,25 +44,47 @@ type ContentScriptState = {
 
 let state: ContentScriptState = {
 	regions: new Map(),
+	overlays: [],
 	theme: {
 		css: null,
 		id: createSignal<Theme | null>(null),
 	}
 };
 
-function createOverlay(el: Element, bounds: DOMRect, position: string, zIndex: number) {
+function createOverlay(refEl: Element, el: Element, bounds: DOMRect, position: 'fixed' | 'absolute', zIndex: number) {
 	const overlay = document.createElement('div');
+	const overlayState = {
+		referenceElement: refEl,
+		overlayContainer: overlay,
+	};
 	overlay.id = 'nfe-overlay';
 	overlay.style.position = position;
-	overlay.style.width = `${bounds.width}px`;
-	overlay.style.height = `${bounds.height}px`;
 	overlay.style.zIndex = `${zIndex}`;
 	overlay.style.pointerEvents = 'none';
-	overlay.style.top = `${bounds.top}px`;
-	overlay.style.left = `${bounds.left}px`;
+	updateOverlay(overlayState);
+	state.overlays.push(overlayState);
 	document.body.appendChild(overlay);
 	overlay.appendChild(el);
 }
+
+function updateOverlay(overlay: OverlayState) {
+	const refBounds = overlay.referenceElement.getBoundingClientRect();
+	const bounds = overlay.overlayContainer.getBoundingClientRect();
+	if (refBounds.width !== bounds.width || refBounds.height !== bounds.height) {
+		overlay.overlayContainer.style.width = `${refBounds.width}px`;
+		overlay.overlayContainer.style.height = `${refBounds.height}px`;
+	}
+	if (refBounds.top !== bounds.top || refBounds.left !== bounds.left) {
+		overlay.overlayContainer.style.top = `${refBounds.top}px`;
+		overlay.overlayContainer.style.left = `${refBounds.left}px`;
+	}
+}
+
+setInterval(() => {
+	for (const overlay of state.overlays) {
+		updateOverlay(overlay);
+	}
+}, 500);
 
 /**
  * Continuously tries to inject NFE into any regions that it is not yet injected into
@@ -102,12 +130,12 @@ function tryInject() {
 					break;
 				case 'overlay': {
 					const bounds = el.getBoundingClientRect();
-					createOverlay(nfeElement, bounds, 'absolute', injectConfig.overlayZIndex ?? 99999999);
+					createOverlay(el, nfeElement, bounds, 'absolute', injectConfig.overlayZIndex ?? 99999999);
 					break;
 				}
 				case 'overlay-fixed': {
 					const bounds = el.getBoundingClientRect();
-					createOverlay(nfeElement, bounds, 'fixed', injectConfig.overlayZIndex ?? 99999999);
+					createOverlay(el, nfeElement, bounds, 'fixed', injectConfig.overlayZIndex ?? 99999999);
 					break;
 				}
 				default:
