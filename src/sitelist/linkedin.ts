@@ -21,7 +21,7 @@ export const site: Site = {
 			title: 'News sidebar',
 			type: 'remove',
 			paths: '*',
-			selectors: ['#feed-news-module'],
+			selectors: ['#feed-news-module', 'div:has(> div > div[data-view-name="news-module"])'],
 		}
 	]
 }
