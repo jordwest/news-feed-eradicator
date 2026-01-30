@@ -77,6 +77,10 @@ const OptionsPage = () => {
 						</Show>
 					</div>
 				</nfe-tabs>
+
+				<footer class="text-center">
+					By <a href="https://west.io/">Jordan West</a> and <a href="https://github.com/jordwest/news-feed-eradicator/graphs/contributors">contributors</a>
+				</footer>
 			</OptionsPageStateContext.Provider>
 		</div>
 	</div>
