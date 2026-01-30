@@ -4,8 +4,7 @@
 GITTAG=$(shell git describe --always --tag)
 
 build: install
-	mkdir -p build
-	NODE_ENV=production ./node_modules/.bin/rollup -c
+	bun run src/dev/build.ts
 	mkdir -p dist
 	(cd build && zip -r ../dist/NewsFeedEradicator_$(GITTAG).zip .)
 
@@ -15,7 +14,7 @@ package-source:
 	git archive --output=dist/NewsFeedEradicator_source_$(GITTAG).zip HEAD
 
 dev: install
-	bun run src/dev/build.ts
+	bun run src/dev/build.ts --watch
 
 install:
 	bun install

@@ -48,6 +48,8 @@ async function watchAll(): Promise<void> {
 
 	const watcher = watch(`${PROJECT_ROOT}/src`, {recursive: true});
 
+	console.info('Watching for changes');
+
 	for await (const event of watcher) {
 		console.log(`BUILD: Detected ${event.eventType} in ${event.filename}`);
 
@@ -65,8 +67,11 @@ async function watchAll(): Promise<void> {
 	}
 }
 
-// buildAll();
-watchAll();
+if (Bun.argv.includes('-w') || Bun.argv.includes('--watch')) {
+	watchAll();
+} else {
+	buildAll();
+}
 
 async function buildServiceWorker(): Promise<void> {
 	await build({
