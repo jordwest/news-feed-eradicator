@@ -24,12 +24,12 @@ export const AboutTabContent = () => {
 
 				<div class="prose">
 				<h3>I want to suggest a new site</h3>
-				<p>Submit or upvote suggestions for new sites on the <a href="https://github.com/jordwest/news-feed-eradicator/blob/version/2.x/src/components/info-panel.ts">GitHub discussion board</a>.</p>
+				<p>Submit or upvote suggestions for new sites on the <a href="https://github.com/jordwest/news-feed-eradicator/discussions/categories/ideas">GitHub discussion board</a>.</p>
 				</div>
 
 				<div class="prose">
 					<h3>I want to suggest a feature</h3>
-					<p>If you have an idea, please submit it (or upvote it if it already exists) on the <a href="https://github.com/jordwest/news-feed-eradicator/blob/version/2.x/src/components/info-panel.ts">GitHub Ideas discussion board</a>.</p>
+					<p>If you have an idea, please submit it (or upvote it if it already exists) on the <a href="https://github.com/jordwest/news-feed-eradicator/discussions/categories/ideas">GitHub Ideas discussion board</a>.</p>
 					<p>Generally I rarely add new features as this is a spare time project, I consider it mostly done, and I want to keep it as simple as possible, however I do read and consider all of these.</p>
 				</div>
 
