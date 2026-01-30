@@ -24,12 +24,16 @@ const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 }
 
 const PageTabs = () => {
+	const state = useOptionsPageState();
+
 	return <ul role="tablist" class="">
 		<PageTab to="sites">Sites</PageTab>
 		<PageTab to="snooze">Snooze</PageTab>
 		<PageTab to="quotes">Quotes</PageTab>
 		<PageTab to="about">About</PageTab>
-		<PageTab to="debug">Debug</PageTab>
+		<Show when={state.page.get() === 'debug'}>
+			<PageTab to="debug">Debug</PageTab>
+		</Show>
 	</ul>;
 }
 

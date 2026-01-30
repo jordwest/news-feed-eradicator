@@ -1,6 +1,8 @@
-import type { ParentComponent } from "solid-js";
+import { useOptionsPageState } from "../../state";
 
 export const AboutTabContent = () => {
+	const state = useOptionsPageState();
+
 	return (
 		<div class="p-8 space-y-4">
 				<div class="prose">
@@ -34,6 +36,10 @@ export const AboutTabContent = () => {
 				<div class="prose">
 					<h3>A site isn't working or I found a bug</h3>
 					<p>Please report bugs <a href="https://github.com/jordwest/news-feed-eradicator/issues">as an issue on GitHub</a></p>
+				</div>
+
+				<div class="text-center">
+					<button class="font-xs text-secondary" onClick={() => state.page.set('debug')}>Show debug info</button>
 				</div>
 			</div>
 	);
