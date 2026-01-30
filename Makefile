@@ -4,6 +4,7 @@
 GITTAG=$(shell git describe --always --tag)
 
 build: install
+	rm -rf build
 	bun run src/dev/build.ts
 	mkdir -p dist
 	(cd build && zip -r ../dist/NewsFeedEradicator_$(GITTAG).zip .)
