@@ -9,11 +9,9 @@ export default {
 	"optional_host_permissions": ["*://*/*"],
 	"action": {
 		"default_icon": {
-			"16": "assets/icon16.png",
-			"32": "assets/icon32.png",
-			"48": "assets/icon48.png",
-			"64": "assets/icon64.png",
-			"128": "assets/icon128.png"
+			"16": "assets/icons/logo-contrast-16.png",
+			"32": "assets/icons/logo-contrast-32.png",
+			"64": "assets/icons/logo-contrast-64.png",
 		},
 		"default_title": "News Feed Eradicator"
 	},

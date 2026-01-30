@@ -19,6 +19,10 @@ async function buildAll(): Promise<void> {
 	copy('assets/icon48.png', 'build/assets/icon48.png');
 	copy('assets/icon64.png', 'build/assets/icon64.png');
 	copy('assets/icon128.png', 'build/assets/icon128.png');
+
+	copy('assets/icons/logo-contrast-16.png', 'build/assets/icons/logo-contrast-16.png');
+	copy('assets/icons/logo-contrast-32.png', 'build/assets/icons/logo-contrast-32.png');
+	copy('assets/icons/logo-contrast-64.png', 'build/assets/icons/logo-contrast-64.png');
 }
 
 function startServer() {
