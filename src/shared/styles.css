@@ -142,6 +142,7 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 .font-md { font-size: 18px; }
 .font-lg { font-size: 20px; }
 .font-xl { font-size: 22px; }
+.font-3xl { font-size: 30px; }
 
 .font-bold { font-weight: bold; }
 

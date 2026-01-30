@@ -37,8 +37,8 @@ const OptionsPage = () => {
 	const state = new OptionsPageState();
 
 	return <div class="flex axis-center text-figure">
-		<div class="w-full mw-lg space-y-8">
-			<h1 class="text-center font-xl">News Feed Eradicator</h1>
+		<div class="w-full mw-lg space-y-8 py-4">
+			<h1 class="text-center font-3xl text-secondary">News Feed Eradicator</h1>
 
 			<OptionsPageStateContext.Provider value={state}>
 				<Snooze />
