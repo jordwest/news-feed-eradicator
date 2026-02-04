@@ -4,7 +4,7 @@ const site: Site = {
 	id: siteId('reddit'),
 	title: "Reddit",
 	hosts: ['www.reddit.com', 'old.reddit.com'],
-	paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', { regexp: '^/r/[a-zA-Z0-9_-]+/(top\/)?$' }],
+	paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/'],
 	popular: true,
 	regions: [
 		{
@@ -13,6 +13,18 @@ const site: Site = {
 			selectors: ['#siteTable', 'shreddit-feed'],
 			type: 'remove',
 			paths: 'inherit',
+			inject: {
+				mode: 'before',
+			}
+		},
+		{
+			id: regionId('subreddit-feed'),
+			title: 'Subreddit Feed',
+			selectors: ['#siteTable', 'shreddit-feed'],
+			type: 'remove',
+			paths: [
+				{ regexp: '^/r/[a-zA-Z0-9_-]+/(top\/)?$' }
+			],
 			inject: {
 				mode: 'before',
 			}
