@@ -1,10 +1,10 @@
 import { getBrowser, type MessageSender, type TabId } from '/lib/webextension';
 import type { Path, PathList, Region, Site, SiteId } from '/types/sitelist';
 import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '/messaging/messages';
-import { loadHideQuotes, loadQuoteLists, loadRegionsForSite, loadSitelist, loadSnoozeUntil, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '/storage/storage';
+import { loadHideQuotes, loadQuoteLists, loadRegionHideStyle, loadRegionsForSite, loadSitelist, loadSnoozeUntil, loadWidgetStyle, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '/storage/storage';
 import { originsForSite } from '/lib/util';
 import { BuiltinQuotes, type Quote } from '/quote';
-import type { QuoteListId, Theme } from '/storage/schema';
+import type { QuoteListId, StorageLocalV2, Theme } from '/storage/schema';
 import themeDark from '/themes/dark.css?raw';
 import themeLight from '/themes/light.css?raw';
 
@@ -72,12 +72,18 @@ const isEnabledPath = (site: Site, region: Region, path: string): boolean | unde
 	return pathInPathList(path, region.paths);
 }
 
-const cssForType = (type: Region['type']): string => {
+const cssForType = (type: Region['type'], hideStyle: StorageLocalV2['regionHideStyle']): string => {
 	switch (type) {
 		case 'remove':
 			return 'display: none !important;';
 		case 'hide':
-			return 'opacity: 0.1 !important; filter: blur(32px) !important; pointer-events: none !important;';
+			switch (hideStyle) {
+				case 'blur':
+					return 'opacity: 0.1 !important; filter: blur(32px) !important; pointer-events: none !important;';
+				case 'hidden':
+				default:
+					return 'opacity: 0 !important; pointer-events: none !important;';
+			}
 		case 'dull':
 			return 'filter: grayscale(100%) !important';
 		default:
@@ -139,9 +145,11 @@ const setSiteTheme = async (siteId: SiteId, theme: Theme | null) => {
 const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender) => {
 	if (msg.type === 'requestSiteDetails') {
 		// TODO: Cache these?
-		const siteList = await loadSitelist();
-		const snoozeUntil = await loadSnoozeUntil();
-		const hideQuotes = await loadHideQuotes();
+		const [siteList, snoozeUntil, hideQuotes] = await Promise.all([
+			loadSitelist(),
+			loadSnoozeUntil(),
+			loadHideQuotes(),
+		]);
 
 		const isSnoozing = snoozeUntil != null && snoozeUntil > Date.now();
 
@@ -149,7 +157,11 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 		const site = siteList.sites.find(site => site.hosts.includes(url.host));
 
 		if (site != null) {
-			const siteOptions = await loadRegionsForSite(site.id);
+			const [siteOptions, regionHideStyle, widgetStyle] = await Promise.all([
+				loadRegionsForSite(site.id),
+				loadRegionHideStyle(),
+				loadWidgetStyle(),
+			]);
 
 			let regions = site.regions
 				.map((region): DesiredRegionState => {
@@ -160,7 +172,7 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 					const enabled = siteOptions.regionEnabledOverride[region.id] ?? region.default ?? true;
 
 					const selector = region.selectors.map(sanitizeSelector).join(',');
-					return { config: region, css: `${selector} { ${cssForType(region.type)} }`, enabled } ;
+					return { config: region, css: `${selector} { ${cssForType(region.type, regionHideStyle)} }`, enabled } ;
 				});
 
 			const theme = siteOptions.theme ?? 'light';
@@ -171,6 +183,7 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 				token: msg.token,
 				snoozeUntil: snoozeUntil ?? null,
 				siteId: site.id,
+				widgetStyle,
 				hideQuotes,
 				theme: {
 					css: theme === 'light' ? themeLight : themeDark,

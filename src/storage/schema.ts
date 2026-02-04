@@ -17,6 +17,8 @@ export type StorageLocalV2 = {
 	siteConfig?: Record<SiteId, SiteConfig>;
 	snoozeUntil?: number;
 	quoteLists?: QuoteList[];
+	widgetStyle?: 'contained' | 'transparent';
+	regionHideStyle?: 'blur' | 'hidden';
 };
 
 export type QuoteList = {

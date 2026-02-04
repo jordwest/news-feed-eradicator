@@ -10,6 +10,7 @@ import { QuotesTabContent } from "./tabs/quotes";
 import { AboutTabContent } from "./tabs/about";
 import { SnoozeTabContent } from "./tabs/snooze";
 import { DebugTabContent } from "./tabs/debug";
+import { StyleTabContent } from "./tabs/style";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -30,6 +31,7 @@ const PageTabs = () => {
 		<PageTab to="sites">Sites</PageTab>
 		<PageTab to="snooze">Snooze</PageTab>
 		<PageTab to="quotes">Quotes</PageTab>
+		<PageTab to="style">Style</PageTab>
 		<PageTab to="about">About</PageTab>
 		<Show when={state.page.get() === 'debug'}>
 			<PageTab to="debug">Debug</PageTab>
@@ -70,6 +72,10 @@ const OptionsPage = () => {
 
 						<Show when={state.page.get() === 'quotes'}>
 							<QuotesTabContent />
+						</Show>
+
+						<Show when={state.page.get() === 'style'}>
+							<StyleTabContent />
 						</Show>
 
 						<Show when={state.page.get() === 'about'}>

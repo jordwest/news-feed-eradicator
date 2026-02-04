@@ -8,6 +8,7 @@ import nfeStyles from './nfe-container.css?raw';
 import sharedStyles from '../../shared/styles.css?raw';
 import type { Theme } from '../../storage/schema';
 import { type Signal, createSignal } from 'solid-js';
+import { signalObj, type SignalObj } from '/lib/solid-util';
 
 const browser = getBrowser();
 
@@ -34,10 +35,11 @@ type ContentScriptState = {
 	siteId?: SiteId;
 	ready?: boolean;
 	hideQuotes?: boolean;
+	widgetStyle: SignalObj<'contained' | 'transparent'>;
 	overlays: OverlayState[];
 	theme: {
 		css: string | null;
-		id: Signal<Theme | null>;
+		id: SignalObj<Theme | null>;
 	}
 	regions: Map<RegionId, RegionState>;
 };
@@ -45,9 +47,10 @@ type ContentScriptState = {
 let state: ContentScriptState = {
 	regions: new Map(),
 	overlays: [],
+	widgetStyle: signalObj<'contained' | 'transparent'>('contained'),
 	theme: {
 		css: null,
-		id: createSignal<Theme | null>(null),
+		id: signalObj<Theme | null>(null),
 	}
 };
 
@@ -158,7 +161,7 @@ function tryInject() {
 			container.className = 'dark';
 			shadow.appendChild(container);
 
-			render(() => <QuoteWidget siteId={state.siteId ?? null} theme={state.theme.id[0]} />, container);
+			render(() => <QuoteWidget siteId={state.siteId ?? null} theme={state.theme.id.get} widgetStyle={state.widgetStyle.get} />, container);
 
 			nfeElement.style.display = isRegionBlockActive(region) ? 'block' : 'none';
 
@@ -301,7 +304,8 @@ browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 		state.siteId = msg.siteId;
 		state.theme.css = msg.theme.css;
 		state.hideQuotes = msg.hideQuotes;
-		state.theme.id[1](msg.theme.id);
+		state.widgetStyle.set(msg.widgetStyle);
+		state.theme.id.set(msg.theme.id);
 		patchState(msg.regions);
 	}
 

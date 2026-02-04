@@ -21,6 +21,7 @@ type SiteDetails = {
 		id: Theme,
 		css: string,
 	}
+	widgetStyle: 'contained' | 'transparent',
 	snoozeUntil: number | null,
 	hideQuotes: boolean,
 }

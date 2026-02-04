@@ -2,12 +2,13 @@ import { createMemo, createSignal, For, Show } from "solid-js"
 import { deleteQuoteList, loadQuoteList, saveQuote, saveQuoteListTitle, deleteQuote as storageDeleteQuote } from "/storage/storage";
 import { BuiltinQuotes, type Quote } from "/quote";
 import { sendToServiceWorker } from "/messaging/messages";
-import { signalObj, useOptionsPageState } from "/entrypoints/options-page/state";
+import { useOptionsPageState } from "/entrypoints/options-page/state";
 import { generateId } from "/lib/generate-id";
 import Papa from 'papaparse';
 import { autoFocus, downloadFile, expect, quotesByAuthor } from "/lib/util";
 import { BUILTIN_QUOTE_LIST_ID, type QuoteListId } from "/storage/schema";
 import { unwrap } from "solid-js/store";
+import { signalObj } from "/lib/solid-util";
 
 const doExport = async (quoteListId: QuoteListId) => {
 	const quoteList = await loadQuoteList(quoteListId);

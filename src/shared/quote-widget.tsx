@@ -3,7 +3,6 @@ import { type RequestQuoteResponse, sendToServiceWorker } from "../messaging/mes
 import type { Theme } from "../storage/schema";
 import type { SiteId } from "../types/sitelist";
 import { createSignal } from "solid-js";
-import { getBrowser } from "/lib/webextension";
 import { loadHideWidgetToolbar, saveHideWidgetToolbar } from "/storage/storage";
 
 const [quote, { refetch: refetchQuote }] = createResource(async () => {
@@ -21,7 +20,7 @@ const toggleTheme = async (e: { preventDefault: () => void }, siteId: SiteId, th
 	})
 }
 
-export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: Accessor<Theme | null> }) => {
+export const QuoteWidget = ({ siteId, theme, widgetStyle }: { siteId: SiteId | null, theme: Accessor<Theme | null>, widgetStyle: Accessor<'contained' | 'transparent'> }) => {
 	const [collapsed, setCollapsedLocal] = createSignal(true);
 
 	// Quote must be enabled if it appears in here
@@ -57,7 +56,7 @@ export const QuoteWidget = ({ siteId, theme }: { siteId: SiteId | null, theme: A
 
 	return <aside class="space-y-2">
 		<Show when={quote()}>
-		<div class="bg-widget-ground b-1 shadow rounded font-md">
+			<div class={`${widgetStyle() === 'contained' ? 'bg-widget-ground b-1 shadow rounded' : ''} font-md`}>
 				<div class="w-full position-relative">
 					<Show when={collapsed()}>
 						<div class="p-2 flex w-full axis-end position-absolute lr-0 pointer-events-none">

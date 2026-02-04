@@ -7,11 +7,8 @@ import type { Quote } from "../../quote";
 import { sendToServiceWorker } from "../../messaging/messages";
 import { getBrowser, type Permissions } from "../../lib/webextension";
 import { createStore, reconcile } from "solid-js/store";
-
-type SignalObj<T> = {
-	set: Setter<T>,
-	get: Accessor<T>,
-};
+import { resourceObj, resourceObjReconciled, signalObj, type SignalObj } from "/lib/solid-util";
+import { StorageState } from "./state/storage";
 
 export type EditingState = {
 	type: 'existingQuote'
@@ -39,38 +36,9 @@ type SiteState = {
 	permissionsEnabled: boolean,
 };
 
-/**
- * Destructuring is inconvenient inside objects, so this is to make it more explicit what's going on
- */
-export const signalObj = <T>(defaultVal: T): SignalObj<T> => {
-	const [get, set] = createSignal(defaultVal);
-	return {set, get}
-};
-
-export const resourceObj = <T, R>(v: ResourceReturn<T, R>) => {
-	const [get, { refetch }] = v;
-	return {get, refetch};
-};
-
-export const resourceObjReconciled = <T>(fn: () => Promise<T[]>) => {
-	const [getInternal, setInternal] = createStore <{ items: T[] | null }>({ items: null });
-
-	const get = () => getInternal.items;
-
-	const refetch = async () => {
-		const newStore: { items: T[] } = { items: await fn() };
-		setInternal(reconcile(newStore, { key: 'id', merge: true }));
-	};
-
-	refetch();
-
-	return {get, refetch};
-};
-
-export type PageId = 'sites' | 'snooze' | 'quotes' | 'about' | 'debug';
+export type PageId = 'sites' | 'snooze' | 'quotes' | 'style' | 'about' | 'debug';
 
 const browser = getBrowser();
-
 
 export class OptionsPageState {
 	selectedSiteId = signalObj<SiteId | null>(null);
@@ -79,6 +47,8 @@ export class OptionsPageState {
 	page = signalObj<PageId>('sites');
 	undo = signalObj<UndoState | null>(null);
 	clock = signalObj<number>(Date.now());
+
+	storage = new StorageState();
 
 	settingsLocked = resourceObj(createResource(loadSettingsLocked));
 	snoozeState = resourceObj(createResource<number | null>(async () => browser.runtime.sendMessage({ type: 'readSnooze' })));
