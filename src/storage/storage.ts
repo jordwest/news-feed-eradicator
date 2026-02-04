@@ -82,7 +82,7 @@ const setKey = async <Key extends keyof StorageLocal>(k: Key, val: StorageLocal[
 export const loadSettingsLocked = () => getKey('settingsLocked', false);
 export const saveSettingsLocked = (settingsLocked: boolean) => setKey('settingsLocked', settingsLocked);
 
-export const loadRegionHideStyle = () => getKey('regionHideStyle', 'blur');
+export const loadRegionHideStyle = () => getKey('regionHideStyle', 'hidden');
 export const saveRegionHideStyle = (regionHideStyle: StorageLocalV2['regionHideStyle']) => setKey('regionHideStyle', regionHideStyle);
 
 export const loadWidgetStyle = () => getKey('widgetStyle', 'contained');
