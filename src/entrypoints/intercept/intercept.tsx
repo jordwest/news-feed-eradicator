@@ -32,6 +32,8 @@ type ContentScriptState = {
 	snoozeUntil?: number;
 	snoozeTimer?: Timer;
 	injectedCss?: string | null;
+	injectedPageStyleElement?: HTMLStyleElement;
+	injectedThemeStyleElement?: HTMLStyleElement;
 	siteId?: SiteId;
 	ready?: boolean;
 	hideQuotes?: boolean;
@@ -152,6 +154,11 @@ function tryInject() {
 			}
 
 			const shadow = nfeElement.attachShadow({ mode: "open" });
+
+			state.injectedThemeStyleElement = document.createElement('style');
+			state.injectedThemeStyleElement.textContent = state.theme.css?.replace(':root', ':host') ?? '';
+			shadow.appendChild(state.injectedThemeStyleElement);
+
 			const style = document.createElement('style');
 			style.textContent = `${nfeStyles}\n${sharedStyles}`;
 			shadow.appendChild(style);
@@ -189,25 +196,12 @@ setInterval(() => {
 }, 15);
 
 const setCss = async (css: string | null) => {
-	if (css === state.injectedCss) {
-		return;
+	if (state.injectedPageStyleElement == null) {
+		state.injectedPageStyleElement = document.createElement('style');
+		document.head.appendChild(state.injectedPageStyleElement);
 	}
 
-	let oldCss = state.injectedCss;
-
-	// Inject new css to avoid flashing content
-	if (css != null) {
-		state.injectedCss = css;
-
-		const injected = await sendMessage({ type: 'injectCss', css });
-	} else {
-		state.injectedCss = null;
-	}
-
-	// Remove any existing css
-	if (oldCss != null) {
-		const removed = await sendMessage({ type: 'removeCss', css: oldCss });
-	}
+	state.injectedPageStyleElement.textContent = css ?? '';
 }
 
 const endSnooze = () => {
@@ -242,6 +236,10 @@ const setSnoozeTimer = (snoozeUntil: number | null) => {
 const patchState = (regions: DesiredRegionState[]) => {
 	let seenRegions: Set<RegionId> = new Set();
 
+	if (state.injectedThemeStyleElement != null) {
+		state.injectedThemeStyleElement.textContent = state.theme.css?.replace(':root', ':host') ?? '';
+	}
+
 	for (var region of regions) {
 		const id = region.config.id;
 		seenRegions.add(id);
@@ -258,8 +256,6 @@ const patchState = (regions: DesiredRegionState[]) => {
 	}
 
 	let css = "";
-
-	css += state.theme.css ?? '';
 
 	// Scan all active regions and delete or update them
 	for (const [id, activeRegion] of state.regions.entries()) {

@@ -240,24 +240,6 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 	if (msg.type === 'setSiteTheme') {
 		return setSiteTheme(msg.siteId, msg.theme);
 	}
-
-	if (msg.type === 'injectCss') {
-		await browser.scripting.insertCSS({
-			target: { tabId: sender.tab.id },
-			css: msg.css,
-		});
-
-		return { css: msg.css };
-	}
-
-	if (msg.type === 'removeCss') {
-		await browser.scripting.removeCSS({
-			target: { tabId: sender.tab.id },
-			css: msg.css,
-		});
-
-		return { css: msg.css };
-	}
 }
 
 browser.runtime.onMessage.addListener((msg: ToServiceWorkerMessage, sender, sendResponse) => {
