@@ -1,8 +1,13 @@
 import type { Quote } from "../quote";
 import type { Site } from "../types/sitelist";
+import packageJson from '../../package.json';
 
 export function originsForSite(site: Site) {
 	return site.hosts.map(host => [`http://${host}/*`, `https://${host}/*`]).flat();
+}
+
+export const versionText = () => {
+	return `v${packageJson.version}`;
 }
 
 export function expect<T>(value: T | null | undefined): T {

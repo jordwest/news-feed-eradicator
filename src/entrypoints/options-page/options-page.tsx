@@ -11,6 +11,7 @@ import { AboutTabContent } from "./tabs/about";
 import { SnoozeTabContent } from "./tabs/snooze";
 import { DebugTabContent } from "./tabs/debug";
 import { StyleTabContent } from "./tabs/style";
+import { versionText } from "/lib/util";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -88,8 +89,11 @@ const OptionsPage = () => {
 					</div>
 				</nfe-tabs>
 
-				<footer class="text-center">
-					By <a href="https://west.io/">Jordan West</a> and <a href="https://github.com/jordwest/news-feed-eradicator/graphs/contributors">contributors</a>
+				<footer class="text-center space-y-4">
+					<div>
+						By <a href="https://west.io/">Jordan West</a> and <a href="https://github.com/jordwest/news-feed-eradicator/graphs/contributors">contributors</a>
+					</div>
+					<div class="text-secondary font-xs">{versionText()}</div>
 				</footer>
 			</OptionsPageStateContext.Provider>
 		</div>

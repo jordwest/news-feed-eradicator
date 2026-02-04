@@ -7,7 +7,6 @@ import { render } from 'solid-js/web';
 import nfeStyles from './nfe-container.css?raw';
 import sharedStyles from '../../shared/styles.css?raw';
 import type { Theme } from '../../storage/schema';
-import { type Signal, createSignal } from 'solid-js';
 import { signalObj, type SignalObj } from '/lib/solid-util';
 
 const browser = getBrowser();
