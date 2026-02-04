@@ -9,6 +9,7 @@ const sitelist: SiteList = {
 		(await import('./reddit')).default,
 		(await import('./twitter')).default,
 		(await import('./linkedin')).default,
+		(await import('./threads')).default,
 		(await import('./substack')).default,
 		(await import('./github')).default,
 		(await import('./hackernews')).default,
