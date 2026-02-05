@@ -11,7 +11,10 @@ export const site: Site = {
 					title: 'Main feed',
 					type: 'hide',
 					paths: 'inherit',
-					selectors: ['div[aria-label="Home timeline"] > div > section[role="region"]'],
+					selectors: [
+						'div[data-testid="primaryColumn"] > div > div > section[role="region"]',
+						'div[aria-label="Home timeline"] > div > section[role="region"]', // Fallback but only works if X is set to English
+					],
 					inject: {
 						mode: 'overlay',
 					}
