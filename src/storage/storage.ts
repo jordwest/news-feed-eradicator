@@ -92,7 +92,7 @@ export const loadHideQuotes = () => getKey('hideQuotes', false);
 export const saveHideQuotes = (hideQuotes: boolean) => setKey('hideQuotes', hideQuotes);
 export const loadEnabledSites = () => getKey('enabledSites', []);
 
-export const loadHideWidgetToolbar = () => getKey('hideWidgetToolbar', false);
+export const loadHideWidgetToolbar = () => getKey('hideWidgetToolbar', true);
 export const saveHideWidgetToolbar = (hideWidgetToolbar: boolean) => setKey('hideWidgetToolbar', hideWidgetToolbar);
 
 export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<void> => {
