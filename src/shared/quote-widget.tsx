@@ -77,7 +77,7 @@ export const QuoteWidget = ({ siteId, theme, widgetStyle }: { siteId: SiteId | n
 						</div>
 					</Show>
 				</div>
-				<div class={`p-4 space-y-2 font-lg ${collapsed() ? 'pr-8' : ''}`}>
+				<div class={`p-4 space-y-2 ${collapsed() ? 'pr-8' : ''}`}>
 					<blockquote class="quote-border-left p-2 text-primary">{quote()?.text}</blockquote>
 					<figcaption class="text-secondary">{quote()?.author}</figcaption>
 				</div>
