@@ -15,7 +15,11 @@ export type StorageLocalV2 = {
 	settingsLocked?: boolean;
 	enabledSites?: SiteId[];
 	siteConfig?: Record<SiteId, SiteConfig>;
+	/**
+	 * @deprecated Legacy global snooze; migrated to `snoozeUntilBySite`.
+	 */
 	snoozeUntil?: number;
+	snoozeUntilBySite?: Partial<Record<SiteId, number>>;
 	quoteLists?: QuoteList[];
 	widgetStyle?: 'contained' | 'transparent';
 	regionHideStyle?: 'blur' | 'hidden';

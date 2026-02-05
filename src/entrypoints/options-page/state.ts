@@ -51,7 +51,13 @@ export class OptionsPageState {
 	storage = new StorageState();
 
 	settingsLocked = resourceObj(createResource(loadSettingsLocked));
-	snoozeState = resourceObj(createResource<number | null>(async () => browser.runtime.sendMessage({ type: 'readSnooze' })));
+	snoozeState = resourceObj(createResource<number | null, SiteId | null>(
+		this.selectedSiteId.get,
+		async (siteId: SiteId | null) => {
+			if (siteId == null) return null;
+			return await browser.runtime.sendMessage({ type: 'readSnooze', siteId });
+		}
+	));
 	snoozeMode = resourceObj(createResource(loadSnoozeMode));
 	enabledSites = resourceObj(createResource(loadEnabledSites));
 	hideQuotes = resourceObj(createResource(loadHideQuotes));
@@ -175,8 +181,12 @@ export class OptionsPageState {
 	}
 
 	async startSnooze(durationMs: number) {
+		const siteId = this.selectedSiteId.get();
+		if (siteId == null) return;
+
 		await browser.runtime.sendMessage({
 			type: 'snooze',
+			siteId,
 			until: this.clock.get() + durationMs,
 		})
 
@@ -184,8 +194,12 @@ export class OptionsPageState {
 	}
 
 	async cancelSnooze() {
+		const siteId = this.selectedSiteId.get();
+		if (siteId == null) return;
+
 		await browser.runtime.sendMessage({
 			type: 'snooze',
+			siteId,
 			until: this.clock.get(),
 		})
 		this.snoozeState.refetch();
@@ -199,7 +213,12 @@ export class OptionsPageState {
 
 	async setSettingsLocked(locked: boolean) {
 		if (locked) {
-			this.selectedSiteId.set(null);
+			if (this.selectedSiteId.get() == null) {
+				const enabledSites = await loadEnabledSites();
+				if (enabledSites.length > 0) {
+					this.selectedSiteId.set(enabledSites[0]!);
+				}
+			}
 		}
 		await saveSettingsLocked(locked);
 		await this.settingsLocked.refetch();

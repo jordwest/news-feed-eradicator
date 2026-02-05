@@ -12,6 +12,7 @@ export const HoldSnoozeButton = () => {
 	const state = useOptionsPageState();
 
 	const [buttonHeldSince, setButtonHeldSince] = createSignal<number | null>(null);
+	const disabled = () => state.selectedSiteId.get() == null;
 
 	const timeHeld = createMemo(() => {
 		const since = buttonHeldSince();
@@ -63,7 +64,7 @@ export const HoldSnoozeButton = () => {
 		return `scaleX(${pendingProgress})`;
 	}
 
-	return <button class="primary font-lg p-8 overlay-container isolate" style="width: 300px" onMouseDown={buttonDown} onMouseUp={buttonUp} onContextMenu={e => e.preventDefault()} onMouseLeave={buttonUp}>
+	return <button disabled={disabled()} class="primary font-lg p-8 overlay-container isolate" style="width: 300px" onMouseDown={buttonDown} onMouseUp={buttonUp} onContextMenu={e => e.preventDefault()} onMouseLeave={buttonUp}>
 		<div class="z1 overlay bg-accent transform-origin-left" style={`transform: ${snoozeButtonTransform()}`} />
 		<div class="z2 position-relative">
 			{snoozeButtonLabel()}
@@ -73,12 +74,13 @@ export const HoldSnoozeButton = () => {
 
 const InstantSnoozeButton: ParentComponent<{ ms: number, primary?: boolean }> = ({ms, primary, children}) => {
 	const state = useOptionsPageState();
+	const disabled = () => state.selectedSiteId.get() == null;
 
 	const onClick = async () => {
 		await state.startSnooze(ms);
 	}
 
-	return <button class={`${primary ? 'primary' : 'tertiary'} font-lg p-4`} onClick={onClick}>{children}</button>
+	return <button disabled={disabled()} class={`${primary ? 'primary' : 'tertiary'} font-lg p-4`} onClick={onClick}>{children}</button>
 }
 
 const InstantSnoozeButtons = () => {
@@ -97,32 +99,57 @@ const InstantSnoozeButtons = () => {
 export const Snooze = () => {
 	const state = useOptionsPageState();
 
+	const selectedSite = createMemo(() => {
+		const siteId = state.selectedSiteId.get();
+		if (siteId == null) return null;
+		return state.siteList.get()?.sites.find(s => s.id === siteId) ?? null;
+	});
+
+	const selectedSiteLabel = () => selectedSite()?.title ?? state.selectedSiteId.get();
+
 	const isSnoozing = () => {
 		const snoozeState = state.snoozeState.get();
 		return snoozeState != null && snoozeState > state.clock.get();
 	}
 
 	return <div>
-		<Show when={!isSnoozing()}>
-			<div class="flex axis-center">
-				<Show when={state.snoozeMode.get() === 'hold'}>
-					<HoldSnoozeButton />
-				</Show>
-				<Show when={state.snoozeMode.get() === 'instant'}>
-					<InstantSnoozeButtons />
-				</Show>
+		<Show when={state.selectedSiteId.get() == null}>
+			<div class="flex cross-center p-4 card outlined shadow">
+				<div class="flex-1 text-secondary">
+					Snooze applies to the site selected in the Sites tab.
+				</div>
+				<button class="secondary" onClick={() => state.page.set('sites')}>
+					Select a site
+				</button>
 			</div>
 		</Show>
 
-		<Show when={isSnoozing()}>
-			<div class="flex cross-center p-4 card secondary outlined shadow">
-				<div class="flex-1">
-					💤 Snoozing for {displayDuration((state.snoozeState.get()! - state.clock.get()))}. Scroll your life away!
-				</div>
-				<button class="secondary" onClick={() => state.cancelSnooze()}>
-					Cancel snooze
-				</button>
+		<Show when={state.selectedSiteId.get() != null}>
+			<div class="text-secondary font-sm p-2 text-center">
+				Snooze applies to: {selectedSiteLabel()}
 			</div>
+
+			<Show when={!isSnoozing()}>
+				<div class="flex axis-center">
+					<Show when={state.snoozeMode.get() === 'hold'}>
+						<HoldSnoozeButton />
+					</Show>
+					<Show when={state.snoozeMode.get() === 'instant'}>
+						<InstantSnoozeButtons />
+					</Show>
+				</div>
+			</Show>
+
+			<Show when={isSnoozing()}>
+				<div class="flex cross-center p-4 card secondary outlined shadow">
+					<div class="flex-1">
+						💤 Snoozing {selectedSiteLabel()} for {displayDuration((state.snoozeState.get()! - state.clock.get()))}. Scroll your life away!
+					</div>
+					<button class="secondary" onClick={() => state.cancelSnooze()}>
+						Cancel snooze
+					</button>
+				</div>
+			</Show>
 		</Show>
 	</div>
 }
