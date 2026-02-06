@@ -14,9 +14,9 @@ export const site: Site = {
 			selectors: ['main > :nth-child(1) > div[style]'],
 			inject: {
 				mode: 'overlay',
+				overlayZIndex: 0,
 			}
 		},
-
 		{
 			id: regionId('home-stories'),
 			title: 'Stories',
@@ -24,7 +24,6 @@ export const site: Site = {
 			paths: 'inherit',
 			selectors: ['section > main div.xw7yly9 > div.xmnaoh6']
 		},
-
 		{
 			id: regionId('suggested-for-you'),
 			title: 'Suggested for you',
