@@ -18,10 +18,13 @@ export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
 		return r.regionEnabledOverride[regionId] ?? defaultValue;
 	}
 
-	return <div class="space-y-2">
-		<div class="p-4 flex space-x-2 cross-end">
+	return <div class="space-y-2 py-4">
+		<div class="px-4 flex space-x-2 cross-end">
 			<h3 class="font-lg flex-1 text-figure-500 font-bold">{expect(site()).title}</h3>
 			<a class="font-sm hover:underline" target="_blank" href={`https://${expect(site()?.hosts[0])}`}>Visit site</a>
+		</div>
+		<div class="px-4">
+			<h4 class="font flex-1 text-figure-500 font-bold">Hide regions:</h4>
 		</div>
 		<ul>
 			<For each={expect(site()).regions}>
