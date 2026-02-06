@@ -5,7 +5,7 @@
   "description": "Eradicate distractions and take back control of your browsing",
   "author": "Jordan West",
   "license": "AGPL-3.0-only",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "type": "module",
   "module": "index.ts",
   "devDependencies": {
