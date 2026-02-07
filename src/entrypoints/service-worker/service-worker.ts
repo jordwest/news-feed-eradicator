@@ -1,7 +1,7 @@
 import { getBrowser, type MessageSender, type TabId } from '/lib/webextension';
 import type { Path, PathList, Region, Site, SiteId } from '/types/sitelist';
 import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '/messaging/messages';
-import { loadHideQuotes, loadQuoteLists, loadRegionHideStyle, loadRegionsForSite, loadSitelist, loadSnoozeUntil, loadWidgetStyle, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '/storage/storage';
+import { loadHideQuotes, loadQuoteLists, loadRegionHideStyle, loadRegionsForSite, loadSitelist, loadSnoozeUntilForSite, loadWidgetStyle, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntilForSite, saveThemeForSite } from '/storage/storage';
 import { originsForSite } from '/lib/util';
 import { BuiltinQuotes, type Quote } from '/quote';
 import type { QuoteListId, StorageLocalV2, Theme } from '/storage/schema';
@@ -145,23 +145,23 @@ const setSiteTheme = async (siteId: SiteId, theme: Theme | null) => {
 const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender) => {
 	if (msg.type === 'requestSiteDetails') {
 		// TODO: Cache these?
-		const [siteList, snoozeUntil, hideQuotes] = await Promise.all([
+		const [siteList, hideQuotes] = await Promise.all([
 			loadSitelist(),
-			loadSnoozeUntil(),
 			loadHideQuotes(),
 		]);
-
-		const isSnoozing = snoozeUntil != null && snoozeUntil > Date.now();
 
 		const url = new URL(sender.url);
 		const site = siteList.sites.find(site => site.hosts.includes(url.host));
 
 		if (site != null) {
-			const [siteOptions, regionHideStyle, widgetStyle] = await Promise.all([
+			const [siteOptions, regionHideStyle, widgetStyle, snoozeUntil] = await Promise.all([
 				loadRegionsForSite(site.id),
 				loadRegionHideStyle(),
 				loadWidgetStyle(),
+				loadSnoozeUntilForSite(site.id),
 			]);
+
+			const isSnoozing = snoozeUntil != null && snoozeUntil > Date.now();
 
 			let regions = site.regions
 				.map((region): DesiredRegionState => {
@@ -181,7 +181,7 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 				type: 'nfe#siteDetails',
 				regions,
 				token: msg.token,
-				snoozeUntil: snoozeUntil ?? null,
+				snoozeUntil: isSnoozing ? (snoozeUntil ?? null) : null,
 				siteId: site.id,
 				widgetStyle,
 				hideQuotes,
@@ -228,13 +228,13 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 	}
 
 	if (msg.type === 'snooze') {
-		await saveSnoozeUntil(msg.until)
+		await saveSnoozeUntilForSite(msg.siteId, msg.until)
 
 		notifyTabsOptionsUpdated();
 	}
 
 	if (msg.type === 'readSnooze') {
-		return await loadSnoozeUntil() ?? null;
+		return await loadSnoozeUntilForSite(msg.siteId) ?? null;
 	}
 
 	if (msg.type === 'setSiteTheme') {

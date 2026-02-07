@@ -45,6 +45,7 @@ export type TabId = number & { __tabId: never };
 type Storage = {
 	get(keys: string | string[] | null): Promise<any>;
 	set(keys: object): Promise<void>;
+	remove(keys: string | string[]): Promise<void>;
 };
 
 type OnInstalledDetails = {
