@@ -1,6 +1,6 @@
 import { Show } from "solid-js"
 import { QuotesToggle } from "./quotes-toggle"
-import { ImportExport } from "./import-export"
+import { QuoteListManager } from "./quote-list-manager"
 import { useOptionsPageState } from "/entrypoints/options-page/state"
 
 export const QuotesTabContent = () => {
@@ -10,7 +10,7 @@ export const QuotesTabContent = () => {
 		<QuotesToggle />
 		<Show when={!state.hideQuotes.get()}>
 			<hr />
-			<ImportExport />
+			<QuoteListManager />
 		</Show>
 	</div>
 }

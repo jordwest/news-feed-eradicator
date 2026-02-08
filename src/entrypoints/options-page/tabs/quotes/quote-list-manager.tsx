@@ -7,10 +7,10 @@ import Papa from 'papaparse';
 import { useOptionsPageState } from "/entrypoints/options-page/state";
 import { QuoteListEditor } from "./quote-list";
 
-export const ImportExport = () => {
+export const QuoteListManager = () => {
 	const state = useOptionsPageState();
 
-	const doImport = async (files: FileList | null) => {
+	const importFromCsv = async (files: FileList | null) => {
 		if (files == null || files.length === 0) {
 			return;
 		}
@@ -96,7 +96,7 @@ export const ImportExport = () => {
 				<h2 class="font-lg font-bold flex-1">Lists</h2>
 				<div class="flex gap-2 cross-center">
 					<label for="file-import-field" class="buttonlike font-sm tertiary user-select-none">Import CSV</label>
-					<input id="file-import-field" type="file" class="none" multiple accept=".csv" onChange={e => doImport(e.currentTarget.files)} />
+					<input id="file-import-field" type="file" class="none" multiple accept=".csv" onChange={e => importFromCsv(e.currentTarget.files)} />
 					<button class={`${state.selectedQuoteListId.get() == null ? 'primary' : 'secondary'} font-sm`} onClick={() => state.newQuoteList()}>+ New</button>
 				</div>
 			</div>
@@ -139,8 +139,6 @@ const QuoteListToggle = ({ quoteList: ql }: { quoteList: QuoteList }) => {
 		}
 	}
 
-	// const bg = () => state.selectedQuoteListId.get() === ql.id ? 'bg-accent-a200' : 'hover:bg-lighten-100';
-
 	return <li class={`flex px-4 hoverable`} aria-selected={state.selectedQuoteListId.get() === ql.id}>
 		<label class="cursor-pointer flex flex-1 cross-center py-2" for={`quotelist-${ql.id}`}>
 			<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => onQuoteListToggle(e, ql.id, !ql.disabled)} />
@@ -148,6 +146,3 @@ const QuoteListToggle = ({ quoteList: ql }: { quoteList: QuoteList }) => {
 		</label>
 	</li>
 }
-
-// <button onClick={() => state.selectedQuoteListId.set(ql.id)}>Edit</button>
-// <button onClick={() => doExport(ql.id)}>Export</button>
