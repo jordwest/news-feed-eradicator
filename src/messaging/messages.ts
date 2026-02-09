@@ -39,7 +39,7 @@ type OptionsUpdated = {
 	type: 'nfe#optionsUpdated',
 }
 
-export type ToServiceWorkerMessage = RequestSiteDetails | OpenOptionsPage | NotifyOptionsUpdated | SetSiteTheme | EnableSite | DisableSite | Snooze | RequestQuote | SetQuoteEnabled | InjectCss | RemoveCss | ReadSnooze;
+export type ToServiceWorkerMessage = RequestSiteDetails | OpenOptionsPage | NotifyOptionsUpdated | SetSiteTheme | EnableSite | DisableSite | Snooze | RequestQuote | SetQuoteEnabled | ReadSnooze;
 
 // Request site details from service worker.
 type RequestSiteDetails = {
@@ -92,9 +92,11 @@ type DisableSite = {
 
 type Snooze = {
 	type: 'snooze',
+	siteId: SiteId,
 	until: number
 }
 
 type ReadSnooze = {
 	type: 'readSnooze',
+	siteId: SiteId,
 }

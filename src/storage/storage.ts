@@ -12,14 +12,32 @@ const ensureMigrated = async (): Promise<void> => {
 		browser.storage.local.get(null) as Promise<StorageLocalV2 | undefined>,
 	]);
 
+	const migrateLegacyGlobalSnooze = async () => {
+		if (storageLocal?.snoozeUntil == null) return;
+		if (storageLocal.snoozeUntilBySite != null) return;
+
+		const enabledSites = storageLocal.enabledSites ?? [];
+		const snoozeUntilBySite: Partial<Record<SiteId, number>> = {};
+		for (const siteId of enabledSites) {
+			snoozeUntilBySite[siteId] = storageLocal.snoozeUntil;
+		}
+
+		await Promise.all([
+			browser.storage.local.set({ snoozeUntilBySite }),
+			browser.storage.local.remove('snoozeUntil'),
+		]);
+	};
+
 	if (storageSync?.version == null) {
 		// Nothing stored in sync storage, nothing to migrate
 		await browser.storage.local.set({ 'version': CURRENT_STORAGE_SCHEMA_VERSION });
+		await migrateLegacyGlobalSnooze();
 		return;
 	}
 
 	if (storageSync.version != null && storageLocal?.version === 2) {
 		// Leave sync storage in place in case older versions are running elsewhere
+		await migrateLegacyGlobalSnooze();
 		return;
 	}
 
@@ -104,8 +122,23 @@ export const saveSiteEnabled = async (siteId: SiteId, enable: boolean): Promise<
 	return setKey('enabledSites', Array.from(sites));
 }
 
-export const loadSnoozeUntil = () => getKey('snoozeUntil', undefined);
-export const saveSnoozeUntil = (snoozeUntil: number | undefined) => setKey('snoozeUntil', snoozeUntil);
+export const loadSnoozeUntilForSite = async (siteId: SiteId) => {
+	const snoozeUntilBySite = await getKey('snoozeUntilBySite', {});
+	return snoozeUntilBySite[siteId];
+};
+
+export const saveSnoozeUntilForSite = async (siteId: SiteId, snoozeUntil: number) => {
+	const snoozeUntilBySite = await getKey('snoozeUntilBySite', {});
+	const next = { ...snoozeUntilBySite };
+
+	if (snoozeUntil <= Date.now()) {
+		delete next[siteId];
+	} else {
+		next[siteId] = snoozeUntil;
+	}
+
+	return setKey('snoozeUntilBySite', next);
+};
 
 export const loadSnoozeMode = () => getKey('snoozeMode', 'hold');
 export const saveSnoozeMode = (snoozeMode: SnoozeMode) => setKey('snoozeMode', snoozeMode);
