@@ -15,6 +15,17 @@ const token = Math.floor(Math.random() * 1000000);
 
 const sendMessage = (message: ToServiceWorkerMessage) => browser.runtime.sendMessage(message);
 
+const domReady = new Promise(resolve => {
+
+	// DOMContentLoaded is too slow (it waits for all scripts to load) so we rely on good old polling
+	const timer = setInterval(() => {
+		if (document.head != null) {
+			clearInterval(timer);
+			resolve(document);
+		}
+	}, 1);
+});
+
 type RegionState = {
 	config: Region;
 	injectedElement?: HTMLDivElement;
@@ -301,7 +312,10 @@ browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 		state.hideQuotes = msg.hideQuotes;
 		state.widgetStyle.set(msg.widgetStyle);
 		state.theme.id.set(msg.theme.id);
-		patchState(msg.regions);
+
+		domReady.then(() => {
+			patchState(msg.regions);
+		});
 	}
 
 	if (msg.type === 'nfe#optionsUpdated') {
