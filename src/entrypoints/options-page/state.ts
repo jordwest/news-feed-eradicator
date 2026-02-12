@@ -2,9 +2,8 @@ import { createSignal, createEffect, type Accessor, type Setter, createContext, 
 import type { QuoteList, QuoteListId } from "../../storage/schema";
 import { expect, originsForSite } from "../../lib/util";
 import type { SiteId, SiteList } from "../../types/sitelist";
-import { loadEnabledSites, loadHideQuotes, loadQuoteList, loadQuoteLists, loadSettingsLocked, loadSnoozeMode, saveHideQuotes, saveNewQuoteList, saveSettingsLocked } from "../../storage/storage";
+import { loadEnabledSites, loadQuoteLists, loadSnoozeMode } from "../../storage/storage";
 import type { Quote } from "../../quote";
-import { sendToServiceWorker } from "../../messaging/messages";
 import { getBrowser, type Permissions } from "../../lib/webextension";
 import { createStore, reconcile } from "solid-js/store";
 import { resourceObj, resourceObjReconciled, signalObj, type SignalObj } from "/lib/solid-util";
@@ -50,11 +49,9 @@ export class OptionsPageState {
 
 	storage = new StorageState();
 
-	settingsLocked = resourceObj(createResource(loadSettingsLocked));
 	snoozeState = resourceObj(createResource<number | null>(async () => browser.runtime.sendMessage({ type: 'readSnooze' })));
 	snoozeMode = resourceObj(createResource(loadSnoozeMode));
 	enabledSites = resourceObj(createResource(loadEnabledSites));
-	hideQuotes = resourceObj(createResource(loadHideQuotes));
 	permissions = resourceObj(createResource(() => browser.permissions.getAll()));
 	enabledScripts = resourceObj(createResource(async () => {
 		const scripts = await browser.scripting.getRegisteredContentScripts();
@@ -94,16 +91,8 @@ export class OptionsPageState {
 		return editingState as Extract<NonNullable<EditingState>, { type: T }>;
 	}
 
-	async setHideQuotes(hideQuotes: boolean) {
-		await saveHideQuotes(hideQuotes);
-		this.hideQuotes.refetch();
-		sendToServiceWorker({
-			type: 'notifyOptionsUpdated',
-		})
-	}
-
 	async newQuoteList() {
-		const id = await saveNewQuoteList({ title: 'New List', quotes: [], imported: false, disabledQuoteIds: [] });
+		const id = await this.storage.newQuoteList();
 		await this.quoteLists.refetch();
 		this.selectedQuoteListId.set(id);
 	}
@@ -201,15 +190,14 @@ export class OptionsPageState {
 		if (locked) {
 			this.selectedSiteId.set(null);
 		}
-		await saveSettingsLocked(locked);
-		await this.settingsLocked.refetch();
+		await this.storage.setSettingsLocked(locked);
 	}
 
 	/**
  * Returns true if the user is not currently allowed to change settings (eg not currently snoozing)
  */
 	settingsLockedDown() {
-		return this.settingsLocked.get() ?? false;
+		return this.storage.settingsLocked.get() ?? false;
 	}
 
 	canUnlockSettings() {
