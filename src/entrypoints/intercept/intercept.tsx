@@ -29,6 +29,8 @@ const domReady = new Promise(resolve => {
 type RegionState = {
 	config: Region;
 	injectedElement?: HTMLDivElement;
+	injectedThemeStyleElement?: HTMLStyleElement;
+	shadow?: ShadowRoot;
 	css?: string;
 	enabled?: boolean;
 };
@@ -43,7 +45,6 @@ type ContentScriptState = {
 	snoozeTimer?: Timer;
 	injectedCss?: string | null;
 	injectedPageStyleElement?: HTMLStyleElement;
-	injectedThemeStyleElement?: HTMLStyleElement;
 	siteId?: SiteId;
 	ready?: boolean;
 	hideQuotes?: boolean;
@@ -134,7 +135,7 @@ function tryInject() {
 				continue;
 			}
 			const nfeElement = document.createElement('div');
-			nfeElement.id = 'nfe-root'
+			nfeElement.id = `nfe-root-${region.config.id}`;
 			switch (injectConfig.mode) {
 				case 'firstChild':
 					el.prepend(nfeElement);
@@ -164,10 +165,11 @@ function tryInject() {
 			}
 
 			const shadow = nfeElement.attachShadow({ mode: "open" });
+			region.shadow = shadow;
 
-			state.injectedThemeStyleElement = document.createElement('style');
-			state.injectedThemeStyleElement.textContent = state.theme.css?.replace(':root', ':host') ?? '';
-			shadow.appendChild(state.injectedThemeStyleElement);
+			region.injectedThemeStyleElement = document.createElement('style');
+			region.injectedThemeStyleElement.textContent = state.theme.css?.replace(':root', ':host') ?? '';
+			shadow.appendChild(region.injectedThemeStyleElement);
 
 			const style = document.createElement('style');
 			style.textContent = `${nfeStyles}\n${sharedStyles}`;
@@ -246,10 +248,6 @@ const setSnoozeTimer = (snoozeUntil: number | null) => {
 const patchState = (regions: DesiredRegionState[]) => {
 	let seenRegions: Set<RegionId> = new Set();
 
-	if (state.injectedThemeStyleElement != null) {
-		state.injectedThemeStyleElement.textContent = state.theme.css?.replace(':root', ':host') ?? '';
-	}
-
 	for (var region of regions) {
 		const id = region.config.id;
 		seenRegions.add(id);
@@ -278,6 +276,16 @@ const patchState = (regions: DesiredRegionState[]) => {
 				// Done with the region, we won't see it again
 				continue;
 			}
+		}
+
+		if (activeRegion.injectedThemeStyleElement != null) {
+			activeRegion.injectedThemeStyleElement.remove();
+		}
+
+		if (activeRegion.shadow != null) {
+			activeRegion.injectedThemeStyleElement = document.createElement('style');
+			activeRegion.injectedThemeStyleElement.textContent = state.theme.css?.replace(':root', ':host') ?? '';
+			activeRegion.shadow.appendChild(activeRegion.injectedThemeStyleElement);
 		}
 
 		if (activeRegion.injectedElement == null && activeRegion.config.inject != null && !state.hideQuotes) {
