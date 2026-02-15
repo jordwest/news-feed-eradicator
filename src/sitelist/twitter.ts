@@ -19,6 +19,15 @@ export const site: Site = {
 						mode: 'overlay',
 					}
 				},
+				{
+					id: regionId('explore-posts'),
+					title: 'Explore "Posts For You"',
+					type: 'remove',
+					paths: ['/explore'],
+					selectors: [
+					'div[data-testid="primaryColumn"] div[data-testid="cellInnerDiv"]:has(article[data-testid="tweet"])',
+					],
+				},
 			]
 		}
 
