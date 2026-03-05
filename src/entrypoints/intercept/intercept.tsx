@@ -185,6 +185,7 @@ function tryInject() {
 			nfeElement.style.display = isRegionBlockActive(region) ? 'block' : 'none';
 
 			region.injectedElement = nfeElement;
+			break;
 		}
 	}
 
