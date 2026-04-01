@@ -4,7 +4,7 @@ export const site: Site = {
 			id: siteId('twitter'),
 			title: 'Twitter/X',
 			hosts: ['x.com'],
-			paths: ['/home', '/'],
+			paths: ['/home', '/', '/compose/post'],
 			regions: [
 				{
 					id: regionId('home-timeline'),
@@ -16,7 +16,7 @@ export const site: Site = {
 						'div[aria-label="Home timeline"] > div > section[role="region"]', // Fallback but only works if X is set to English
 					],
 					inject: {
-						mode: 'overlay',
+						mode: 'before',
 					}
 				},
 			]
