@@ -61,6 +61,25 @@ export const site: Site = {
 					selectors: ['ytd-live-chat-frame'],
 					default: false,
 				},
+				{
+					id: regionId('notifications'),
+					title: 'Notifications',
+					type: 'remove',
+					paths: '*',
+					selectors: ['ytd-notification-topbar-button-renderer'],
+					default: false,
+				},
+				{
+					id: regionId('subscriptions'),
+					title: 'Subscriptions',
+					type: 'remove',
+					paths: '*',
+					selectors: [
+						'ytd-guide-section-renderer:nth-child(2)', 
+						'ytd-mini-guide-renderer:nth-child(2)'
+					],
+					default: false,
+				},
 			],
 		}
 
