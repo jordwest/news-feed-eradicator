@@ -21,7 +21,11 @@ export const site: Site = {
 			title: 'News sidebar',
 			type: 'remove',
 			paths: '*',
-			selectors: ['#feed-news-module', 'div:has(> div > div[data-view-name="news-module"])'],
+			selectors: [
+				'#feed-news-module',
+				'div:has(> div > div[data-view-name="news-module"])',
+				'main#workspace > div:nth-child(1) > div:nth-child(1) > aside:nth-child(3) > div:first-child > div:first-child',
+			],
 		}
 	]
 }
