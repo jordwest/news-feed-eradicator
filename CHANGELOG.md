@@ -4,6 +4,17 @@
 
 - No unreleased changes
 
+## [3.0.5] - 2026-07-16
+
+- Fix security error from sitelist.json fetch in content script (thanks @argothiel)
+- Fix typos in Charlie Chaplin's name in quote.ts (thanks @j4nw)
+- LinkedIn: fix news sidebar removal
+- Instagram: block explore page recommendations (thanks @shr0mi)
+- X: Remove News and Trending (thanks @niinpatel)
+- X: Fix prompt overlap
+- X: Block posts on Posts For You section of Explore tab (thanks @kpeluso)
+- YouTube: Remove notifications and subscriptions (thanks @ftmateus)
+
 ## [3.0.0]
 
 - Complete rewrite of the codebase
