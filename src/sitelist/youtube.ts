@@ -18,6 +18,17 @@ export const site: Site = {
 					},
 				},
 				{
+					id: regionId('subscriptions-feed'),
+					title: 'Subscriptions feed',
+					selectors: ['ytd-browse'],
+					paths: ['/feed/subscriptions'],
+					type: 'hide',
+					inject: {
+						mode: 'overlay-fixed',
+						overlayZIndex: 2019,
+					},
+				},
+				{
 					id: regionId('shorts-button'),
 					title: 'Shorts button',
 					type: 'remove',
@@ -71,7 +82,7 @@ export const site: Site = {
 				},
 				{
 					id: regionId('subscriptions'),
-					title: 'Subscriptions',
+					title: 'Subscriptions sidebar',
 					type: 'remove',
 					paths: '*',
 					selectors: [
