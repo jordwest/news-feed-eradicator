@@ -359,12 +359,12 @@ export const BuiltinQuotes: Array<Quote> = [
 	{
 		id: "251204",
 		text: "Don't give yourselves to these unnatural men — machine men, with machine minds and machine hearts. You are not machines, you are not cattle, you are men. You have the love of humanity in your hearts.",
-		author: "Charlie Chaplain"
+		author: "Charlie Chaplin"
 	},
 	{
 		id: "251205",
 		text: "Machinery that gives abundance has left us in want. Our knowledge has made us cynical. Our cleverness, hard and unkind. We think too much and feel too little. More than machinery we need humanity. More than cleverness we need kindness and gentleness.",
-		author: "Charlie Chaplain"
+		author: "Charlie Chaplin"
 	},
 	{
 		id: "251206",
