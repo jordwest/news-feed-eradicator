@@ -28,6 +28,27 @@ export const site: Site = {
 					'div[data-testid="primaryColumn"] div[data-testid="cellInnerDiv"]:has(article[data-testid="tweet"])',
 					],
 				},
+				{
+					id: regionId('todays-news'),
+					title: "Today's News",
+					type: 'remove',
+					paths: '*',
+					selectors: [
+						'div:has(> div[data-testid="news_sidebar"])',
+						'div:has(> div[data-testid^="news_sidebar_article_"])'
+					],
+				},
+				{
+					id: regionId('trending'),
+					title: "Trending now/What's happening",
+					type: 'remove',
+					paths: '*',
+					selectors: [
+						'section:has(div[aria-label="Timeline: Trending now"])',
+						'div[aria-label="Timeline: Trending now"]'
+					],
+
+				}
 			]
 		}
 
