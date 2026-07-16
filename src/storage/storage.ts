@@ -268,10 +268,13 @@ export const setRegionEnabledForSite = async (siteId: SiteId, regionId: RegionId
 	return setKey('siteConfig', siteConfig);
 }
 
-const browser = getBrowser();
-const siteListUrl = browser.runtime.getURL('sitelist.json');
-const siteListPromise: Promise<SiteList> = fetch(siteListUrl).then(siteList => siteList.json());
+let siteListPromise: Promise<SiteList> | undefined;
 
 export const loadSitelist = async (): Promise<SiteList> => {
+	if (siteListPromise == null) {
+		const browser = getBrowser();
+		const siteListUrl = browser.runtime.getURL('sitelist.json');
+		siteListPromise = fetch(siteListUrl).then(siteList => siteList.json());
+	}
 	return siteListPromise
 }
