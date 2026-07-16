@@ -30,7 +30,14 @@ export const site: Site = {
 			type: 'remove',
 			paths: 'inherit',
 			selectors: ['div:has(> div > a[href="/explore/people/"])']
-		}
+		},
+		{
+            id: regionId('explore-suggestions'),
+            title: 'Explore Suggestions',
+            type: 'remove',
+            paths: ['/explore/'],
+            selectors: ['main div:has(> div > div > a[href^="/p/"])']
+        }
 	]
 }
 
