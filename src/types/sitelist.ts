@@ -35,4 +35,5 @@ export type Region = {
 	paths: 'inherit' | '*' | PathList,
 	default?: boolean,
 	inject?: Inject,
+	blockNavigation?: string,
 }

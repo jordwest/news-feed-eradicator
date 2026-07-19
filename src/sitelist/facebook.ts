@@ -24,6 +24,14 @@ export const site: Site = {
 			selectors: ['div.x193iq5w.xgmub6v.x1ceravr.x1v0nzow']
 		},
 		{
+			id: regionId('reels'),
+			title: 'Reels',
+			type: 'remove',
+			paths: '*',
+			selectors: ['[aria-label="Reels"]'],
+			blockNavigation: '^/reel/',
+		},
+		{
 			id: regionId('groups-feed'),
 			title: 'Groups feed',
 			type: 'remove',
