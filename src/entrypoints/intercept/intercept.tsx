@@ -20,7 +20,7 @@ const sendMessage = (message: ToServiceWorkerMessage) => browser.runtime.sendMes
 
 const shouldBlockNavigation = (url: string | URL): boolean => {
 	try {
-		const path = new URL(url, location.origin).pathname;
+			const path = new URL(url.toString(), location.href).pathname;
 		return blockedNavigationPatterns.some(pattern => pattern.test(path));
 	} catch {
 		return false;
