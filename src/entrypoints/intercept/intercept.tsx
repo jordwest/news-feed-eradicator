@@ -103,6 +103,16 @@ function checkDom() {
 	for (const overlay of state.overlays) {
 		updateOverlay(overlay);
 	}
+	let needsInject = false;
+	for (const region of state.regions.values()) {
+		if (region.injectedElement != null && !document.contains(region.injectedElement)) {
+			region.injectedElement = undefined;
+			needsInject = true;
+		}
+	}
+	if (needsInject) {
+		tryInject();
+	}
 }
 
 window.addEventListener("resize", checkDom)
@@ -287,6 +297,10 @@ const patchState = (regions: DesiredRegionState[]) => {
 			activeRegion.injectedThemeStyleElement = document.createElement('style');
 			activeRegion.injectedThemeStyleElement.textContent = state.theme.css?.replace(':root', ':host') ?? '';
 			activeRegion.shadow.appendChild(activeRegion.injectedThemeStyleElement);
+		}
+
+		if (activeRegion.injectedElement != null && !document.contains(activeRegion.injectedElement)) {
+			activeRegion.injectedElement = undefined;
 		}
 
 		if (activeRegion.injectedElement == null && activeRegion.config.inject != null && !state.hideQuotes) {
