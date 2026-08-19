@@ -1,5 +1,5 @@
 import { getBrowser, type MessageSender, type TabId } from '/lib/webextension';
-import type { Path, PathList, Region, Site, SiteId } from '/types/sitelist';
+import type { Path, PathList, PathQuery, Region, Site, SiteId } from '/types/sitelist';
 import type { DesiredRegionState, RequestQuoteResponse, FromServiceWorkerMessage, ToServiceWorkerMessage } from '/messaging/messages';
 import { loadHideQuotes, loadQuoteLists, loadRegionHideStyle, loadRegionsForSite, loadSitelist, loadSnoozeUntil, loadWidgetStyle, migrationPromise, saveQuoteEnabled, saveSiteEnabled, saveSnoozeUntil, saveThemeForSite } from '/storage/storage';
 import { originsForSite } from '/lib/util';
@@ -47,29 +47,73 @@ const notifyTabsOptionsUpdated = async () => {
 	}
 }
 
-const pathPatternMatches = (path: string, pattern: Path): boolean => {
-	if (typeof pattern === 'string') {
-		return pattern === path;
-	} else if ('regexp' in pattern) {
-		return new RegExp(pattern.regexp).test(path);
+const searchParamMatches = (search: string, query: PathQuery): boolean => {
+	const params = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
+
+	if (typeof query === 'string') {
+		const separatorIndex = query.indexOf('=');
+		if (separatorIndex === -1) {
+			return params.has(query);
+		}
+
+		const key = query.slice(0, separatorIndex);
+		const value = query.slice(separatorIndex + 1);
+		return params.get(key) === value;
 	}
+
+	return new RegExp(query.regexp).test(search);
+}
+
+const searchQueryMatches = (search: string, query: PathQuery | PathQuery[]): boolean => {
+	if (Array.isArray(query)) {
+		return query.every(part => searchParamMatches(search, part));
+	}
+
+	return searchParamMatches(search, query);
+}
+
+const pathPatternMatches = (pathname: string, search: string, pattern: Path): boolean => {
+	if (typeof pattern === 'string') {
+		return pattern === pathname;
+	}
+
+	if ('pathname' in pattern) {
+		if (pattern.pathname !== pathname) {
+			return false;
+		}
+
+		if (pattern.excludeSearch != null && searchQueryMatches(search, pattern.excludeSearch)) {
+			return false;
+		}
+
+		if (pattern.search == null) {
+			return true;
+		}
+
+		return searchQueryMatches(search, pattern.search);
+	}
+
+	if ('regexp' in pattern) {
+		return new RegExp(pattern.regexp).test(pathname);
+	}
+
 	return false;
 }
 
-const pathInPathList = (path: string, pathlist: PathList): boolean => {
-	return pathlist.find(pattern => pathPatternMatches(path, pattern)) != null;
+const pathInPathList = (pathname: string, search: string, pathlist: PathList): boolean => {
+	return pathlist.find(pattern => pathPatternMatches(pathname, search, pattern)) != null;
 }
 
-const isEnabledPath = (site: Site, region: Region, path: string): boolean | undefined => {
+const isEnabledPath = (site: Site, region: Region, pathname: string, search: string): boolean | undefined => {
 	if (region.paths === '*') {
 		return true;
 	}
 
 	if (region.paths === 'inherit') {
-		return pathInPathList(path, site.paths);
+		return pathInPathList(pathname, search, site.paths);
 	}
 
-	return pathInPathList(path, region.paths);
+	return pathInPathList(pathname, search, region.paths);
 }
 
 const cssForType = (type: Region['type'], hideStyle: StorageLocalV2['regionHideStyle']): string => {
@@ -165,7 +209,7 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 
 			let regions = site.regions
 				.map((region): DesiredRegionState => {
-					if (isSnoozing || !isEnabledPath(site, region, msg.path)) {
+					if (isSnoozing || !isEnabledPath(site, region, msg.path, msg.search)) {
 						return { config: region, css: null, enabled: false };
 					}
 

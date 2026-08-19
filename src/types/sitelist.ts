@@ -9,7 +9,8 @@ export type RegionId = string & { __sectionId: never };
 export const siteId = (id: string): SiteId => id as SiteId;
 export const regionId = (id: string): RegionId => id as RegionId;
 
-export type Path = string | { regexp: string };
+export type PathQuery = string | { regexp: string };
+export type Path = string | { regexp: string } | { pathname: string, search?: PathQuery | PathQuery[], excludeSearch?: PathQuery | PathQuery[] };
 export type PathList = Path[];
 
 export type Site = {

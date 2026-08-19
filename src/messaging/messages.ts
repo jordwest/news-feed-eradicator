@@ -45,6 +45,7 @@ export type ToServiceWorkerMessage = RequestSiteDetails | OpenOptionsPage | Noti
 type RequestSiteDetails = {
 	type: 'requestSiteDetails',
 	path: string,
+	search: string,
 	token: number
 };
 

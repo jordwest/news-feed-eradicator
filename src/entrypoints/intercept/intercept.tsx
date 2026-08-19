@@ -195,14 +195,17 @@ function tryInject() {
 	}
 }
 
-let path = window.location.pathname;
+let pathname = window.location.pathname;
+let search = window.location.search;
 setInterval(() => {
-	if (path != window.location.pathname) {
-		path = window.location.pathname;
+	if (pathname != window.location.pathname || search != window.location.search) {
+		pathname = window.location.pathname;
+		search = window.location.search;
 
 		sendMessage({
 			type: 'requestSiteDetails',
-			path: window.location.pathname,
+			path: pathname,
+			search,
 			token
 		});
 	}
@@ -221,6 +224,7 @@ const endSnooze = () => {
 	sendMessage({
 		type: 'requestSiteDetails',
 		path: window.location.pathname,
+		search: window.location.search,
 		token
 	});
 	state.snoozeTimer = undefined;
@@ -331,6 +335,7 @@ browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 		sendMessage({
 			type: 'requestSiteDetails',
 			path: window.location.pathname,
+			search: window.location.search,
 			token
 		});
 	}
@@ -349,6 +354,7 @@ const pingServiceWorker = () => {
 	sendMessage({
 		type: 'requestSiteDetails',
 		path: window.location.pathname,
+		search: window.location.search,
 		token
 	});
 
