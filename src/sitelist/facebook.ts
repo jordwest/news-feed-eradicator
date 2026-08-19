@@ -5,6 +5,7 @@ export const site: Site = {
 	title: 'Facebook',
 	hosts: ['www.facebook.com', 'web.facebook.com'],
 	paths: ['/'],
+	widgetAppearance: 'facebook',
 	regions: [
 		{
 			id: regionId('main-feed'),

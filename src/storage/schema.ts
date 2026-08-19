@@ -58,7 +58,8 @@ export const defaultQuoteLists = (): QuoteList[] => [
 	}
 ];
 
-export type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark' | 'system';
+export type ResolvedTheme = 'light' | 'dark';
 
 export type StorageLocal = StorageLocalV2;
 

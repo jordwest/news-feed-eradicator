@@ -5,6 +5,7 @@ import { loadHideQuotes, loadQuoteLists, loadRegionHideStyle, loadRegionsForSite
 import { originsForSite } from '/lib/util';
 import { BuiltinQuotes, type Quote } from '/quote';
 import type { QuoteListId, StorageLocalV2, Theme } from '/storage/schema';
+import { themeCssForResolved } from '/lib/theme';
 import themeDark from '/themes/dark.css?raw';
 import themeLight from '/themes/light.css?raw';
 
@@ -219,7 +220,8 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 					return { config: region, css: `${selector} { ${cssForType(region.type, regionHideStyle)} }`, enabled } ;
 				});
 
-			const theme = siteOptions.theme ?? 'light';
+			const themePreference = siteOptions.theme ?? 'system';
+			const themeResolved = themePreference === 'system' ? 'light' : themePreference;
 
 			sendMessage(sender.tab.id, {
 				type: 'nfe#siteDetails',
@@ -228,10 +230,12 @@ const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender)
 				snoozeUntil: snoozeUntil ?? null,
 				siteId: site.id,
 				widgetStyle,
+				widgetAppearance: site.widgetAppearance,
 				hideQuotes,
 				theme: {
-					css: theme === 'light' ? themeLight : themeDark,
-					id: theme,
+					preference: themePreference,
+					resolved: themeResolved,
+					css: themeCssForResolved(themeResolved, themeLight, themeDark),
 				}
 			})
 		}

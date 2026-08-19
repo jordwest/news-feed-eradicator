@@ -1,6 +1,6 @@
 import { getBrowser } from "/lib/webextension";
-import type { QuoteListId, Theme } from "/storage/schema";
-import type { Region, SiteId } from "/types/sitelist";
+import type { QuoteListId, ResolvedTheme, Theme } from "/storage/schema";
+import type { Region, SiteId, WidgetAppearance } from "/types/sitelist";
 
 export const sendToServiceWorker = async <Response = any>(msg: ToServiceWorkerMessage): Promise<Response> => {
 	const browser = getBrowser();
@@ -18,10 +18,12 @@ type SiteDetails = {
 	siteId: SiteId,
 	regions: DesiredRegionState[],
 	theme: {
-		id: Theme,
+		preference: Theme,
+		resolved: ResolvedTheme,
 		css: string,
 	}
 	widgetStyle: 'contained' | 'transparent',
+	widgetAppearance?: WidgetAppearance,
 	snoozeUntil: number | null,
 	hideQuotes: boolean,
 }

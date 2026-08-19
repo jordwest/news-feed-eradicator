@@ -13,12 +13,15 @@ export type PathQuery = string | { regexp: string };
 export type Path = string | { regexp: string } | { pathname: string, search?: PathQuery | PathQuery[], excludeSearch?: PathQuery | PathQuery[] };
 export type PathList = Path[];
 
+export type WidgetAppearance = 'facebook';
+
 export type Site = {
 	id: SiteId,
 	title: string,
 	hosts: string[],
 	paths: PathList,
 	popular?: boolean,
+	widgetAppearance?: WidgetAppearance,
 	regions: Region[]
 };
 
