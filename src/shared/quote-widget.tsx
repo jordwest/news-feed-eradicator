@@ -1,7 +1,7 @@
 import { createResource, Show, type Accessor } from "solid-js"
 import { type RequestQuoteResponse, sendToServiceWorker } from "../messaging/messages"
 import type { Theme } from "../storage/schema";
-import type { SiteId } from "../types/sitelist";
+import type { SiteId, WidgetAppearance } from "../types/sitelist";
 import { createSignal } from "solid-js";
 import { loadHideWidgetToolbar, saveHideWidgetToolbar } from "/storage/storage";
 
@@ -11,16 +11,15 @@ const [quote, { refetch: refetchQuote }] = createResource(async () => {
 	});
 })
 
-const toggleTheme = async (e: { preventDefault: () => void }, siteId: SiteId, theme: Theme) => {
-	e.preventDefault();
+const setTheme = async (siteId: SiteId, theme: Theme) => {
 	await sendToServiceWorker({
 		type: 'setSiteTheme',
 		siteId,
-		theme: theme === 'light' ? 'dark' : 'light',
+		theme,
 	})
 }
 
-export const QuoteWidget = ({ siteId, theme, widgetStyle }: { siteId: SiteId | null, theme: Accessor<Theme | null>, widgetStyle: Accessor<'contained' | 'transparent'> }) => {
+export const QuoteWidget = ({ siteId, themePreference, widgetStyle, widgetAppearance }: { siteId: SiteId | null, themePreference: Accessor<Theme | null>, widgetStyle: Accessor<'contained' | 'transparent'>, widgetAppearance: Accessor<WidgetAppearance | undefined> }) => {
 	const [collapsed, setCollapsedLocal] = createSignal(true);
 
 	// Quote must be enabled if it appears in here
@@ -54,9 +53,17 @@ export const QuoteWidget = ({ siteId, theme, widgetStyle }: { siteId: SiteId | n
 
 	const openOptionsPage = () => sendToServiceWorker({ type: 'openOptionsPage' })
 
+	const isFacebook = () => widgetAppearance() === 'facebook';
+	const containedClasses = () => {
+		if (widgetStyle() !== 'contained') return '';
+		return isFacebook()
+			? 'bg-widget-ground shadow widget-facebook'
+			: 'bg-widget-ground b-1 shadow rounded';
+	};
+
 	return <aside class="space-y-2">
 		<Show when={quote()}>
-			<div class={`${widgetStyle() === 'contained' ? 'bg-widget-ground b-1 shadow rounded' : ''} font-md`}>
+			<div class={`font-md ${isFacebook() ? 'rounded-lg overflow-hidden' : ''} ${containedClasses()}`}>
 				<div class="w-full position-relative">
 					<Show when={collapsed()}>
 						<div class="p-2 flex w-full axis-end position-absolute lr-0 pointer-events-none">
@@ -66,10 +73,17 @@ export const QuoteWidget = ({ siteId, theme, widgetStyle }: { siteId: SiteId | n
 					<Show when={!collapsed()}>
 						<div class="p-2 bg-darken-100 space-x-4 flex w-full cross-center">
 							<Show when={siteId != null}>
-								<label for="theme-toggle" class="cursor-pointer text-primary gap-1 flex cross-center">
-									<span aria-label="Light mode">☀️</span>
-									<input id="theme-toggle" type="checkbox" checked={theme() === 'dark'} class="toggle" onInput={e => toggleTheme(e, siteId!, theme() ?? 'light')} />
-									<span aria-label="Dark mode">🌙</span>
+								<label for="theme-select" class="text-primary gap-1 flex cross-center font-sm">
+									<span>Theme</span>
+									<select
+										id="theme-select"
+										value={themePreference() ?? 'system'}
+										onChange={e => setTheme(siteId!, e.currentTarget.value as Theme)}
+									>
+										<option value="light">Light</option>
+										<option value="dark">Dark</option>
+										<option value="system">System</option>
+									</select>
 								</label>
 							</Show>
 							<div class="flex-1" />

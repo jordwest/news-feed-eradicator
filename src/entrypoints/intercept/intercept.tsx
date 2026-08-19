@@ -6,7 +6,11 @@ import type { Region, RegionId, Site, SiteId } from '../../types/sitelist';
 import { render } from 'solid-js/web';
 import nfeStyles from './nfe-container.css?raw';
 import sharedStyles from '../../shared/styles.css?raw';
-import type { Theme } from '../../storage/schema';
+import type { ResolvedTheme, Theme } from '../../storage/schema';
+import type { WidgetAppearance } from '../../types/sitelist';
+import { resolveTheme, themeCssForResolved } from '../../lib/theme';
+import themeDark from '../../themes/dark.css?raw';
+import themeLight from '../../themes/light.css?raw';
 import { signalObj, type SignalObj } from '/lib/solid-util';
 
 const browser = getBrowser();
@@ -49,10 +53,12 @@ type ContentScriptState = {
 	ready?: boolean;
 	hideQuotes?: boolean;
 	widgetStyle: SignalObj<'contained' | 'transparent'>;
+	widgetAppearance: SignalObj<WidgetAppearance | undefined>;
 	overlays: OverlayState[];
 	theme: {
 		css: string | null;
-		id: SignalObj<Theme | null>;
+		preference: SignalObj<Theme | null>;
+		id: SignalObj<ResolvedTheme | null>;
 	}
 	regions: Map<RegionId, RegionState>;
 };
@@ -61,9 +67,11 @@ let state: ContentScriptState = {
 	regions: new Map(),
 	overlays: [],
 	widgetStyle: signalObj<'contained' | 'transparent'>('contained'),
+	widgetAppearance: signalObj<WidgetAppearance | undefined>(undefined),
 	theme: {
 		css: null,
-		id: signalObj<Theme | null>(null),
+		preference: signalObj<Theme | null>(null),
+		id: signalObj<ResolvedTheme | null>(null),
 	}
 };
 
@@ -177,10 +185,10 @@ function tryInject() {
 
 			const container = document.createElement('div')
 			container.id = 'nfe-container';
-			container.className = 'dark';
+			container.className = state.theme.id.get() === 'dark' ? 'theme-dark' : 'theme-light';
 			shadow.appendChild(container);
 
-			render(() => <QuoteWidget siteId={state.siteId ?? null} theme={state.theme.id.get} widgetStyle={state.widgetStyle.get} />, container);
+			render(() => <QuoteWidget siteId={state.siteId ?? null} themePreference={state.theme.preference.get} widgetStyle={state.widgetStyle.get} widgetAppearance={state.widgetAppearance.get} />, container);
 
 			nfeElement.style.display = isRegionBlockActive(region) ? 'block' : 'none';
 
@@ -195,14 +203,17 @@ function tryInject() {
 	}
 }
 
-let path = window.location.pathname;
+let pathname = window.location.pathname;
+let search = window.location.search;
 setInterval(() => {
-	if (path != window.location.pathname) {
-		path = window.location.pathname;
+	if (pathname != window.location.pathname || search != window.location.search) {
+		pathname = window.location.pathname;
+		search = window.location.search;
 
 		sendMessage({
 			type: 'requestSiteDetails',
-			path: window.location.pathname,
+			path: pathname,
+			search,
 			token
 		});
 	}
@@ -221,6 +232,7 @@ const endSnooze = () => {
 	sendMessage({
 		type: 'requestSiteDetails',
 		path: window.location.pathname,
+		search: window.location.search,
 		token
 	});
 	state.snoozeTimer = undefined;
@@ -307,6 +319,33 @@ const patchState = (regions: DesiredRegionState[]) => {
 
 const isRegionBlockActive = (region: RegionState) => region.enabled && !isSnoozing()
 
+const updateThemeInShadowRoots = () => {
+	for (const region of state.regions.values()) {
+		if (region.injectedThemeStyleElement != null) {
+			region.injectedThemeStyleElement.textContent = state.theme.css?.replace(':root', ':host') ?? '';
+		}
+
+		const container = region.shadow?.getElementById('nfe-container');
+		if (container != null) {
+			container.className = state.theme.id.get() === 'dark' ? 'theme-dark' : 'theme-light';
+		}
+	}
+}
+
+const applyTheme = (preference: Theme) => {
+	const resolved = resolveTheme(preference);
+	state.theme.preference.set(preference);
+	state.theme.id.set(resolved);
+	state.theme.css = themeCssForResolved(resolved, themeLight, themeDark);
+	updateThemeInShadowRoots();
+}
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+	if (state.theme.preference.get() === 'system') {
+		applyTheme('system');
+	}
+});
+
 browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 	if (msg.type == 'nfe#siteDetails' && msg.token === token) {
 		if (msg.snoozeUntil != null && msg.snoozeUntil > Date.now()) {
@@ -317,10 +356,10 @@ browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 
 		state.ready = true;
 		state.siteId = msg.siteId;
-		state.theme.css = msg.theme.css;
 		state.hideQuotes = msg.hideQuotes;
 		state.widgetStyle.set(msg.widgetStyle);
-		state.theme.id.set(msg.theme.id);
+		state.widgetAppearance.set(msg.widgetAppearance);
+		applyTheme(msg.theme.preference);
 
 		domReady.then(() => {
 			patchState(msg.regions);
@@ -331,6 +370,7 @@ browser.runtime.onMessage.addListener(async (msg: FromServiceWorkerMessage) => {
 		sendMessage({
 			type: 'requestSiteDetails',
 			path: window.location.pathname,
+			search: window.location.search,
 			token
 		});
 	}
@@ -349,6 +389,7 @@ const pingServiceWorker = () => {
 	sendMessage({
 		type: 'requestSiteDetails',
 		path: window.location.pathname,
+		search: window.location.search,
 		token
 	});
 

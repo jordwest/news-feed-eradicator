@@ -5,12 +5,13 @@ export const site: Site = {
 	title: 'Facebook',
 	hosts: ['www.facebook.com', 'web.facebook.com'],
 	paths: ['/'],
+	widgetAppearance: 'facebook',
 	regions: [
 		{
 			id: regionId('main-feed'),
 			title: 'Main feed',
 			type: 'hide',
-			paths: 'inherit',
+			paths: [{ pathname: '/', excludeSearch: ['filter=groups', 'sk=h_chr'] }],
 			selectors: ['div.x1hc1fzr.x1unhpq9.x6o7n8i'],
 			inject: {
 				mode: 'before',
@@ -30,6 +31,17 @@ export const site: Site = {
 			default: false,
 			paths: ['/groups/feed/'],
 			selectors: ['div[role="feed"]'],
+			inject: {
+				mode: 'before',
+			}
+		},
+		{
+			id: regionId('chronological-groups-feed'),
+			title: 'Chronological groups feed',
+			type: 'hide',
+			default: false,
+			paths: [{ pathname: '/', search: ['filter=groups', 'sk=h_chr'] }],
+			selectors: ['div.x1hc1fzr.x1unhpq9.x6o7n8i'],
 			inject: {
 				mode: 'before',
 			}

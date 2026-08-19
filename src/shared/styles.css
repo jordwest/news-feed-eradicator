@@ -84,6 +84,24 @@ button.tertiary:hover, .buttonlike.tertiary:hover {
 button.tertiary.bg-transparent { background-color: transparent; }
 button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-button-hover-bg); }
 
+select {
+	border: 1px solid var(--theme-border);
+	border-radius: 4px;
+	background-color: var(--theme-tertiary-button-bg);
+	color: var(--theme-text-primary);
+	padding: 0.25em 0.5em;
+	cursor: pointer;
+}
+
+select:hover {
+	background-color: var(--theme-tertiary-button-hover-bg);
+}
+
+select:focus {
+	outline: none;
+	box-shadow: 0 0 0 0.2em var(--theme-accent-a500);
+}
+
 .overlay-container { position: relative; isolation: isolate; }
 .overlay-container > .overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
 
@@ -162,6 +180,7 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 .opacity-0 { opacity: 0; }
 
 .rounded { border-radius: 4px; }
+.rounded-lg { border-radius: 8px; }
 
 .flex { display: flex; }
 .flex-1 { flex: 1; }
@@ -176,6 +195,14 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 
 .shadow { box-shadow: var(--theme-shadow); }
 
+.widget-facebook {
+	--theme-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px 0px;
+}
+
+.theme-dark .widget-facebook {
+	--theme-widget-ground: #2A2B2C;
+}
+
 .card { background-color: var(--theme-lighten-100); }
 .card.secondary { background-color: var(--theme-accent-a200); }
 .card.primary { background-color: var(--theme-accent-a500); }
@@ -187,6 +214,7 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 }
 
 .overflow-x-hidden { overflow-x: hidden; }
+.overflow-hidden { overflow: hidden; }
 
 .w-full { width: 100%; }
 .lr-0 { left: 0; right: 0; }
