@@ -3,7 +3,7 @@ import { regionId, siteId, type Site } from "../types/sitelist";
 export const site: Site = {
 	id: siteId('facebook'),
 	title: 'Facebook',
-	hosts: ['www.facebook.com', 'web.facebook.com'],
+	hosts: ['www.facebook.com', 'web.facebook.com', 'm.facebook.com'],
 	paths: ['/', '/home.php'],
 	regions: [
 		{
@@ -11,7 +11,7 @@ export const site: Site = {
 			title: 'Main feed',
 			type: 'hide',
 			paths: 'inherit',
-			selectors: ['div.x1hc1fzr.x1unhpq9.x6o7n8i'],
+			selectors: ['div.x1hc1fzr.x1unhpq9.x6o7n8i', '[data-dcm-id]'],
 			inject: {
 				mode: 'before',
 			}
