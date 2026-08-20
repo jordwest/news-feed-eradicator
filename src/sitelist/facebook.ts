@@ -4,7 +4,7 @@ export const site: Site = {
 	id: siteId('facebook'),
 	title: 'Facebook',
 	hosts: ['www.facebook.com', 'web.facebook.com'],
-	paths: ['/'],
+	paths: ['/', '/home.php'],
 	regions: [
 		{
 			id: regionId('main-feed'),
