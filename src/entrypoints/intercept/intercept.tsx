@@ -13,7 +13,73 @@ const browser = getBrowser();
 
 const token = Math.floor(Math.random() * 1000000);
 
+let navigationBlockingReady = false;
+let blockedNavigationPatterns: RegExp[] = [];
+
 const sendMessage = (message: ToServiceWorkerMessage) => browser.runtime.sendMessage(message);
+
+const shouldBlockNavigation = (url: string | URL): boolean => {
+	try {
+			const path = new URL(url.toString(), location.href).pathname;
+		return blockedNavigationPatterns.some(pattern => pattern.test(path));
+	} catch {
+		return false;
+	}
+}
+
+const blockCurrentNavigation = () => {
+	if (shouldBlockNavigation(location.pathname)) {
+		location.replace('/');
+	}
+}
+
+const setupNavigationBlocking = () => {
+	if (navigationBlockingReady) return;
+	navigationBlockingReady = true;
+
+	document.addEventListener('click', event => {
+		const target = event.target;
+		if (!(target instanceof Element)) return;
+
+		const link = target.closest('a[href]');
+		if (!(link instanceof HTMLAnchorElement)) return;
+
+		if (shouldBlockNavigation(link.href)) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
+	}, true);
+
+	const pushState = history.pushState;
+	history.pushState = function (this: History, ...args: Parameters<History['pushState']>) {
+		if (args[2] != null && shouldBlockNavigation(args[2])) return;
+		return pushState.apply(this, args);
+	};
+
+	const replaceState = history.replaceState;
+	history.replaceState = function (this: History, ...args: Parameters<History['replaceState']>) {
+		if (args[2] != null && shouldBlockNavigation(args[2])) return;
+		return replaceState.apply(this, args);
+	};
+
+	window.addEventListener('popstate', blockCurrentNavigation);
+}
+
+const setBlockedNavigationPatterns = (patterns: string[]) => {
+	blockedNavigationPatterns = patterns.flatMap(pattern => {
+		try {
+			return [new RegExp(pattern)];
+		} catch (error) {
+			console.warn(`Invalid navigation block pattern: ${pattern}`, error);
+			return [];
+		}
+	});
+
+	if (blockedNavigationPatterns.length > 0) {
+		setupNavigationBlocking();
+		blockCurrentNavigation();
+	}
+}
 
 const domReady = new Promise(resolve => {
 
@@ -265,6 +331,7 @@ const patchState = (regions: DesiredRegionState[]) => {
 	}
 
 	let css = "";
+	let blockedNavigationPatterns: string[] = [];
 
 	// Scan all active regions and delete or update them
 	for (const [id, activeRegion] of state.regions.entries()) {
@@ -300,9 +367,14 @@ const patchState = (regions: DesiredRegionState[]) => {
 		if (activeRegion.css != null && activeRegion.enabled) {
 			css += activeRegion.css + '\n';
 		}
+
+		if (activeRegion.config.blockNavigation != null && activeRegion.enabled) {
+			blockedNavigationPatterns.push(activeRegion.config.blockNavigation);
+		}
 	}
 
 	setCss(css);
+	setBlockedNavigationPatterns(blockedNavigationPatterns);
 }
 
 const isRegionBlockActive = (region: RegionState) => region.enabled && !isSnoozing()
