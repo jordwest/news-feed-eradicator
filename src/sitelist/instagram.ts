@@ -37,7 +37,14 @@ export const site: Site = {
             type: 'remove',
             paths: ['/explore/'],
             selectors: ['main div:has(> div > div > a[href^="/p/"])']
-        }
+        },
+		{
+			id: regionId('reels-button'),
+			title: 'Reels button',
+			type: 'remove',
+			paths: '*',
+			selectors: ['a[href="/reels/"]'],
+		}
 	]
 }
 
