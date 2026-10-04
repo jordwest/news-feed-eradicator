@@ -18,6 +18,18 @@ export const site: Site = {
 						overlayZIndex: 998,
 					}
 				},
+				{
+					id: regionId('explore'),
+					title: 'Explore feed',
+					type: 'hide',
+					// Covers /explore and category tabs like /explore/category/culture
+					paths: [{ regexp: '^/explore(/.*)?$' }],
+					selectors: ['div[aria-label="Notes feed"]'],
+					inject: {
+						mode: 'overlay',
+						overlayZIndex: 998,
+					}
+				},
 			]
 		}
 

@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-- No unreleased changes
+- Substack: block feed on Explore page
 
 ## [3.0.5] - 2026-07-16
 
