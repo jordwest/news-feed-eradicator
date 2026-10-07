@@ -4,7 +4,8 @@ export const site: Site = {
 			id: siteId('twitter'),
 			title: 'Twitter/X',
 			hosts: ['x.com'],
-			paths: ['/home', '/'],
+			// X keeps the home timeline mounted behind the post composer.
+			paths: ['/home', '/', '/compose/post', '/compose/tweet'],
 			regions: [
 				{
 					id: regionId('home-timeline'),
