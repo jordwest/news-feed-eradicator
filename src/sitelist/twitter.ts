@@ -17,7 +17,8 @@ export const site: Site = {
 						'div[aria-label="Home timeline"] > div > section[role="region"]', // Fallback but only works if X is set to English
 					],
 					inject: {
-						mode: 'overlay',
+						// Keep the quote in the timeline's stacking context, below X's dialogs.
+						mode: 'before',
 					}
 				},
 				{
