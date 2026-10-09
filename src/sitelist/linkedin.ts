@@ -11,7 +11,16 @@ export const site: Site = {
 			title: 'Main feed',
 			type: 'hide',
 			paths: 'inherit',
-			selectors: ["main > div.relative > .scaffold-finite-scroll", "div[componentkey^='container-update-list_mainFeed']"],
+			selectors: [
+				"main > div.relative > .scaffold-finite-scroll",
+				// The "Start a post" composer is the first item of the feed list, so hide
+				// every item except the composer. Items (and some of their children) are
+				// `display: contents` wrappers that opacity has no effect on, so target
+				// everything inside them. NFE injects its element before the first match
+				// of the first selector, so that one skips the injected element.
+				"div[componentkey^='container-update-list_mainFeed'] > :not(:has(#shareboxProfilePictureComponentRef)):not(:has(a[href*='/sharebox/'])) > :not([id^='nfe-root'])",
+				"div[componentkey^='container-update-list_mainFeed'] > :not(:has(#shareboxProfilePictureComponentRef)):not(:has(a[href*='/sharebox/'])) > * *",
+			],
 			inject: {
 				mode: 'before',
 			}
