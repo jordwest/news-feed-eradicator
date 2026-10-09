@@ -17,10 +17,17 @@ export const site: Site = {
 			paths: 'inherit',
 			selectors: [
 				"main > div.relative > .scaffold-finite-scroll",
+				// The "Start a post" composer is the first item of the feed list, so hide
+				// every item except the composer. Items (and some of their children) are
+				// `display: contents` wrappers that opacity has no effect on, so target
+				// everything inside them. NFE injects its element before the first match
+				// of the first selector for a tab, so that one skips the injected element.
 				// "For you" tab
-				"div[componentkey^='container-update-list_mainFeed']",
+				"div[componentkey^='container-update-list_mainFeed'] > :not(:has(#shareboxProfilePictureComponentRef)):not(:has(a[href*='/sharebox/'])) > :not([id^='nfe-root'])",
+				"div[componentkey^='container-update-list_mainFeed'] > :not(:has(#shareboxProfilePictureComponentRef)):not(:has(a[href*='/sharebox/'])) > * *",
 				// "Network" tab
-				"div[componentkey^='container-update-list_NetworkFeedListCollection']",
+				"div[componentkey^='container-update-list_NetworkFeedListCollection'] > :not(:has(#shareboxProfilePictureComponentRef)):not(:has(a[href*='/sharebox/'])) > :not([id^='nfe-root'])",
+				"div[componentkey^='container-update-list_NetworkFeedListCollection'] > :not(:has(#shareboxProfilePictureComponentRef)):not(:has(a[href*='/sharebox/'])) > * *",
 			],
 			inject: {
 				mode: 'before',
