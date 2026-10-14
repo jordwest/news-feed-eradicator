@@ -166,7 +166,7 @@ export const QuoteListEditor = () => {
 							<label class="flex-1 hoverable block cursor-pointer p-2 flex gap-2 cross-center" for={`quote-${quote.id}`}>
 								<input type="checkbox" class="checkbox" id={`quote-${quote.id}`} checked={!disabledQuoteIds().has(quote.id)} onChange={e => setQuoteEnabled(quote.id, e.currentTarget.checked)} />
 								<figure class="space-y-1">
-									<blockquote>{quote.text}</blockquote>
+									<blockquote class="quote-text">{quote.text}</blockquote>
 									<figcaption class="text-secondary">~ {quote.author}</figcaption>
 								</figure>
 							</label>
