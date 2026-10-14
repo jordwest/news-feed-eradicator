@@ -150,6 +150,7 @@ button.tertiary.bg-transparent:hover { background-color: var(--theme-tertiary-bu
 .text-accent { color: var(--theme-accent); }
 
 .quote-border-left { border-left: 4px solid var(--theme-accent); }
+.quote-text { white-space: pre-wrap; }
 
 .underline { text-decoration: underline; }
 .hover\:underline:hover { text-decoration: underline; }
