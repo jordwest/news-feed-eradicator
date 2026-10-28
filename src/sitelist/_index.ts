@@ -6,6 +6,7 @@ const sitelist: SiteList = {
 		(await import('./facebook')).default,
 		(await import('./instagram')).default,
 		(await import('./youtube')).default,
+		(await import('./tiktok')).default,
 		(await import('./reddit')).default,
 		(await import('./twitter')).default,
 		(await import('./linkedin')).default,
