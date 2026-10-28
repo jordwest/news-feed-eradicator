@@ -4,7 +4,8 @@ export const site: Site = {
 			id: siteId('twitter'),
 			title: 'Twitter/X',
 			hosts: ['x.com'],
-			paths: ['/home', '/'],
+			// X keeps the home timeline mounted behind the post composer.
+			paths: ['/home', '/', '/compose/post', '/compose/tweet'],
 			regions: [
 				{
 					id: regionId('home-timeline'),
@@ -16,7 +17,8 @@ export const site: Site = {
 						'div[aria-label="Home timeline"] > div > section[role="region"]', // Fallback but only works if X is set to English
 					],
 					inject: {
-						mode: 'overlay',
+						// Keep the quote in the timeline's stacking context, below X's dialogs.
+						mode: 'before',
 					}
 				},
 				{
