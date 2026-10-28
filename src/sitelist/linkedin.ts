@@ -4,14 +4,24 @@ export const site: Site = {
 	id: siteId('linkedin'),
 	title: 'LinkedIn',
 	hosts: ['www.linkedin.com'],
-	paths: ['/', '/feed', '/feed/'],
+	// LinkedIn split the home feed into tabs: /feed/ now redirects to
+	// /feed/foryou/, and the Network tab is /feed/network/. Match the bare
+	// feed paths plus both tabs, but not deeper paths such as
+	// /feed/update/<id> (single post permalinks).
+	paths: ['/', '/feed', '/feed/', { regexp: '^/feed/(foryou|network)/?$' }],
 	regions: [
 		{
 			id: regionId('main-feed'),
 			title: 'Main feed',
 			type: 'hide',
 			paths: 'inherit',
-			selectors: ["main > div.relative > .scaffold-finite-scroll", "div[componentkey^='container-update-list_mainFeed']"],
+			selectors: [
+				"main > div.relative > .scaffold-finite-scroll",
+				// "For you" tab
+				"div[componentkey^='container-update-list_mainFeed']",
+				// "Network" tab
+				"div[componentkey^='container-update-list_NetworkFeedListCollection']",
+			],
 			inject: {
 				mode: 'before',
 			}
