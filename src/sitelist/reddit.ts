@@ -23,7 +23,7 @@ const site: Site = {
 			selectors: ['#siteTable', 'shreddit-feed'],
 			type: 'remove',
 			paths: [
-				{ regexp: '^/r/[a-zA-Z0-9_-]+/(top\/)?$' }
+				{ regexp: '^/r/[a-zA-Z0-9_-]+/((best|hot|new|rising|controversial|top)\/)?$' }
 			],
 			inject: {
 				mode: 'before',
