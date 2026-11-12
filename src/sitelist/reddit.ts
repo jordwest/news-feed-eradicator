@@ -4,7 +4,7 @@ const site: Site = {
 	id: siteId('reddit'),
 	title: "Reddit",
 	hosts: ['www.reddit.com', 'old.reddit.com'],
-	paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/'],
+	paths: ['/', '/new/', '/hot/', '/rising/', '/controversial/', '/top/', '/news/', '/news'],
 	popular: true,
 	regions: [
 		{
