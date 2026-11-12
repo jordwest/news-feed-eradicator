@@ -2,7 +2,13 @@
 
 ## [Unreleased]
 
-- Substack: block feed on Explore page
+## [3.0.6] - 2026-11-12
+
+- Preserve paragraph breaks in quotes (thanks @ryanphillips919)
+- Substack: block feed on Explore page (thanks @saahityaedams)
+- Reddit: block /news (thanks @mattcarrollnz)
+- LinkedIn: fix new feed tabs
+- Facebook: home.php (@Quibylix) and m.facebook.com (@benwiley4000)
 
 ## [3.0.5] - 2026-07-16
 
