@@ -1,8 +1,9 @@
 import { createResource, Show } from "solid-js"
 import { getBrowser } from "/lib/webextension";
 import { versionText } from "/lib/util";
-import { loadSiteListOverride, saveSiteListOverride } from "/storage/storage";
+import { loadSitelist, loadSiteListOverride, saveSiteListOverride } from "/storage/storage";
 import type { SiteList } from "/types/sitelist";
+import { sendToServiceWorker } from "/messaging/messages";
 
 export const DebugTabContent = () => {
 	const browser = getBrowser();
@@ -25,14 +26,22 @@ export const DebugTabContent = () => {
 		} finally {
 			input.value = '';
 		}
+
 		refetchSiteListOverride();
 		refetchStorage();
+
+		// Force reload locally on options page and also in service worker
+		loadSitelist(true);
+		sendToServiceWorker({ type: 'reloadSiteList' });
 	};
 
 	const clearOverride = async () => {
 		await saveSiteListOverride(undefined);
 		refetchSiteListOverride();
 		refetchStorage();
+
+		loadSitelist(true);
+		sendToServiceWorker({ type: 'reloadSiteList' });
 	};
 
 	return <div class="p-4 space-y-2">

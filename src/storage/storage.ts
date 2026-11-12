@@ -276,7 +276,11 @@ export const saveSiteListOverride = async (siteList: SiteList | undefined) => {
 	return setKey('siteListOverride', siteList);
 }
 
-export const loadSitelist = async (): Promise<SiteList> => {
+export const loadSitelist = async (forceReload: boolean = false): Promise<SiteList> => {
+	if (forceReload) {
+		siteListPromise = undefined;
+	}
+
 	if (siteListPromise == null) {
 		const siteListOverride = await loadSiteListOverride();
 

@@ -142,103 +142,99 @@ const setSiteTheme = async (siteId: SiteId, theme: Theme | null) => {
 	notifyTabsOptionsUpdated();
 }
 
-const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender) => {
-	if (msg.type === 'requestSiteDetails') {
-		// TODO: Cache these?
-		const [siteList, snoozeUntil, hideQuotes] = await Promise.all([
-			loadSitelist(),
-			loadSnoozeUntil(),
-			loadHideQuotes(),
+const requestSiteDetails = async (msg: { path: string, token: number }, sender: MessageSender) => {
+	// TODO: Cache these?
+	const [siteList, snoozeUntil, hideQuotes] = await Promise.all([
+		loadSitelist(),
+		loadSnoozeUntil(),
+		loadHideQuotes(),
+	]);
+
+	const isSnoozing = snoozeUntil != null && snoozeUntil > Date.now();
+
+	const url = new URL(sender.url);
+	const site = siteList.sites.find(site => site.hosts.includes(url.host));
+
+	if (site != null) {
+		const [siteOptions, regionHideStyle, widgetStyle] = await Promise.all([
+			loadRegionsForSite(site.id),
+			loadRegionHideStyle(),
+			loadWidgetStyle(),
 		]);
 
-		const isSnoozing = snoozeUntil != null && snoozeUntil > Date.now();
-
-		const url = new URL(sender.url);
-		const site = siteList.sites.find(site => site.hosts.includes(url.host));
-
-		if (site != null) {
-			const [siteOptions, regionHideStyle, widgetStyle] = await Promise.all([
-				loadRegionsForSite(site.id),
-				loadRegionHideStyle(),
-				loadWidgetStyle(),
-			]);
-
-			let regions = site.regions
-				.map((region): DesiredRegionState => {
-					if (isSnoozing || !isEnabledPath(site, region, msg.path)) {
-						return { config: region, css: null, enabled: false };
-					}
-
-					const enabled = siteOptions.regionEnabledOverride[region.id] ?? region.default ?? true;
-
-					const selector = region.selectors.map(sanitizeSelector).join(',');
-					return { config: region, css: `${selector} { ${cssForType(region.type, regionHideStyle)} }`, enabled } ;
-				});
-
-			const theme = siteOptions.theme ?? 'light';
-
-			sendMessage(sender.tab.id, {
-				type: 'nfe#siteDetails',
-				regions,
-				token: msg.token,
-				snoozeUntil: snoozeUntil ?? null,
-				siteId: site.id,
-				widgetStyle,
-				hideQuotes,
-				theme: {
-					css: theme === 'light' ? themeLight : themeDark,
-					id: theme,
+		let regions = site.regions
+			.map((region): DesiredRegionState => {
+				if (isSnoozing || !isEnabledPath(site, region, msg.path)) {
+					return { config: region, css: null, enabled: false };
 				}
-			})
-		}
+
+				const enabled = siteOptions.regionEnabledOverride[region.id] ?? region.default ?? true;
+
+				const selector = region.selectors.map(sanitizeSelector).join(',');
+				return { config: region, css: `${selector} { ${cssForType(region.type, regionHideStyle)} }`, enabled };
+			});
+
+		const theme = siteOptions.theme ?? 'light';
+
+		sendMessage(sender.tab.id, {
+			type: 'nfe#siteDetails',
+			regions,
+			token: msg.token,
+			snoozeUntil: snoozeUntil ?? null,
+			siteId: site.id,
+			widgetStyle,
+			hideQuotes,
+			theme: {
+				css: theme === 'light' ? themeLight : themeDark,
+				id: theme,
+			}
+		})
 	}
+}
 
-	if (msg.type === 'requestQuote') {
-		return requestQuote();
-	}
+const handleMessage = async (msg: ToServiceWorkerMessage, sender: MessageSender) => {
+	switch (msg.type) {
+		case 'requestSiteDetails':
+			return requestSiteDetails(msg, sender);
+		case 'requestQuote':
+			return requestQuote();
+		case 'openOptionsPage':
+			browser.runtime.openOptionsPage();
+			break;
+		case 'setQuoteEnabled':
+			return await saveQuoteEnabled(msg.quoteListId, msg.id, msg.enabled);
+		case 'notifyOptionsUpdated':
+			notifyTabsOptionsUpdated();
+			return;
+		case 'enableSite':
+			const result = await enableSite(msg.siteId);
+			notifyTabsOptionsUpdated();
+			return result;
+		case 'disableSite':
+			await browser.scripting.unregisterContentScripts({ ids: [msg.siteId] });
 
-	if (msg.type === 'enableSite') {
-		const result = await enableSite(msg.siteId);
-		notifyTabsOptionsUpdated();
-		return result;
-	}
+			const siteList = await loadSitelist();
+			const site = siteList.sites.find(site => site.id === msg.siteId);
+			if (site == null) return;
 
-	if (msg.type === 'openOptionsPage') {
-		browser.runtime.openOptionsPage();
-	}
+			await saveSiteEnabled(site.id, false);
 
-	if (msg.type === 'setQuoteEnabled') {
-		return await saveQuoteEnabled(msg.quoteListId, msg.id, msg.enabled);
-	}
+			notifyTabsOptionsUpdated();
+			return;
+		case 'snooze':
+			await saveSnoozeUntil(msg.until)
 
-	if (msg.type === 'notifyOptionsUpdated') {
-		notifyTabsOptionsUpdated();
-	}
-
-	if (msg.type === 'disableSite') {
-		await browser.scripting.unregisterContentScripts({ ids: [msg.siteId]});
-
-		const siteList = await loadSitelist();
-		const site = siteList.sites.find(site => site.id === msg.siteId);
-		if (site == null) return;
-
-		await saveSiteEnabled(site.id, false);
-
-		notifyTabsOptionsUpdated();
-	}
-
-	if (msg.type === 'snooze') {
-		await saveSnoozeUntil(msg.until)
-
-		notifyTabsOptionsUpdated();
-	}
-
-	if (msg.type === 'readSnooze') {
-		return await loadSnoozeUntil() ?? null;
-	}
-
-	if (msg.type === 'setSiteTheme') {
-		return setSiteTheme(msg.siteId, msg.theme);
+			notifyTabsOptionsUpdated();
+			return;
+		case 'readSnooze':
+			return await loadSnoozeUntil() ?? null;
+		case 'setSiteTheme':
+			return setSiteTheme(msg.siteId, msg.theme);
+		case 'reloadSiteList':
+			const sl = await loadSitelist(true);
+			console.log('sitelist reloaded', sl.sites);
+			notifyTabsOptionsUpdated();
+			return;
 	}
 }
 
