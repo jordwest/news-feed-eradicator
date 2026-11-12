@@ -78,7 +78,7 @@ export const QuoteWidget = ({ siteId, theme, widgetStyle }: { siteId: SiteId | n
 					</Show>
 				</div>
 				<div class={`p-4 space-y-2 ${collapsed() ? 'pr-8' : ''}`}>
-					<blockquote class="quote-border-left p-2 text-primary">{quote()?.text}</blockquote>
+					<blockquote class="quote-text quote-border-left p-2 text-primary">{quote()?.text}</blockquote>
 					<figcaption class="text-secondary">{quote()?.author}</figcaption>
 				</div>
 				<Show when={!collapsed()}>
