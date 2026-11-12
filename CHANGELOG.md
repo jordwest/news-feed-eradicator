@@ -7,7 +7,7 @@
 - Preserve paragraph breaks in quotes (thanks @ryanphillips919)
 - Substack: block feed on Explore page (thanks @saahityaedams)
 - Reddit: block /news (thanks @mattcarrollnz)
-- LinkedIn: fix new feed tabs
+- LinkedIn: fix new feed tabs (@alexetcetc)
 - Facebook: home.php (@Quibylix) and m.facebook.com (@benwiley4000)
 
 ## [3.0.5] - 2026-07-16
