@@ -3,12 +3,14 @@ import { watch } from "fs/promises";
 import { build } from 'vite';
 import { $ } from 'bun';
 import solidPlugin from 'vite-plugin-solid';
+import type { SiteList } from '/types/sitelist';
 
 const PROJECT_ROOT = `${__dirname}/../..`;
+const SITELIST_URL = 'https://jordwest.github.io/news-feed-eradicator-lists/sitelist.json';
 
 async function buildAll(): Promise<void> {
 	console.log('Rebuilding')
-	await buildSiteList();
+	await bundleSiteList();
 	await buildServiceWorker();
 	await buildOptionsPage();
 	await buildIntercept();
@@ -30,11 +32,10 @@ function startServer() {
 		port: 4080,
 		routes: {
 			'/sitelist.json': async () => {
-				// This is run in a unique process each time so that it reimports sitelist.ts on change
-				const output = await $`bun run ${__dirname}/build-sitelist.ts`.json();
-				console.info(output);
+				const siteListJson = await fetchSiteList();
+				console.info(siteListJson);
 
-				return new Response(JSON.stringify(output), {
+				return new Response(JSON.stringify(siteListJson), {
 					headers: {
 						'Content-Type': 'application/json'
 					}
@@ -94,11 +95,16 @@ async function buildServiceWorker(): Promise<void> {
 	});
 }
 
-async function buildSiteList(): Promise<void> {
-	const output = await $`bun run ${__dirname}/build-sitelist.ts`.json();
-	const siteListJson = JSON.stringify(output, null, 2);
+async function fetchSiteList(): Promise<SiteList> {
+	const siteListResponse = await fetch(SITELIST_URL);
+	return await siteListResponse.json();
+}
 
-	await Bun.write('./build/sitelist.json', siteListJson);
+async function bundleSiteList(): Promise<void> {
+	const siteListJson = await fetchSiteList();
+	console.log('Bundling sitelist with commit hash: ', siteListJson.commit, ', timestamp: ', siteListJson.buildTimestamp);
+	await Bun.write('./build/sitelist.json', JSON.stringify(siteListJson, null, 2));
+
 }
 
 async function buildIntercept(): Promise<void> {

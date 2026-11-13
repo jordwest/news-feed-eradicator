@@ -10,6 +10,10 @@ A browser extension that replaces your social media feeds with a quote.
 
 ## Contributing to News Feed Eradicator
 
+### Fixing sites
+
+Site lists are now maintained in a separate repo: [github.com/jordwest/news-feed-eradicator-lists](https://github.com/jordwest/news-feed-eradicator-lists).
+
 ### Reporting issues
 
 For *bugs only*, please use the [issue tracker](https://github.com/jordwest/news-feed-eradicator/issues).
