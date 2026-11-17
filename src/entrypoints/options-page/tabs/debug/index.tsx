@@ -46,7 +46,7 @@ export const DebugTabContent = () => {
 
 	return <div class="p-4 space-y-2">
 		<div>
-			Version: {versionText()}
+			Version: {versionText(state.siteList.get())}
 		</div>
 		<div class="flex cross-center">
 			<h3 class="flex-1 font-bold font-lg">
