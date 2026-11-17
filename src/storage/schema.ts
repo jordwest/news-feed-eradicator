@@ -1,4 +1,4 @@
-import type { RegionId, SiteId } from "../types/sitelist";
+import type { RegionId, SiteId, SiteList } from "../types/sitelist";
 import type { Quote, QuoteV1 } from "../quote";
 
 export const CURRENT_STORAGE_SCHEMA_VERSION = 2;
@@ -19,6 +19,7 @@ export type StorageLocalV2 = {
 	quoteLists?: QuoteList[];
 	widgetStyle?: 'contained' | 'transparent';
 	regionHideStyle?: 'blur' | 'hidden';
+	siteListOverride?: SiteList;
 };
 
 export type QuoteList = {

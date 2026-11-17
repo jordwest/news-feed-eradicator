@@ -104,7 +104,6 @@ async function bundleSiteList(): Promise<void> {
 	const siteListJson = await fetchSiteList();
 	console.log('Bundling sitelist with commit hash: ', siteListJson.commit, ', timestamp: ', siteListJson.buildTimestamp);
 	await Bun.write('./build/sitelist.json', JSON.stringify(siteListJson, null, 2));
-
 }
 
 async function buildIntercept(): Promise<void> {

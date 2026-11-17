@@ -115,6 +115,8 @@ export const loadSiteConfig = async (siteId: SiteId): Promise<SiteConfig | undef
 	return sites[siteId];
 };
 
+export const loadSiteListOverride = async (): Promise<SiteList | undefined> => getKey('siteListOverride');
+
 export const loadThemeForSite = async (siteId: SiteId): Promise<Theme | undefined> => loadSiteConfig(siteId).then(site => site?.theme);
 export const saveThemeForSite = async (siteId: SiteId, theme: Theme | undefined) => {
 	const siteConfig = (await getKey('siteConfig') ?? {});
@@ -270,11 +272,21 @@ export const setRegionEnabledForSite = async (siteId: SiteId, regionId: RegionId
 
 let siteListPromise: Promise<SiteList> | undefined;
 
+export const saveSiteListOverride = async (siteList: SiteList | undefined) => {
+	return setKey('siteListOverride', siteList);
+}
+
 export const loadSitelist = async (): Promise<SiteList> => {
 	if (siteListPromise == null) {
-		const browser = getBrowser();
-		const siteListUrl = browser.runtime.getURL('sitelist.json');
-		siteListPromise = fetch(siteListUrl).then(siteList => siteList.json());
+		const siteListOverride = await loadSiteListOverride();
+
+		if (siteListOverride != null) {
+			siteListPromise = Promise.resolve(siteListOverride);
+		} else {
+			const browser = getBrowser();
+			const siteListUrl = browser.runtime.getURL('sitelist.json');
+			siteListPromise = fetch(siteListUrl).then(siteList => siteList.json());
+		}
 	}
 	return siteListPromise
 }

@@ -2,7 +2,7 @@ import { createSignal, createEffect, type Accessor, type Setter, createContext, 
 import type { QuoteList, QuoteListId } from "../../storage/schema";
 import { expect, originsForSite } from "../../lib/util";
 import type { SiteId, SiteList } from "../../types/sitelist";
-import { loadEnabledSites, loadQuoteLists, loadSnoozeMode } from "../../storage/storage";
+import { loadEnabledSites, loadQuoteLists, loadSitelist, loadSnoozeMode } from "../../storage/storage";
 import type { Quote } from "../../quote";
 import { getBrowser, type Permissions } from "../../lib/webextension";
 import { createStore, reconcile } from "solid-js/store";
@@ -59,8 +59,7 @@ export class OptionsPageState {
 	}));
 
 	siteList = resourceObj(createResource<SiteList | undefined>(async () => {
-			const siteListUrl = browser.runtime.getURL('sitelist.json');
-			return await fetch(siteListUrl).then(siteList => siteList.json());
+		return loadSitelist();
 	}));
 
 	quoteLists = resourceObjReconciled(loadQuoteLists);
