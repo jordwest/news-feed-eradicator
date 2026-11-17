@@ -93,7 +93,7 @@ const OptionsPage = () => {
 					<div>
 						By <a href="https://west.io/">Jordan West</a> and <a href="https://github.com/jordwest/news-feed-eradicator/graphs/contributors">contributors</a>
 					</div>
-					<div class="text-secondary font-xs">{versionText()}</div>
+					<div class="text-secondary font-xs">{versionText(state.siteList.get())}</div>
 				</footer>
 			</OptionsPageStateContext.Provider>
 		</div>

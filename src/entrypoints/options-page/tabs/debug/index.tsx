@@ -4,9 +4,12 @@ import { versionText } from "/lib/util";
 import { loadSitelist, loadSiteListOverride, saveSiteListOverride } from "/storage/storage";
 import type { SiteList } from "/types/sitelist";
 import { sendToServiceWorker } from "/messaging/messages";
+import { useOptionsPageState } from "../../state";
 
 export const DebugTabContent = () => {
 	const browser = getBrowser();
+
+	const state = useOptionsPageState();
 
 	const [storage, { refetch: refetchStorage }] = createResource(() => browser.storage.local.get(null));
 	const [siteListOverride, { refetch: refetchSiteListOverride }] = createResource(loadSiteListOverride);
@@ -30,9 +33,7 @@ export const DebugTabContent = () => {
 		refetchSiteListOverride();
 		refetchStorage();
 
-		// Force reload locally on options page and also in service worker
-		loadSitelist(true);
-		sendToServiceWorker({ type: 'reloadSiteList' });
+		state.reloadSiteList();
 	};
 
 	const clearOverride = async () => {
@@ -40,8 +41,7 @@ export const DebugTabContent = () => {
 		refetchSiteListOverride();
 		refetchStorage();
 
-		loadSitelist(true);
-		sendToServiceWorker({ type: 'reloadSiteList' });
+		state.reloadSiteList();
 	};
 
 	return <div class="p-4 space-y-2">

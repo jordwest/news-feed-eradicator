@@ -8,6 +8,7 @@ import { getBrowser, type Permissions } from "../../lib/webextension";
 import { createStore, reconcile } from "solid-js/store";
 import { resourceObj, resourceObjReconciled, signalObj, type SignalObj } from "/lib/solid-util";
 import { StorageState } from "./state/storage";
+import { sendToServiceWorker } from "/messaging/messages";
 
 export type EditingState = {
 	type: 'existingQuote'
@@ -71,6 +72,12 @@ export class OptionsPageState {
 			requestAnimationFrame(updateClock);
 		};
 		requestAnimationFrame(updateClock);
+	}
+
+	async reloadSiteList() {
+		sendToServiceWorker({ type: 'reloadSiteList' });
+		await loadSitelist(true);
+		this.siteList.refetch();
 	}
 
 	selectedQuoteList = createMemo(() => {

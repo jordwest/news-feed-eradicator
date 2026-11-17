@@ -1,13 +1,17 @@
 import type { Quote } from "../quote";
-import type { Site } from "../types/sitelist";
+import type { Site, SiteList } from "../types/sitelist";
 import packageJson from '../../package.json';
 
 export function originsForSite(site: Site) {
 	return site.hosts.map(host => [`http://${host}/*`, `https://${host}/*`]).flat();
 }
 
-export const versionText = () => {
-	return `v${packageJson.version}`;
+export const versionText = (siteList: SiteList | undefined) => {
+	if (siteList == null) {
+		return `v${packageJson.version}`;
+	}
+
+	return `v${packageJson.version} | ${siteList.buildTimestamp}`;
 }
 
 export function expect<T>(value: T | null | undefined): T {
