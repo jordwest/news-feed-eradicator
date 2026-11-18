@@ -36,17 +36,16 @@ export const HoldSnoozeButton = () => {
 	});
 
 	const buttonDown = (e: { button: number, preventDefault: () => void }) => {
-		if (e.button !== 0) return;
 		setButtonHeldSince(state.clock.get());
 	};
 
 	const buttonUp = async (e: { button: number }) => {
-		if (e.button !== 0) return;
 		const { secondsEarned } = snoozePendingInfo() ?? {};
+		// Clear first so repeated events (e.g. pointerup then pointerleave) don't snooze twice
+		setButtonHeldSince(null);
 		if (secondsEarned != null && secondsEarned > 0) {
 			await state.startSnooze(1000 * secondsEarned);
 		}
-		setButtonHeldSince(null);
 	};
 
 	const snoozeButtonLabel = () => {
@@ -63,12 +62,22 @@ export const HoldSnoozeButton = () => {
 		return `scaleX(${pendingProgress})`;
 	}
 
-	return <button class="primary font-lg p-8 overlay-container isolate" style="width: 300px" onMouseDown={buttonDown} onMouseUp={buttonUp} onContextMenu={e => e.preventDefault()} onMouseLeave={buttonUp}>
-		<div class="z1 overlay bg-accent transform-origin-left" style={`transform: ${snoozeButtonTransform()}`} />
-		<div class="z2 position-relative">
-			{snoozeButtonLabel()}
-		</div>
-	</button>
+	return (
+		<button
+				class="primary font-lg p-8 overlay-container isolate"
+				style="width: 300px; touch-action: none; user-select: none"
+				onPointerDown={buttonDown}
+				onPointerUp={buttonUp}
+				onPointerCancel={buttonUp}
+				onContextMenu={e => e.preventDefault()}
+				onPointerLeave={buttonUp}
+			>
+				<div class="z1 overlay bg-accent transform-origin-left" style={`transform: ${snoozeButtonTransform()}`} />
+			<div class="z2 position-relative">
+				{snoozeButtonLabel()}
+			</div>
+		</button>
+	)
 }
 
 const InstantSnoozeButton: ParentComponent<{ ms: number, primary?: boolean }> = ({ms, primary, children}) => {
