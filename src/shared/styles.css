@@ -189,6 +189,7 @@
 	.b-3 { border: 3px solid var(--theme-border); }
 	.bl-1 { border-left: 1px solid var(--theme-border); }
 	.br-1 { border-right: 1px solid var(--theme-border); }
+	.bb-1 { border-bottom: 1px solid var(--theme-border); }
 
 	.text-primary { color: var(--theme-text-primary); }
 	.text-secondary { color: var(--theme-text-secondary); }
@@ -254,6 +255,26 @@
 	}
 	nfe-tabs [role="tab"][aria-selected="true"] { z-index: 2; background-color: var(--theme-active-tab-bg); }
 	nfe-tabs [role="tab"][aria-selected="false"] { z-index: 0; }
+	nfe-tabs [role="tab"] button {
+		font-size: 1.2rem;
+	}
+
+	@media screen and (max-width: 600px) {
+		nfe-tabs [role="tablist"] {
+			flex-direction: row;
+			align-items: stretch;
+			flex-wrap: wrap;
+			gap: 4px;
+		}
+		nfe-tabs [role="tab"] {
+			border-radius: 4px;
+			border-width: 1px 0 1px 0;
+		}
+		nfe-tabs [role="tab"] button {
+			width: 100%;
+			font-size: 1rem;
+		}
+	}
 
 	.radio {
 		appearance: none;

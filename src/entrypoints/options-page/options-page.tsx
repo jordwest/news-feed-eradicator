@@ -19,7 +19,7 @@ const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const isActive = () => state.page.get() === to;
 	const classname = () => {
 		const active = state.page.get() === to ? '' : 'bg-darken-100 hover:bg-darken-50'
-		return `block font-xl py-2 px-4 ${active}`
+		return `block py-2 px-4 ${active}`
 	};
 
 	return <li role="tab" aria-selected={isActive() ? 'true' : 'false'}><button class={classname()} onClick={() => state.page.set(to)}>{children}</button></li>;

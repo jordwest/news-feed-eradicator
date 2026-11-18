@@ -5,6 +5,7 @@ import { originsForSite } from "/lib/util";
 import { SiteConfigPanel } from "./site-configuration";
 import { useOptionsPageState } from "../../state";
 import { LockedSettingsOverlay, SettingsLockFooter } from "../../lock";
+import { createMediaQuery } from "@solid-primitives/media";
 
 const browser = getBrowser();
 
@@ -47,6 +48,8 @@ const Site = ({ site }: { site: Site }) => {
 
 	const id = `site-toggle-${site.id}`;
 
+	const isSelected = () => state.selectedSiteId.get() === site.id;
+
 	return <>
 		<li class="hoverable" aria-selected={state.selectedSiteId.get() === site.id}>
 			<label for={id} class={`cursor-pointer px-4 py-2 gap-2 flex cross-center`}>
@@ -74,6 +77,11 @@ const Site = ({ site }: { site: Site }) => {
 				</div>
 			</label>
 		</li>
+		<Show when={isSelected() && state.isSmallScreen()}>
+			<li class="px-4 bg-darken-100 bb-1">
+				<SiteConfigPanel site={() => site} />
+			</li>
+		</Show>
 	</>
 }
 
@@ -86,14 +94,16 @@ export const SiteList = () => {
 		return state.siteList.get()?.sites.find(s => s.id === siteId) ?? null;
 	});
 
+	const showSidePanel = () => selectedSite() != null && !state.isSmallScreen();
+
 	return  <div class="overlay-container">
 		<div class="flex blur-disabled" aria-disabled={state.settingsLockedDown()}>
-			<ul class={`flex viewport-scroller flex-col py-2 ${selectedSite() == null ? 'flex-1' : 'br-1 mw-xs'}`}>
+			<ul class={`flex viewport-scroller flex-col py-2 ${showSidePanel() ? 'br-1 mw-xs' : 'flex-1'}`}>
 				<For each={state.siteList.get()?.sites}>
 					{site => <Site site={site} />}
 				</For>
 			</ul>
-			<Show when={selectedSite() != null}>
+			<Show when={showSidePanel()}>
 				<div class="flex-1">
 					<SiteConfigPanel site={selectedSite} />
 				</div>

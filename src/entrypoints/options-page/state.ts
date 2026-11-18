@@ -9,6 +9,7 @@ import { createStore, reconcile } from "solid-js/store";
 import { resourceObj, resourceObjReconciled, signalObj, type SignalObj } from "/lib/solid-util";
 import { StorageState } from "./state/storage";
 import { sendToServiceWorker } from "/messaging/messages";
+import { createMediaQuery } from "@solid-primitives/media";
 
 export type EditingState = {
 	type: 'existingQuote'
@@ -64,6 +65,8 @@ export class OptionsPageState {
 	}));
 
 	quoteLists = resourceObjReconciled(loadQuoteLists);
+
+	isSmallScreen = createMediaQuery('(max-width: 600px)');
 
 	constructor() {
 		// Clock is only used for animating and updating displayed times

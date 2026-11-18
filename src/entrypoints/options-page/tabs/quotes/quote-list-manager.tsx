@@ -90,8 +90,10 @@ export const QuoteListManager = () => {
 		state.quoteLists.refetch();
 	}
 
+	const showSidePanel = () => state.selectedQuoteList() != null && !state.isSmallScreen();
+
 	return <div class="flex">
-		<div class={`space-y-2 py-2 ${state.selectedQuoteList() == null ? 'flex-1' : 'br-1 mw-xs'}`}>
+		<div class={`space-y-2 py-2 ${showSidePanel() ? 'br-1 mw-xs' : 'flex-1'}`}>
 			<div class="px-4 flex cross-center gap-4">
 				<h2 class="font-lg font-bold flex-1">Lists</h2>
 				<div class="flex gap-2 cross-center">
@@ -110,7 +112,7 @@ export const QuoteListManager = () => {
 				</For>
 			</ul>
 		</div>
-		<Show when={state.selectedQuoteList() != null}>
+		<Show when={showSidePanel()}>
 			<div class="viewport-scroller p-4 flex-1">
 				<QuoteListEditor />
 			</div>
@@ -139,10 +141,19 @@ const QuoteListToggle = ({ quoteList: ql }: { quoteList: QuoteList }) => {
 		}
 	}
 
-	return <li class={`flex px-4 hoverable`} aria-selected={state.selectedQuoteListId.get() === ql.id}>
-		<label class="cursor-pointer flex flex-1 cross-center py-2" for={`quotelist-${ql.id}`}>
-			<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => onQuoteListToggle(e, ql.id, !ql.disabled)} />
-			<span class="px-2">{ql.id === 'builtin' ? 'Built-in quotes' : ql.title} ({ ql.quotes === 'builtin' ? BuiltinQuotes.length : ql.quotes.length })</span>
-		</label>
-	</li>
+	const isSelected = () => state.selectedQuoteListId.get() === ql.id;
+
+	return <>
+		<li class={`flex px-4 hoverable`} aria-selected={state.selectedQuoteListId.get() === ql.id}>
+			<label class="cursor-pointer flex flex-1 cross-center py-2" for={`quotelist-${ql.id}`}>
+				<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => onQuoteListToggle(e, ql.id, !ql.disabled)} />
+				<span class="px-2">{ql.id === 'builtin' ? 'Built-in quotes' : ql.title} ({ ql.quotes === 'builtin' ? BuiltinQuotes.length : ql.quotes.length })</span>
+			</label>
+		</li>
+		<Show when={state.isSmallScreen() && isSelected()}>
+			<li class="p-4 bg-darken-100 bb-1">
+				<QuoteListEditor />
+			</li>
+		</Show>
+	</>
 }
