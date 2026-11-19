@@ -1,11 +1,11 @@
-import { createResource, Show, type Accessor } from "solid-js"
+import { createMemo, refresh, Show, type Accessor } from "solid-js"
 import { type RequestQuoteResponse, sendToServiceWorker } from "../messaging/messages"
 import type { Theme } from "../storage/schema";
 import type { SiteId } from "../types/sitelist";
 import { createSignal } from "solid-js";
 import { loadHideWidgetToolbar, saveHideWidgetToolbar } from "/storage/storage";
 
-const [quote, { refetch: refetchQuote }] = createResource(async () => {
+const quote = createMemo(async () => {
 	return sendToServiceWorker<RequestQuoteResponse>({
 		type: 'requestQuote'
 	});
@@ -27,7 +27,7 @@ export const QuoteWidget = ({ siteId, theme, widgetStyle }: { siteId: SiteId | n
 	const [enabled, setEnabled] = createSignal(true);
 
 	const nextQuote = async () => {
-		await refetchQuote();
+		await refresh(quote);
 		setEnabled(true);
 	}
 

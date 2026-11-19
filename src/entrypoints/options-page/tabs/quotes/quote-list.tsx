@@ -7,7 +7,7 @@ import { generateId } from "/lib/generate-id";
 import Papa from 'papaparse';
 import { autoFocus, downloadFile, expect, quotesByAuthor } from "/lib/util";
 import { BUILTIN_QUOTE_LIST_ID, type QuoteListId } from "/storage/schema";
-import { unwrap } from "solid-js/store";
+import { snapshot } from "solid-js";
 import { signalObj } from "/lib/solid-util";
 
 const doExport = async (quoteListId: QuoteListId) => {
@@ -91,7 +91,7 @@ export const QuoteListEditor = () => {
 
 		state.undo.set({
 			type: 'deleteQuoteList',
-			quoteList: unwrap(ql),
+			quoteList: snapshot(ql),
 		});
 
 		state.selectedQuoteListId.set(null);
@@ -110,7 +110,7 @@ export const QuoteListEditor = () => {
 		state.undo.set({
 			type: 'deleteQuote',
 			quoteListId: ql.id,
-			quote: unwrap(quote),
+			quote: snapshot(quote),
 		});
 		state.quoteLists.refetch();
 	}

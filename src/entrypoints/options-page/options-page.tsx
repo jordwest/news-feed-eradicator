@@ -1,5 +1,5 @@
-import { render } from "solid-js/web";
-import h from "solid-js/h";
+import { render } from "@solidjs/web";
+import h from "@solidjs/h";
 import { Show, type ParentComponent } from "solid-js";
 
 import { OptionsPageState, OptionsPageStateContext, useOptionsPageState, type PageId } from "./state";

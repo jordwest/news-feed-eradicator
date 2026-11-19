@@ -2,7 +2,7 @@ import manifest from '../manifest';
 import { watch } from "fs/promises";
 import { build } from 'vite';
 import { $ } from 'bun';
-import solidPlugin from 'vite-plugin-solid';
+import solidPlugin from '@solidjs/vite-plugin';
 import type { SiteList } from '/types/sitelist';
 
 const PROJECT_ROOT = `${__dirname}/../..`;
