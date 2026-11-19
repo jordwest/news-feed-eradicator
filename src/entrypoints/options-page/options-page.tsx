@@ -47,7 +47,7 @@ const OptionsPage = () => {
 		<div class="w-full mw-lg space-y-8 py-4">
 			<h1 class="text-center font-3xl text-secondary">News Feed Eradicator</h1>
 
-			<OptionsPageStateContext.Provider value={state}>
+			<OptionsPageStateContext value={state}>
 				<Snooze />
 
 				<Undo />
@@ -93,9 +93,9 @@ const OptionsPage = () => {
 					<div>
 						By <a href="https://west.io/">Jordan West</a> and <a href="https://github.com/jordwest/news-feed-eradicator/graphs/contributors">contributors</a>
 					</div>
-					<div class="text-secondary font-xs">{versionText(state.siteList.get())}</div>
+					<div class="text-secondary font-xs">{versionText(state.siteList())}</div>
 				</footer>
-			</OptionsPageStateContext.Provider>
+			</OptionsPageStateContext>
 		</div>
 	</div>
 }

@@ -21,7 +21,7 @@ export const resourceObjReconciled = <T>(fn: () => Promise<T[]>) => {
 
 	const refetch = async () => {
 		const newStore: { items: T[] } = { items: await fn() };
-		setInternal(reconcile(newStore, { key: 'id', merge: true }));
+		setInternal(reconcile(newStore, 'id'));
 	};
 
 	refetch();

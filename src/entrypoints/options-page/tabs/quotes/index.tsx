@@ -8,7 +8,7 @@ export const QuotesTabContent = () => {
 
 	return <div class="">
 		<QuotesToggle />
-		<Show when={!state.storage.hideQuotes.get()}>
+		<Show when={!state.storage.hideQuotes()}>
 			<hr />
 			<QuoteListManager />
 		</Show>

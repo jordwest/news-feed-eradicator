@@ -144,7 +144,7 @@ const QuoteListToggle = ({ quoteList: ql }: { quoteList: QuoteList }) => {
 	const isSelected = () => state.selectedQuoteListId.get() === ql.id;
 
 	return <>
-		<li class={`flex px-4 hoverable`} aria-selected={state.selectedQuoteListId.get() === ql.id}>
+		<li class={`flex px-4 hoverable`} aria-selected={(state.selectedQuoteListId.get() === ql.id) ? "true" : "false"}>
 			<label class="cursor-pointer flex flex-1 cross-center py-2" for={`quotelist-${ql.id}`}>
 				<input type="checkbox" class="toggle" checked={!ql.disabled} id={`quotelist-${ql.id}`} onClick={e => onQuoteListToggle(e, ql.id, !ql.disabled)} />
 				<span class="px-2">{ql.id === 'builtin' ? 'Built-in quotes' : ql.title} ({ ql.quotes === 'builtin' ? BuiltinQuotes.length : ql.quotes.length })</span>

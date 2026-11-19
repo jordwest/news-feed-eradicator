@@ -6,7 +6,7 @@ export const StyleTabContent = () => {
 
 	return (
 		<div>
-			<Toggle checked={() => state.storage.widgetStyle.get() === 'transparent'} setChecked={checked => state.storage.setWidgetStyle(checked ? 'transparent' : 'contained')}>
+			<Toggle checked={() => state.storage.widgetStyle() === 'transparent'} setChecked={checked => state.storage.setWidgetStyle(checked ? 'transparent' : 'contained')}>
 				<div class="space-y-1">
 					<div>
 						Transparent quote widget background
@@ -16,7 +16,7 @@ export const StyleTabContent = () => {
 					</div>
 				</div>
 			</Toggle>
-			<Toggle checked={() => state.storage.regionHideStyle.get() === 'blur'} setChecked={checked => state.storage.setRegionHideStyle(checked ? 'blur' : 'hidden')}>
+			<Toggle checked={() => state.storage.regionHideStyle() === 'blur'} setChecked={checked => state.storage.setRegionHideStyle(checked ? 'blur' : 'hidden')}>
 				<div class="space-y-1">
 					<div>
 						Display hidden regions as blurred
