@@ -230,9 +230,30 @@
 	.card.primary { background-color: var(--theme-accent-a500); }
 	.outlined { border: 1px solid var(--theme-accent); }
 
+	:root {
+		--viewport-scroller-height: max(250px, calc(100vh - 400px));
+	}
+
 	.viewport-scroller {
-		max-height: max(250px, calc(100vh - 400px));
+		max-height: var(--viewport-scroller-height);
 		overflow-y: auto;
+	}
+
+	 @keyframes pulse {
+        0% {
+        	background-color: var(--theme-lighten-100);
+        }
+        50% {
+           	background-color: transparent;
+        }
+        100% {
+           	background-color: var(--theme-lighten-100);
+        }
+    }
+
+	.loading-skeleton {
+		border-radius: 8px;
+		animation: pulse 2s infinite;
 	}
 
 	nfe-tabs { isolation: isolate; display: block; }

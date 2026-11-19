@@ -12,6 +12,7 @@ import { SnoozeTabContent } from "./tabs/snooze";
 import { DebugTabContent } from "./tabs/debug";
 import { StyleTabContent } from "./tabs/style";
 import { versionText } from "/lib/util";
+import { Skeleton } from "/shared/components/skeleton";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -49,57 +50,52 @@ const OptionsPage = () => {
 
 			<Loading fallback={"Loading..."}>
 				<OptionsPageStateContext value={state}>
-					<Reveal order="natural">
+					<Loading fallback={<Skeleton width="300px" height="85px" />}>
+						<Snooze />
+					</Loading>
 
-						<Loading fallback={"Loading..."}>
-							<Snooze />
-						</Loading>
+					<Undo />
 
-						<Loading>
-							<Undo />
-						</Loading>
+					<Loading>
+						<Show when={!state.allSitePermissionsValid()}>
+							<div class="flex p-4 card shadow primary outlined gap-2 cross-center">
+								<div>⚠️</div>
+								<p class="flex-1 flex cross-center">Some enabled sites need more permissions to work correctly.</p>
+								<button class="primary" onClick={() => state.fixPermissions()}>Fix permissions</button>
+							</div>
+						</Show>
+					</Loading>
 
-						<Loading>
-							<Show when={!state.allSitePermissionsValid()}>
-								<div class="flex p-4 card shadow primary outlined gap-2 cross-center">
-									<div>⚠️</div>
-									<p class="flex-1 flex cross-center">Some enabled sites need more permissions to work correctly.</p>
-									<button class="primary" onClick={() => state.fixPermissions()}>Fix permissions</button>
-								</div>
-							</Show>
-						</Loading>
+					<Loading fallback={"Loading..."}>
+						<nfe-tabs>
+							<PageTabs />
+							<div role="tabpanel" class="shadow">
+								<Show when={state.page.get() === 'sites'}>
+									<SitesTabContent />
+								</Show>
 
-						<Loading fallback={"Loading..."}>
-							<nfe-tabs>
-								<PageTabs />
-								<div role="tabpanel" class="shadow">
-									<Show when={state.page.get() === 'sites'}>
-										<SitesTabContent />
-									</Show>
+								<Show when={state.page.get() === 'snooze'}>
+									<SnoozeTabContent />
+								</Show>
 
-									<Show when={state.page.get() === 'snooze'}>
-										<SnoozeTabContent />
-									</Show>
+								<Show when={state.page.get() === 'quotes'}>
+									<QuotesTabContent />
+								</Show>
 
-									<Show when={state.page.get() === 'quotes'}>
-										<QuotesTabContent />
-									</Show>
+								<Show when={state.page.get() === 'style'}>
+									<StyleTabContent />
+								</Show>
 
-									<Show when={state.page.get() === 'style'}>
-										<StyleTabContent />
-									</Show>
+								<Show when={state.page.get() === 'about'}>
+									<AboutTabContent />
+								</Show>
 
-									<Show when={state.page.get() === 'about'}>
-										<AboutTabContent />
-									</Show>
-
-									<Show when={state.page.get() === 'debug'}>
-										<DebugTabContent />
-									</Show>
-								</div>
-							</nfe-tabs>
-						</Loading>
-					</>
+								<Show when={state.page.get() === 'debug'}>
+									<DebugTabContent />
+								</Show>
+							</div>
+						</nfe-tabs>
+					</Loading>
 
 					<footer class="text-center space-y-4">
 						<div>

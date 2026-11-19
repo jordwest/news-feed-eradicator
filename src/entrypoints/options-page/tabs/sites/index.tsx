@@ -1,4 +1,4 @@
-import { createMemo, For, Show, refresh } from "solid-js";
+import { createMemo, For, Show, refresh, Loading } from "solid-js";
 import { getBrowser } from "/lib/webextension";
 import type { Site } from "/types/sitelist";
 import { originsForSite } from "/lib/util";
@@ -6,6 +6,7 @@ import { SiteConfigPanel } from "./site-configuration";
 import { useOptionsPageState } from "../../state";
 import { LockedSettingsOverlay, SettingsLockFooter } from "../../lock";
 import { createMediaQuery } from "@solid-primitives/media";
+import { Skeleton } from "/shared/components/skeleton";
 
 const browser = getBrowser();
 
@@ -99,13 +100,17 @@ export const SiteList = () => {
 	return  <div class="overlay-container">
 		<div class="flex blur-disabled" aria-disabled={state.settingsLockedDown() ? "true" : "false"}>
 			<ul class={`flex viewport-scroller flex-col py-2 ${showSidePanel() ? 'br-1 mw-xs' : 'flex-1'}`}>
-				<For each={state.siteList()?.sites}>
-					{site => <Site site={site} />}
-				</For>
+				<Loading fallback={<Skeleton width="100%" height="400px" />}>
+					<For each={state.siteList()?.sites}>
+						{site => <Site site={site} />}
+					</For>
+				</Loading>
 			</ul>
 			<Show when={showSidePanel()}>
 				<div class="flex-1">
-					<SiteConfigPanel site={selectedSite} />
+					<Loading>
+						<SiteConfigPanel site={selectedSite} />
+					</Loading>
 				</div>
 			</Show>
 		</div>
