@@ -1,6 +1,6 @@
 import { render } from "@solidjs/web";
 import h from "@solidjs/h";
-import { Show, type ParentComponent } from "solid-js";
+import { Loading, Reveal, Show, type ParentComponent } from "solid-js";
 
 import { OptionsPageState, OptionsPageStateContext, useOptionsPageState, type PageId } from "./state";
 import { Snooze } from "./snooze";
@@ -47,55 +47,70 @@ const OptionsPage = () => {
 		<div class="w-full mw-lg space-y-8 py-4">
 			<h1 class="text-center font-3xl text-secondary">News Feed Eradicator</h1>
 
-			<OptionsPageStateContext value={state}>
-				<Snooze />
+			<Loading fallback={"Loading..."}>
+				<OptionsPageStateContext value={state}>
+					<Reveal order="natural">
 
-				<Undo />
+						<Loading fallback={"Loading..."}>
+							<Snooze />
+						</Loading>
 
-				<Show when={!state.allSitePermissionsValid()}>
-					<div class="flex p-4 card shadow primary outlined gap-2 cross-center">
-						<div>⚠️</div>
-						<p class="flex-1 flex cross-center">Some enabled sites need more permissions to work correctly.</p>
-						<button class="primary" onClick={() => state.fixPermissions()}>Fix permissions</button>
-					</div>
-				</Show>
+						<Loading>
+							<Undo />
+						</Loading>
 
-				<nfe-tabs>
-					<PageTabs />
-					<div role="tabpanel" class="shadow">
-						<Show when={state.page.get() === 'sites'}>
-							<SitesTabContent />
-						</Show>
+						<Loading>
+							<Show when={!state.allSitePermissionsValid()}>
+								<div class="flex p-4 card shadow primary outlined gap-2 cross-center">
+									<div>⚠️</div>
+									<p class="flex-1 flex cross-center">Some enabled sites need more permissions to work correctly.</p>
+									<button class="primary" onClick={() => state.fixPermissions()}>Fix permissions</button>
+								</div>
+							</Show>
+						</Loading>
 
-						<Show when={state.page.get() === 'snooze'}>
-							<SnoozeTabContent />
-						</Show>
+						<Loading fallback={"Loading..."}>
+							<nfe-tabs>
+								<PageTabs />
+								<div role="tabpanel" class="shadow">
+									<Show when={state.page.get() === 'sites'}>
+										<SitesTabContent />
+									</Show>
 
-						<Show when={state.page.get() === 'quotes'}>
-							<QuotesTabContent />
-						</Show>
+									<Show when={state.page.get() === 'snooze'}>
+										<SnoozeTabContent />
+									</Show>
 
-						<Show when={state.page.get() === 'style'}>
-							<StyleTabContent />
-						</Show>
+									<Show when={state.page.get() === 'quotes'}>
+										<QuotesTabContent />
+									</Show>
 
-						<Show when={state.page.get() === 'about'}>
-							<AboutTabContent />
-						</Show>
+									<Show when={state.page.get() === 'style'}>
+										<StyleTabContent />
+									</Show>
 
-						<Show when={state.page.get() === 'debug'}>
-							<DebugTabContent />
-						</Show>
-					</div>
-				</nfe-tabs>
+									<Show when={state.page.get() === 'about'}>
+										<AboutTabContent />
+									</Show>
 
-				<footer class="text-center space-y-4">
-					<div>
-						By <a href="https://west.io/">Jordan West</a> and <a href="https://github.com/jordwest/news-feed-eradicator/graphs/contributors">contributors</a>
-					</div>
-					<div class="text-secondary font-xs">{versionText(state.siteList())}</div>
-				</footer>
-			</OptionsPageStateContext>
+									<Show when={state.page.get() === 'debug'}>
+										<DebugTabContent />
+									</Show>
+								</div>
+							</nfe-tabs>
+						</Loading>
+					</>
+
+					<footer class="text-center space-y-4">
+						<div>
+							By <a href="https://west.io/">Jordan West</a> and <a href="https://github.com/jordwest/news-feed-eradicator/graphs/contributors">contributors</a>
+						</div>
+						<Loading>
+							<div class="text-secondary font-xs">{versionText(state.siteList())}</div>
+						</Loading>
+					</footer>
+				</OptionsPageStateContext>
+			</Loading>
 		</div>
 	</div>
 }
