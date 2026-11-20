@@ -1,6 +1,6 @@
-import { render } from "solid-js/web";
-import h from "solid-js/h";
-import { Show, type ParentComponent } from "solid-js";
+import { render } from "@solidjs/web";
+import h from "@solidjs/h";
+import { Loading, Reveal, Show, type ParentComponent } from "solid-js";
 
 import { OptionsPageState, OptionsPageStateContext, useOptionsPageState, type PageId } from "./state";
 import { Snooze } from "./snooze";
@@ -12,6 +12,7 @@ import { SnoozeTabContent } from "./tabs/snooze";
 import { DebugTabContent } from "./tabs/debug";
 import { StyleTabContent } from "./tabs/style";
 import { versionText } from "/lib/util";
+import { Skeleton } from "/shared/components/skeleton";
 
 const PageTab: ParentComponent<{to: PageId}> = ({ to, children }) => {
 	const state = useOptionsPageState();
@@ -47,55 +48,65 @@ const OptionsPage = () => {
 		<div class="w-full mw-lg space-y-8 py-4">
 			<h1 class="text-center font-3xl text-secondary">News Feed Eradicator</h1>
 
-			<OptionsPageStateContext.Provider value={state}>
-				<Snooze />
+			<Loading fallback={"Loading..."}>
+				<OptionsPageStateContext value={state}>
+					<Loading fallback={<Skeleton width="300px" height="85px" />}>
+						<Snooze />
+					</Loading>
 
-				<Undo />
+					<Undo />
 
-				<Show when={!state.allSitePermissionsValid()}>
-					<div class="flex p-4 card shadow primary outlined gap-2 cross-center">
-						<div>⚠️</div>
-						<p class="flex-1 flex cross-center">Some enabled sites need more permissions to work correctly.</p>
-						<button class="primary" onClick={() => state.fixPermissions()}>Fix permissions</button>
-					</div>
-				</Show>
-
-				<nfe-tabs>
-					<PageTabs />
-					<div role="tabpanel" class="shadow">
-						<Show when={state.page.get() === 'sites'}>
-							<SitesTabContent />
+					<Loading>
+						<Show when={!state.allSitePermissionsValid()}>
+							<div class="flex p-4 card shadow primary outlined gap-2 cross-center">
+								<div>⚠️</div>
+								<p class="flex-1 flex cross-center">Some enabled sites need more permissions to work correctly.</p>
+								<button class="primary" onClick={() => state.fixPermissions()}>Fix permissions</button>
+							</div>
 						</Show>
+					</Loading>
 
-						<Show when={state.page.get() === 'snooze'}>
-							<SnoozeTabContent />
-						</Show>
+					<Loading fallback={"Loading..."}>
+						<nfe-tabs>
+							<PageTabs />
+							<div role="tabpanel" class="shadow">
+								<Show when={state.page.get() === 'sites'}>
+									<SitesTabContent />
+								</Show>
 
-						<Show when={state.page.get() === 'quotes'}>
-							<QuotesTabContent />
-						</Show>
+								<Show when={state.page.get() === 'snooze'}>
+									<SnoozeTabContent />
+								</Show>
 
-						<Show when={state.page.get() === 'style'}>
-							<StyleTabContent />
-						</Show>
+								<Show when={state.page.get() === 'quotes'}>
+									<QuotesTabContent />
+								</Show>
 
-						<Show when={state.page.get() === 'about'}>
-							<AboutTabContent />
-						</Show>
+								<Show when={state.page.get() === 'style'}>
+									<StyleTabContent />
+								</Show>
 
-						<Show when={state.page.get() === 'debug'}>
-							<DebugTabContent />
-						</Show>
-					</div>
-				</nfe-tabs>
+								<Show when={state.page.get() === 'about'}>
+									<AboutTabContent />
+								</Show>
 
-				<footer class="text-center space-y-4">
-					<div>
-						By <a href="https://west.io/">Jordan West</a> and <a href="https://github.com/jordwest/news-feed-eradicator/graphs/contributors">contributors</a>
-					</div>
-					<div class="text-secondary font-xs">{versionText(state.siteList.get())}</div>
-				</footer>
-			</OptionsPageStateContext.Provider>
+								<Show when={state.page.get() === 'debug'}>
+									<DebugTabContent />
+								</Show>
+							</div>
+						</nfe-tabs>
+					</Loading>
+
+					<footer class="text-center space-y-4">
+						<div>
+							By <a href="https://west.io/">Jordan West</a> and <a href="https://github.com/jordwest/news-feed-eradicator/graphs/contributors">contributors</a>
+						</div>
+						<Loading>
+							<div class="text-secondary font-xs">{versionText(state.siteList())}</div>
+						</Loading>
+					</footer>
+				</OptionsPageStateContext>
+			</Loading>
 		</div>
 	</div>
 }

@@ -1,12 +1,11 @@
-import { createSignal, createEffect, type Accessor, type Setter, createContext, useContext, createResource, type ResourceReturn, createMemo } from "solid-js";
+import { createSignal, createEffect, createContext, useContext, createMemo, refresh } from "solid-js";
 import type { QuoteList, QuoteListId } from "../../storage/schema";
 import { expect, originsForSite } from "../../lib/util";
 import type { SiteId, SiteList } from "../../types/sitelist";
 import { loadEnabledSites, loadQuoteLists, loadSitelist, loadSnoozeMode } from "../../storage/storage";
 import type { Quote } from "../../quote";
 import { getBrowser, type Permissions } from "../../lib/webextension";
-import { createStore, reconcile } from "solid-js/store";
-import { resourceObj, resourceObjReconciled, signalObj, type SignalObj } from "/lib/solid-util";
+import { resourceObjReconciled, signalObj, type SignalObj } from "/lib/solid-util";
 import { StorageState } from "./state/storage";
 import { sendToServiceWorker } from "/messaging/messages";
 import { createMediaQuery } from "@solid-primitives/media";
@@ -51,18 +50,18 @@ export class OptionsPageState {
 
 	storage = new StorageState();
 
-	snoozeState = resourceObj(createResource<number | null>(async () => browser.runtime.sendMessage({ type: 'readSnooze' })));
-	snoozeMode = resourceObj(createResource(loadSnoozeMode));
-	enabledSites = resourceObj(createResource(loadEnabledSites));
-	permissions = resourceObj(createResource(() => browser.permissions.getAll()));
-	enabledScripts = resourceObj(createResource(async () => {
+	snoozeState = createMemo(async () => browser.runtime.sendMessage({ type: 'readSnooze' }));
+	snoozeMode = createMemo(loadSnoozeMode);
+	enabledSites = createMemo(loadEnabledSites);
+	permissions = createMemo(() => browser.permissions.getAll());
+	enabledScripts = createMemo(async () => {
 		const scripts = await browser.scripting.getRegisteredContentScripts();
 		return scripts.map(script => script.id) as SiteId[];
-	}));
+	});
 
-	siteList = resourceObj(createResource<SiteList | undefined>(async () => {
+	siteList = createMemo<SiteList | undefined>(async () => {
 		return loadSitelist();
-	}));
+	});
 
 	quoteLists = resourceObjReconciled(loadQuoteLists);
 
@@ -80,7 +79,7 @@ export class OptionsPageState {
 	async reloadSiteList() {
 		sendToServiceWorker({ type: 'reloadSiteList' });
 		await loadSitelist(true);
-		this.siteList.refetch();
+		refresh(this.siteList);
 	}
 
 	selectedQuoteList = createMemo(() => {
@@ -108,25 +107,25 @@ export class OptionsPageState {
 
 	async requestPermissions(permissions: Permissions): Promise<boolean> {
 		const result = await browser.permissions.request(permissions);
-		this.permissions.refetch();
+		refresh(this.permissions);
 		return result;
 	}
 
 	async removePermissions(permissions: Permissions) {
 		await browser.permissions.remove(permissions);
-		this.permissions.refetch();
+		refresh(this.permissions);
 	}
 
 	siteState(siteId: SiteId): SiteState {
-		const enabled = this.enabledSites.get()?.includes(siteId) ?? false;
-		const scriptRegistered = this.enabledScripts.get()?.includes(siteId) ?? false;
-		const site = this.siteList.get()?.sites.find(site => site.id === siteId);
+		const enabled = this.enabledSites().includes(siteId) ?? false;
+		const scriptRegistered = this.enabledScripts().includes(siteId) ?? false;
+		const site = this.siteList()?.sites.find(site => site.id === siteId);
 
 		let permissionsEnabled = true;
 		if (site != null) {
 			const origins = originsForSite(site);
 			for (const origin of origins) {
-				if (!this.permissions.get()?.origins.includes(origin)) {
+				if (!this.permissions().origins.includes(origin)) {
 					permissionsEnabled = false;
 					break;
 				}
@@ -142,7 +141,7 @@ export class OptionsPageState {
 
 	sitesWithInvalidPermissions = createMemo(() => {
 		let invalidSites: SiteId[] = [];
-		const enabledSites = this.enabledSites.get() ?? [];
+		const enabledSites = this.enabledSites() ?? [];
 
 		for (const siteId of enabledSites) {
 			const siteState = this.siteState(siteId);
@@ -164,7 +163,7 @@ export class OptionsPageState {
 		let origins: string[] = [];
 
 		for (const siteId of invalidSites) {
-			const site = this.siteList.get()?.sites.find(site => site.id === siteId);
+			const site = this.siteList()?.sites.find(site => site.id === siteId);
 			if (site == null) continue;
 			origins.push(...originsForSite(site));
 		}
@@ -178,7 +177,7 @@ export class OptionsPageState {
 			until: this.clock.get() + durationMs,
 		})
 
-		this.snoozeState.refetch();
+		refresh(this.snoozeState);
 	}
 
 	async cancelSnooze() {
@@ -186,11 +185,11 @@ export class OptionsPageState {
 			type: 'snooze',
 			until: this.clock.get(),
 		})
-		this.snoozeState.refetch();
+		refresh(this.snoozeState);
 	}
 
 	snoozeRemaining() {
-		const snooze = this.snoozeState.get();
+		const snooze = this.snoozeState();
 		if (snooze == null) return 0;
 		return Math.max(0, snooze - this.clock.get());
 	}
@@ -206,7 +205,7 @@ export class OptionsPageState {
  * Returns true if the user is not currently allowed to change settings (eg not currently snoozing)
  */
 	settingsLockedDown() {
-		return this.storage.settingsLocked.get() ?? false;
+		return this.storage.settingsLocked() ?? false;
 	}
 
 	canUnlockSettings() {

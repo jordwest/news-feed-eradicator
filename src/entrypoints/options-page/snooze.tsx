@@ -107,17 +107,17 @@ export const Snooze = () => {
 	const state = useOptionsPageState();
 
 	const isSnoozing = () => {
-		const snoozeState = state.snoozeState.get();
+		const snoozeState = state.snoozeState();
 		return snoozeState != null && snoozeState > state.clock.get();
 	}
 
 	return <div>
 		<Show when={!isSnoozing()}>
 			<div class="flex axis-center">
-				<Show when={state.snoozeMode.get() === 'hold'}>
+				<Show when={state.snoozeMode() === 'hold'}>
 					<HoldSnoozeButton />
 				</Show>
-				<Show when={state.snoozeMode.get() === 'instant'}>
+				<Show when={state.snoozeMode() === 'instant'}>
 					<InstantSnoozeButtons />
 				</Show>
 			</div>
@@ -126,7 +126,7 @@ export const Snooze = () => {
 		<Show when={isSnoozing()}>
 			<div class="flex cross-center p-4 card secondary outlined shadow">
 				<div class="flex-1">
-					💤 Snoozing for {displayDuration((state.snoozeState.get()! - state.clock.get()))}. Scroll your life away!
+					💤 Snoozing for {displayDuration((state.snoozeState()! - state.clock.get()))}. Scroll your life away!
 				</div>
 				<button class="secondary" onClick={() => state.cancelSnooze()}>
 					Cancel snooze

@@ -3,7 +3,7 @@ import { getBrowser } from '../../lib/webextension';
 import type { FromServiceWorkerMessage, DesiredRegionState, ToServiceWorkerMessage } from '../../messaging/messages';
 import { QuoteWidget } from '../../shared/quote-widget';
 import type { Region, RegionId, Site, SiteId } from '../../types/sitelist';
-import { render } from 'solid-js/web';
+import { render } from '@solidjs/web';
 import nfeStyles from './nfe-container.css?raw';
 import sharedStyles from '../../shared/styles.css?raw';
 import type { Theme } from '../../storage/schema';

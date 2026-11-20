@@ -1,4 +1,4 @@
-import type { ParentComponent } from "solid-js";
+import { refresh, type ParentComponent } from "solid-js";
 import type { SnoozeMode } from "/storage/schema";
 import { useOptionsPageState } from "../../state";
 import { saveSnoozeMode } from "/storage/storage";
@@ -9,13 +9,13 @@ const SnoozeModeOption: ParentComponent<{ mode: SnoozeMode, title: string }> = (
 
 	const onClick = async () => {
 		await saveSnoozeMode(mode);
-		state.snoozeMode.refetch();
+		refresh(state.snoozeMode);
 	}
 
 	return <li class="bg-darken-100 rounded">
-		<label class={`block p-4 space-y-2 cursor-pointer ${state.snoozeMode.get() === mode ? 'outlined' : 'hoverable'}`}>
+		<label class={`block p-4 space-y-2 cursor-pointer ${state.snoozeMode() === mode ? 'outlined' : 'hoverable'}`}>
 			<div class="flex gap-1">
-				<input type="radio" class="radio" name="snooze-mode" disabled={state.settingsLockedDown()} checked={state.snoozeMode.get() === mode} onClick={onClick} />
+				<input type="radio" class="radio" name="snooze-mode" disabled={state.settingsLockedDown()} checked={state.snoozeMode() === mode} onClick={onClick} />
 				<div class="space-y-1">
 					<span class="flex-1">{ title }</span>
 					<div class="text-secondary font-sm ml-4">
@@ -33,7 +33,7 @@ export const SnoozeTabContent = () => {
 	return (
 		<div>
 			<div class="p-4 space-y-4 overlay-container">
-				<ul class="space-y-2 z1 blur-disabled" aria-disabled={state.settingsLockedDown()}>
+				<ul class="space-y-2 z1 blur-disabled" aria-disabled={state.settingsLockedDown() ? "true" : "false"}>
 					<SnoozeModeOption mode="hold" title="Hold to snooze">
 						Requires you to hold the snooze button down for a while to start snoozing. The longer you hold, the longer the snooze.
 					</SnoozeModeOption>

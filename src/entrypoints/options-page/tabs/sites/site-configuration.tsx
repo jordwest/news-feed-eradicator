@@ -1,4 +1,4 @@
-import { createResource, For, Show, type Accessor } from "solid-js";
+import { createMemo, For, refresh, Show, type Accessor } from "solid-js";
 import type { RegionId, Site, SiteId } from "/types/sitelist";
 import { loadRegionsForSite, setRegionEnabledForSite } from "/storage/storage";
 import { sendToServiceWorker } from "/messaging/messages";
@@ -6,7 +6,7 @@ import { expect } from "/lib/util";
 import { useOptionsPageState } from "../../state";
 
 export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
-	const [siteRegions, { refetch }] = createResource(async () => {
+	const siteRegions = createMemo(async () => {
 		return loadRegionsForSite(expect(site()).id);
 	});
 
@@ -29,7 +29,7 @@ export const SiteConfigPanel = ({ site } : { site: Accessor<Site | null> }) => {
 		<ul>
 			<For each={expect(site()).regions}>
 				{region => <li>
-					<RegionToggleButton siteId={expect(site()).id} regionId={region.id} refetch={refetch} value={() => isRegionActive(region.id)} label={region.title} />
+					<RegionToggleButton siteId={expect(site()).id} regionId={region.id} refetch={() => refresh(siteRegions)} value={() => isRegionActive(region.id)} label={region.title} />
 				</li>}
 			</For>
 		</ul>

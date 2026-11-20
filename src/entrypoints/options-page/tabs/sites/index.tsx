@@ -1,4 +1,4 @@
-import { createMemo, For, Show } from "solid-js";
+import { createMemo, For, Show, refresh, Loading } from "solid-js";
 import { getBrowser } from "/lib/webextension";
 import type { Site } from "/types/sitelist";
 import { originsForSite } from "/lib/util";
@@ -6,6 +6,7 @@ import { SiteConfigPanel } from "./site-configuration";
 import { useOptionsPageState } from "../../state";
 import { LockedSettingsOverlay, SettingsLockFooter } from "../../lock";
 import { createMediaQuery } from "@solid-primitives/media";
+import { Skeleton } from "/shared/components/skeleton";
 
 const browser = getBrowser();
 
@@ -26,8 +27,8 @@ const Site = ({ site }: { site: Site }) => {
 			siteId: site.id
 		});
 
-		await state.enabledSites.refetch();
-		await state.enabledScripts.refetch();
+		await refresh(state.enabledSites);
+		await refresh(state.enabledScripts);
 	};
 
 	const disableSite = async (site: Site) => {
@@ -40,8 +41,8 @@ const Site = ({ site }: { site: Site }) => {
 
 		await Promise.allSettled([
 			state.removePermissions({ origins, permissions: [] }),
-			state.enabledSites.refetch(),
-			state.enabledScripts.refetch(),
+			refresh(state.enabledSites),
+			refresh(state.enabledScripts),
 		]);
 		state.selectedSiteId.set(null);
 	}
@@ -51,7 +52,7 @@ const Site = ({ site }: { site: Site }) => {
 	const isSelected = () => state.selectedSiteId.get() === site.id;
 
 	return <>
-		<li class="hoverable" aria-selected={state.selectedSiteId.get() === site.id}>
+		<li class="hoverable" aria-selected={(state.selectedSiteId.get() === site.id) ? "true" : "false"}>
 			<label for={id} class={`cursor-pointer px-4 py-2 gap-2 flex cross-center`}>
 				<input id={id} type="checkbox" disabled={state.settingsLockedDown()} class="toggle" onClick={(e) => {
 						e.preventDefault();
@@ -91,21 +92,25 @@ export const SiteList = () => {
 	const selectedSite = createMemo(() => {
 		const siteId = state.selectedSiteId.get();
 		if (!siteId) return null;
-		return state.siteList.get()?.sites.find(s => s.id === siteId) ?? null;
+		return state.siteList()?.sites.find(s => s.id === siteId) ?? null;
 	});
 
 	const showSidePanel = () => selectedSite() != null && !state.isSmallScreen();
 
 	return  <div class="overlay-container">
-		<div class="flex blur-disabled" aria-disabled={state.settingsLockedDown()}>
+		<div class="flex blur-disabled" aria-disabled={state.settingsLockedDown() ? "true" : "false"}>
 			<ul class={`flex viewport-scroller flex-col py-2 ${showSidePanel() ? 'br-1 mw-xs' : 'flex-1'}`}>
-				<For each={state.siteList.get()?.sites}>
-					{site => <Site site={site} />}
-				</For>
+				<Loading fallback={<Skeleton width="100%" height="400px" />}>
+					<For each={state.siteList()?.sites}>
+						{site => <Site site={site} />}
+					</For>
+				</Loading>
 			</ul>
 			<Show when={showSidePanel()}>
 				<div class="flex-1">
-					<SiteConfigPanel site={selectedSite} />
+					<Loading>
+						<SiteConfigPanel site={selectedSite} />
+					</Loading>
 				</div>
 			</Show>
 		</div>

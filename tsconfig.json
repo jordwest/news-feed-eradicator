@@ -10,7 +10,7 @@
     "module": "Preserve",
     "moduleDetection": "force",
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
+    "jsxImportSource": "@solidjs/web",
     "removeComments": false,
     "allowJs": true,
 
